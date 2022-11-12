@@ -7,3 +7,9 @@ Log for Garry's Mod
 | log4g_loggerconfig_uniqueidentifier_clientsent   | string        |
 | log4g_loggerconfig_eventname_serversent      | string       |
 | log4g_loggerconfig_uniqueidentifier_serversent   | string        |
+
+| Concommands      | usage |
+| ----------- | ----------- |
+| log4g_openwindow      | console       |
+| log4g_clear_internal_loggerconfig_server     | console       |
+|log4g_clear_external_loggerconfig_server|        console      |
