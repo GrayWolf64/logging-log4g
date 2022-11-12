@@ -5,3 +5,5 @@ Log for Garry's Mod
 | ----------- | ----------- |
 | log4g_loggerconfig_eventname_clientsent      | string       |
 | log4g_loggerconfig_uniqueidentifier_clientsent   | string        |
+| log4g_loggerconfig_eventname_serversent      | string       |
+| log4g_loggerconfig_uniqueidentifier_serversent   | string        |
