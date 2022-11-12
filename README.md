@@ -11,5 +11,5 @@ Log for Garry's Mod
 | Concommands      | usage |
 | ----------- | ----------- |
 | log4g_openwindow      | console       |
-| log4g_clear_internal_loggerconfig_server     | console       |
-|log4g_clear_external_loggerconfig_server|        console      |
+| log4g_clear_loggerconfig_table_server     | console       |
+| log4g_clear_loggerconfig_file|        console      |
