@@ -32,14 +32,15 @@ if CLIENT then
         Button_a:SetText("Confirm")
 
         Button_a.DoClick = function()
-            local Text = TextEntry_a:GetValue()
+            local Content_a = ComboBox_a:GetSelected()
+            local Content_b = TextEntry_a:GetValue()
 
-            if #Text ~= 0 then
+            if Content_a ~= nil and #Content_b ~= 0 then
                 net.Start("log4g_loggerconfig_eventname_clientsent")
-                net.WriteString(ComboBox_a:GetSelected())
+                net.WriteString(Content_a)
                 net.SendToServer()
                 net.Start("log4g_loggerconfig_uniqueidentifier_clientsent")
-                net.WriteString(Text)
+                net.WriteString(Content_b)
                 net.SendToServer()
             else
                 Button_a:SetEnabled(false)
