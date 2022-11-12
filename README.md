@@ -12,4 +12,3 @@ Log for Garry's Mod
 | ----------- | ----------- |
 | log4g_openwindow      | console       |
 | log4g_clear_loggerconfig_table_server     | console       |
-| log4g_clear_loggerconfig_file|        console      |
