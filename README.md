@@ -8,7 +8,7 @@ Log for Garry's Mod
 |"log4g_loggerconfig_basicinfo_clientupload"|table|
 |"log4g_loggerconfig_basicinfo_clientrequestdownload"|none|
 |"log4g_loggerconfig_basicinfo_clientdownload"|bool, table|
--
+*
 | Concommands      | usage |
 | ----------- | ----------- |
 | log4g_openwindow      | console       |
