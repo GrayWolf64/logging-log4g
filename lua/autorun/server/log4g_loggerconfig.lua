@@ -1,29 +1,40 @@
 if SERVER then
     local log4g_LoggerConfig = {}
-    util.AddNetworkString("log4g_loggerconfig_eventname_clientsent")
-    util.AddNetworkString("log4g_loggerconfig_uniqueidentifier_clientsent")
-    util.AddNetworkString("log4g_loggerconfig_eventname_serversent")
-    util.AddNetworkString("log4g_loggerconfig_uniqueidentifier_serversent")
+    util.AddNetworkString("log4g_loggerconfig_basicinfo_clientsent")
+    util.AddNetworkString("log4g_loggerconfig_basicinfo_serversent")
+    util.AddNetworkString("log4g_loggerconfig_basicinfo_clientupload")
+    util.AddNetworkString("log4g_loggerconfig_basicinfo_clientrequestdownload")
+    util.AddNetworkString("log4g_loggerconfig_basicinfo_clientdownload")
 
-    net.Receive("log4g_loggerconfig_eventname_clientsent", function(ply)
-        local Message_a = net.ReadString()
-        net.Start("log4g_loggerconfig_eventname_serversent")
-        net.WriteString(Message_a)
+    net.Receive("log4g_loggerconfig_basicinfo_clientsent", function()
+        local Message = net.ReadTable()
+        net.Start("log4g_loggerconfig_basicinfo_serversent")
+        net.WriteTable(Message)
         net.Broadcast()
+    end)
 
-        net.Receive("log4g_loggerconfig_uniqueidentifier_clientsent", function()
-            local Message_b = net.ReadString()
+    local ServerFile = "log4g/server/log4g_loggerconfig_server.json"
 
-            table.Add(log4g_LoggerConfig, {
-                {Message_a, Message_b}
-            })
+    net.Receive("log4g_loggerconfig_basicinfo_clientupload", function()
+        local Message = net.ReadTable()
 
-            local ToFile = util.TableToJSON(log4g_LoggerConfig, true)
-            file.Write("log4g/log4g_loggerconfig_server.json", ToFile)
-            net.Start("log4g_loggerconfig_uniqueidentifier_serversent")
-            net.WriteString(Message_b)
-            net.Broadcast()
-        end)
+        table.Add(log4g_LoggerConfig, {Message})
+
+        local ToFile = util.TableToJSON(log4g_LoggerConfig, true)
+        file.Write(ServerFile, ToFile)
+    end)
+
+    net.Receive("log4g_loggerconfig_basicinfo_clientrequestdownload", function(len, ply)
+        if file.Exists(ServerFile, "DATA") then
+            net.Start("log4g_loggerconfig_basicinfo_clientdownload")
+            net.WriteBool(true)
+            net.WriteTable(util.JSONToTable(file.Read(ServerFile, "DATA")))
+            net.Send(ply)
+        else
+            net.Start("log4g_loggerconfig_basicinfo_clientdownload")
+            net.WriteBool(false)
+            net.Send(ply)
+        end
     end)
 
     concommand.Add("log4g_clear_loggerconfig_table_server", function()
