@@ -44,4 +44,19 @@ if SERVER then
 
         MsgC("[log4g] Table cleared.\n")
     end)
+    --[[concommand.Add("log4g_server_buildlogger", function()
+        if file.Exists(ServerFile, "DATA") then
+            local Table = util.JSONToTable(file.Read(ServerFile))
+
+            for k, v in ipairs(Table) do
+                if v[3] == "Engine Console" and v[4] == "Rich Text" then
+                    hook.Add(v[1], v[2], function()
+                        MsgC("Event happened\n")
+                    end)
+                end
+            end
+        else
+            MsgC("[log4g] Server has no loggerconfig file.")
+        end
+    end)--]]
 end
