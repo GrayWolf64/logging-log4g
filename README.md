@@ -3,8 +3,6 @@ Log for Garry's Mod
 
 | Internal Net Messages      | Type |
 | ----------- | ----------- |
-|"log4g_config_clientsent"|table|
-|"log4g_config_serversent"|table|
 |"log4g_config_clientupload"|table|
 |"log4g_config_clientrequestdownload"|none|
 |"log4g_config_clientdownload"|bool, table|
