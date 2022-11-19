@@ -40,18 +40,19 @@ if CLIENT then
         for k, v in ipairs(table) do
             if #v == 0 or v == nil then return false end
         end
+
+        return true
     end
 
     concommand.Add("log4g_mmc", function()
         local FrameA = CreateDFrame(850, 500, "log4g Monitoring & Management Console(MMC)", "icon16/application.png")
         local MenuBar = vgui.Create("DMenuBar", FrameA)
-        local M1 = MenuBar:AddMenu("Logger")
-        local SubMenu = M1:AddSubMenu("New Logger")
-        SubMenu:SetDeleteSelf(false)
-        local M2 = MenuBar:AddMenu("Settings")
-        M2:AddOption("General", function() end):SetIcon("icon16/wrench.png")
-        local M3 = MenuBar:AddMenu("Help")
-        M3:AddOption("About", function() end):SetIcon("icon16/information.png")
+        local MenuA = MenuBar:AddMenu("Logger")
+        local SubMenuA = MenuA:AddSubMenu("New Logger")
+        SubMenuA:SetDeleteSelf(false)
+        local MenuB = MenuBar:AddMenu("Settings")
+        MenuB:AddOption("General", function() end):SetIcon("icon16/wrench.png")
+        local MenuC = MenuBar:AddMenu("Help")
         local Sheet = vgui.Create("DPropertySheet", FrameA)
         Sheet:Dock(FILL)
         Sheet:DockMargin(1, 1, 1, 1)
@@ -65,7 +66,7 @@ if CLIENT then
         Tree:Dock(RIGHT)
         Tree:DockMargin(1, 1, 1, 0)
 
-        SubMenu:AddOption("Wizard Simple", function()
+        SubMenuA:AddOption("Wizard Simple", function()
             local FrameB = CreateDFrame(300, 300, "Wizard Simple", "icon16/application_lightning.png")
             CreateDLabel(FrameB, TOP, 3, 3, 3, 3, "The event name of the hook")
             local ComboBoxA = CreateDComboBox(FrameB, TOP, 3, 0, 6, 3)
@@ -97,10 +98,15 @@ if CLIENT then
                 if not CheckTableElementValidity(ConfigTbl) then
                     DListViewA:AddLine(unpack(ConfigTbl))
                 else
-                    Derma_Message("[log4g] Can't add the config because of empty element(s).", "log4g Warning", "Cancel")
+                    Derma_Message("Can't add the config because of empty element(s).", "log4g Warning", "Cancel")
                 end
             end
         end):SetIcon("icon16/cog_add.png")
+
+        MenuC:AddOption("About", function()
+            local FrameC = CreateDFrame(300, 200, "About", "icon16/information.png")
+            CreateDLabel(FrameC, TOP, 3, 3, 3, 3, "log4g is an open-source addon for Garry's Mod.")
+        end):SetIcon("icon16/information.png")
 
         local Columns = {"Event Name", "Unique ID", "Appender", "Filter"}
 
@@ -134,7 +140,7 @@ if CLIENT then
                         DListViewA:AddLine(unpack(v))
                     end
                 else
-                    Derma_Message("[log4g] Request Sync failed: Server has no config file.", "log4g Warning", "Cancel")
+                    Derma_Message("Request Sync failed: Server has no config file.", "log4g Warning", "Cancel")
                 end
             end)
         end
@@ -154,9 +160,9 @@ if CLIENT then
             end
 
             if table.IsEmpty(ConfigBuffer) then
-                Derma_Message("[log4g] Upload failed: List has no valid lines.", "log4g Warning", "Cancel")
+                Derma_Message("Upload failed: List has no valid lines.", "log4g Warning", "Cancel")
             else
-                print("Uploaded Configuration:")
+                print("[log4g] Client Uploaded Configuration:")
                 PrintTable(ConfigBuffer)
                 net.Start("log4g_config_clientupload")
                 net.WriteTable(ConfigBuffer)

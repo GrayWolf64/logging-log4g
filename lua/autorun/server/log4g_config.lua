@@ -11,17 +11,11 @@ if SERVER then
         util.AddNetworkString(v)
     end
 
-    net.Receive("log4g_config_clientsent", function(len, ply)
-        net.Start("log4g_config_serversent")
-        net.WriteTable(net.ReadTable())
-        net.Send(ply)
-    end)
-
     local File = "log4g/server/log4g_config_sv.json"
 
     net.Receive("log4g_config_clientupload", function()
         table.Add(ConfigBuffer, net.ReadTable())
-        print("Server Received Configuration:")
+        print("[log4g] Server Received Configuration:")
         PrintTable(ConfigBuffer)
         Result = util.TableToJSON(ConfigBuffer, true)
         file.Write(File, Result)
