@@ -2,9 +2,9 @@ if SERVER then
     local ConfigBuffer = {}
 
     local NetworkStrings = {
-        [3] = "log4g_config_clientupload",
-        [4] = "log4g_config_clientrequestdownload",
-        [5] = "log4g_config_clientdownload"
+        [1] = "log4g_config_clientupload",
+        [2] = "log4g_config_clientrequestdownload",
+        [3] = "log4g_config_clientdownload"
     }
 
     for k, v in ipairs(NetworkStrings) do

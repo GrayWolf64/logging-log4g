@@ -7,6 +7,7 @@ if CLIENT then
         dframe:SetScreenLock(true)
         dframe:SetTitle(title)
         dframe:SetIcon(icon)
+        dframe:SetDrawOnTop(true)
 
         return dframe
     end
@@ -36,8 +37,8 @@ if CLIENT then
         return dcombobox
     end
 
-    local function CheckTableElementValidity(table)
-        for k, v in ipairs(table) do
+    local function CheckTblElementValidity(tbl)
+        for _, v in ipairs(tbl) do
             if #v == 0 or v == nil then return false end
         end
 
@@ -48,7 +49,7 @@ if CLIENT then
         local FrameA = CreateDFrame(850, 500, "log4g Monitoring & Management Console(MMC)", "icon16/application.png")
         local MenuBar = vgui.Create("DMenuBar", FrameA)
         local MenuA = MenuBar:AddMenu("Logger")
-        local SubMenuA = MenuA:AddSubMenu("New Logger")
+        local SubMenuA = MenuA:AddSubMenu("New LoggerConfig")
         SubMenuA:SetDeleteSelf(false)
         local MenuB = MenuBar:AddMenu("Settings")
         MenuB:AddOption("General", function() end):SetIcon("icon16/wrench.png")
@@ -84,7 +85,7 @@ if CLIENT then
 
             local Appenders = {"Engine Console", "log4g Terminal"}
 
-            for k, v in ipairs(Appenders) do
+            for _, v in ipairs(Appenders) do
                 ComboBoxB:AddChoice(v)
             end
 
@@ -92,13 +93,19 @@ if CLIENT then
             local ComboBoxC = CreateDComboBox(FrameB, TOP, 3, 0, 6, 3)
             local ButtonA = CreateDButton(FrameB, BOTTOM, 6, 3, 6, 3, 100, 50, "Confirm")
 
-            ButtonA.DoClick = function()
-                local ConfigTbl = {ComboBoxA:GetSelected(), TextEntryA:GetValue(), ComboBoxB:GetValue(), ComboBoxC:GetValue()}
+            local Filters = {"BurstFilter"}
 
-                if not CheckTableElementValidity(ConfigTbl) then
+            for _, v in ipairs(Filters) do
+                ComboBoxC:AddChoice(v)
+            end
+
+            ButtonA.DoClick = function()
+                local ConfigTbl = {ComboBoxA:GetSelected(), TextEntryA:GetValue(), ComboBoxB:GetSelected(), ComboBoxC:GetSelected()}
+
+                if not CheckTblElementValidity(ConfigTbl) then
                     DListViewA:AddLine(unpack(ConfigTbl))
                 else
-                    Derma_Message("Can't add the config because of empty element(s).", "log4g Warning", "Cancel")
+                    Derma_Message("Can't add the LoggerConfig because of empty element(s).", "log4g Warning", "Cancel")
                 end
             end
         end):SetIcon("icon16/cog_add.png")
@@ -108,9 +115,9 @@ if CLIENT then
             CreateDLabel(FrameC, TOP, 3, 3, 3, 3, "log4g is an open-source addon for Garry's Mod.")
         end):SetIcon("icon16/information.png")
 
-        local Columns = {"Event Name", "Unique ID", "Appender", "Filter"}
+        local Columns = {"Event Name", "Unique ID", "Appender", "Filter", "Parent"}
 
-        for k, v in ipairs(Columns) do
+        for _, v in ipairs(Columns) do
             DListViewA:AddColumn(v)
         end
 
@@ -121,14 +128,18 @@ if CLIENT then
         DGridA:SetRowHeight(50)
         DGridA:DockMargin(1, 1, 1, 1)
         local ButtonA = CreateDButton(DGridA, NODOCK, 0, 0, 0, 0, 100, 50, "Clear List")
-        DGridA:AddItem(ButtonA)
+        local ButtonB = CreateDButton(DGridA, NODOCK, 0, 0, 0, 0, 100, 50, "Sync with Server")
+        local ButtonC = CreateDButton(DGridA, NODOCK, 0, 0, 0, 0, 100, 50, "Upload to Server")
+        local ButtonD = CreateDButton(DGridA, NODOCK, 0, 0, 0, 0, 100, 50, "SV BUILD LOGGERS")
+        local ButtonE = CreateDButton(DGridA, NODOCK, 0, 0, 0, 0, 100, 50, "SV CLR CONFIG")
+
+        for _, v in ipairs({ButtonA, ButtonB, ButtonC, ButtonD, ButtonE}) do
+            DGridA:AddItem(v)
+        end
 
         ButtonA.DoClick = function()
             DListViewA:Clear()
         end
-
-        local ButtonB = CreateDButton(DGridA, NODOCK, 0, 0, 0, 0, 100, 50, "Sync with Server")
-        DGridA:AddItem(ButtonB)
 
         ButtonB.DoClick = function()
             net.Start("log4g_config_clientrequestdownload")
@@ -136,7 +147,7 @@ if CLIENT then
 
             net.Receive("log4g_config_clientdownload", function()
                 if net.ReadBool() then
-                    for k, v in ipairs(net.ReadTable()) do
+                    for _, v in ipairs(net.ReadTable()) do
                         DListViewA:AddLine(unpack(v))
                     end
                 else
@@ -144,9 +155,6 @@ if CLIENT then
                 end
             end)
         end
-
-        local ButtonC = CreateDButton(DGridA, NODOCK, 0, 0, 0, 0, 100, 50, "Upload to Server")
-        DGridA:AddItem(ButtonC)
 
         ButtonC.DoClick = function()
             local ConfigBuffer = {}
@@ -182,7 +190,7 @@ if CLIENT then
                 Menu:Open()
             end
 
-            for k, v in ipairs({ButtonA, ButtonC}) do
+            for _, v in ipairs({ButtonA, ButtonC}) do
                 if #DListViewA:GetLines() ~= 0 then
                     v:SetEnabled(true)
                 else
@@ -191,16 +199,12 @@ if CLIENT then
             end
         end
 
-        local ButtonD = CreateDButton(DGridA, NODOCK, 0, 0, 0, 0, 100, 50, "SV BUILD LOGGERS")
-        DGridA:AddItem(ButtonD)
-        local ButtonE = CreateDButton(DGridA, NODOCK, 0, 0, 0, 0, 100, 50, "SV CLR CONFIG")
-        DGridA:AddItem(ButtonE)
         local DividerM = vgui.Create("DHorizontalDivider", SheetPanelA)
         DividerM:Dock(FILL)
         DividerM:SetLeft(DListViewA)
         DividerM:SetRight(Tree)
         DividerM:SetDividerWidth(4)
-        DividerM:SetLeftMin(360)
+        DividerM:SetLeftMin(500)
         DividerM:SetRightMin(200)
     end)
 end
