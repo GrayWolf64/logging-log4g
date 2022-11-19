@@ -36,76 +36,71 @@ if CLIENT then
         return dcombobox
     end
 
-    local function PaintDPanel(dpanel, rad, x, y, color)
-        dpanel.Paint = function(self, w, h)
-            draw.RoundedBox(rad, x, y, w, h, color)
+    local function CheckTableElementValidity(table)
+        for k, v in ipairs(table) do
+            if #v == 0 or v == nil then return false end
         end
     end
 
-    local function OpenWizardSimple()
-        local Frame = CreateDFrame(300, 300, "Wizard Simple", "icon16/application_lightning.png")
-        CreateDLabel(Frame, TOP, 3, 3, 3, 3, "The event name of the hook")
-        local ComboBoxA = CreateDComboBox(Frame, TOP, 3, 0, 6, 3)
-
-        for k, v in pairs(hook.GetTable()) do
-            ComboBoxA:AddChoice(tostring(k))
-        end
-
-        CreateDLabel(Frame, TOP, 3, 3, 3, 3, "The unique identifier of the hook")
-        local TextEntryA = vgui.Create("DTextEntry", Frame)
-        TextEntryA:Dock(TOP)
-        TextEntryA:DockMargin(3, 0, 6, 3)
-        CreateDLabel(Frame, TOP, 3, 3, 3, 3, "The Appender of the logger")
-        local ComboBoxB = CreateDComboBox(Frame, TOP, 3, 0, 6, 3)
-
-        local Appenders = {"Engine Console", "log4g Console"}
-
-        for k, v in ipairs(Appenders) do
-            ComboBoxB:AddChoice(v)
-        end
-
-        CreateDLabel(Frame, TOP, 3, 3, 3, 3, "The filter of the logger")
-        local ComboBoxC = CreateDComboBox(Frame, TOP, 3, 0, 6, 3)
-        local ButtonA = CreateDButton(Frame, BOTTOM, 3, 3, 3, 3, 100, 50, "Confirm")
-
-        ButtonA.DoClick = function()
-            local function CheckTableElementValidity(table)
-                for k, v in ipairs(table) do
-                    if #v == 0 or v == nil then return false end
-                end
-            end
-
-            local ConfigTbl = {ComboBoxA:GetSelected(), TextEntryA:GetValue(), ComboBoxB:GetValue(), ComboBoxC:GetValue()}
-
-            if not CheckTableElementValidity(ConfigTbl) then
-                net.Start("log4g_config_clientsent")
-                net.WriteTable(ConfigTbl)
-                net.SendToServer()
-            else
-                Derma_Message("[log4g] Can't add the config because of empty element(s).", "log4g Warning", "Cancel")
-            end
-        end
-    end
-
-    concommand.Add("log4g_openwindow", function()
-        local Frame = CreateDFrame(850, 500, "log4g Window", "icon16/application.png")
-        local MenuBar = vgui.Create("DMenuBar", Frame)
+    concommand.Add("log4g_mmc", function()
+        local FrameA = CreateDFrame(850, 500, "log4g Monitoring & Management Console(MMC)", "icon16/application.png")
+        local MenuBar = vgui.Create("DMenuBar", FrameA)
         local M1 = MenuBar:AddMenu("Logger")
         local SubMenu = M1:AddSubMenu("New Logger")
-
-        SubMenu:AddOption("Wizard Simple", function()
-            OpenWizardSimple()
-        end):SetIcon("icon16/cog_add.png")
-
         SubMenu:SetDeleteSelf(false)
         local M2 = MenuBar:AddMenu("Settings")
         M2:AddOption("General", function() end):SetIcon("icon16/wrench.png")
         local M3 = MenuBar:AddMenu("Help")
         M3:AddOption("About", function() end):SetIcon("icon16/information.png")
-        local DListViewA = vgui.Create("DListView", Frame)
+        local Sheet = vgui.Create("DPropertySheet", FrameA)
+        Sheet:Dock(FILL)
+        Sheet:DockMargin(1, 1, 1, 1)
+        local SheetPanelA = vgui.Create("DPanel", Sheet)
+        Sheet:AddSheet("Configuration", SheetPanelA, "icon16/cog_edit.png")
+        local DListViewA = vgui.Create("DListView", SheetPanelA)
         DListViewA:SetMultiSelect(false)
         DListViewA:Dock(LEFT)
-        DListViewA:DockMargin(1, 3, 1, 3)
+        DListViewA:DockMargin(1, 1, 1, 0)
+        local Tree = vgui.Create("DTree", SheetPanelA)
+        Tree:Dock(RIGHT)
+        Tree:DockMargin(1, 1, 1, 0)
+
+        SubMenu:AddOption("Wizard Simple", function()
+            local FrameB = CreateDFrame(300, 300, "Wizard Simple", "icon16/application_lightning.png")
+            CreateDLabel(FrameB, TOP, 3, 3, 3, 3, "The event name of the hook")
+            local ComboBoxA = CreateDComboBox(FrameB, TOP, 3, 0, 6, 3)
+
+            for k, v in pairs(hook.GetTable()) do
+                ComboBoxA:AddChoice(tostring(k))
+            end
+
+            CreateDLabel(FrameB, TOP, 3, 3, 3, 3, "The unique identifier of the hook")
+            local TextEntryA = vgui.Create("DTextEntry", FrameB)
+            TextEntryA:Dock(TOP)
+            TextEntryA:DockMargin(3, 0, 6, 3)
+            CreateDLabel(FrameB, TOP, 3, 3, 3, 3, "The appender of the logger")
+            local ComboBoxB = CreateDComboBox(FrameB, TOP, 3, 0, 6, 3)
+
+            local Appenders = {"Engine Console", "log4g Terminal"}
+
+            for k, v in ipairs(Appenders) do
+                ComboBoxB:AddChoice(v)
+            end
+
+            CreateDLabel(FrameB, TOP, 3, 3, 3, 3, "The filter of the logger")
+            local ComboBoxC = CreateDComboBox(FrameB, TOP, 3, 0, 6, 3)
+            local ButtonA = CreateDButton(FrameB, BOTTOM, 6, 3, 6, 3, 100, 50, "Confirm")
+
+            ButtonA.DoClick = function()
+                local ConfigTbl = {ComboBoxA:GetSelected(), TextEntryA:GetValue(), ComboBoxB:GetValue(), ComboBoxC:GetValue()}
+
+                if not CheckTableElementValidity(ConfigTbl) then
+                    DListViewA:AddLine(unpack(ConfigTbl))
+                else
+                    Derma_Message("[log4g] Can't add the config because of empty element(s).", "log4g Warning", "Cancel")
+                end
+            end
+        end):SetIcon("icon16/cog_add.png")
 
         local Columns = {"Event Name", "Unique ID", "Appender", "Filter"}
 
@@ -113,12 +108,12 @@ if CLIENT then
             DListViewA:AddColumn(v)
         end
 
-        local DGridA = vgui.Create("DGrid", Frame)
+        local DGridA = vgui.Create("DGrid", SheetPanelA)
         DGridA:Dock(BOTTOM)
         DGridA:SetCols(5)
         DGridA:SetColWide(100)
         DGridA:SetRowHeight(50)
-        DGridA:DockMargin(1, 3, 3, 3)
+        DGridA:DockMargin(1, 1, 1, 1)
         local ButtonA = CreateDButton(DGridA, NODOCK, 0, 0, 0, 0, 100, 50, "Clear List")
         DGridA:AddItem(ButtonA)
 
@@ -190,29 +185,16 @@ if CLIENT then
             end
         end
 
-        local ColorYellow = Color(255, 217, 0, 200)
         local ButtonD = CreateDButton(DGridA, NODOCK, 0, 0, 0, 0, 100, 50, "SV BUILD LOGGERS")
         DGridA:AddItem(ButtonD)
-        PaintDPanel(ButtonD, 2, 1, 0, ColorYellow)
         local ButtonE = CreateDButton(DGridA, NODOCK, 0, 0, 0, 0, 100, 50, "SV CLR CONFIG")
         DGridA:AddItem(ButtonE)
-        PaintDPanel(ButtonE, 2, 1, 0, ColorYellow)
-
-        net.Receive("log4g_config_serversent", function()
-            DListViewA:AddLine(unpack(net.ReadTable()))
-        end)
-
-        local Sheet = vgui.Create("DPropertySheet", Frame)
-        Sheet:Dock(RIGHT)
-        Sheet:DockMargin(1, 3, 1, 3)
-        local SheetPanel_a = vgui.Create("DPanel", Sheet)
-        Sheet:AddSheet("Internal Console", SheetPanel_a, "icon16/application_xp_terminal.png")
-        local DividerM = vgui.Create("DHorizontalDivider", Frame)
+        local DividerM = vgui.Create("DHorizontalDivider", SheetPanelA)
         DividerM:Dock(FILL)
         DividerM:SetLeft(DListViewA)
-        DividerM:SetRight(Sheet)
-        DividerM:SetDividerWidth(6)
-        DividerM:SetLeftMin(350)
-        DividerM:SetRightMin(350)
+        DividerM:SetRight(Tree)
+        DividerM:SetDividerWidth(4)
+        DividerM:SetLeftMin(360)
+        DividerM:SetRightMin(200)
     end)
 end
