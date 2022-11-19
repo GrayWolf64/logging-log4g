@@ -11,6 +11,6 @@ Log for Garry's Mod
 
 | Concommands      | usage |
 | ----------- | ----------- |
-| "log4g_openwindow"      | console       |
+| "log4g_mmc"      | console       |
 | "log4g_clear_config_buffer_sv"     | console       |
 | "log4g_clear_config_file_sv"     | console       |
