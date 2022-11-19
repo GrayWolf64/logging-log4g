@@ -3,13 +3,14 @@ Log for Garry's Mod
 
 | Internal Net Messages      | Type |
 | ----------- | ----------- |
-|"log4g_loggerconfig_basicinfo_clientsent"|table|
-|"log4g_loggerconfig_basicinfo_serversent"|table|
-|"log4g_loggerconfig_basicinfo_clientupload"|table|
-|"log4g_loggerconfig_basicinfo_clientrequestdownload"|none|
-|"log4g_loggerconfig_basicinfo_clientdownload"|bool, table|
+|"log4g_config_clientsent"|table|
+|"log4g_config_serversent"|table|
+|"log4g_config_clientupload"|table|
+|"log4g_config_clientrequestdownload"|none|
+|"log4g_config_clientdownload"|bool, table|
 
 | Concommands      | usage |
 | ----------- | ----------- |
-| log4g_openwindow      | console       |
-| log4g_clear_loggerconfig_table_server     | console       |
+| "log4g_openwindow"      | console       |
+| "log4g_clear_config_buffer_sv"     | console       |
+| "log4g_clear_config_file_sv"     | console       |
