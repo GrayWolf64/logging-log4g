@@ -9,7 +9,7 @@ Log for Garry's Mod
 |"log4g_config_clientrequest_clrconfig"|none|
 |"log4g_config_clientrequest_buildlogger"|none|
 |"log4g_hooks_clientrequest"|none|
-|"log4g_hooks_clientdownload"|compressed data|
+|"log4g_hooks_clientdownload"|uint, compressed data|
 
 | Concommands      | usage |
 | ----------- | ----------- |
