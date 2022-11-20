@@ -45,8 +45,20 @@ if CLIENT then
         return false
     end
 
+    local function GetGameInfo()
+        local SVInfo = game.GetIPAddress()
+
+        if SVInfo == "loopback" then
+            SVInfo = "SinglePlayer"
+        else
+            SVInfo = "IP: " .. SVInfo
+        end
+
+        return SVInfo
+    end
+
     concommand.Add("log4g_mmc", function()
-        local FrameA = CreateDFrame(850, 500, "log4g Monitoring & Management Console(MMC)", "icon16/application.png")
+        local FrameA = CreateDFrame(850, 500, "log4g Monitoring & Management Console(MMC)" .. " - " .. GetGameInfo(), "icon16/application.png")
         local MenuBar = vgui.Create("DMenuBar", FrameA)
         local MenuA = MenuBar:AddMenu("Logger")
         local SubMenuA = MenuA:AddSubMenu("New LoggerConfig")
