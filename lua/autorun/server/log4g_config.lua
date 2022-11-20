@@ -1,10 +1,15 @@
 if SERVER then
     local ConfigBuffer = {}
+    local Hooks = hook.GetTable()
 
     local NetworkStrings = {
         [1] = "log4g_config_clientupload",
-        [2] = "log4g_config_clientrequestdownload",
-        [3] = "log4g_config_clientdownload"
+        [2] = "log4g_config_clientrequest_download",
+        [3] = "log4g_config_clientdownload",
+        [4] = "log4g_config_clientrequest_clrconfig",
+        [5] = "log4g_config_clientrequest_buildlogger",
+        [6] = "log4g_hooks_clientrequest",
+        [7] = "log4g_hooks_clientdownload"
     }
 
     for k, v in ipairs(NetworkStrings) do
@@ -12,6 +17,14 @@ if SERVER then
     end
 
     local File = "log4g/server/log4g_config_sv.json"
+
+    net.Receive("log4g_hooks_clientrequest", function(len, ply)
+        net.Start("log4g_hooks_clientdownload")
+        local Data = util.Compress(util.TableToJSON(Hooks))
+        net.WriteUInt(#Data, 16)
+        net.WriteData(Data, #Data)
+        net.Send(ply)
+    end)
 
     net.Receive("log4g_config_clientupload", function()
         table.Add(ConfigBuffer, net.ReadTable())
@@ -21,7 +34,7 @@ if SERVER then
         file.Write(File, Result)
     end)
 
-    net.Receive("log4g_config_clientrequestdownload", function(len, ply)
+    net.Receive("log4g_config_clientrequest_download", function(len, ply)
         net.Start("log4g_config_clientdownload")
 
         if file.Exists(File, "DATA") then
@@ -34,34 +47,39 @@ if SERVER then
         net.Send(ply)
     end)
 
-    concommand.Add("log4g_clear_config_buffer_sv", function()
+    local function ClearConfig()
         if not table.IsEmpty(ConfigBuffer) then
             table.Empty(ConfigBuffer)
         end
 
-        MsgC("[log4g] Buffer cleared.\n")
-    end)
-
-    concommand.Add("log4g_clear_config_file_sv", function()
         if file.Exists(File, "DATA") then
             file.Delete(File)
         end
 
-        MsgC("[log4g] File cleared.\n")
-    end)
-    --[[concommand.Add("log4g_buildlogger_sv", function()
-        if file.Exists(File, "DATA") then
-            local Tbl = util.JSONToTable(file.Read(ServerFile))
+        MsgC("[log4g] Config cleared.\n")
+    end
 
-            for k, v in ipairs(Tbl) do
-                if v[3] == "Engine Console" then
-                    hook.Add(v[1], v[2], function()
-                        MsgC("Event happened\n")
-                    end)
-                end
-            end
+    net.Receive("log4g_config_clientrequest_clrconfig", function()
+        ClearConfig()
+    end)
+
+    concommand.Add("log4g_clrconfig_sv", function()
+        ClearConfig()
+    end)
+
+    local function BuildLogger()
+        if file.Exists(File, "DATA") then
+            MsgC("[log4g] Logger Built.\n")
         else
-            MsgC("[log4g] Server has no config file.")
+            ErrorNoHalt("[log4g] Server has no config file.\n")
         end
-    end)--]]
+    end
+
+    net.Receive("log4g_config_clientrequest_buildlogger", function()
+        BuildLogger()
+    end)
+
+    concommand.Add("log4g_buildlogger_sv", function()
+        BuildLogger()
+    end)
 end

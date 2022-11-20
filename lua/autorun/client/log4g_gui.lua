@@ -39,10 +39,10 @@ if CLIENT then
 
     local function CheckTblElementValidity(tbl)
         for _, v in ipairs(tbl) do
-            if #v == 0 or v == nil then return false end
+            if v == nil then return true end
         end
 
-        return true
+        return false
     end
 
     concommand.Add("log4g_mmc", function()
@@ -68,13 +68,17 @@ if CLIENT then
         Tree:DockMargin(1, 1, 1, 0)
 
         SubMenuA:AddOption("Wizard Simple", function()
-            local FrameB = CreateDFrame(300, 300, "Wizard Simple", "icon16/application_lightning.png")
-            CreateDLabel(FrameB, TOP, 3, 3, 3, 3, "The event name of the hook")
+            local FrameB = CreateDFrame(300, 360, "Wizard Simple", "icon16/application_lightning.png")
+            CreateDLabel(FrameB, TOP, 3, 3, 3, 3, "The event name of the hook(Serverside)")
             local ComboBoxA = CreateDComboBox(FrameB, TOP, 3, 0, 6, 3)
+            net.Start("log4g_hooks_clientrequest")
+            net.SendToServer()
 
-            for k, v in pairs(hook.GetTable()) do
-                ComboBoxA:AddChoice(tostring(k))
-            end
+            net.Receive("log4g_hooks_clientdownload", function()
+                for k, v in pairs(util.JSONToTable(util.Decompress(net.ReadData(net.ReadUInt(16))))) do
+                    ComboBoxA:AddChoice(tostring(k))
+                end
+            end)
 
             CreateDLabel(FrameB, TOP, 3, 3, 3, 3, "The unique identifier of the hook")
             local TextEntryA = vgui.Create("DTextEntry", FrameB)
@@ -91,7 +95,7 @@ if CLIENT then
 
             CreateDLabel(FrameB, TOP, 3, 3, 3, 3, "The filter of the logger")
             local ComboBoxC = CreateDComboBox(FrameB, TOP, 3, 0, 6, 3)
-            local ButtonA = CreateDButton(FrameB, BOTTOM, 6, 3, 6, 3, 100, 50, "Confirm")
+            local ButtonA = CreateDButton(FrameB, BOTTOM, 60, 3, 60, 3, 100, 50, "Confirm")
 
             local Filters = {"BurstFilter"}
 
@@ -99,8 +103,17 @@ if CLIENT then
                 ComboBoxC:AddChoice(v)
             end
 
+            CreateDLabel(FrameB, TOP, 3, 3, 3, 3, "The parent of the LoggerConfig")
+            local ComboBoxD = CreateDComboBox(FrameB, TOP, 3, 0, 6, 3)
+
+            local Parent = {"None"}
+
+            for _, v in ipairs(Parent) do
+                ComboBoxD:AddChoice(v)
+            end
+
             ButtonA.DoClick = function()
-                local ConfigTbl = {ComboBoxA:GetSelected(), TextEntryA:GetValue(), ComboBoxB:GetSelected(), ComboBoxC:GetSelected()}
+                local ConfigTbl = {ComboBoxA:GetSelected(), TextEntryA:GetValue(), ComboBoxB:GetSelected(), ComboBoxC:GetSelected(), ComboBoxD:GetSelected()}
 
                 if not CheckTblElementValidity(ConfigTbl) then
                     DListViewA:AddLine(unpack(ConfigTbl))
@@ -128,21 +141,15 @@ if CLIENT then
         DGridA:SetRowHeight(50)
         DGridA:DockMargin(1, 1, 1, 1)
         local ButtonA = CreateDButton(DGridA, NODOCK, 0, 0, 0, 0, 100, 50, "Clear List")
-        local ButtonB = CreateDButton(DGridA, NODOCK, 0, 0, 0, 0, 100, 50, "Sync with Server")
-        local ButtonC = CreateDButton(DGridA, NODOCK, 0, 0, 0, 0, 100, 50, "Upload to Server")
-        local ButtonD = CreateDButton(DGridA, NODOCK, 0, 0, 0, 0, 100, 50, "SV BUILD LOGGERS")
-        local ButtonE = CreateDButton(DGridA, NODOCK, 0, 0, 0, 0, 100, 50, "SV CLR CONFIG")
-
-        for _, v in ipairs({ButtonA, ButtonB, ButtonC, ButtonD, ButtonE}) do
-            DGridA:AddItem(v)
-        end
 
         ButtonA.DoClick = function()
             DListViewA:Clear()
         end
 
+        local ButtonB = CreateDButton(DGridA, NODOCK, 0, 0, 0, 0, 100, 50, "Sync with Server")
+
         ButtonB.DoClick = function()
-            net.Start("log4g_config_clientrequestdownload")
+            net.Start("log4g_config_clientrequest_download")
             net.SendToServer()
 
             net.Receive("log4g_config_clientdownload", function()
@@ -155,6 +162,8 @@ if CLIENT then
                 end
             end)
         end
+
+        local ButtonC = CreateDButton(DGridA, NODOCK, 0, 0, 0, 0, 100, 50, "Upload to Server")
 
         ButtonC.DoClick = function()
             local ConfigBuffer = {}
@@ -176,6 +185,24 @@ if CLIENT then
                 net.WriteTable(ConfigBuffer)
                 net.SendToServer()
             end
+        end
+
+        local ButtonD = CreateDButton(DGridA, NODOCK, 0, 0, 0, 0, 100, 50, "SV BUILD LOGGERS")
+
+        function ButtonD:DoClick()
+            net.Start("log4g_config_clientrequest_buildlogger")
+            net.SendToServer()
+        end
+
+        local ButtonE = CreateDButton(DGridA, NODOCK, 0, 0, 0, 0, 100, 50, "SV CLR CONFIG")
+
+        function ButtonE:DoClick()
+            net.Start("log4g_config_clientrequest_clrconfig")
+            net.SendToServer()
+        end
+
+        for _, v in ipairs({ButtonA, ButtonB, ButtonC, ButtonD, ButtonE}) do
+            DGridA:AddItem(v)
         end
 
         function DListViewA:Think()
