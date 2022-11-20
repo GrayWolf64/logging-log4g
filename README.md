@@ -11,7 +11,7 @@ Log for Garry's Mod
 |"log4g_hooks_clientrequest"|none|
 |"log4g_hooks_clientdownload"|uint, compressed data|
 
-| Concommands      | usage |
+| Concommands      | Usage |
 | ----------- | ----------- |
 | "log4g_mmc"      | console       |
 | "log4g_clear_config_sv"     | console       |
