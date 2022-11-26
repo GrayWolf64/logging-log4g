@@ -99,6 +99,34 @@ if CLIENT then
         Tree:Dock(RIGHT)
         Tree:DockMargin(1, 1, 1, 0)
 
+        timer.Create("Log4g_CL_RepopulateVGUIElement", 5, 0, function()
+            Tree:Clear()
+            net.Start("Log4g_CLReq_LContextFolders")
+            net.SendToServer()
+
+            net.Receive("Log4g_CLRcv_LContextFolders", function()
+                if net.ReadBool() then
+                    for k, v in ipairs(net.ReadTable()) do
+                        Tree:AddNode(v, "icon16/folder.png")
+                    end
+                end
+            end)
+
+            DListViewA:Clear()
+            net.Start("Log4g_CLReq_LConfigs")
+            net.SendToServer()
+
+            net.Receive("Log4g_CLRcv_LConfigs", function()
+                for k, v in ipairs(util.JSONToTable(util.Decompress(net.ReadData(net.ReadUInt(16))))) do
+                    DListViewA:AddLine(unpack(table.ClearKeys(v)))
+                end
+            end)
+        end)
+
+        function FrameA:OnRemove()
+            timer.Remove("Log4g_CL_RepopulateVGUIElement")
+        end
+
         MenuA:AddOption("LoggerContext", function()
             local Window = CreateDFrame(240, 120, "New LoggerContext", "icon16/application_lightning.png")
             CreateDLabel(Window, TOP, 12, 3, 12, 3, "LoggerContext Name(STRING)")
@@ -170,13 +198,13 @@ if CLIENT then
 
             ButtonA.DoClick = function()
                 local Tbl = {
-                    ["Event Name"] = GetRowControlValue(RowA),
-                    ["Unique Identifier"] = GetRowControlValue(RowB),
-                    ["LoggerContext"] = GetRowControlValue(RowC),
-                    ["Log Level"] = GetRowControlValue(RowD),
-                    ["Appender"] = GetRowControlValue(RowE),
-                    ["Layout"] = GetRowControlValue(RowF),
-                    ["LoggerConfig Name"] = GetRowControlValue(RowG)
+                    [1] = GetRowControlValue(RowA),
+                    [2] = GetRowControlValue(RowB),
+                    [3] = GetRowControlValue(RowC),
+                    [4] = GetRowControlValue(RowD),
+                    [5] = GetRowControlValue(RowE),
+                    [6] = GetRowControlValue(RowF),
+                    [7] = GetRowControlValue(RowG)
                 }
 
                 if table.Count(Tbl) == 7 then
@@ -192,48 +220,33 @@ if CLIENT then
             CreateDLabel(Window, TOP, 3, 3, 3, 3, "log4g is an open-source addon for Garry's Mod.")
         end):SetIcon("icon16/information.png")
 
-        for _, v in ipairs({"Event Name", "Unique Identifier", "LoggerContext", "Log Level", "Appender", "Layout"}) do
+        local Columns = {"Event Name", "Unique Identifier", "LoggerContext", "Log Level", "Appender", "Layout", "LoggerConfig Name"}
+
+        for _, v in ipairs(Columns) do
             DListViewA:AddColumn(v)
         end
 
         local DGridA = vgui.Create("DGrid", SheetPanelB)
         DGridA:Dock(BOTTOM)
-        DGridA:SetCols(4)
+        DGridA:SetCols(2)
         DGridA:SetColWide(100)
         DGridA:SetRowHeight(50)
         DGridA:DockMargin(1, 1, 1, 1)
-        local ButtonC = CreateDButton(DGridA, NODOCK, 0, 0, 0, 0, 100, 50, "Sync with Server")
+        local ButtonC = CreateDButton(DGridA, NODOCK, 0, 0, 0, 0, 100, 50, "SV BUILD LOGGERS")
 
-        ButtonC.DoClick = function()
-            net.Start("log4g_config_clientrequest_download")
-            net.SendToServer()
-
-            net.Receive("log4g_config_clientdownload", function()
-                if net.ReadBool() then
-                    for _, v in ipairs(net.ReadTable()) do
-                        DListViewA:AddLine(unpack(v))
-                    end
-                else
-                    Derma_Message("Request Sync failed: Server has no config file.", "log4g Warning", "Cancel")
-                end
-            end)
-        end
-
-        local ButtonD = CreateDButton(DGridA, NODOCK, 0, 0, 0, 0, 100, 50, "SV BUILD LOGGERS")
-
-        function ButtonD:DoClick()
+        function ButtonC:DoClick()
             net.Start("log4g_config_clientrequest_buildlogger")
             net.SendToServer()
         end
 
-        local ButtonE = CreateDButton(DGridA, NODOCK, 0, 0, 0, 0, 100, 50, "SV CLR CONFIG")
+        local ButtonD = CreateDButton(DGridA, NODOCK, 0, 0, 0, 0, 100, 50, "SV CLR CONFIG")
 
-        function ButtonE:DoClick()
+        function ButtonD:DoClick()
             net.Start("log4g_config_clientrequest_clrconfig")
             net.SendToServer()
         end
 
-        for _, v in ipairs({ButtonC, ButtonD, ButtonE}) do
+        for _, v in ipairs({ButtonC, ButtonD}) do
             DGridA:AddItem(v)
         end
 
@@ -245,11 +258,10 @@ if CLIENT then
                     DListViewA:RemoveLine(lineid)
                 end):SetIcon("icon16/cross.png")
 
-                Menu:AddOption("Properties", function() end):SetIcon("icon16/page_edit.png")
                 Menu:Open()
             end
         end
 
-        local _ = CreateDHDivider(SheetPanelB, DListViewA, Tree, 4, 660, 160)
+        local _ = CreateDHDivider(SheetPanelB, DListViewA, Tree, 4, 735, 150)
     end)
 end
