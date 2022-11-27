@@ -76,7 +76,6 @@ if SERVER then
             if #Files ~= 0 then
                 for _, j in ipairs(Files) do
                     j = "log4g/server/loggercontext/" .. v .. "/" .. j
-                    --table.Add(Tbl, {j})
                     table.insert(Tbl, j)
                 end
             end
