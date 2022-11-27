@@ -36,6 +36,13 @@ if CLIENT then
 
         return dcombobox
     end--]]
+    --[[local function CreateDTextEntry(parent, docktype, x, y, z, w)
+        local dtextentry = vgui.Create("DTextEntry", parent)
+        dtextentry:Dock(docktype)
+        dtextentry:DockMargin(x, y, z, w)
+
+        return dtextentry
+    end--]]
     local function CreateDHDivider(parent, left, right, width, lmin, rmin)
         local dhdivider = vgui.Create("DHorizontalDivider", parent)
         dhdivider:Dock(FILL)
@@ -44,14 +51,6 @@ if CLIENT then
         dhdivider:SetDividerWidth(width)
         dhdivider:SetLeftMin(lmin)
         dhdivider:SetRightMin(rmin)
-    end
-
-    local function CreateDTextEntry(parent, docktype, x, y, z, w)
-        local dtextentry = vgui.Create("DTextEntry", parent)
-        dtextentry:Dock(docktype)
-        dtextentry:DockMargin(x, y, z, w)
-
-        return dtextentry
     end
 
     local function CreateDListView(parent, docktype, x, y, z, w)
@@ -100,18 +99,6 @@ if CLIENT then
         Tree:DockMargin(1, 1, 1, 0)
 
         timer.Create("Log4g_CL_RepopulateVGUIElement", 5, 0, function()
-            Tree:Clear()
-            net.Start("Log4g_CLReq_LContextFolders")
-            net.SendToServer()
-
-            net.Receive("Log4g_CLRcv_LContextFolders", function()
-                if net.ReadBool() then
-                    for k, v in ipairs(net.ReadTable()) do
-                        Tree:AddNode(v, "icon16/folder.png")
-                    end
-                end
-            end)
-
             DListViewA:Clear()
             net.Start("Log4g_CLReq_LConfigs")
             net.SendToServer()
@@ -126,20 +113,6 @@ if CLIENT then
         function FrameA:OnRemove()
             timer.Remove("Log4g_CL_RepopulateVGUIElement")
         end
-
-        MenuA:AddOption("LoggerContext", function()
-            local Window = CreateDFrame(240, 120, "New LoggerContext", "icon16/application_lightning.png")
-            CreateDLabel(Window, TOP, 12, 3, 12, 3, "LoggerContext Name(STRING)")
-            local Entry = CreateDTextEntry(Window, TOP, 12, 0, 12, 3)
-            local Press = CreateDButton(Window, TOP, 80, 6, 80, 6, 50, 25, "Submit")
-
-            Press.DoClick = function()
-                local Str = Entry:GetValue()
-                net.Start("Log4g_CLReq_CLoggerContext_SV")
-                net.WriteString(Str)
-                net.SendToServer()
-            end
-        end)
 
         local SubMenuB = MenuA:AddSubMenu("Configuration")
         SubMenuB:SetDeleteSelf(false)
@@ -235,15 +208,11 @@ if CLIENT then
         local ButtonC = CreateDButton(DGridA, NODOCK, 0, 0, 0, 0, 100, 50, "SV BUILD LOGGERS")
 
         function ButtonC:DoClick()
-            net.Start("log4g_config_clientrequest_buildlogger")
-            net.SendToServer()
         end
 
         local ButtonD = CreateDButton(DGridA, NODOCK, 0, 0, 0, 0, 100, 50, "SV CLR CONFIG")
 
         function ButtonD:DoClick()
-            net.Start("log4g_config_clientrequest_clrconfig")
-            net.SendToServer()
         end
 
         for _, v in ipairs({ButtonC, ButtonD}) do
@@ -251,11 +220,13 @@ if CLIENT then
         end
 
         function DListViewA:Think()
-            function DListViewA:OnRowRightClick(lineid)
+            function DListViewA:OnRowRightClick(num)
                 local Menu = DermaMenu()
 
                 Menu:AddOption("Delete", function()
-                    DListViewA:RemoveLine(lineid)
+                    net.Start("Log4g_CLReq_DelLConfig")
+                    net.WriteString(DListViewA:GetLine(num):GetColumnText(7))
+                    net.SendToServer()
                 end):SetIcon("icon16/cross.png")
 
                 Menu:Open()

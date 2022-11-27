@@ -10,10 +10,9 @@ if SERVER then
         [8] = "Log4g_CLRcv_Appenders_SV",
         [9] = "Log4g_CLReq_Layouts_SV",
         [10] = "Log4g_CLRcv_Layouts_SV",
-        [11] = "Log4g_CLReq_LContextFolders",
-        [12] = "Log4g_CLRcv_LContextFolders",
-        [13] = "Log4g_CLReq_LConfigs",
-        [14] = "Log4g_CLRcv_LConfigs",
+        [11] = "Log4g_CLReq_LConfigs",
+        [12] = "Log4g_CLRcv_LConfigs",
+        [13] = "Log4g_CLReq_DelLConfig"
     }
 
     for k, v in ipairs(NetworkStrings) do
@@ -63,35 +62,22 @@ if SERVER then
         local LCContent = util.TableToJSON(Tbl, true)
         local LConfigName, LContextName = Tbl[7], Tbl[3]
         file.CreateDir("log4g/server/loggercontext/" .. LContextName)
-        file.Write("log4g/server/loggercontext/" .. LContextName .. "/" .. LConfigName .. ".json", LCContent)
-    end)
-
-    net.Receive("Log4g_CLReq_LContextFolders", function(len, ply)
-        net.Start("Log4g_CLRcv_LContextFolders")
-        local _, Folders = file.Find("log4g/server/loggercontext/*", "DATA")
-
-        if not table.IsEmpty(Folders) then
-            net.WriteBool(true)
-            net.WriteTable(Folders)
-        else
-            net.WriteBool(false)
-        end
-
-        net.Send(ply)
+        file.Write("log4g/server/loggercontext/" .. LContextName .. "/" .. "lconfig_" .. LConfigName .. ".json", LCContent)
+        file.Append("log4g/server/loggercontext/" .. LContextName .. "/" .. "lcontext_info.csv", LConfigName .. "\n")
     end)
 
     net.Receive("Log4g_CLReq_LConfigs", function(len, ply)
         local _, Folders = file.Find("log4g/server/loggercontext/*", "DATA")
         local Tbl = {}
 
-        for k, v in ipairs(Folders) do
-            local Files, _ = file.Find("log4g/server/loggercontext/" .. v .. "/*.json", "DATA")
+        for _, v in ipairs(Folders) do
+            local Files, _ = file.Find("log4g/server/loggercontext/" .. v .. "/lconfig_*.json", "DATA")
 
             if #Files ~= 0 then
-                for i, j in ipairs(Files) do
+                for _, j in ipairs(Files) do
                     j = "log4g/server/loggercontext/" .. v .. "/" .. j
-
-                    table.Add(Tbl, {j})
+                    --table.Add(Tbl, {j})
+                    table.insert(Tbl, j)
                 end
             end
         end
@@ -99,7 +85,7 @@ if SERVER then
         net.Start("Log4g_CLRcv_LConfigs")
         local Data = {}
 
-        for k, v in ipairs(Tbl) do
+        for _, v in ipairs(Tbl) do
             table.Add(Data, {util.JSONToTable(file.Read(v, "DATA"))})
         end
 
@@ -109,6 +95,21 @@ if SERVER then
         net.Send(ply)
         table.Empty(Tbl)
         table.Empty(Data)
+    end)
+
+    net.Receive("Log4g_CLReq_DelLConfig", function()
+        local FName = "lconfig_" .. net.ReadString() .. ".json"
+        local _, Folders = file.Find("log4g/server/loggercontext/*", "DATA")
+
+        for _, v in ipairs(Folders) do
+            local Files, _ = file.Find("log4g/server/loggercontext/" .. v .. "/lconfig_*.json", "DATA")
+
+            for _, j in ipairs(Files) do
+                if j == FName then
+                    file.Delete("log4g/server/loggercontext/" .. v .. "/" .. j)
+                end
+            end
+        end
     end)
     --[[local function BuildLogger()
         if file.Exists(File, "DATA") then
