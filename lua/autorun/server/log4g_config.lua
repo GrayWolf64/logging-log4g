@@ -64,8 +64,9 @@ if SERVER then
 
         local LCInfo = {LContextName, LConfigName}
 
-        file.CreateDir("log4g/server/loggercontext/" .. LContextName)
-        file.Write("log4g/server/loggercontext/" .. LContextName .. "/" .. "lconfig_" .. LConfigName .. ".json", LCContent)
+        local Dir = "log4g/server/loggercontext/"
+        file.CreateDir(Dir .. LContextName)
+        file.Write(Dir .. LContextName .. "/" .. "lconfig_" .. LConfigName .. ".json", LCContent)
         local File = "log4g/server/loggercontext/lcontext_info.json"
 
         if file.Exists(File, "DATA") then
@@ -108,7 +109,9 @@ if SERVER then
     end)
 
     net.Receive("Log4g_CLReq_DelLConfig", function()
-        local FName = "lconfig_" .. net.ReadString() .. ".json"
+        local CName = net.ReadString()
+        local LCName = net.ReadString()
+        local FName = "lconfig_" .. LCName .. ".json"
         local _, Folders = file.Find("log4g/server/loggercontext/*", "DATA")
 
         for _, v in ipairs(Folders) do
@@ -118,6 +121,16 @@ if SERVER then
                 if j == FName then
                     file.Delete("log4g/server/loggercontext/" .. v .. "/" .. j)
                 end
+            end
+        end
+
+        local File = "log4g/server/loggercontext/lcontext_info.json"
+        local Tbl = util.JSONToTable(file.Read(File, "DATA"))
+
+        for k, v in ipairs(Tbl) do
+            if v[1] == CName and v[2] == LCName then
+                table.remove(Tbl, k)
+                file.Write(File, util.TableToJSON(Tbl))
             end
         end
     end)

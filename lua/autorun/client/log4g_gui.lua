@@ -77,6 +77,19 @@ if CLIENT then
     concommand.Add("log4g_mmc", function()
         local FrameA = CreateDFrame(960, 640, "Log4g Monitoring & Management Console(MMC)" .. " - " .. GetGameInfo(), "icon16/application.png")
         local MenuBar = vgui.Create("DMenuBar", FrameA)
+        local CIcon = vgui.Create("DImageButton", MenuBar)
+        CIcon:Dock(RIGHT)
+
+        function CIcon:Think()
+            if LocalPlayer():Ping() >= 500 then
+                CIcon:SetImage("icon16/disconnect.png")
+            else
+                CIcon:SetImage("icon16/connect.png")
+            end
+        end
+
+        CIcon:SetKeepAspect(true)
+        CIcon:SetSize(24, 24)
         local MenuA = MenuBar:AddMenu("New")
         local MenuB = MenuBar:AddMenu("Settings")
         MenuB:AddOption("General", function() end):SetIcon("icon16/wrench.png")
@@ -86,6 +99,7 @@ if CLIENT then
         SheetA:DockMargin(1, 1, 1, 1)
         SheetA:SetPadding(5)
         local SheetPanelA = vgui.Create("DPanel", SheetA)
+        SheetPanelA.Paint = nil
         SheetA:AddSheet("Configuration", SheetPanelA, "icon16/cog.png")
         local SheetB = vgui.Create("DPropertySheet", SheetPanelA)
         SheetB:Dock(FILL)
@@ -225,7 +239,9 @@ if CLIENT then
 
                 Menu:AddOption("Delete", function()
                     net.Start("Log4g_CLReq_DelLConfig")
-                    net.WriteString(DListViewA:GetLine(num):GetColumnText(7))
+                    local Line = DListViewA:GetLine(num)
+                    net.WriteString(Line:GetColumnText(3))
+                    net.WriteString(Line:GetColumnText(7))
                     net.SendToServer()
                 end):SetIcon("icon16/cross.png")
 
