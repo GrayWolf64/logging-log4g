@@ -60,10 +60,21 @@ if SERVER then
     net.Receive("Log4g_CLUpld_LoggerConfig", function()
         local Tbl = net.ReadTable()
         local LCContent = util.TableToJSON(Tbl, true)
-        local LConfigName, LContextName = Tbl[7], Tbl[3]
+        local LContextName, LConfigName = Tbl[3], Tbl[7]
+
+        local LCInfo = {LContextName, LConfigName}
+
         file.CreateDir("log4g/server/loggercontext/" .. LContextName)
         file.Write("log4g/server/loggercontext/" .. LContextName .. "/" .. "lconfig_" .. LConfigName .. ".json", LCContent)
-        file.Append("log4g/server/loggercontext/" .. LContextName .. "/" .. "lcontext_info.csv", LConfigName .. "\n")
+        local File = "log4g/server/loggercontext/lcontext_info.json"
+
+        if file.Exists(File, "DATA") then
+            local Prev = util.JSONToTable(file.Read(File, "DATA"))
+            table.insert(Prev, LCInfo)
+            file.Write(File, util.TableToJSON(Prev, true))
+        else
+            file.Write(File, util.TableToJSON({LCInfo}))
+        end
     end)
 
     net.Receive("Log4g_CLReq_LConfigs", function(len, ply)
