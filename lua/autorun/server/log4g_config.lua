@@ -59,7 +59,7 @@ if SERVER then
         if #tbl == nil or tbl == nil then return false end
 
         for k, v in pairs(tbl) do
-            if k == key then return true end
+            if k == key then return true, k end
         end
 
         return false
@@ -80,13 +80,10 @@ if SERVER then
 
         if file.Exists(File, "DATA") then
             local PrevTbl = util.JSONToTable(file.Read(File, "DATA"))
+            local Bool, Key = HasExactKey(PrevTbl, LContextName)
 
-            if HasExactKey(PrevTbl, LContextName) then
-                for k, _ in pairs(PrevTbl) do
-                    if k == LContextName then
-                        table.insert(PrevTbl[k], LConfigName)
-                    end
-                end
+            if Bool then
+                table.insert(PrevTbl[Key], LConfigName)
             else
                 PrevTbl[LContextName] = {LConfigName}
             end
