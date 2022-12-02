@@ -122,6 +122,11 @@ if CLIENT then
                     DListViewA:AddLine(unpack(table.ClearKeys(v)))
                 end
             end)
+
+            Tree:Clear()
+            net.Start("Log4g_CLReq_LContextStructure")
+            net.SendToServer()
+            net.Receive("Log4g_CLRcv_LContextStructure", function() end)
         end)
 
         function FrameA:OnRemove()

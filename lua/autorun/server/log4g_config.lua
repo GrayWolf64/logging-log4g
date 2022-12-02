@@ -12,7 +12,9 @@ if SERVER then
         [10] = "Log4g_CLRcv_Layouts_SV",
         [11] = "Log4g_CLReq_LConfigs",
         [12] = "Log4g_CLRcv_LConfigs",
-        [13] = "Log4g_CLReq_DelLConfig"
+        [13] = "Log4g_CLReq_DelLConfig",
+        [14] = "Log4g_CLReq_LContextStructure",
+        [15] = "Log4g_CLRcv_LContextStructure"
     }
 
     for k, v in ipairs(NetworkStrings) do
@@ -53,6 +55,16 @@ if SERVER then
         end)
     end
 
+    local function HasExactKey(tbl, key)
+        if #tbl == nil or tbl == nil then return false end
+
+        for k, v in pairs(tbl) do
+            if k == key then return true end
+        end
+
+        return false
+    end
+
     SendTableAfterRcvViaNet("Log4g_CLReq_LogLevels_SV", "Log4g_CLRcv_LogLevels_SV", LogLevels)
     SendTableAfterRcvViaNet("Log4g_CLReq_Appenders_SV", "Log4g_CLRcv_Appenders_SV", Appenders)
     SendTableAfterRcvViaNet("Log4g_CLReq_Layouts_SV", "Log4g_CLRcv_Layouts_SV", Layouts)
@@ -61,20 +73,29 @@ if SERVER then
         local Tbl = net.ReadTable()
         local LCContent = util.TableToJSON(Tbl, true)
         local LContextName, LConfigName = Tbl[3], Tbl[7]
-
-        local LCInfo = {LContextName, LConfigName}
-
         local Dir = "log4g/server/loggercontext/"
         file.CreateDir(Dir .. LContextName)
         file.Write(Dir .. LContextName .. "/" .. "lconfig_" .. LConfigName .. ".json", LCContent)
         local File = "log4g/server/loggercontext/lcontext_info.json"
 
         if file.Exists(File, "DATA") then
-            local Prev = util.JSONToTable(file.Read(File, "DATA"))
-            table.insert(Prev, LCInfo)
-            file.Write(File, util.TableToJSON(Prev, true))
+            local PrevTbl = util.JSONToTable(file.Read(File, "DATA"))
+
+            if HasExactKey(PrevTbl, LContextName) then
+                for k, _ in pairs(PrevTbl) do
+                    if k == LContextName then
+                        table.insert(PrevTbl[k], LConfigName)
+                    end
+                end
+            else
+                PrevTbl[LContextName] = {LConfigName}
+            end
+
+            file.Write(File, util.TableToJSON(PrevTbl, true))
         else
-            file.Write(File, util.TableToJSON({LCInfo}))
+            file.Write(File, util.TableToJSON({
+                [LContextName] = {LConfigName}
+            }))
         end
     end)
 
@@ -106,6 +127,21 @@ if SERVER then
         net.Send(ply)
         table.Empty(Tbl)
         table.Empty(Data)
+    end)
+
+    net.Receive("Log4g_CLReq_LContextStructure", function(len, ply)
+        net.Start("Log4g_CLRcv_LContextStructure")
+
+        if file.Exists("log4g/server/loggercontext/lcontext_info.json", "DATA") then
+            net.WriteBool(true)
+            local CStr = util.Compress(file.Read("log4g/server/loggercontext/lcontext_info.json", "DATA"))
+            net.WriteUInt(#CStr, 16)
+            net.WriteData(CStr, #CStr)
+        else
+            net.WriteBool(false)
+        end
+
+        net.Send(ply)
     end)
 
     net.Receive("Log4g_CLReq_DelLConfig", function()
