@@ -182,7 +182,7 @@ concommand.Add("log4g_mmc", function()
         net.SendToServer()
 
         net.Receive("Log4g_CLRcv_Hooks_SV", function()
-            for k, v in pairs(util.JSONToTable(util.Decompress(net.ReadData(net.ReadUInt(16))))) do
+            for k, _ in pairs(util.JSONToTable(util.Decompress(net.ReadData(net.ReadUInt(16))))) do
                 RowA:AddChoice(tostring(k))
             end
         end)
@@ -192,7 +192,7 @@ concommand.Add("log4g_mmc", function()
             net.SendToServer()
 
             net.Receive(receive, function()
-                for k, v in pairs(net.ReadTable()) do
+                for _, v in pairs(net.ReadTable()) do
                     combobox:AddChoice(v)
                 end
             end)
