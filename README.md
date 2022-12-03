@@ -9,6 +9,6 @@ Log for Garry's Mod
 
 ## List not Updated yet.
 
-| Concommands      | Usage |
+| Con-Commands      | Usage |
 | ----------- | ----------- |
-| "log4g_mmc"      | console       |
+| "Log4g_MMC"      | console       |
