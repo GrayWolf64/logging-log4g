@@ -18,6 +18,8 @@ local function CreateDLabel(parent, docktype, x, y, z, w, text)
     dlabel:Dock(docktype)
     dlabel:DockMargin(x, y, z, w)
     dlabel:SetText(text)
+
+    return dlabel
 end
 
 local function CreateDButton(parent, docktype, x, y, z, w, a, b, text)
@@ -30,20 +32,6 @@ local function CreateDButton(parent, docktype, x, y, z, w, a, b, text)
     return dbutton
 end
 
---[[local function CreateDComboBox(parent, docktype, x, y, z, w)
-        local dcombobox = vgui.Create("DComboBox", parent)
-        dcombobox:Dock(docktype)
-        dcombobox:DockMargin(x, y, z, w)
-
-        return dcombobox
-    end--]]
---[[local function CreateDTextEntry(parent, docktype, x, y, z, w)
-        local dtextentry = vgui.Create("DTextEntry", parent)
-        dtextentry:Dock(docktype)
-        dtextentry:DockMargin(x, y, z, w)
-
-        return dtextentry
-    end--]]
 local function CreateDHDivider(parent, left, right, width, lmin, rmin)
     local dhdivider = vgui.Create("DHorizontalDivider", parent)
     dhdivider:Dock(FILL)
@@ -64,25 +52,24 @@ local function CreateDListView(parent, docktype, x, y, z, w)
 end
 
 local function GetGameInfo()
-    local SVInfo = game.GetIPAddress()
+    local info = game.GetIPAddress()
 
-    if SVInfo == "loopback" then
-        SVInfo = "SinglePlayer"
-    else
-        SVInfo = "IP: " .. SVInfo
+    if info == "loopback" then
+        info = "SinglePlayer"
     end
 
-    return SVInfo
+    return info
 end
 
-concommand.Add("log4g_mmc", function()
+concommand.Add("Log4g_MMC", function()
     local FrameA = CreateDFrame(960, 640, "Log4g Monitoring & Management Console(MMC)" .. " - " .. GetGameInfo(), "icon16/application.png")
     local MenuBar = vgui.Create("DMenuBar", FrameA)
     local CIcon = vgui.Create("DImageButton", MenuBar)
     CIcon:Dock(RIGHT)
+    CIcon:DockMargin(4, 4, 4, 4)
 
     function CIcon:Think()
-        if LocalPlayer():Ping() >= 500 then
+        if LocalPlayer():Ping() >= 300 then
             CIcon:SetImage("icon16/disconnect.png")
         else
             CIcon:SetImage("icon16/connect.png")
@@ -90,7 +77,7 @@ concommand.Add("log4g_mmc", function()
     end
 
     CIcon:SetKeepAspect(true)
-    CIcon:SetSize(24, 24)
+    CIcon:SetSize(16, 16)
     local MenuA = MenuBar:AddMenu("New")
     local MenuB = MenuBar:AddMenu("Settings")
     MenuB:AddOption("General", function() end):SetIcon("icon16/wrench.png")
@@ -100,18 +87,34 @@ concommand.Add("log4g_mmc", function()
     SheetA:DockMargin(1, 1, 1, 1)
     SheetA:SetPadding(5)
     local SheetPanelA = vgui.Create("DPanel", SheetA)
-    SheetPanelA.Paint = nil
+    SheetPanelA.Paint = function() end
     SheetA:AddSheet("Configuration", SheetPanelA, "icon16/cog.png")
     local SheetB = vgui.Create("DPropertySheet", SheetPanelA)
     SheetB:Dock(FILL)
     SheetB:DockMargin(1, 1, 1, 1)
     SheetB:SetPadding(5)
     local SheetPanelB = vgui.Create("DPanel", SheetB)
-    SheetB:AddSheet("LoggerConfig", SheetPanelB)
+    SheetB:AddSheet("Structure", SheetPanelB)
     local ListView = CreateDListView(SheetPanelB, LEFT, 1, 1, 1, 0)
     local Tree = vgui.Create("DTree", SheetPanelB)
     Tree:Dock(RIGHT)
     Tree:DockMargin(1, 1, 1, 0)
+
+    function Tree:Think()
+        function Tree:DoRightClick(node)
+            if node:GetIcon() == "icon16/folder.png" then
+                local Menu = DermaMenu()
+
+                Menu:AddOption("Delete", function()
+                    net.Start("Log4g_CLReq_DelLContext")
+                    net.WriteString(node:GetText())
+                    net.SendToServer()
+                end):SetIcon("icon16/cross.png")
+
+                Menu:Open()
+            end
+        end
+    end
 
     timer.Create("Log4g_CL_RepopulateVGUIElement", 5, 0, function()
         ListView:Clear()
@@ -235,7 +238,7 @@ concommand.Add("log4g_mmc", function()
 
     local DGridA = vgui.Create("DGrid", SheetPanelB)
     DGridA:Dock(BOTTOM)
-    DGridA:SetCols(2)
+    DGridA:SetCols(3)
     DGridA:SetColWide(100)
     DGridA:SetRowHeight(50)
     DGridA:DockMargin(1, 1, 1, 1)
@@ -249,7 +252,14 @@ concommand.Add("log4g_mmc", function()
     function ButtonD:DoClick()
     end
 
-    for _, v in ipairs({ButtonC, ButtonD}) do
+    local Progress = vgui.Create("DProgress", DGridA)
+    Progress:SetSize(100, 50)
+
+    function Progress:Think()
+        Progress:SetFraction((5 - timer.TimeLeft("Log4g_CL_RepopulateVGUIElement")) / 5)
+    end
+
+    for _, v in ipairs({ButtonC, ButtonD, Progress}) do
         DGridA:AddItem(v)
     end
 

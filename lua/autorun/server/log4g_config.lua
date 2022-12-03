@@ -14,7 +14,8 @@ local NetworkStrings = {
     [11] = "Log4g_CLRcv_LConfigs",
     [12] = "Log4g_CLReq_DelLConfig",
     [13] = "Log4g_CLReq_LContextStructure",
-    [14] = "Log4g_CLRcv_LContextStructure"
+    [14] = "Log4g_CLRcv_LContextStructure",
+    [15] = "Log4g_CLReq_DelLContext"
 }
 
 for k, v in ipairs(NetworkStrings) do
@@ -56,7 +57,7 @@ local function SendTableAfterRcvViaNet(receive, start, tbl)
 end
 
 local function HasExactKey(tbl, key)
-    if #tbl == nil or tbl == nil then return false end
+    if #tbl == 0 or tbl == nil then return false end
 
     for k, _ in pairs(tbl) do
         if k == key then return true, k end
@@ -167,6 +168,37 @@ net.Receive("Log4g_CLReq_DelLConfig", function()
                     table.remove(v, i)
                 end
             end
+        end
+    end
+
+    file.Write(File, util.TableToJSON(Tbl))
+end)
+
+net.Receive("Log4g_CLReq_DelLContext", function()
+    local _, Folders = file.Find("log4g/server/loggercontext/*", "DATA")
+    local Context = net.ReadString()
+
+    for _, v in ipairs(Folders) do
+        local Files, _ = file.Find("log4g/server/loggercontext/" .. v .. "/lconfig_*.json", "DATA")
+
+        for _, j in ipairs(Files) do
+            file.Delete("log4g/server/loggercontext/" .. v .. "/" .. j)
+        end
+    end
+
+    for _, m in ipairs(Folders) do
+        if m == Context then
+            file.Delete("log4g/server/loggercontext/" .. m)
+        end
+    end
+
+    local File = "log4g/server/loggercontext/lcontext_info.json"
+    local Tbl = util.JSONToTable(file.Read(File, "DATA"))
+
+    for k, _ in pairs(Tbl) do
+        if k == Context then
+            Tbl[k] = false
+            table.RemoveByValue(Tbl, false)
         end
     end
 
