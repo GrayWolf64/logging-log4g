@@ -12,4 +12,3 @@ Log for Garry's Mod
 | Concommands      | Usage |
 | ----------- | ----------- |
 | "log4g_mmc"      | console       |
-| "log4g_clear_config_sv"     | console       |
