@@ -28,7 +28,10 @@ function Level:IntLevel()
 end
 
 function Log4g.NewLevel(name, int)
-    return Level(name, int)
+    local level = Level(name, int)
+    table.insert(Log4g.Levels, level)
+
+    return level
 end
 
 Log4g.Levels["ALL"] = Level("ALL", math.huge)

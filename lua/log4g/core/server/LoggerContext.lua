@@ -13,5 +13,8 @@ function LoggerContext:Delete()
 end
 
 function Log4g.NewLoggerContext(name, folder)
-    return LoggerContext(name, folder)
+    local loggercontext = LoggerContext(name, folder)
+    table.insert(Log4g.LoggerContexts, loggercontext)
+
+    return loggercontext
 end

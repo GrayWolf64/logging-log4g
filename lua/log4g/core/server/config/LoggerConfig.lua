@@ -13,5 +13,8 @@ function LoggerConfig:Delete()
 end
 
 function Log4g.NewLoggerConfig(name, file)
-    return LoggerConfig(name, file)
+    local loggerconfig = LoggerConfig(name, file)
+    table.insert(Log4g.LoggerConfigs)
+
+    return loggerconfig
 end
