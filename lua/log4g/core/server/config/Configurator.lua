@@ -1,5 +1,6 @@
 local AddNetworkStrsViaTbl = Log4g.Util.AddNetworkStrsViaTbl
 local FindFilesInSubFolders = Log4g.Util.FindFilesInSubFolders
+local HasKey = Log4g.Util.HasKey
 local LoggerContextLookupFile = "log4g/server/loggercontext/loggercontext_lookup.json"
 
 AddNetworkStrsViaTbl({
@@ -8,11 +9,10 @@ AddNetworkStrsViaTbl({
     [3] = "Log4g_CLRcv_Hooks",
     [4] = "Log4g_CLReq_LoggerConfigs",
     [5] = "Log4g_CLRcv_LoggerConfigs",
-    [6] = "Log4g_CLReq_DelLoggerConfig",
-    [7] = "Log4g_CLReq_BuildLogger",
-    [8] = "Log4g_CLReq_LoggerContextStructure",
-    [9] = "Log4g_CLRcv_LoggerContextStructure",
-    [10] = "Log4g_CLReq_RemoveLoggerContext"
+    [6] = "Log4g_CLReq_LoggerConfig_Remove",
+    [7] = "Log4g_CLReq_LoggerContext_Lookup",
+    [8] = "Log4g_CLRcv_LoggerContext_Lookup",
+    [9] = "Log4g_CLReq_LoggerContext_Remove"
 })
 
 net.Receive("Log4g_CLReq_Hooks", function(len, ply)
@@ -27,28 +27,29 @@ end)
 
 net.Receive("Log4g_CLUpload_LoggerConfig", function(len, ply)
     if not ply:IsAdmin() then return end
-    local Tbl = net.ReadTable()
-    local Str = util.TableToJSON(Tbl, true)
-    local LoggerContextName, LoggerConfigName = Tbl[3], Tbl[7]
+    local LoggerConfigContent = net.ReadTable()
+    local LoggerConfigName = LoggerConfigContent.name
+    local LoggerContextName = LoggerConfigContent.loggercontext
+    local Str = util.TableToJSON(LoggerConfigContent, true)
     local Dir = "log4g/server/loggercontext/"
     file.CreateDir(Dir .. LoggerContextName)
-    file.Write(Dir .. LoggerContextName .. "/" .. "lconfig_" .. LoggerConfigName .. ".json", Str)
+    file.Write(Dir .. LoggerContextName .. "/" .. "loggerconfig_" .. LoggerConfigName .. ".json", Str)
 
     if file.Exists(LoggerContextLookupFile, "DATA") then
-        local PrevTbl = util.JSONToTable(file.Read(LoggerContextLookupFile, "DATA"))
-        local Bool, Key = Log4g.Util.HasKey(PrevTbl, LoggerContextName)
+        local Tbl = util.JSONToTable(file.Read(LoggerContextLookupFile, "DATA"))
+        local Bool, Key = HasKey(Tbl, LoggerContextName)
 
         if Bool then
-            table.insert(PrevTbl[Key], LoggerConfigName)
+            table.insert(Tbl[Key], LoggerConfigName)
         else
-            PrevTbl[LoggerContextName] = {LoggerConfigName}
+            Tbl[LoggerContextName] = {LoggerConfigName}
         end
 
-        file.Write(LoggerContextLookupFile, util.TableToJSON(PrevTbl, true))
+        file.Write(LoggerContextLookupFile, util.TableToJSON(Tbl, true))
     else
         file.Write(LoggerContextLookupFile, util.TableToJSON({
             [LoggerContextName] = {LoggerConfigName}
-        }))
+        }, true))
     end
 end)
 
@@ -56,7 +57,7 @@ net.Receive("Log4g_CLReq_LoggerConfigs", function(len, ply)
     if not ply:IsAdmin() then return end
     local Tbl = {}
 
-    for _, v in ipairs(FindFilesInSubFolders("log4g/server/loggercontext/", "lconfig_*.json", "DATA")) do
+    for _, v in ipairs(FindFilesInSubFolders("log4g/server/loggercontext/", "loggerconfig_*.json", "DATA")) do
         table.insert(Tbl, v)
     end
 
@@ -74,13 +75,13 @@ net.Receive("Log4g_CLReq_LoggerConfigs", function(len, ply)
     net.Send(ply)
 end)
 
-net.Receive("Log4g_CLReq_DelLoggerConfig", function(len, ply)
+net.Receive("Log4g_CLReq_LoggerConfig_Remove", function(len, ply)
     if not ply:IsAdmin() then return end
     local LoggerContextName = net.ReadString()
     local LoggerConfigName = net.ReadString()
-    local FileName = "lconfig_" .. LoggerConfigName .. ".json"
+    local FileName = "loggerconfig_" .. LoggerConfigName .. ".json"
 
-    for _, v in ipairs(FindFilesInSubFolders("log4g/server/loggercontext/", "lconfig_*.json", "DATA")) do
+    for _, v in ipairs(FindFilesInSubFolders("log4g/server/loggercontext/", "loggerconfig_*.json", "DATA")) do
         if v == "log4g/server/loggercontext/" .. LoggerContextName .. "/" .. FileName then
             file.Delete(v)
         end
@@ -101,9 +102,9 @@ net.Receive("Log4g_CLReq_DelLoggerConfig", function(len, ply)
     file.Write(LoggerContextLookupFile, util.TableToJSON(Tbl))
 end)
 
-net.Receive("Log4g_CLReq_LoggerContextStructure", function(len, ply)
+net.Receive("Log4g_CLReq_LoggerContext_Lookup", function(len, ply)
     if not ply:IsAdmin() then return end
-    net.Start("Log4g_CLRcv_LoggerContextStructure")
+    net.Start("Log4g_CLRcv_LoggerContext_Lookup")
 
     if file.Exists(LoggerContextLookupFile, "DATA") then
         net.WriteBool(true)
@@ -118,13 +119,13 @@ net.Receive("Log4g_CLReq_LoggerContextStructure", function(len, ply)
     net.Send(ply)
 end)
 
-net.Receive("Log4g_CLReq_RemoveLoggerContext", function(len, ply)
+net.Receive("Log4g_CLReq_LoggerContext_Remove", function(len, ply)
     if not ply:IsAdmin() then return end
     local _, Folders = file.Find("log4g/server/loggercontext/*", "DATA")
     local LoggerContextName = net.ReadString()
 
     for _, v in ipairs(Folders) do
-        local Files, _ = file.Find("log4g/server/loggercontext/" .. v .. "/lconfig_*.json", "DATA")
+        local Files, _ = file.Find("log4g/server/loggercontext/" .. v .. "/loggerconfig_*.json", "DATA")
 
         if v == LoggerContextName then
             for _, j in ipairs(Files) do
@@ -144,8 +145,4 @@ net.Receive("Log4g_CLReq_RemoveLoggerContext", function(len, ply)
     end
 
     file.Write(LoggerContextLookupFile, util.TableToJSON(Tbl))
-end)
-
-net.Receive("Log4g_CLReq_BuildLogger", function(len, ply)
-    if not ply:IsAdmin() then return end
 end)

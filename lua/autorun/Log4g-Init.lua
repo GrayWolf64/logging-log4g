@@ -7,6 +7,7 @@ if SERVER then
     include("log4g/core/server/Util.lua")
     include("log4g/core/server/config/LoggerConfig.lua")
     include("log4g/core/server/config/Configurator.lua")
+    include("log4g/core/server/config/Make.lua")
     include("log4g/core/server/LoggerContext.lua")
     include("log4g/core/server/Level.lua")
     include("log4g/core/server/Logger.lua")

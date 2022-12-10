@@ -99,6 +99,7 @@ concommand.Add("Log4g_MMC", function()
     local SheetPanelB = vgui.Create("DPanel", SheetB)
     SheetB:AddSheet("LoggerConfig", SheetPanelB)
     local ListView = CreateDListView(SheetPanelB, LEFT, 1, 1, 1, 0)
+    ListView:SetDataHeight(18)
     local Tree = vgui.Create("DTree", SheetPanelB)
     Tree:Dock(RIGHT)
     Tree:DockMargin(1, 1, 1, 0)
@@ -108,8 +109,8 @@ concommand.Add("Log4g_MMC", function()
             if node:GetIcon() == "icon16/folder.png" then
                 local Menu = DermaMenu()
 
-                Menu:AddOption("Delete", function()
-                    net.Start("Log4g_CLReq_RemoveLoggerContext")
+                Menu:AddOption("Remove", function()
+                    net.Start("Log4g_CLReq_LoggerContext_Remove")
                     net.WriteString(node:GetText())
                     net.SendToServer()
                 end):SetIcon("icon16/cross.png")
@@ -119,22 +120,42 @@ concommand.Add("Log4g_MMC", function()
         end
     end
 
-    timer.Create("Log4g_CL_RepopulateVGUIElement", 5, 0, function()
+    net.Start("Log4g_CLReq_LoggerConfig_Keys")
+    net.SendToServer()
+
+    net.Receive("Log4g_CLRcv_LoggerConfig_Keys", function()
+        for _, v in pairs(net.ReadTable()) do
+            ListView:AddColumn(v)
+        end
+    end)
+
+    timer.Create("Log4g_CL_RepopulateVGUIElement", 4, 0, function()
         ListView:Clear()
         net.Start("Log4g_CLReq_LoggerConfigs")
         net.SendToServer()
 
+        local function SetProperLineText(tbl, line)
+            for i, j in pairs(tbl) do
+                for m, n in ipairs(ListView.Columns) do
+                    if i == n:GetChild(0):GetText() then
+                        line:SetColumnText(m, j)
+                    end
+                end
+            end
+        end
+
         net.Receive("Log4g_CLRcv_LoggerConfigs", function()
             for _, v in ipairs(util.JSONToTable(util.Decompress(net.ReadData(net.ReadUInt(16))))) do
-                ListView:AddLine(unpack(table.ClearKeys(v)))
+                local Line = ListView:AddLine()
+                SetProperLineText(v, Line)
             end
         end)
 
         Tree:Clear()
-        net.Start("Log4g_CLReq_LoggerContextStructure")
+        net.Start("Log4g_CLReq_LoggerContext_Lookup")
         net.SendToServer()
 
-        net.Receive("Log4g_CLRcv_LoggerContextStructure", function()
+        net.Receive("Log4g_CLRcv_LoggerContext_Lookup", function()
             if net.ReadBool() then
                 local Tbl = util.JSONToTable(util.Decompress(net.ReadData(net.ReadUInt(16))))
 
@@ -142,7 +163,7 @@ concommand.Add("Log4g_MMC", function()
                     local Node = Tree:AddNode(k, "icon16/folder.png")
                     Node:SetExpanded(true)
 
-                    for i, j in ipairs(v) do
+                    for i, j in pairs(v) do
                         Node:AddNode(j, "icon16/brick.png")
                     end
                 end
@@ -181,7 +202,7 @@ concommand.Add("Log4g_MMC", function()
         end
 
         local RowA, RowB = DPNewRow("Hook", "Event Name", "Combo"), DPNewRow("Hook", "Unique Identifier", "Generic")
-        local RowC, RowD = DPNewRow("Logger", "LoggerContext", "Generic"), DPNewRow("Logger", "Log Level", "Combo")
+        local RowC, RowD = DPNewRow("Logger", "LoggerContext", "Generic"), DPNewRow("Logger", "Level", "Combo")
         local RowE, RowF = DPNewRow("Logger", "Appender", "Combo"), DPNewRow("Logger", "Layout", "Combo")
         local RowG = DPNewRow("Self", "LoggerConfig Name", "Generic")
         net.Start("Log4g_CLReq_Hooks")
@@ -211,20 +232,18 @@ concommand.Add("Log4g_MMC", function()
 
         ButtonA.DoClick = function()
             local Tbl = {
-                [1] = GetRowControlValue(RowA),
-                [2] = GetRowControlValue(RowB),
-                [3] = GetRowControlValue(RowC),
-                [4] = GetRowControlValue(RowD),
-                [5] = GetRowControlValue(RowE),
-                [6] = GetRowControlValue(RowF),
-                [7] = GetRowControlValue(RowG)
+                name = GetRowControlValue(RowG),
+                eventname = GetRowControlValue(RowA),
+                uid = GetRowControlValue(RowB),
+                loggercontext = GetRowControlValue(RowC),
+                level = GetRowControlValue(RowD),
+                appender = GetRowControlValue(RowE),
+                layout = GetRowControlValue(RowF)
             }
 
-            if table.Count(Tbl) == 7 then
-                net.Start("Log4g_CLUpload_LoggerConfig")
-                net.WriteTable(Tbl)
-                net.SendToServer()
-            end
+            net.Start("Log4g_CLUpload_LoggerConfig")
+            net.WriteTable(Tbl)
+            net.SendToServer()
         end
     end):SetIcon("icon16/cog_add.png")
 
@@ -233,25 +252,20 @@ concommand.Add("Log4g_MMC", function()
         local _ = CreateDLabel(Window, TOP, 3, 3, 3, 3, "Log4g is an open-source addon for Garry's Mod.")
     end):SetIcon("icon16/information.png")
 
-    for _, v in ipairs({"Event Name", "Unique Identifier", "LoggerContext", "Log Level", "Appender", "Layout", "LoggerConfig Name"}) do
-        ListView:AddColumn(v)
-    end
-
     local DGridA = vgui.Create("DGrid", SheetPanelB)
     DGridA:Dock(BOTTOM)
     DGridA:SetCols(3)
     DGridA:SetColWide(100)
     DGridA:SetRowHeight(50)
     DGridA:DockMargin(1, 1, 1, 1)
-    local ButtonC = CreateDButton(DGridA, NODOCK, 0, 0, 0, 0, 100, 50, "SV BUILD LOGGERS")
+    local ButtonC = CreateDButton(DGridA, NODOCK, 0, 0, 0, 0, 100, 50, "SV MAKE")
 
     function ButtonC:DoClick()
-        net.Start("Log4g_CLReq_BuildLogger")
-        net.WriteBool(true)
+        net.Start("Log4g_CLReq_LoggerConfig_Make")
         net.SendToServer()
     end
 
-    local ButtonD = CreateDButton(DGridA, NODOCK, 0, 0, 0, 0, 100, 50, "Force Clear")
+    local ButtonD = CreateDButton(DGridA, NODOCK, 0, 0, 0, 0, 100, 50, "Clear View")
 
     function ButtonD:DoClick()
         ListView:Clear()
@@ -262,7 +276,7 @@ concommand.Add("Log4g_MMC", function()
     Progress:SetSize(100, 50)
 
     function Progress:Think()
-        Progress:SetFraction((5 - timer.TimeLeft("Log4g_CL_RepopulateVGUIElement")) / 5)
+        Progress:SetFraction((4 - timer.TimeLeft("Log4g_CL_RepopulateVGUIElement")) / 4)
     end
 
     for _, v in ipairs({ButtonC, ButtonD, Progress}) do
@@ -273,8 +287,8 @@ concommand.Add("Log4g_MMC", function()
         function ListView:OnRowRightClick(num)
             local Menu = DermaMenu()
 
-            Menu:AddOption("Delete", function()
-                net.Start("Log4g_CLReq_DelLoggerConfig")
+            Menu:AddOption("Remove", function()
+                net.Start("Log4g_CLReq_LoggerConfig_Remove")
                 local Line = ListView:GetLine(num)
                 net.WriteString(Line:GetColumnText(3))
                 net.WriteString(Line:GetColumnText(7))

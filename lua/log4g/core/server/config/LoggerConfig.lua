@@ -1,30 +1,47 @@
+local AddNetworkStrsViaTbl = Log4g.Util.AddNetworkStrsViaTbl
+
+AddNetworkStrsViaTbl({
+    [1] = "Log4g_CLReq_LoggerConfig_Keys",
+    [2] = "Log4g_CLRcv_LoggerConfig_Keys"
+})
+
+net.Receive("Log4g_CLReq_LoggerConfig_Keys", function(len, ply)
+    if not ply:IsAdmin() then return end
+    net.Start("Log4g_CLRcv_LoggerConfig_Keys")
+
+    net.WriteTable({"name", "eventname", "uid", "loggercontext", "level", "appender", "layout"})
+
+    net.Send(ply)
+end)
+
 Log4g.LoggerConfigs = {}
 local Object = include("log4g/core/server/Class.lua")
 local LoggerConfig = Object:Extend()
 
-function LoggerConfig:New(name, tbl, file)
+function LoggerConfig:New(name, eventname, uid, loggercontext, level, appender, layout, file)
     self.name = name or ""
-
-    self.content = {
-        eventname = tbl.eventname or "",
-        uid = tbl.uid or "",
-        loggercontext = tbl.loggercontext or "",
-        level = tbl.level or "",
-        appender = tbl.appender or "",
-        layout = tbl.layout or ""
-    }
-
+    self.eventname = eventname or ""
+    self.uid = uid or ""
+    self.loggercontext = loggercontext or ""
+    self.level = level or ""
+    self.appender = appender or ""
+    self.layout = layout or ""
     self.file = file or ""
 end
 
 function LoggerConfig:Delete()
     self.name = nil
-    self.content = nil
+    self.eventname = nil
+    self.uid = nil
+    self.loggercontext = nil
+    self.level = nil
+    self.appender = nil
+    self.layout = nil
     self.file = nil
 end
 
-function Log4g.NewLoggerConfig(name, tbl, file)
-    local loggerconfig = LoggerConfig(name, tbl, file)
+function Log4g.NewLoggerConfig(name, eventname, uid, loggercontext, level, appender, layout, file)
+    local loggerconfig = LoggerConfig(name, eventname, uid, loggercontext, level, appender, layout, file)
     table.insert(Log4g.LoggerConfigs, loggerconfig)
 
     return loggerconfig
