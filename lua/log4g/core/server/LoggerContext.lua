@@ -8,8 +8,9 @@ function LoggerContext:New(name, folder)
 end
 
 function LoggerContext:Delete()
-    self.name = nil
-    self.folder = nil
+    for k, _ in pairs(self) do
+        self.k = nil
+    end
 end
 
 function Log4g.NewLoggerContext(name, folder)

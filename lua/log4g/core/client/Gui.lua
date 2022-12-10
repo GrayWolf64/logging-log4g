@@ -232,10 +232,10 @@ concommand.Add("Log4g_MMC", function()
 
         ButtonA.DoClick = function()
             local Tbl = {
-                name = GetRowControlValue(RowG),
+                name = string.lower(GetRowControlValue(RowG)),
                 eventname = GetRowControlValue(RowA),
                 uid = GetRowControlValue(RowB),
-                loggercontext = GetRowControlValue(RowC),
+                loggercontext = string.lower(GetRowControlValue(RowC)),
                 level = GetRowControlValue(RowD),
                 appender = GetRowControlValue(RowE),
                 layout = GetRowControlValue(RowF)
@@ -290,8 +290,21 @@ concommand.Add("Log4g_MMC", function()
             Menu:AddOption("Remove", function()
                 net.Start("Log4g_CLReq_LoggerConfig_Remove")
                 local Line = ListView:GetLine(num)
-                net.WriteString(Line:GetColumnText(3))
-                net.WriteString(Line:GetColumnText(7))
+                local LoggerContextName, LoggerConfigName
+
+                for m, n in ipairs(ListView.Columns) do
+                    local Text = n:GetChild(0):GetText()
+                    local Str = Line:GetColumnText(m)
+
+                    if Text == "loggercontext" then
+                        LoggerContextName = Str
+                    elseif Text == "name" then
+                        LoggerConfigName = Str
+                    end
+                end
+
+                net.WriteString(LoggerContextName)
+                net.WriteString(LoggerConfigName)
                 net.SendToServer()
             end):SetIcon("icon16/cross.png")
 

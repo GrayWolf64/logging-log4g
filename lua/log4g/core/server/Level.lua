@@ -15,8 +15,9 @@ function Level:New(name, int)
 end
 
 function Level:Delete()
-    self.name = nil
-    self.int = nil
+    for k, _ in pairs(self) do
+        self.k = nil
+    end
 end
 
 function Level:Name()

@@ -30,14 +30,9 @@ function LoggerConfig:New(name, eventname, uid, loggercontext, level, appender, 
 end
 
 function LoggerConfig:Delete()
-    self.name = nil
-    self.eventname = nil
-    self.uid = nil
-    self.loggercontext = nil
-    self.level = nil
-    self.appender = nil
-    self.layout = nil
-    self.file = nil
+    for k, _ in pairs(self) do
+        self.k = nil
+    end
 end
 
 function Log4g.NewLoggerConfig(name, eventname, uid, loggercontext, level, appender, layout, file)
