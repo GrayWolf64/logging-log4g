@@ -1,3 +1,4 @@
+Log4g.Levels = {}
 local AddNetworkStrsViaTbl = Log4g.Util.AddNetworkStrsViaTbl
 
 AddNetworkStrsViaTbl({
@@ -5,60 +6,43 @@ AddNetworkStrsViaTbl({
     [2] = "Log4g_CLRcv_Levels"
 })
 
-local MetaLevel = {
-    __index = {
-        int = 0,
-        standard = true
-    },
-    __call = function() return __index.int, __index.standard end
-}
+local Object = include("log4g/core/server/Class.lua")
+local Level = Object:Extend()
 
-Log4g.Level = {
-    ["ALL"] = {
-        int = math.huge,
-    },
-    ["TRACE"] = {
-        int = 600,
-    },
-    ["DEBUG"] = {
-        int = 500,
-    },
-    ["INFO"] = {
-        int = 400,
-    },
-    ["WARN"] = {
-        int = 300,
-    },
-    ["ERROR"] = {
-        int = 200,
-    },
-    ["FATAL"] = {
-        int = 100,
-    },
-    ["OFF"] = {
-        int = 0,
-    },
-    IntLevel = function(name) return Log4g.Level[name].int end,
-    AddCustomLevel = function(name, int)
-        Log4g.Level[name] = {
-            int = int,
-            standard = false
-        }
-    end
-}
-
-setmetatable(Log4g.Level["ALL"], MetaLevel)
-
-local function GetStringLevels()
-    local levels = {}
-
-    for k, v in pairs(Log4g.Level) do
-        if istable(v) then
-            table.insert(levels, k)
-        end
-    end
-
-    return levels
+function Level:New(name, int)
+    self.name = name or ""
+    self.int = int or 0
 end
 
-Log4g.Util.SendTableAfterRcvNetMsg("Log4g_CLReq_Levels", "Log4g_CLRcv_Levels", GetStringLevels())
+function Level:Delete()
+    self.name = nil
+    self.int = nil
+end
+
+function Level:Name()
+    return self.name
+end
+
+function Level:IntLevel()
+    return self.int
+end
+
+function Log4g.NewLevel(name, int)
+    return Level(name, int)
+end
+
+Log4g.Levels["ALL"] = Level("ALL", math.huge)
+Log4g.Levels["TRACE"] = Level("TRACE", 600)
+Log4g.Levels["DEBUG"] = Level("DEBUG", 500)
+Log4g.Levels["INFO"] = Level("INFO", 400)
+Log4g.Levels["WARN"] = Level("WARN", 300)
+Log4g.Levels["ERROR"] = Level("ERROR", 200)
+Log4g.Levels["FATAL"] = Level("FATAL", 100)
+Log4g.Levels["OFF"] = Level("OFF", 0)
+local Levels = {}
+
+for k, _ in pairs(Log4g.Levels) do
+    table.insert(Levels, k)
+end
+
+Log4g.Util.SendTableAfterRcvNetMsg("Log4g_CLReq_Levels", "Log4g_CLRcv_Levels", Levels)

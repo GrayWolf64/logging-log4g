@@ -1,3 +1,4 @@
+Log4g.LoggerContexts = {}
 local Object = include("log4g/core/server/Class.lua")
 local LoggerContext = Object:Extend()
 
