@@ -12,3 +12,6 @@ Log for Garry's Mod
 | Con-Commands      | Usage |
 | ----------- | ----------- |
 | "Log4g_MMC"      | console       |
+
+## Thanks to
+[NClassic](https://github.com/ImpishDeathTech/nclassic)
