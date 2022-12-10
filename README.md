@@ -1,5 +1,5 @@
-# log4g
-Log for Garry's Mod
+# Log4g
+Log for Garry's Mod.
 
 | Internal Net Messages      | Type |Info|
 | ----------- | ----------- |-----------|
