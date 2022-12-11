@@ -33,25 +33,27 @@ net.Receive("Log4g_CLReq_LoggerConfig_Keys", function(len, ply)
     net.Send(ply)
 end)
 
-local Levels = {}
-local Appenders = {}
-local Layouts = {}
+local function GetNameList(tbl)
+    local names = {}
 
-for k, _ in pairs(Log4g.Levels) do
-    table.insert(Levels, k)
+    for k, _ in pairs(tbl) do
+        table.insert(names, k)
+    end
+
+    return names
 end
 
-for k, _ in pairs(Log4g.Appenders) do
-    table.insert(Appenders, k)
+local function RemoveRegisteredObjectByName(tbl, name)
+    for k, v in pairs(tbl) do
+        if v.name == name then
+            tbl[k] = nil
+        end
+    end
 end
 
-for k, _ in pairs(Log4g.Layouts) do
-    table.insert(Layouts, k)
-end
-
-SendTableAfterRcvNetMsg("Log4g_CLReq_Levels", "Log4g_CLRcv_Levels", Levels)
-SendTableAfterRcvNetMsg("Log4g_CLReq_Appenders", "Log4g_CLRcv_Appenders", Appenders)
-SendTableAfterRcvNetMsg("Log4g_CLReq_Layouts", "Log4g_CLRcv_Layouts", Layouts)
+SendTableAfterRcvNetMsg("Log4g_CLReq_Levels", "Log4g_CLRcv_Levels", GetNameList(Log4g.Levels))
+SendTableAfterRcvNetMsg("Log4g_CLReq_Appenders", "Log4g_CLRcv_Appenders", GetNameList(Log4g.Appenders))
+SendTableAfterRcvNetMsg("Log4g_CLReq_Layouts", "Log4g_CLRcv_Layouts", GetNameList(Log4g.Layouts))
 
 net.Receive("Log4g_CLReq_Hooks", function(len, ply)
     if not ply:IsAdmin() then return end
@@ -70,10 +72,12 @@ net.Receive("Log4g_CLUpload_LoggerConfig", function(len, ply)
     local LoggerContextName = LoggerConfigContent.loggercontext
     local Str = util.TableToJSON(LoggerConfigContent, true)
     local Dir = "log4g/server/loggercontext/"
-    file.CreateDir(Dir .. LoggerContextName)
-    local File = Dir .. LoggerContextName .. "/" .. "loggerconfig_" .. LoggerConfigName .. ".json"
-    file.Write(File, Str)
-    Log4g.NewLoggerConfig(LoggerConfigName, LoggerConfigContent.eventname, LoggerConfigContent.uid, LoggerContextName, LoggerConfigContent.level, LoggerConfigContent.appender, LoggerConfigContent.layout, File)
+    local LoggerContextDir = Dir .. LoggerContextName
+    file.CreateDir(LoggerContextDir)
+    local LoggerConfigFile = Dir .. LoggerContextName .. "/" .. "loggerconfig_" .. LoggerConfigName .. ".json"
+    file.Write(LoggerConfigFile, Str)
+    Log4g.RegisterLoggerContext(LoggerContextName, LoggerContextDir)
+    Log4g.RegisterLoggerConfig(LoggerConfigName, LoggerConfigContent.eventname, LoggerConfigContent.uid, LoggerContextName, LoggerConfigContent.level, LoggerConfigContent.appender, LoggerConfigContent.layout, LoggerConfigFile)
 
     if file.Exists(LoggerContextLookupFile, "DATA") then
         local Tbl = util.JSONToTable(file.Read(LoggerContextLookupFile, "DATA"))
@@ -120,12 +124,7 @@ net.Receive("Log4g_CLReq_LoggerConfig_Remove", function(len, ply)
     local LoggerContextName = net.ReadString()
     local LoggerConfigName = net.ReadString()
     local FileName = "loggerconfig_" .. LoggerConfigName .. ".json"
-
-    for k, v in pairs(Log4g.LoggerConfigs) do
-        if v.name == LoggerConfigName then
-            Log4g.LoggerConfigs[k] = nil
-        end
-    end
+    RemoveRegisteredObjectByName(Log4g.LoggerConfigs, LoggerConfigName)
 
     for _, v in ipairs(FindFilesInSubFolders("log4g/server/loggercontext/", "loggerconfig_*.json", "DATA")) do
         if v == "log4g/server/loggercontext/" .. LoggerContextName .. "/" .. FileName then
@@ -169,6 +168,13 @@ net.Receive("Log4g_CLReq_LoggerContext_Remove", function(len, ply)
     if not ply:IsAdmin() then return end
     local _, Folders = file.Find("log4g/server/loggercontext/*", "DATA")
     local LoggerContextName = net.ReadString()
+    RemoveRegisteredObjectByName(Log4g.LoggerContexts, LoggerContextName)
+
+    for k, v in pairs(Log4g.LoggerConfigs) do
+        if v.loggercontext == LoggerContextName then
+            Log4g.LoggerConfigs[k] = nil
+        end
+    end
 
     for _, v in ipairs(Folders) do
         local Files, _ = file.Find("log4g/server/loggercontext/" .. v .. "/loggerconfig_*.json", "DATA")
