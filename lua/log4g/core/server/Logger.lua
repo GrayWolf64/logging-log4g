@@ -1,0 +1,1 @@
+Log4g.Loggers = {}
