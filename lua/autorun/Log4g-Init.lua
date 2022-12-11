@@ -13,8 +13,11 @@ if SERVER then
     include("log4g/core/server/Layout.lua")
     include("log4g/core/server/config/ClientGUIConfigurator.lua")
     include("log4g/core/server/config/builder/DefaultLoggerConfigBuilder.lua")
+    include("log4g/core/Version.lua")
     AddCSLuaFile("log4g/core/client/Gui.lua")
+    AddCSLuaFile("log4g/core/Version.lua")
 elseif CLIENT then
     file.CreateDir("log4g/client")
     include("log4g/core/client/Gui.lua")
+    include("log4g/core/Version.lua")
 end

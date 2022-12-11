@@ -1,5 +1,5 @@
 local function AppendConsole(args)
-    print(args)
+    MsgC(args)
 end
 
 return AppendConsole
