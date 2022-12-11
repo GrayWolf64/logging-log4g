@@ -14,6 +14,9 @@
 | ----------- | ----------- |
 | "Log4g_MMC"      | console       |
 
+## Coding Convention
+- Pascal Naming Method
+
 ## Thanks to
 - [NClassic](https://github.com/ImpishDeathTech/nclassic)
 - [LDoc](https://github.com/lunarmodules/LDoc)
