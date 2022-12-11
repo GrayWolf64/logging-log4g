@@ -1,13 +1,17 @@
 Log4g.Layouts = {}
-local AddNetworkStrsViaTbl = Log4g.Util.AddNetworkStrsViaTbl
+local Layout = include("log4g/core/server/impl/Class.lua"):Extend()
 
-AddNetworkStrsViaTbl({
-    [1] = "Log4g_CLReq_Layouts",
-    [2] = "Log4g_CLRcv_Layouts"
-})
+function Layout:New(name, func)
+    self.name = name or ""
+    self.func = func or function() end
+end
 
-local Layouts = {
-    [1] = "Basic Text"
-}
+function Log4g.RegisterLayout(name, func)
+    local layout = Layout(name, func)
+    table.insert(Log4g.Layouts, layout)
 
-Log4g.Util.SendTableAfterRcvNetMsg("Log4g_CLReq_Layouts", "Log4g_CLRcv_Layouts", Layouts)
+    return layout
+end
+
+local PatternLayout = include("log4g/core/server/layout/PatternLayout.lua")
+Log4g.Layouts["PatternLayout"] = Layout("PatternLayout", PatternLayout)

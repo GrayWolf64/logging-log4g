@@ -18,8 +18,10 @@ AddNetworkStrsViaTbl({
     [11] = "Log4g_CLRcv_Levels",
     [12] = "Log4g_CLReq_Appenders",
     [13] = "Log4g_CLRcv_Appenders",
-    [14] = "Log4g_CLReq_LoggerConfig_Keys",
-    [15] = "Log4g_CLRcv_LoggerConfig_Keys"
+    [14] = "Log4g_CLReq_Layouts",
+    [15] = "Log4g_CLRcv_Layouts",
+    [16] = "Log4g_CLReq_LoggerConfig_Keys",
+    [17] = "Log4g_CLRcv_LoggerConfig_Keys"
 })
 
 net.Receive("Log4g_CLReq_LoggerConfig_Keys", function(len, ply)
@@ -33,6 +35,7 @@ end)
 
 local Levels = {}
 local Appenders = {}
+local Layouts = {}
 
 for k, _ in pairs(Log4g.Levels) do
     table.insert(Levels, k)
@@ -42,8 +45,13 @@ for k, _ in pairs(Log4g.Appenders) do
     table.insert(Appenders, k)
 end
 
+for k, _ in pairs(Log4g.Layouts) do
+    table.insert(Layouts, k)
+end
+
 SendTableAfterRcvNetMsg("Log4g_CLReq_Levels", "Log4g_CLRcv_Levels", Levels)
 SendTableAfterRcvNetMsg("Log4g_CLReq_Appenders", "Log4g_CLRcv_Appenders", Appenders)
+SendTableAfterRcvNetMsg("Log4g_CLReq_Layouts", "Log4g_CLRcv_Layouts", Layouts)
 
 net.Receive("Log4g_CLReq_Hooks", function(len, ply)
     if not ply:IsAdmin() then return end
