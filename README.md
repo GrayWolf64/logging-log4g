@@ -1,5 +1,5 @@
 # Log4g
-### Log4g is an advanced logging framework for Garry's Mod.
+Log4g is an advanced logging framework for Garry's Mod.
 
 | Internal Net Messages(Client GUI)         | Type       | Info                                                                                    |
 | ------------------------------------------| ---------- | --------------------------------------------------------------------------------------- |
