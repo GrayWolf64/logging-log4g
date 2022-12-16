@@ -1,5 +1,4 @@
 # Log4g
-![Log4g-logo](/Log4g-logo.png "Log4g Logo")
 ## Log for Garry's Mod.
 
 | Internal Net Messages      | Type |Info|
