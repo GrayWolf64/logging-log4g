@@ -67,7 +67,10 @@ concommand.Add("Log4g_MMC", function()
     CIcon:DockMargin(4, 4, 4, 4)
 
     function CIcon:Think()
-        if LocalPlayer():Ping() >= 300 then
+        local Latency = LocalPlayer():Ping()
+        CIcon:SetTooltip("Ping: " .. Latency)
+
+        if Latency >= 300 then
             CIcon:SetImage("icon16/disconnect.png")
         else
             CIcon:SetImage("icon16/connect.png")
