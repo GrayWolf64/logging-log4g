@@ -242,6 +242,8 @@ concommand.Add("Log4g_MMC", function()
         end
     end):SetIcon("icon16/cog_add.png")
 
+    SubMenuB:AddOption("Level", function() end)
+
     MenuC:AddOption("About", function()
         local Window = CreateDFrame(300, 150, "About", "icon16/information.png")
         local _ = CreateDLabel(Window, TOP, 3, 3, 3, 3, "Log4g is an open-source addon for Garry's Mod.")
