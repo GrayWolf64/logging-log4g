@@ -50,13 +50,7 @@ local function CreateDListView(parent, docktype, x, y, z, w)
 end
 
 local function GetGameInfo()
-    local info = game.GetIPAddress()
-
-    if info == "loopback" then
-        info = "SinglePlayer"
-    end
-
-    return info
+    return "Server: " .. game.GetIPAddress() .. " " .. "SinglePlayer: " .. tostring(game.SinglePlayer())
 end
 
 concommand.Add("Log4g_MMC", function()
