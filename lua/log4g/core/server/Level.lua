@@ -61,6 +61,7 @@ function Level:IsInRange(minlevel, maxlevel)
 end
 
 --- Register a Custom Level
+-- If the Level already exists, it's intlevel will be overrode, and standard will be set to false.
 -- @param name The Level's name
 -- @param int The Level's intlevel
 function Log4g.RegisterCustomLevel(name, int)
