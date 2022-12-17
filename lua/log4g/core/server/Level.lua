@@ -23,22 +23,46 @@ function Level:Delete()
     end
 end
 
+--- Get the Level's name.
+-- @return string name
 function Level:Name()
     return self.name
 end
 
+--- Get the Level's intlevel.
+-- @return int intlevel
 function Level:IntLevel()
     return self.int
 end
 
+--- Check if the Level is a Standard Level.
+-- @return bool standard
 function Level:Standard()
     return self.standard
 end
 
+--- Calculate the Level's SHA256 Hash Code.
+-- Convert the Level object to string then use util.SHA256().
+-- @return string hashcode
 function Level:HashCode()
     return util.SHA256(tostring(self))
 end
 
+--- Compares the Level against the Levels passed as arguments and returns true if this level is in between the given levels.
+-- @param minlevel The Level with minimal intlevel
+-- @param maxlevel The Level with maximal intlevel
+-- @return bool isinrange
+function Level:IsInRange(minlevel, maxlevel)
+    if self.int >= minlevel.int and self.int <= maxlevel.int then
+        return true
+    else
+        return false
+    end
+end
+
+--- Register a Custom Level
+-- @param name The Level's name
+-- @param int The Level's intlevel
 function Log4g.RegisterCustomLevel(name, int)
     if int < 0 then return end
 
