@@ -14,4 +14,4 @@ function Log4g.RegisterLayout(name, func)
 end
 
 local PatternLayout = include("log4g/core/server/layout/PatternLayout.lua")
-Log4g.Layouts["PatternLayout"] = Layout("PatternLayout", PatternLayout)
+Log4g.Layouts.PatternLayout = Layout("PatternLayout", PatternLayout)

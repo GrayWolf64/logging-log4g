@@ -1,3 +1,5 @@
+--- The Level (Log Level).
+-- @classmod Level
 Log4g.Levels = {}
 local Level = include("log4g/core/server/impl/Class.lua"):Extend()
 local HasKey = Log4g.Util.HasKey
@@ -17,6 +19,8 @@ Log4g.Levels.ERROR = Level("ERROR", 200, true)
 Log4g.Levels.FATAL = Level("FATAL", 100, true)
 Log4g.Levels.OFF = Level("OFF", 0, true)
 
+--- Delete the Level.
+-- Set every element of the table to nil.
 function Level:Delete()
     for k, _ in pairs(self) do
         self.k = nil

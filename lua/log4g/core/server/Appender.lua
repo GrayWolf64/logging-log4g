@@ -14,4 +14,4 @@ function Log4g.RegisterAppender(name, func)
 end
 
 local AppendConsole = include("log4g/core/server/appender/ConsoleAppender.lua")
-Log4g.Appenders["ConsoleAppender"] = Appender("ConsoleAppender", AppendConsole)
+Log4g.Appenders.ConsoleAppender = Appender("ConsoleAppender", AppendConsole)
