@@ -160,7 +160,7 @@ concommand.Add("Log4g_MMC", function()
                     local Node = Tree:AddNode(k, "icon16/folder.png")
                     Node:SetExpanded(true)
 
-                    for i, j in pairs(v) do
+                    for _, j in pairs(v) do
                         Node:AddNode(j, "icon16/brick.png")
                     end
                 end
@@ -245,7 +245,7 @@ concommand.Add("Log4g_MMC", function()
         end
     end):SetIcon("icon16/cog_add.png")
 
-    SubMenuB:AddOption("Level", function() end)
+    SubMenuB:AddOption("Level", function() end):SetIcon("icon16/chart_bar.png")
 
     MenuC:AddOption("About", function()
         local Window = CreateDFrame(300, 150, "About", "icon16/information.png")

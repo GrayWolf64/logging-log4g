@@ -64,6 +64,18 @@ function Level:IsInRange(minlevel, maxlevel)
     end
 end
 
+--- Get the Level.
+-- Return the Level associated with the name or nil if the Level cannot be found.
+-- @param name The Level's name
+-- @return table level
+function Log4g.GetLevel(name)
+    for k, v in pairs(Log4g.Levels) do
+        if k == name then return v end
+    end
+
+    return nil
+end
+
 --- Register a Custom Level
 -- If the Level already exists, it's intlevel will be overrode, and standard will be set to false.
 -- @param name The Level's name
