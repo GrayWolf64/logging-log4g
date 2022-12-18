@@ -1,3 +1,5 @@
+--- The LoggerContext
+-- @classmod LoggerContext
 Log4g.LoggerContexts = {}
 local LoggerContext = include("log4g/core/server/impl/Class.lua"):Extend()
 

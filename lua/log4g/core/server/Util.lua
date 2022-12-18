@@ -1,5 +1,11 @@
+--- The Util Library (Module)
+-- @module Util
 Log4g.Util = {}
 
+--- Check if one table has a certain key.
+-- @param tbl The table to check
+-- @param key The key to find in the table
+-- @return bool ifhaskey
 Log4g.Util.HasKey = function(tbl, key)
     if tbl == nil then return false end
 
@@ -10,6 +16,10 @@ Log4g.Util.HasKey = function(tbl, key)
     return false
 end
 
+--- Send a table after receiving a net message.
+-- @param receive The message to receive (from a player)
+-- @param start The message for sending the table
+-- @param tbl The table to send
 Log4g.Util.SendTableAfterRcvNetMsg = function(receive, start, tbl)
     net.Receive(receive, function(len, ply)
         net.Start(start)
@@ -18,12 +28,20 @@ Log4g.Util.SendTableAfterRcvNetMsg = function(receive, start, tbl)
     end)
 end
 
+--- Add all the string elements in a table to network string table.
+-- @param tbl The table of network strings to add
 Log4g.Util.AddNetworkStrsViaTbl = function(tbl)
     for _, v in pairs(tbl) do
+        if not isstring(v) then return end
         util.AddNetworkString(v)
     end
 end
 
+--- Find all the files in all the folders' subfolders using wildcard.
+-- @param dir The folder which contains subfolders
+-- @param wildcard The wildcard to use
+-- @param path The game path
+-- @return tbl filesfound
 Log4g.Util.FindFilesInSubFolders = function(dir, wildcard, path)
     local tbl = {}
     local _, subfolders = file.Find(dir .. "*", path)

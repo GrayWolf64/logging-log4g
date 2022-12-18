@@ -1,3 +1,5 @@
+--- The Logger.
+-- @classmod Logger
 Log4g.Loggers = {}
 local Logger = include("log4g/core/server/impl/Class.lua"):Extend()
 

@@ -168,11 +168,6 @@ concommand.Add("Log4g_MMC", function()
         end)
     end)
 
-    function FrameA:OnRemove()
-        timer.Remove("Log4g_CL_CheckIsConnected")
-        timer.Remove("Log4g_CL_RepopulateVGUIElement")
-    end
-
     local SubMenuB = MenuA:AddSubMenu("Configuration")
     SubMenuB:SetDeleteSelf(false)
 
@@ -212,7 +207,9 @@ concommand.Add("Log4g_MMC", function()
             end
         end)
 
-        local function AddChoiceViaNetTbl(start, receive, combobox)
+        local function AddChoiceViaNetTbl(start, receive, row)
+            local combobox = row:GetChild(1):GetChild(0):GetChild(0)
+            combobox:Clear()
             net.Start(start)
             net.SendToServer()
 
@@ -221,11 +218,22 @@ concommand.Add("Log4g_MMC", function()
                     combobox:AddChoice(v)
                 end
             end)
+
+            combobox:SetValue("Select...")
         end
 
-        AddChoiceViaNetTbl("Log4g_CLReq_Levels", "Log4g_CLRcv_Levels", RowD)
-        AddChoiceViaNetTbl("Log4g_CLReq_Appenders", "Log4g_CLRcv_Appenders", RowE)
-        AddChoiceViaNetTbl("Log4g_CLReq_Layouts", "Log4g_CLRcv_Layouts", RowF)
+        timer.Create("Log4g_CL_RepopulateCombobox", 4, 0, function()
+            AddChoiceViaNetTbl("Log4g_CLReq_Levels", "Log4g_CLRcv_Levels", RowD)
+            AddChoiceViaNetTbl("Log4g_CLReq_Appenders", "Log4g_CLRcv_Appenders", RowE)
+            AddChoiceViaNetTbl("Log4g_CLReq_Layouts", "Log4g_CLRcv_Layouts", RowF)
+        end)
+
+        function FrameA:OnRemove()
+            timer.Remove("Log4g_CL_CheckIsConnected")
+            timer.Remove("Log4g_CL_RepopulateVGUIElement")
+            timer.Remove("Log4g_CL_RepopulateCombobox")
+        end
+
         ButtonA = CreateDButton(FrameB, BOTTOM, 300, 0, 0, 0, 100, 50, "Submit")
 
         ButtonA.DoClick = function()
