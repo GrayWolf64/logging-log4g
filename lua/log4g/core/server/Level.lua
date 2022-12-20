@@ -76,10 +76,11 @@ function Log4g.GetLevel(name)
     return nil
 end
 
---- Register a Custom Level
+--- Register a Custom Level.
 -- If the Level already exists, it's intlevel will be overrode, and standard will be set to false.
 -- @param name The Level's name
 -- @param int The Level's intlevel
+-- @return table level
 function Log4g.RegisterCustomLevel(name, int)
     if int < 0 then return end
 
