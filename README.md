@@ -10,6 +10,7 @@ Log4g is an advanced logging framework for Garry's Mod.
 | "Log4g_CLRcv_Hooks"                        | UInt, Data | Client receives the list of hooks avaliable on server (compressed data)                  |
 | "Log4g_CLReq_LoggerConfigs"                | None       | Client requests the list of content of all the loggerconfigs on server                   |
 | "Log4g_CLRcv_LoggerConfigs"                | UInt, Data | Client receives the list of content of all the loggerconfigs on server (compressed data) |
+| "Log4g_CLReq_LoggerConfig_Remove"          | Str, Str   | Client requests the loggerconfig to be removed                                           |
 
 | Con-Commands    | Usage   |
 | --------------- | ------- |
