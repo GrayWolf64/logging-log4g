@@ -12,7 +12,7 @@ function LoggerConfig:New(name, eventname, uid, loggercontext, level, appender, 
     self.file = file or ""
 end
 
-function Log4g.RegisterLoggerConfig(name, eventname, uid, loggercontext, level, appender, layout, file)
+function Log4g.Registrar.RegisterLoggerConfig(name, eventname, uid, loggercontext, level, appender, layout, file)
     local loggerconfig = LoggerConfig(name, eventname, uid, loggercontext, level, appender, layout, file)
     table.insert(Log4g.LoggerConfigs, loggerconfig)
 

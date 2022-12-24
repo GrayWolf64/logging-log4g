@@ -20,11 +20,8 @@ Log4g.Levels.FATAL = Level("FATAL", 100, true)
 Log4g.Levels.OFF = Level("OFF", 0, true)
 
 --- Delete the Level.
--- Set every element of the table to nil.
 function Level:Delete()
-    for k, _ in pairs(self) do
-        self.k = nil
-    end
+    Log4g.Levels[self.name] = nil
 end
 
 --- Get the Level's name.
@@ -81,8 +78,8 @@ end
 -- @param name The Level's name
 -- @param int The Level's intlevel
 -- @return table level
-function Log4g.RegisterCustomLevel(name, int)
-    if int < 0 then return end
+function Log4g.Registrar.RegisterCustomLevel(name, int)
+    if name == "" or int < 0 then return end
 
     if not HasKey(Log4g.Levels, name) then
         local level = Level(name, int, false)

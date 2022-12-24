@@ -6,7 +6,7 @@ function Layout:New(name, func)
     self.func = func or function() end
 end
 
-function Log4g.RegisterLayout(name, func)
+function Log4g.Registrar.RegisterLayout(name, func)
     local layout = Layout(name, func)
     table.insert(Log4g.Layouts, layout)
 
