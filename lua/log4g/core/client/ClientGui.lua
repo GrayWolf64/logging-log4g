@@ -49,6 +49,24 @@ local function CreateDListView(parent, docktype, x, y, z, w)
     return dlistview
 end
 
+local function DPropNewRow(panel, category, name, prop)
+    local row = panel:CreateRow(category, name)
+    row:Setup(prop)
+
+    return row
+end
+
+local function GetRowControlValue(row)
+    local pnl = row:GetChild(1):GetChild(0):GetChild(0)
+    local class = pnl:GetName()
+
+    if class == "DTextEntry" then
+        return pnl:GetValue()
+    elseif class == "DComboBox" then
+        return pnl:GetSelected()
+    end
+end
+
 local function GetGameInfo()
     return "Server: " .. game.GetIPAddress() .. " " .. "SinglePlayer: " .. tostring(game.SinglePlayer())
 end
@@ -173,31 +191,12 @@ concommand.Add("Log4g_MMC", function()
 
     SubMenuB:AddOption("LoggerConfig", function()
         local FrameB = CreateDFrame(400, 300, "New LoggerConfig", "icon16/application_view_list.png")
-        local DProperties = vgui.Create("DProperties", FrameB)
-        DProperties:Dock(FILL)
-
-        local function DPNewRow(category, name, prop)
-            local row = DProperties:CreateRow(category, name)
-            row:Setup(prop)
-
-            return row
-        end
-
-        local function GetRowControlValue(row)
-            local pnl = row:GetChild(1):GetChild(0):GetChild(0)
-            local class = pnl:GetName()
-
-            if class == "DTextEntry" then
-                return pnl:GetValue()
-            elseif class == "DComboBox" then
-                return pnl:GetSelected()
-            end
-        end
-
-        local RowA, RowB = DPNewRow("Hook", "Event Name", "Combo"), DPNewRow("Hook", "Unique Identifier", "Generic")
-        local RowC, RowD = DPNewRow("Logger", "LoggerContext", "Generic"), DPNewRow("Logger", "Level", "Combo")
-        local RowE, RowF = DPNewRow("Logger", "Appender", "Combo"), DPNewRow("Logger", "Layout", "Combo")
-        local RowG = DPNewRow("Self", "LoggerConfig Name", "Generic")
+        local DProp = vgui.Create("DProperties", FrameB)
+        DProp:Dock(FILL)
+        local RowA, RowB = DPropNewRow(DProp, "Hook", "Event Name", "Combo"), DPropNewRow(DProp, "Hook", "Unique Identifier", "Generic")
+        local RowC, RowD = DPropNewRow(DProp, "Logger", "LoggerContext", "Generic"), DPropNewRow(DProp, "Logger", "Level", "Combo")
+        local RowE, RowF = DPropNewRow(DProp, "Logger", "Appender", "Combo"), DPropNewRow(DProp, "Logger", "Layout", "Combo")
+        local RowG = DPropNewRow(DProp, "Self", "LoggerConfig Name", "Generic")
         net.Start("Log4g_CLReq_Hooks")
         net.SendToServer()
 
@@ -208,18 +207,18 @@ concommand.Add("Log4g_MMC", function()
         end)
 
         local function AddChoiceViaNetTbl(start, receive, row)
-            local combobox = row:GetChild(1):GetChild(0):GetChild(0)
-            combobox:Clear()
+            local box = row:GetChild(1):GetChild(0):GetChild(0)
+            box:Clear()
             net.Start(start)
             net.SendToServer()
 
             net.Receive(receive, function()
                 for _, v in pairs(net.ReadTable()) do
-                    combobox:AddChoice(v)
+                    box:AddChoice(v)
                 end
             end)
 
-            combobox:SetValue("Select...")
+            box:SetValue("Select...")
         end
 
         timer.Create("Log4g_CL_RepopulateCombobox", 4, 0, function()
@@ -228,13 +227,7 @@ concommand.Add("Log4g_MMC", function()
             AddChoiceViaNetTbl("Log4g_CLReq_Layouts", "Log4g_CLRcv_Layouts", RowF)
         end)
 
-        function FrameA:OnRemove()
-            timer.Remove("Log4g_CL_CheckIsConnected")
-            timer.Remove("Log4g_CL_RepopulateVGUIElement")
-            timer.Remove("Log4g_CL_RepopulateCombobox")
-        end
-
-        ButtonA = CreateDButton(FrameB, BOTTOM, 300, 0, 0, 0, 100, 50, "Submit")
+        local ButtonA = CreateDButton(FrameB, BOTTOM, 150, 0, 150, 0, 100, 50, "Submit")
 
         ButtonA.DoClick = function()
             net.Start("Log4g_CLUpload_LoggerConfig")
@@ -253,7 +246,24 @@ concommand.Add("Log4g_MMC", function()
         end
     end):SetIcon("icon16/cog_add.png")
 
-    SubMenuB:AddOption("Level", function() end):SetIcon("icon16/chart_bar.png")
+    SubMenuB:AddOption("Level", function()
+        local Window = CreateDFrame(300, 150, "New Level", "icon16/application.png")
+        local DProp = vgui.Create("DProperties", Window)
+        DProp:Dock(FILL)
+        local RowA, RowB = DPropNewRow(DProp, "Self", "Name", "Generic"), DPropNewRow(DProp, "Self", "IntLevel", "Generic")
+        local ButtonB = CreateDButton(Window, BOTTOM, 100, 0, 100, 0, 100, 50, "Submit")
+
+        ButtonB.DoClick = function()
+            net.Start("Log4g_CLUpload_NewLevel")
+
+            net.WriteTable({
+                name = GetRowControlValue(RowA),
+                int = tonumber(GetRowControlValue(RowB))
+            })
+
+            net.SendToServer()
+        end
+    end):SetIcon("icon16/chart_bar.png")
 
     MenuC:AddOption("About", function()
         local Window = CreateDFrame(300, 150, "About", "icon16/information.png")
@@ -321,4 +331,10 @@ concommand.Add("Log4g_MMC", function()
     end
 
     local _ = CreateDHDivider(SheetPanelB, ListView, Tree, 4, 735, 150)
+
+    function FrameA:OnRemove()
+        timer.Remove("Log4g_CL_CheckIsConnected")
+        timer.Remove("Log4g_CL_RepopulateVGUIElement")
+        timer.Remove("Log4g_CL_RepopulateCombobox")
+    end
 end)

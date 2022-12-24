@@ -4,6 +4,24 @@ local SendTableAfterRcvNetMsg = Log4g.Util.SendTableAfterRcvNetMsg
 local HasKey = Log4g.Util.HasKey
 local LoggerContextLookupFile = "log4g/server/loggercontext/loggercontext_lookup.json"
 
+local function GetNameList(tbl)
+    local names = {}
+
+    for k, _ in pairs(tbl) do
+        table.insert(names, k)
+    end
+
+    return names
+end
+
+local function RemoveRegisteredObjectByName(tbl, name)
+    for k, v in pairs(tbl) do
+        if v.name == name then
+            tbl[k] = nil
+        end
+    end
+end
+
 AddNetworkStrsViaTbl({
     [1] = "Log4g_CLUpload_LoggerConfig",
     [2] = "Log4g_CLReq_Hooks",
@@ -23,7 +41,8 @@ AddNetworkStrsViaTbl({
     [16] = "Log4g_CLReq_LoggerConfig_Keys",
     [17] = "Log4g_CLRcv_LoggerConfig_Keys",
     [18] = "Log4g_CL_ChkConnected",
-    [19] = "Log4g_CL_IsConnected"
+    [19] = "Log4g_CL_IsConnected",
+    [20] = "Log4g_CLUpload_NewLevel"
 })
 
 net.Receive("Log4g_CL_ChkConnected", function(len, ply)
@@ -40,24 +59,6 @@ net.Receive("Log4g_CLReq_LoggerConfig_Keys", function(len, ply)
 
     net.Send(ply)
 end)
-
-local function GetNameList(tbl)
-    local names = {}
-
-    for k, _ in pairs(tbl) do
-        table.insert(names, k)
-    end
-
-    return names
-end
-
-local function RemoveRegisteredObjectByName(tbl, name)
-    for k, v in pairs(tbl) do
-        if v.name == name then
-            tbl[k] = nil
-        end
-    end
-end
 
 SendTableAfterRcvNetMsg("Log4g_CLReq_Levels", "Log4g_CLRcv_Levels", GetNameList(Log4g.Levels))
 SendTableAfterRcvNetMsg("Log4g_CLReq_Appenders", "Log4g_CLRcv_Appenders", GetNameList(Log4g.Appenders))
@@ -205,4 +206,10 @@ net.Receive("Log4g_CLReq_LoggerContext_Remove", function(len, ply)
     end
 
     file.Write(LoggerContextLookupFile, util.TableToJSON(Tbl))
+end)
+
+net.Receive("Log4g_CLUpload_NewLevel", function(len, ply)
+    if not ply:IsAdmin() then return end
+    local Tbl = net.ReadTable()
+    Log4g.Registrar.RegisterCustomLevel(Tbl.name, Tbl.int)
 end)
