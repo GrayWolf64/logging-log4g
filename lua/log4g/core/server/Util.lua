@@ -28,12 +28,13 @@ Log4g.Util.SendTableAfterRcvNetMsg = function(receive, start, tbl)
     end)
 end
 
---- Add all the string elements in a table to network string table.
+--- Add all the string keys in a table to network string table.
 -- @param tbl The table of network strings to add
 Log4g.Util.AddNetworkStrsViaTbl = function(tbl)
-    for _, v in pairs(tbl) do
-        if not isstring(v) then return end
-        util.AddNetworkString(v)
+    for k, _ in pairs(tbl) do
+        if not tbl[k] then return end
+        if not isstring(k) then return end
+        util.AddNetworkString(k)
     end
 end
 

@@ -190,8 +190,8 @@ concommand.Add("Log4g_MMC", function()
     SubMenuB:SetDeleteSelf(false)
 
     SubMenuB:AddOption("LoggerConfig", function()
-        local FrameB = CreateDFrame(400, 300, "New LoggerConfig", "icon16/application_view_list.png")
-        local DProp = vgui.Create("DProperties", FrameB)
+        local Window = CreateDFrame(400, 300, "New LoggerConfig", "icon16/application_view_list.png")
+        local DProp = vgui.Create("DProperties", Window)
         DProp:Dock(FILL)
         local RowA, RowB = DPropNewRow(DProp, "Hook", "Event Name", "Combo"), DPropNewRow(DProp, "Hook", "Unique Identifier", "Generic")
         local RowC, RowD = DPropNewRow(DProp, "Logger", "LoggerContext", "Generic"), DPropNewRow(DProp, "Logger", "Level", "Combo")
@@ -227,7 +227,7 @@ concommand.Add("Log4g_MMC", function()
             AddChoiceViaNetTbl("Log4g_CLReq_Layouts", "Log4g_CLRcv_Layouts", RowF)
         end)
 
-        local ButtonA = CreateDButton(FrameB, BOTTOM, 150, 0, 150, 0, 100, 50, "Submit")
+        local ButtonA = CreateDButton(Window, BOTTOM, 150, 0, 150, 0, 100, 50, "Submit")
 
         ButtonA.DoClick = function()
             net.Start("Log4g_CLUpload_LoggerConfig")
@@ -243,6 +243,10 @@ concommand.Add("Log4g_MMC", function()
             })
 
             net.SendToServer()
+        end
+
+        function Window:OnRemove()
+            timer.Remove("Log4g_CL_RepopulateCombobox")
         end
     end):SetIcon("icon16/cog_add.png")
 
@@ -335,6 +339,5 @@ concommand.Add("Log4g_MMC", function()
     function FrameA:OnRemove()
         timer.Remove("Log4g_CL_CheckIsConnected")
         timer.Remove("Log4g_CL_RepopulateVGUIElement")
-        timer.Remove("Log4g_CL_RepopulateCombobox")
     end
 end)

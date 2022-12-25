@@ -2,7 +2,7 @@ local AddNetworkStrsViaTbl = Log4g.Util.AddNetworkStrsViaTbl
 local FindFilesInSubFolders = Log4g.Util.FindFilesInSubFolders
 
 AddNetworkStrsViaTbl({
-    [1] = "Log4g_CLReq_LoggerConfig_BuildDefault"
+    ["Log4g_CLReq_LoggerConfig_BuildDefault"] = true
 })
 
 net.Receive("Log4g_CLReq_LoggerConfig_BuildDefault", function(len, ply)

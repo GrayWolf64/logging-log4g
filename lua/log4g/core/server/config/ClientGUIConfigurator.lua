@@ -23,26 +23,26 @@ local function RemoveRegisteredObjectByName(tbl, name)
 end
 
 AddNetworkStrsViaTbl({
-    [1] = "Log4g_CLUpload_LoggerConfig",
-    [2] = "Log4g_CLReq_Hooks",
-    [3] = "Log4g_CLRcv_Hooks",
-    [4] = "Log4g_CLReq_LoggerConfigs",
-    [5] = "Log4g_CLRcv_LoggerConfigs",
-    [6] = "Log4g_CLReq_LoggerConfig_Remove",
-    [7] = "Log4g_CLReq_LoggerContext_Lookup",
-    [8] = "Log4g_CLRcv_LoggerContext_Lookup",
-    [9] = "Log4g_CLReq_LoggerContext_Remove",
-    [10] = "Log4g_CLReq_Levels",
-    [11] = "Log4g_CLRcv_Levels",
-    [12] = "Log4g_CLReq_Appenders",
-    [13] = "Log4g_CLRcv_Appenders",
-    [14] = "Log4g_CLReq_Layouts",
-    [15] = "Log4g_CLRcv_Layouts",
-    [16] = "Log4g_CLReq_LoggerConfig_Keys",
-    [17] = "Log4g_CLRcv_LoggerConfig_Keys",
-    [18] = "Log4g_CL_ChkConnected",
-    [19] = "Log4g_CL_IsConnected",
-    [20] = "Log4g_CLUpload_NewLevel"
+    ["Log4g_CLUpload_LoggerConfig"] = true,
+    ["Log4g_CLReq_Hooks"] = true,
+    ["Log4g_CLRcv_Hooks"] = true,
+    ["Log4g_CLReq_LoggerConfigs"] = true,
+    ["Log4g_CLRcv_LoggerConfigs"] = true,
+    ["Log4g_CLReq_LoggerConfig_Remove"] = true,
+    ["Log4g_CLReq_LoggerContext_Lookup"] = true,
+    ["Log4g_CLRcv_LoggerContext_Lookup"] = true,
+    ["Log4g_CLReq_LoggerContext_Remove"] = true,
+    ["Log4g_CLReq_Levels"] = true,
+    ["Log4g_CLRcv_Levels"] = true,
+    ["Log4g_CLReq_Appenders"] = true,
+    ["Log4g_CLRcv_Appenders"] = true,
+    ["Log4g_CLReq_Layouts"] = true,
+    ["Log4g_CLRcv_Layouts"] = true,
+    ["Log4g_CLReq_LoggerConfig_Keys"] = true,
+    ["Log4g_CLRcv_LoggerConfig_Keys"] = true,
+    ["Log4g_CL_ChkConnected"] = true,
+    ["Log4g_CL_IsConnected"] = true,
+    ["Log4g_CLUpload_NewLevel"] = true
 })
 
 net.Receive("Log4g_CL_ChkConnected", function(len, ply)
