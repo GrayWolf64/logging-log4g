@@ -4,14 +4,14 @@ local SendTableAfterRcvNetMsg = Log4g.Util.SendTableAfterRcvNetMsg
 local HasKey = Log4g.Util.HasKey
 local LoggerContextLookupFile = "log4g/server/loggercontext/loggercontext_lookup.json"
 
-local function GetNameList(tbl)
-    local names = {}
+local function GetKeyList(tbl)
+    local keys = {}
 
     for k, _ in pairs(tbl) do
-        table.insert(names, k)
+        table.insert(keys, k)
     end
 
-    return names
+    return keys
 end
 
 local function RemoveRegisteredObjectByName(tbl, name)
@@ -60,9 +60,9 @@ net.Receive("Log4g_CLReq_LoggerConfig_Keys", function(len, ply)
     net.Send(ply)
 end)
 
-SendTableAfterRcvNetMsg("Log4g_CLReq_Levels", "Log4g_CLRcv_Levels", GetNameList(Log4g.Levels))
-SendTableAfterRcvNetMsg("Log4g_CLReq_Appenders", "Log4g_CLRcv_Appenders", GetNameList(Log4g.Appenders))
-SendTableAfterRcvNetMsg("Log4g_CLReq_Layouts", "Log4g_CLRcv_Layouts", GetNameList(Log4g.Layouts))
+SendTableAfterRcvNetMsg("Log4g_CLReq_Levels", "Log4g_CLRcv_Levels", GetKeyList(Log4g.Levels))
+SendTableAfterRcvNetMsg("Log4g_CLReq_Appenders", "Log4g_CLRcv_Appenders", GetKeyList(Log4g.Appenders))
+SendTableAfterRcvNetMsg("Log4g_CLReq_Layouts", "Log4g_CLRcv_Layouts", GetKeyList(Log4g.Layouts))
 
 net.Receive("Log4g_CLReq_Hooks", function(len, ply)
     if not ply:IsAdmin() then return end

@@ -1,4 +1,4 @@
---- The Util Library (Module)
+--- The Util Library (Module).
 -- @module Util
 Log4g.Util = {}
 

@@ -11,13 +11,11 @@ local function CreateDFrame(a, b, title, icon)
     return dframe
 end
 
-local function CreateDLabel(parent, docktype, x, y, z, w, text)
-    local dlabel = vgui.Create("DLabel", parent)
-    dlabel:Dock(docktype)
-    dlabel:DockMargin(x, y, z, w)
-    dlabel:SetText(text)
-
-    return dlabel
+local function AppendRichTextViaTbl(panel, tbl)
+    for _, v in ipairs(tbl) do
+        if not isstring(v) then return end
+        panel:AppendText(v)
+    end
 end
 
 local function CreateDButton(parent, docktype, x, y, z, w, a, b, text)
@@ -271,7 +269,17 @@ concommand.Add("Log4g_MMC", function()
 
     MenuC:AddOption("About", function()
         local Window = CreateDFrame(300, 150, "About", "icon16/information.png")
-        local _ = CreateDLabel(Window, TOP, 3, 3, 3, 3, "Log4g is an open-source addon for Garry's Mod.")
+        local Text = vgui.Create("RichText", Window)
+        Text:Dock(FILL)
+        Text:InsertColorChange(192, 192, 192, 255)
+
+        AppendRichTextViaTbl(Text, {
+            [1] = "Log4g is an open-source addon for Garry's Mod.\n",
+            [2] = "\n",
+            [3] = "GitHub Page: https://github.com/GrayWolf64/Log4g\n",
+            [4] = "\n",
+            [5] = "Documentation can be seen on GitHub Page as well.\n"
+        })
     end):SetIcon("icon16/information.png")
 
     local DGridA = vgui.Create("DGrid", SheetPanelB)
@@ -301,7 +309,7 @@ concommand.Add("Log4g_MMC", function()
         Progress:SetFraction((4 - timer.TimeLeft("Log4g_CL_RepopulateVGUIElement")) / 4)
     end
 
-    for _, v in ipairs({ButtonC, ButtonD, Progress}) do
+    for _, v in pairs({ButtonC, ButtonD, Progress}) do
         DGridA:AddItem(v)
     end
 
