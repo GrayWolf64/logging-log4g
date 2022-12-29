@@ -64,7 +64,7 @@ end
 --- Get the Level.
 -- Return the Level associated with the name or nil if the Level cannot be found.
 -- @param name The Level's name
--- @return table level
+-- @return object level
 function Log4g.GetLevel(name)
     for k, v in pairs(Log4g.Levels) do
         if k == name then return v end
@@ -77,7 +77,7 @@ end
 -- If the Level already exists, it's intlevel will be overrode, and standard will be set to false.
 -- @param name The Level's name
 -- @param int The Level's intlevel
--- @return table level
+-- @return object level
 function Log4g.Registrar.RegisterCustomLevel(name, int)
     if name == "" or int < 0 then return end
 

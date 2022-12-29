@@ -12,7 +12,7 @@ end
 -- If the Layout with the same name already exists, its function will be overrode.
 -- @param name The name of the Layout
 -- @param folder The folder of the Layout
--- @return table layout
+-- @return object layout
 function Log4g.Registrar.RegisterLayout(name, func)
     local layout = Layout(name, func)
     table.insert(Log4g.Layouts, layout)

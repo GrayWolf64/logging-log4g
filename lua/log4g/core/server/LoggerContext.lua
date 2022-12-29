@@ -30,7 +30,7 @@ end
 -- If the LoggerContext with the same name already exists, its folder will be overrode.
 -- @param name The name of the LoggerContext
 -- @param folder The folder of the LoggerContext
--- @return table loggercontext
+-- @return object loggercontext
 function Log4g.Registrar.RegisterLoggerContext(name, folder)
     if name == "" or folder == "" then return end
 
