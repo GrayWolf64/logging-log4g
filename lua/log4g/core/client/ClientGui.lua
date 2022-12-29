@@ -77,14 +77,13 @@ concommand.Add("Log4g_MMC", function()
     CIcon:DockMargin(4, 4, 4, 4)
 
     timer.Create("Log4g_CL_CheckIsConnected", 4, 0, function()
+        CIcon:SetImage("icon16/disconnect.png")
         net.Start("Log4g_CL_ChkConnected")
         net.SendToServer()
 
         net.Receive("Log4g_CL_IsConnected", function()
             if net.ReadBool() == true then
                 CIcon:SetImage("icon16/connect.png")
-            else
-                CIcon:SetImage("icon16/disconnect.png")
             end
         end)
     end)
