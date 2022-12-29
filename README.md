@@ -19,5 +19,5 @@ Log4g is an advanced logging framework for Garry's Mod.
 ## Documentation
 The Log4g Documentation is available [here](https://github.com/GrayWolf64/Log4g/wiki).
 
-## Thanks to
+## Third-Party Project(s) Used
 - [NClassic](https://github.com/ImpishDeathTech/nclassic)
