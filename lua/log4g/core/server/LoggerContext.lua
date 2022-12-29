@@ -19,7 +19,7 @@ end
 -- @param name The name of the LoggerContext
 -- @return bool hascontext
 function Log4g.HasContext(name)
-    for k, v in pairs(Log4g.LoggerContexts) do
+    for k, _ in pairs(Log4g.LoggerContexts) do
         if k == name then return true end
     end
 
