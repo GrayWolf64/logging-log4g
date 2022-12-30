@@ -69,27 +69,39 @@ local function GetGameInfo()
     return "Server: " .. game.GetIPAddress() .. " " .. "SinglePlayer: " .. tostring(game.SinglePlayer())
 end
 
+local function PanelTimedFunc(panel, interval, funca, funcb)
+    local prevtime = os.time()
+
+    function panel:Think()
+        funca()
+        local prestime = os.time()
+        if prevtime + interval > prestime then return end
+        funcb()
+        prevtime = prevtime + interval
+    end
+end
+
 concommand.Add("Log4g_MMC", function()
     local FrameA = CreateDFrame(960, 640, "Log4g Monitoring & Management Console(MMC)" .. " - " .. GetGameInfo(), "icon16/application.png")
     local MenuBar = vgui.Create("DMenuBar", FrameA)
-    local CIcon = vgui.Create("DImageButton", MenuBar)
-    CIcon:Dock(RIGHT)
-    CIcon:DockMargin(4, 4, 4, 4)
+    local Icon = vgui.Create("DImageButton", MenuBar)
+    Icon:Dock(RIGHT)
+    Icon:DockMargin(4, 4, 4, 4)
 
-    timer.Create("Log4g_CL_CheckIsConnected", 4, 0, function()
-        CIcon:SetImage("icon16/disconnect.png")
+    PanelTimedFunc(Icon, 4, function() end, function()
+        Icon:SetImage("icon16/disconnect.png")
         net.Start("Log4g_CL_ChkConnected")
         net.SendToServer()
 
         net.Receive("Log4g_CL_IsConnected", function()
             if net.ReadBool() == true then
-                CIcon:SetImage("icon16/connect.png")
+                Icon:SetImage("icon16/connect.png")
             end
         end)
     end)
 
-    CIcon:SetKeepAspect(true)
-    CIcon:SetSize(16, 16)
+    Icon:SetKeepAspect(true)
+    Icon:SetSize(16, 16)
     local MenuA = MenuBar:AddMenu("New")
     local MenuB = MenuBar:AddMenu("Settings")
     MenuB:AddOption("General", function() end):SetIcon("icon16/wrench.png")
@@ -115,23 +127,6 @@ concommand.Add("Log4g_MMC", function()
     local Tree = vgui.Create("DTree", SheetPanelB)
     Tree:Dock(RIGHT)
     Tree:DockMargin(1, 1, 1, 0)
-
-    function Tree:Think()
-        function Tree:DoRightClick(node)
-            if node:GetIcon() == "icon16/folder.png" then
-                local Menu = DermaMenu()
-
-                Menu:AddOption("Remove", function()
-                    net.Start("Log4g_CLReq_LoggerContext_Remove")
-                    net.WriteString(node:GetText())
-                    net.SendToServer()
-                end):SetIcon("icon16/cross.png")
-
-                Menu:Open()
-            end
-        end
-    end
-
     net.Start("Log4g_CLReq_LoggerConfig_Keys")
     net.SendToServer()
 
@@ -141,7 +136,34 @@ concommand.Add("Log4g_MMC", function()
         end
     end)
 
-    timer.Create("Log4g_CL_RepopulateVGUIElement", 4, 0, function()
+    PanelTimedFunc(ListView, 4, function()
+        function ListView:OnRowRightClick(num)
+            local Menu = DermaMenu()
+
+            Menu:AddOption("Remove", function()
+                net.Start("Log4g_CLReq_LoggerConfig_Remove")
+                local Line = ListView:GetLine(num)
+                local LoggerContextName, LoggerConfigName
+
+                for m, n in ipairs(ListView.Columns) do
+                    local Text = n:GetChild(0):GetText()
+                    local Str = Line:GetColumnText(m)
+
+                    if Text == "loggercontext" then
+                        LoggerContextName = Str
+                    elseif Text == "name" then
+                        LoggerConfigName = Str
+                    end
+                end
+
+                net.WriteString(LoggerContextName)
+                net.WriteString(LoggerConfigName)
+                net.SendToServer()
+            end):SetIcon("icon16/cross.png")
+
+            Menu:Open()
+        end
+    end, function()
         ListView:Clear()
         net.Start("Log4g_CLReq_LoggerConfigs")
         net.SendToServer()
@@ -162,7 +184,23 @@ concommand.Add("Log4g_MMC", function()
                 SetProperLineText(v, Line)
             end
         end)
+    end)
 
+    PanelTimedFunc(Tree, 4, function()
+        function Tree:DoRightClick(node)
+            if node:GetIcon() == "icon16/folder.png" then
+                local Menu = DermaMenu()
+
+                Menu:AddOption("Remove", function()
+                    net.Start("Log4g_CLReq_LoggerContext_Remove")
+                    net.WriteString(node:GetText())
+                    net.SendToServer()
+                end):SetIcon("icon16/cross.png")
+
+                Menu:Open()
+            end
+        end
+    end, function()
         Tree:Clear()
         net.Start("Log4g_CLReq_LoggerContext_Lookup")
         net.SendToServer()
@@ -218,7 +256,7 @@ concommand.Add("Log4g_MMC", function()
             box:SetValue("Select...")
         end
 
-        timer.Create("Log4g_CL_RepopulateCombobox", 4, 0, function()
+        PanelTimedFunc(Window, 4, function()
             AddChoiceViaNetTbl("Log4g_CLReq_Levels", "Log4g_CLRcv_Levels", RowD)
             AddChoiceViaNetTbl("Log4g_CLReq_Appenders", "Log4g_CLRcv_Appenders", RowE)
             AddChoiceViaNetTbl("Log4g_CLReq_Layouts", "Log4g_CLRcv_Layouts", RowF)
@@ -240,10 +278,6 @@ concommand.Add("Log4g_MMC", function()
             })
 
             net.SendToServer()
-        end
-
-        function Window:OnRemove()
-            timer.Remove("Log4g_CL_RepopulateCombobox")
         end
     end):SetIcon("icon16/cog_add.png")
 
@@ -305,46 +339,12 @@ concommand.Add("Log4g_MMC", function()
     Progress:SetSize(100, 50)
 
     function Progress:Think()
-        Progress:SetFraction((4 - timer.TimeLeft("Log4g_CL_RepopulateVGUIElement")) / 4)
+        Progress:SetFraction(4 / 4)
     end
 
     for _, v in pairs({ButtonC, ButtonD, Progress}) do
         DGridA:AddItem(v)
     end
 
-    function ListView:Think()
-        function ListView:OnRowRightClick(num)
-            local Menu = DermaMenu()
-
-            Menu:AddOption("Remove", function()
-                net.Start("Log4g_CLReq_LoggerConfig_Remove")
-                local Line = ListView:GetLine(num)
-                local LoggerContextName, LoggerConfigName
-
-                for m, n in ipairs(ListView.Columns) do
-                    local Text = n:GetChild(0):GetText()
-                    local Str = Line:GetColumnText(m)
-
-                    if Text == "loggercontext" then
-                        LoggerContextName = Str
-                    elseif Text == "name" then
-                        LoggerConfigName = Str
-                    end
-                end
-
-                net.WriteString(LoggerContextName)
-                net.WriteString(LoggerConfigName)
-                net.SendToServer()
-            end):SetIcon("icon16/cross.png")
-
-            Menu:Open()
-        end
-    end
-
     local _ = CreateDHDivider(SheetPanelB, ListView, Tree, 4, 735, 150)
-
-    function FrameA:OnRemove()
-        timer.Remove("Log4g_CL_CheckIsConnected")
-        timer.Remove("Log4g_CL_RepopulateVGUIElement")
-    end
 end)
