@@ -31,7 +31,7 @@ end
 -- @param name The name of the LoggerContext
 -- @param folder The folder of the LoggerContext
 -- @return object loggercontext
-function Log4g.Registrar.RegisterLoggerContext(name, folder)
+function Log4g.Registrars.RegisterLoggerContext(name, folder)
     if name == "" or folder == "" then return end
 
     if not HasKey(Log4g.LoggerContexts, name) then
