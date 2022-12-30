@@ -256,7 +256,7 @@ concommand.Add("Log4g_MMC", function()
             box:SetValue("Select...")
         end
 
-        PanelTimedFunc(Window, 4, function()
+        PanelTimedFunc(Window, 4, function() end, function()
             AddChoiceViaNetTbl("Log4g_CLReq_Levels", "Log4g_CLRcv_Levels", RowD)
             AddChoiceViaNetTbl("Log4g_CLReq_Appenders", "Log4g_CLRcv_Appenders", RowE)
             AddChoiceViaNetTbl("Log4g_CLReq_Layouts", "Log4g_CLRcv_Layouts", RowF)
