@@ -1,5 +1,7 @@
+--- The Appender.
+-- @classmod Appender
 Log4g.Appenders = {}
-local Appender = include("log4g/core/server/impl/Class.lua"):Extend()
+local Appender = include("log4g/core/impl/Class.lua"):Extend()
 
 function Appender:New(name, func)
     self.name = name or ""

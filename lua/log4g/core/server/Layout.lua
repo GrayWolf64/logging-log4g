@@ -1,7 +1,7 @@
 --- The Layout.
 -- @classmod Layout
 Log4g.Layouts = {}
-local Layout = include("log4g/core/server/impl/Class.lua"):Extend()
+local Layout = include("log4g/core/impl/Class.lua"):Extend()
 
 function Layout:New(name, func)
     self.name = name or ""

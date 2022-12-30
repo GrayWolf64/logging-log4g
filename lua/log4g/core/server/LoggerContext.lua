@@ -1,7 +1,7 @@
 --- The LoggerContext.
 -- @classmod LoggerContext
 Log4g.LoggerContexts = {}
-local LoggerContext = include("log4g/core/server/impl/Class.lua"):Extend()
+local LoggerContext = include("log4g/core/impl/Class.lua"):Extend()
 local HasKey = Log4g.Util.HasKey
 
 function LoggerContext:New(name, folder)

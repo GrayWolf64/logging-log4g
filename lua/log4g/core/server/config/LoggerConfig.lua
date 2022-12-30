@@ -1,5 +1,5 @@
 Log4g.LoggerConfigs = {}
-local LoggerConfig = include("log4g/core/server/impl/Class.lua"):Extend()
+local LoggerConfig = include("log4g/core/impl/Class.lua"):Extend()
 
 function LoggerConfig:New(name, eventname, uid, loggercontext, level, appender, layout, file)
     self.name = name or ""

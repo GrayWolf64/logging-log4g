@@ -1,7 +1,7 @@
 --- The Level (Log Level).
 -- @classmod Level
 Log4g.Levels = {}
-local Level = include("log4g/core/server/impl/Class.lua"):Extend()
+local Level = include("log4g/core/impl/Class.lua"):Extend()
 local HasKey = Log4g.Util.HasKey
 
 function Level:New(name, int, standard)

@@ -15,6 +15,7 @@ if SERVER then
     include("log4g/core/server/config/ClientGUIConfigurator.lua")
     include("log4g/core/server/config/builder/DefaultLoggerConfigBuilder.lua")
     include("log4g/core/Version.lua")
+    AddCSLuaFile("log4g/core/impl/UnpredictedTimer.lua")
     AddCSLuaFile("log4g/core/client/ClientGui.lua")
     AddCSLuaFile("log4g/core/Version.lua")
 elseif CLIENT then
