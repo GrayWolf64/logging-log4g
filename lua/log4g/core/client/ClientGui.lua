@@ -334,7 +334,7 @@ concommand.Add("Log4g_MMC", function()
 
     local DGridA = vgui.Create("DGrid", SheetPanelB)
     DGridA:Dock(BOTTOM)
-    DGridA:SetCols(3)
+    DGridA:SetCols(2)
     DGridA:SetColWide(100)
     DGridA:SetRowHeight(50)
     DGridA:DockMargin(1, 1, 1, 1)
@@ -352,14 +352,7 @@ concommand.Add("Log4g_MMC", function()
         Tree:Clear()
     end
 
-    local Progress = vgui.Create("DProgress", DGridA)
-    Progress:SetSize(100, 50)
-
-    function Progress:Think()
-        Progress:SetFraction(4 / 4)
-    end
-
-    for _, v in pairs({ButtonC, ButtonD, Progress}) do
+    for _, v in pairs({ButtonC, ButtonD}) do
         DGridA:AddItem(v)
     end
 
