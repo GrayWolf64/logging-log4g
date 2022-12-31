@@ -59,7 +59,7 @@ end
 --- Get a RowControl's value (edited by user) whether it's a DTextEntry or a DComboBox.
 -- @lfunction GetRowControlValue
 -- @param row The row in the DProp Panel
--- @return string The value got
+-- @return string The value obtained
 local function GetRowControlValue(row)
     local pnl = row:GetChild(1):GetChild(0):GetChild(0)
     local class = pnl:GetName()
