@@ -278,13 +278,17 @@ concommand.Add("Log4g_MMC", function()
         local ButtonA = CreateDButton(Window, BOTTOM, 150, 0, 150, 0, 100, 50, "Submit")
 
         ButtonA.DoClick = function()
+            local InputtedName = GetRowControlValue(RowG)
+            local InputtedUID = GetRowControlValue(RowB)
+            local InputtedLoggerContextName = GetRowControlValue(RowC)
+            if (not isstring(InputtedName)) or (not isstring(InputtedUID)) or (not isstring(InputtedLoggerContextName)) then return end
             net.Start("Log4g_CLUpload_LoggerConfig")
 
             net.WriteTable({
-                name = string.lower(GetRowControlValue(RowG)),
+                name = string.lower(InputtedName),
                 eventname = GetRowControlValue(RowA),
-                uid = GetRowControlValue(RowB),
-                loggercontext = string.lower(GetRowControlValue(RowC)),
+                uid = InputtedUID,
+                loggercontext = string.lower(InputtedLoggerContextName),
                 level = GetRowControlValue(RowD),
                 appender = GetRowControlValue(RowE),
                 layout = GetRowControlValue(RowF)
