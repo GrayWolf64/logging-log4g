@@ -1,3 +1,5 @@
+--- Client GUI (MMC).
+-- @script ClientGui.lua
 local function CreateDFrame(a, b, title, icon)
     local dframe = vgui.Create("DFrame")
     dframe:MakePopup()
