@@ -94,9 +94,8 @@ concommand.Add("Log4g_MMC", function()
         net.SendToServer()
 
         net.Receive("Log4g_CL_IsConnected", function()
-            if net.ReadBool() == true then
-                Icon:SetImage("icon16/connect.png")
-            end
+            if net.ReadBool() ~= true then return end
+            Icon:SetImage("icon16/connect.png")
         end)
     end)
 
@@ -188,17 +187,16 @@ concommand.Add("Log4g_MMC", function()
 
     PanelTimedFunc(Tree, 4, function()
         function Tree:DoRightClick(node)
-            if node:GetIcon() == "icon16/folder.png" then
-                local Menu = DermaMenu()
+            if node:GetIcon() ~= "icon16/folder.png" then return end
+            local Menu = DermaMenu()
 
-                Menu:AddOption("Remove", function()
-                    net.Start("Log4g_CLReq_LoggerContext_Remove")
-                    net.WriteString(node:GetText())
-                    net.SendToServer()
-                end):SetIcon("icon16/cross.png")
+            Menu:AddOption("Remove", function()
+                net.Start("Log4g_CLReq_LoggerContext_Remove")
+                net.WriteString(node:GetText())
+                net.SendToServer()
+            end):SetIcon("icon16/cross.png")
 
-                Menu:Open()
-            end
+            Menu:Open()
         end
     end, function()
         Tree:Clear()
@@ -206,16 +204,15 @@ concommand.Add("Log4g_MMC", function()
         net.SendToServer()
 
         net.Receive("Log4g_CLRcv_LoggerContext_Lookup", function()
-            if net.ReadBool() then
-                local Tbl = util.JSONToTable(util.Decompress(net.ReadData(net.ReadUInt(16))))
+            if not net.ReadBool() then return end
+            local Tbl = util.JSONToTable(util.Decompress(net.ReadData(net.ReadUInt(16))))
 
-                for k, v in pairs(Tbl) do
-                    local Node = Tree:AddNode(k, "icon16/folder.png")
-                    Node:SetExpanded(true)
+            for k, v in pairs(Tbl) do
+                local Node = Tree:AddNode(k, "icon16/folder.png")
+                Node:SetExpanded(true)
 
-                    for _, j in pairs(v) do
-                        Node:AddNode(j, "icon16/brick.png")
-                    end
+                for _, j in pairs(v) do
+                    Node:AddNode(j, "icon16/brick.png")
                 end
             end
         end)
@@ -256,11 +253,13 @@ concommand.Add("Log4g_MMC", function()
             box:SetValue("Select...")
         end
 
-        PanelTimedFunc(Window, 4, function() end, function()
+        function Window:OnCursorEntered()
+            net.Start("Log4g_CL_PendingTransmission_DPropLoggerConfigMessages")
+            net.SendToServer()
             AddChoiceViaNetTbl("Log4g_CLReq_Levels", "Log4g_CLRcv_Levels", RowD)
             AddChoiceViaNetTbl("Log4g_CLReq_Appenders", "Log4g_CLRcv_Appenders", RowE)
             AddChoiceViaNetTbl("Log4g_CLReq_Layouts", "Log4g_CLRcv_Layouts", RowF)
-        end)
+        end
 
         local ButtonA = CreateDButton(Window, BOTTOM, 150, 0, 150, 0, 100, 50, "Submit")
 

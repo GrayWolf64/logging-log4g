@@ -38,7 +38,7 @@ Log4g.Util.AddNetworkStrsViaTbl = function(tbl)
     end
 end
 
---- Find all the files in all the folders' subfolders using wildcard.
+--- Find all the files in all the folder's subfolders using wildcard.
 -- @param dir The folder which contains subfolders
 -- @param wildcard The wildcard to use
 -- @param path The game path
