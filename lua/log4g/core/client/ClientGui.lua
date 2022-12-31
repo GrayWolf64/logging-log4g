@@ -56,6 +56,10 @@ local function DPropNewRow(panel, category, name, prop)
     return row
 end
 
+--- Get a RowControl's value (edited by user) whether it's a DTextEntry or a DComboBox.
+-- @lfunction GetRowControlValue
+-- @param row The row in the DProp Panel
+-- @return string The value got
 local function GetRowControlValue(row)
     local pnl = row:GetChild(1):GetChild(0):GetChild(0)
     local class = pnl:GetName()
@@ -95,8 +99,9 @@ concommand.Add("Log4g_MMC", function()
     local Icon = vgui.Create("DImageButton", MenuBar)
     Icon:Dock(RIGHT)
     Icon:DockMargin(4, 4, 4, 4)
+    local UpdateInterval = CreateClientConVar("Log4g_CL_GUI_ElementUpdateInterval", 5, true, false, "Client GUI elements will be updated every given seconds (at least 1).", 1):GetInt()
 
-    PanelTimedFunc(Icon, 4, function() end, function()
+    PanelTimedFunc(Icon, UpdateInterval, function() end, function()
         Icon:SetImage("icon16/disconnect.png")
         net.Start("Log4g_CL_ChkConnected")
         net.SendToServer()
@@ -143,7 +148,7 @@ concommand.Add("Log4g_MMC", function()
         end
     end)
 
-    PanelTimedFunc(ListView, 4, function()
+    PanelTimedFunc(ListView, UpdateInterval, function()
         function ListView:OnRowRightClick(num)
             local Menu = DermaMenu()
 
@@ -193,7 +198,7 @@ concommand.Add("Log4g_MMC", function()
         end)
     end)
 
-    PanelTimedFunc(Tree, 4, function()
+    PanelTimedFunc(Tree, UpdateInterval, function()
         function Tree:DoRightClick(node)
             if node:GetIcon() ~= "icon16/folder.png" then return end
             local Menu = DermaMenu()
