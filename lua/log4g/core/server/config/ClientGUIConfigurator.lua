@@ -1,3 +1,5 @@
+--- Server-side processing of the Client GUI requests.
+-- @script ClientGUIConfigurator.lua
 local AddNetworkStrsViaTbl = Log4g.Util.AddNetworkStrsViaTbl
 local FindFilesInSubFolders = Log4g.Util.FindFilesInSubFolders
 local SendTableAfterRcvNetMsg = Log4g.Util.SendTableAfterRcvNetMsg
