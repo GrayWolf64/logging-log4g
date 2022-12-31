@@ -71,9 +71,9 @@ local function GetGameInfo()
     return "Server: " .. game.GetIPAddress() .. " " .. "SinglePlayer: " .. tostring(game.SinglePlayer())
 end
 
---- In a panel's Think, run a function and run another function but timed.
+--- In a Panel's Think, run a function and run another function but timed.
 -- @lfunction PanelTimedFunc
--- @param panel The panel which has a Think function to override
+-- @param panel The Panel which has a Think function to override
 -- @param interval The function will run every given seconds
 -- @param funca The first function
 -- @param funcb The second function
