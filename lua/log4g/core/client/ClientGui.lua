@@ -93,13 +93,14 @@ local function PanelTimedFunc(panel, interval, funca, funcb)
     end
 end
 
+local UpdateInterval = CreateClientConVar("Log4g_CL_GUI_ElementUpdateInterval", 5, true, false, "Client GUI elements will be updated every given seconds (at least 1).", 1):GetInt()
+
 concommand.Add("Log4g_MMC", function()
     local FrameA = CreateDFrame(960, 640, "Log4g Monitoring & Management Console(MMC)" .. " - " .. GetGameInfo(), "icon16/application.png")
     local MenuBar = vgui.Create("DMenuBar", FrameA)
     local Icon = vgui.Create("DImageButton", MenuBar)
     Icon:Dock(RIGHT)
     Icon:DockMargin(4, 4, 4, 4)
-    local UpdateInterval = CreateClientConVar("Log4g_CL_GUI_ElementUpdateInterval", 5, true, false, "Client GUI elements will be updated every given seconds (at least 1).", 1):GetInt()
 
     PanelTimedFunc(Icon, UpdateInterval, function() end, function()
         Icon:SetImage("icon16/disconnect.png")
