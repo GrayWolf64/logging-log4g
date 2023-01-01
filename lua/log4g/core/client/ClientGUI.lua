@@ -1,6 +1,6 @@
 --- Client GUI (MMC).
 -- @script ClientGUI.lua
-local function CreateDFrame(a, b, title, icon)
+local function CreateDFrame(a, b, title, icon, parent)
     local dframe = vgui.Create("DFrame")
     dframe:MakePopup()
     dframe:SetSize(a, b)
@@ -8,6 +8,10 @@ local function CreateDFrame(a, b, title, icon)
     dframe:SetScreenLock(true)
     dframe:SetTitle(title)
     dframe:SetIcon(icon)
+
+    if IsValid(parent) then
+        dframe:SetParent(parent)
+    end
 
     return dframe
 end
@@ -109,7 +113,7 @@ concommand.Add("Log4g_MMC", function()
         return
     end
 
-    Frame = CreateDFrame(960, 640, "Log4g Monitoring & Management Console(MMC)" .. " - " .. GetGameInfo(), "icon16/application.png")
+    Frame = CreateDFrame(960, 640, "Log4g Monitoring & Management Console(MMC)" .. " - " .. GetGameInfo(), "icon16/application.png", nil)
     local MenuBar = vgui.Create("DMenuBar", Frame)
     local Icon = vgui.Create("DImageButton", MenuBar)
     Icon:Dock(RIGHT)
@@ -250,7 +254,7 @@ concommand.Add("Log4g_MMC", function()
     SubMenuB:SetDeleteSelf(false)
 
     SubMenuB:AddOption("LoggerConfig", function()
-        local Window = CreateDFrame(400, 300, "New LoggerConfig", "icon16/application_view_list.png")
+        local Window = CreateDFrame(400, 300, "New LoggerConfig", "icon16/application_view_list.png", Frame)
         local DProp = vgui.Create("DProperties", Window)
         DProp:Dock(FILL)
         local RowA, RowB = DPropNewRow(DProp, "Hook", "Event Name", "Combo"), DPropNewRow(DProp, "Hook", "Unique Identifier", "Generic")
@@ -318,7 +322,7 @@ concommand.Add("Log4g_MMC", function()
     end):SetIcon("icon16/cog_add.png")
 
     SubMenuB:AddOption("Level", function()
-        local Window = CreateDFrame(300, 150, "New Level", "icon16/application.png")
+        local Window = CreateDFrame(300, 150, "New Level", "icon16/application.png", Frame)
         local DProp = vgui.Create("DProperties", Window)
         DProp:Dock(FILL)
         local RowA, RowB = DPropNewRow(DProp, "Self", "Name", "Generic"), DPropNewRow(DProp, "Self", "IntLevel", "Generic")
@@ -337,7 +341,7 @@ concommand.Add("Log4g_MMC", function()
     end):SetIcon("icon16/chart_bar.png")
 
     MenuC:AddOption("About", function()
-        local Window = CreateDFrame(300, 150, "About", "icon16/information.png")
+        local Window = CreateDFrame(300, 150, "About", "icon16/information.png", Frame)
         local Text = vgui.Create("RichText", Window)
         Text:Dock(FILL)
         Text:InsertColorChange(192, 192, 192, 255)
