@@ -338,28 +338,32 @@ concommand.Add("Log4g_MMC", function()
         })
     end):SetIcon("icon16/information.png")
 
-    local DGridA = vgui.Create("DGrid", SheetPanelB)
-    DGridA:Dock(BOTTOM)
-    DGridA:SetCols(2)
-    DGridA:SetColWide(100)
-    DGridA:SetRowHeight(50)
-    DGridA:DockMargin(1, 1, 1, 1)
-    local ButtonC = CreateDButton(DGridA, NODOCK, 0, 0, 0, 0, 100, 50, "SV BUILD")
+    local ButtonC = CreateDButton(SheetPanelB, BOTTOM, 1, 1, 840, 1, 100, 50, "Actions")
+    local BtnColorA = Color(255, 193, 37, 250)
+
+    ButtonC.Paint = function(self, w, h)
+        draw.RoundedBox(2, 0, 0, w, h, BtnColorA)
+    end
 
     function ButtonC:DoClick()
-        net.Start("Log4g_CLReq_LoggerConfig_BuildDefault")
-        net.SendToServer()
-    end
+        local Menu = DermaMenu()
+        local SubA = Menu:AddSubMenu("Build LoggerConfigs (SV)")
 
-    local ButtonD = CreateDButton(DGridA, NODOCK, 0, 0, 0, 0, 100, 50, "Clear View")
+        SubA:AddOption("Default", function()
+            net.Start("Log4g_CLReq_LoggerConfig_BuildDefault")
+            net.SendToServer()
+        end)
 
-    function ButtonD:DoClick()
-        ListView:Clear()
-        Tree:Clear()
-    end
+        Menu:AddSpacer()
+        local SubB = Menu:AddSubMenu("View")
 
-    for _, v in pairs({ButtonC, ButtonD}) do
-        DGridA:AddItem(v)
+        SubB:AddOption("Clear", function()
+            ListView:Clear()
+            Tree:Clear()
+        end)
+
+        SubB:AddOption("Update Frequency")
+        Menu:Open()
     end
 
     local _ = CreateDHDivider(SheetPanelB, ListView, Tree, 4, 735, 150)
