@@ -252,6 +252,10 @@ concommand.Add("Log4g_MMC", function()
             end
         end)
 
+        --- Receive a Net table and add the given choices to a RowControl's DComboBox.
+        -- @lfunction AddChoiceViaNetTbl
+        -- @param start The message to request the server to send another Net message
+        -- @param receive The message containing the table to receive
         local function AddChoiceViaNetTbl(start, receive, row)
             local box = row:GetChild(1):GetChild(0):GetChild(0)
             box:Clear()
