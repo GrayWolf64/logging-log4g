@@ -8,7 +8,6 @@ local function CreateDFrame(a, b, title, icon)
     dframe:SetScreenLock(true)
     dframe:SetTitle(title)
     dframe:SetIcon(icon)
-    dframe:SetDrawOnTop(true)
 
     return dframe
 end
@@ -101,10 +100,17 @@ local function PanelTimedFunc(panel, interval, funca, funcb)
 end
 
 local UpdateInterval = CreateClientConVar("Log4g_CL_GUI_ElementUpdateInterval", 5, true, false, "Client GUI elements will be updated every given seconds (at least 1).", 1):GetInt()
+local Frame = nil
 
 concommand.Add("Log4g_MMC", function()
-    local FrameA = CreateDFrame(960, 640, "Log4g Monitoring & Management Console(MMC)" .. " - " .. GetGameInfo(), "icon16/application.png")
-    local MenuBar = vgui.Create("DMenuBar", FrameA)
+    if IsValid(Frame) then
+        Frame:Remove()
+
+        return
+    end
+
+    Frame = CreateDFrame(960, 640, "Log4g Monitoring & Management Console(MMC)" .. " - " .. GetGameInfo(), "icon16/application.png")
+    local MenuBar = vgui.Create("DMenuBar", Frame)
     local Icon = vgui.Create("DImageButton", MenuBar)
     Icon:Dock(RIGHT)
     Icon:DockMargin(4, 4, 4, 4)
@@ -126,7 +132,7 @@ concommand.Add("Log4g_MMC", function()
     local MenuB = MenuBar:AddMenu("Settings")
     MenuB:AddOption("General", function() end):SetIcon("icon16/wrench.png")
     local MenuC = MenuBar:AddMenu("Help")
-    local SheetA = vgui.Create("DPropertySheet", FrameA)
+    local SheetA = vgui.Create("DPropertySheet", Frame)
     SheetA:Dock(FILL)
     SheetA:DockMargin(1, 1, 1, 1)
     SheetA:SetPadding(5)
