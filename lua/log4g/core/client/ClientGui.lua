@@ -126,6 +126,7 @@ concommand.Add("Log4g_MMC", function()
     local SheetPanelA = vgui.Create("DPanel", SheetA)
 
     function SheetPanelA:Paint()
+        return
     end
 
     SheetA:AddSheet("Configuration", SheetPanelA, "icon16/cog.png")
