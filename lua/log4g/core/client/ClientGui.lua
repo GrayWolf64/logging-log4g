@@ -346,10 +346,12 @@ concommand.Add("Log4g_MMC", function()
     end):SetIcon("icon16/information.png")
 
     local ButtonC = CreateDButton(SheetPanelB, BOTTOM, 1, 1, 840, 1, 100, 50, "Actions")
-    local BtnColorA = Color(255, 193, 37, 250)
 
     ButtonC.Paint = function(self, w, h)
-        draw.RoundedBox(2, 0, 0, w, h, BtnColorA)
+        surface.SetDrawColor(Color(255, 215, 0))
+        self:DrawFilledRect()
+        surface.SetDrawColor(Color(105, 105, 105))
+        self:DrawOutlinedRect()
     end
 
     function ButtonC:DoClick()
