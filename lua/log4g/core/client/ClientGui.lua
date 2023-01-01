@@ -49,6 +49,13 @@ local function CreateDListView(parent, docktype, x, y, z, w)
     return dlistview
 end
 
+--- Create a new row in a DProp.
+-- @lfunction DPropNewRow
+-- @param panel The DProp
+-- @param category The category to put the row into
+-- @param name The label of the row
+-- @param prop The name of RowControl to add
+-- @return row The created row
 local function DPropNewRow(panel, category, name, prop)
     local row = panel:CreateRow(category, name)
     row:Setup(prop)
