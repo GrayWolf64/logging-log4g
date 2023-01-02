@@ -55,7 +55,8 @@ AddNetworkStrsViaTbl({
 })
 
 net.Receive("Log4g_CL_ChkConnected", function(len, ply)
-    net.Start("Log4g_CL_IsConnected")
+    if not IsValid(ply) then return end ------ If the player disconnects right after sending the message,
+    net.Start("Log4g_CL_IsConnected") -------- we have to check whether the player is valid.
     net.WriteBool(ply:IsConnected())
     net.Send(ply)
 end)
