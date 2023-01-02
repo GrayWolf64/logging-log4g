@@ -103,7 +103,7 @@ local function PanelTimedFunc(panel, interval, funca, funcb)
     end
 end
 
-local UpdateInterval = CreateClientConVar("Log4g_CL_GUI_ElementUpdateInterval", 5, true, false, "Client GUI elements will be updated every given seconds (at least 1).", 1):GetInt()
+local UpdateInterval = CreateClientConVar("Log4g_CL_GUI_ElementUpdateInterval", 5, true, false, "Client GUI elements will be updated every given seconds (between 1 and 10).", 1, 10):GetInt()
 local Frame = nil
 
 concommand.Add("Log4g_MMC", function()
@@ -133,7 +133,7 @@ concommand.Add("Log4g_MMC", function()
     Icon:SetKeepAspect(true)
     Icon:SetSize(16, 16)
     local MenuA = MenuBar:AddMenu("New")
-    local MenuB = MenuBar:AddMenu("Settings")
+    local MenuB = MenuBar:AddMenu("Options")
     MenuB:AddOption("General", function() end):SetIcon("icon16/wrench.png")
     local MenuC = MenuBar:AddMenu("Help")
     local SheetA = vgui.Create("DPropertySheet", Frame)
@@ -233,7 +233,17 @@ concommand.Add("Log4g_MMC", function()
         Tree:Clear()
     end)
 
-    SubB:AddOption("Update Frequency")
+    SubB:AddOption("Update Frequency", function()
+        local Window = CreateDFrame(300, 75, "Change...", "icon16/application.png", Frame)
+        local Sldr = vgui.Create("DNumSlider", Window)
+        Sldr:Dock(FILL)
+        Sldr:SetText("GUI Update Frequency")
+        Sldr:SetMin(1)
+        Sldr:SetMax(5)
+        Sldr:SetDecimals(0)
+        Sldr:SetConVar("Log4g_CL_GUI_ElementUpdateInterval")
+        Window:SetDrawOnTop(true)
+    end)
 
     PanelTimedFunc(Tree, UpdateInterval, function()
         function Tree:DoRightClick(node)
