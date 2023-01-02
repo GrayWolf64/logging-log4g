@@ -237,10 +237,11 @@ concommand.Add("Log4g_MMC", function()
 
     PanelTimedFunc(Tree, UpdateInterval, function()
         function Tree:DoRightClick(node)
-            if (node:GetIcon() ~= "icon16/folder.png") or not IsValid(node) then return end
+            if node:GetIcon() ~= "icon16/folder.png" then return end
             local Menu = DermaMenu()
 
             Menu:AddOption("Remove", function()
+                if not IsValid(node) then return end
                 net.Start("Log4g_CLReq_LoggerContext_Remove")
                 net.WriteString(node:GetText())
                 net.SendToServer()
@@ -373,5 +374,5 @@ concommand.Add("Log4g_MMC", function()
         })
     end):SetIcon("icon16/information.png")
 
-    local _ = CreateDHDivider(SheetPanelB, ListView, Tree, 4, 735, 150)
+    local _ = CreateDHDivider(SheetPanelB, ListView, Tree, 4, 700, 150)
 end)
