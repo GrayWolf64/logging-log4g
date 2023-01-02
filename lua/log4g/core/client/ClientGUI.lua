@@ -227,6 +227,7 @@ concommand.Add("Log4g_MMC", function()
     end)
 
     local SubB = MenuB:AddSubMenu("View")
+    SubB:SetDeleteSelf(false)
 
     SubB:AddOption("Clear", function()
         ListView:Clear()
