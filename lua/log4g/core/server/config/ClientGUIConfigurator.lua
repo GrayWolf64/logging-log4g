@@ -25,6 +25,7 @@ local function RemoveRegisteredObjectByName(tbl, name)
 end
 
 local function IdentChk(ply)
+    if not IsValid(ply) then return end
     if ply:IsAdmin() then return true end
 
     return false
@@ -56,8 +57,8 @@ AddNetworkStrsViaTbl({
 
 net.Receive("Log4g_CL_ChkConnected", function(len, ply)
     net.Start("Log4g_CL_IsConnected")
-    net.WriteBool(IsValid(ply) == ply:IsConnected() == true) ---- If the player disconnects right after sending the message,
-    net.Send(ply) ----------------------------------------------- we have to check whether the player is valid.
+    net.WriteBool(IsValid(ply) == ply:IsConnected() == true)
+    net.Send(ply)
 end)
 
 net.Receive("Log4g_CLReq_LoggerConfig_Keys", function(len, ply)
