@@ -11,7 +11,7 @@ end
 --- Register a Layout.
 -- If the Layout with the same name already exists, its function will be overrode.
 -- @param name The name of the Layout
--- @param folder The folder of the Layout
+-- @param func The function of the layouting process
 -- @return object layout
 function Log4g.Registrars.RegisterLayout(name, func)
     local layout = Layout(name, func)
