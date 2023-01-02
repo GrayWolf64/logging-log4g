@@ -113,7 +113,7 @@ concommand.Add("Log4g_MMC", function()
         return
     end
 
-    Frame = CreateDFrame(960, 640, "Log4g Monitoring & Management Console(MMC)" .. " - " .. GetGameInfo(), "icon16/application.png", nil)
+    Frame = CreateDFrame(900, 540, "Log4g Monitoring & Management Console(MMC)" .. " - " .. GetGameInfo(), "icon16/application.png", nil)
     local MenuBar = vgui.Create("DMenuBar", Frame)
     local Icon = vgui.Create("DImageButton", MenuBar)
     Icon:Dock(RIGHT)
@@ -139,7 +139,7 @@ concommand.Add("Log4g_MMC", function()
     local SheetA = vgui.Create("DPropertySheet", Frame)
     SheetA:Dock(FILL)
     SheetA:DockMargin(1, 1, 1, 1)
-    SheetA:SetPadding(5)
+    SheetA:SetPadding(4)
     local SheetPanelA = vgui.Create("DPanel", SheetA)
 
     function SheetPanelA:Paint()
@@ -150,7 +150,7 @@ concommand.Add("Log4g_MMC", function()
     local SheetB = vgui.Create("DPropertySheet", SheetPanelA)
     SheetB:Dock(FILL)
     SheetB:DockMargin(1, 1, 1, 1)
-    SheetB:SetPadding(5)
+    SheetB:SetPadding(4)
     local SheetPanelB = vgui.Create("DPanel", SheetB)
     SheetB:AddSheet("LoggerConfig", SheetPanelB)
     local ListView = CreateDListView(SheetPanelB, LEFT, 1, 1, 1, 0)
@@ -170,11 +170,20 @@ concommand.Add("Log4g_MMC", function()
     PanelTimedFunc(ListView, UpdateInterval, function()
         function ListView:OnRowRightClick(num)
             local Menu = DermaMenu()
+            local SubA = Menu:AddSubMenu("Build (SV)")
+
+            SubA:AddOption("Default", function()
+                net.Start("Log4g_CLReq_LoggerConfig_BuildDefault")
+                net.SendToServer()
+            end)
+
+            Menu:AddSpacer()
 
             Menu:AddOption("Remove", function()
-                net.Start("Log4g_CLReq_LoggerConfig_Remove")
                 local Line = ListView:GetLine(num)
+                if not IsValid(Line) then return end
                 local LoggerContextName, LoggerConfigName
+                net.Start("Log4g_CLReq_LoggerConfig_Remove")
 
                 for m, n in ipairs(ListView.Columns) do
                     local Text = n:GetChild(0):GetText()
@@ -217,9 +226,18 @@ concommand.Add("Log4g_MMC", function()
         end)
     end)
 
+    local SubB = MenuB:AddSubMenu("View")
+
+    SubB:AddOption("Clear", function()
+        ListView:Clear()
+        Tree:Clear()
+    end)
+
+    SubB:AddOption("Update Frequency")
+
     PanelTimedFunc(Tree, UpdateInterval, function()
         function Tree:DoRightClick(node)
-            if node:GetIcon() ~= "icon16/folder.png" then return end
+            if (node:GetIcon() ~= "icon16/folder.png") or not IsValid(node) then return end
             local Menu = DermaMenu()
 
             Menu:AddOption("Remove", function()
@@ -354,36 +372,6 @@ concommand.Add("Log4g_MMC", function()
             [5] = "Documentation can be seen on GitHub Page as well.\n"
         })
     end):SetIcon("icon16/information.png")
-
-    local ButtonC = CreateDButton(SheetPanelB, BOTTOM, 1, 1, 840, 1, 100, 50, "Actions")
-
-    ButtonC.Paint = function(self, w, h)
-        surface.SetDrawColor(Color(255, 215, 0))
-        self:DrawFilledRect()
-        surface.SetDrawColor(Color(105, 105, 105))
-        self:DrawOutlinedRect()
-    end
-
-    function ButtonC:DoClick()
-        local Menu = DermaMenu()
-        local SubA = Menu:AddSubMenu("Build LoggerConfigs (SV)")
-
-        SubA:AddOption("Default", function()
-            net.Start("Log4g_CLReq_LoggerConfig_BuildDefault")
-            net.SendToServer()
-        end)
-
-        Menu:AddSpacer()
-        local SubB = Menu:AddSubMenu("View")
-
-        SubB:AddOption("Clear", function()
-            ListView:Clear()
-            Tree:Clear()
-        end)
-
-        SubB:AddOption("Update Frequency")
-        Menu:Open()
-    end
 
     local _ = CreateDHDivider(SheetPanelB, ListView, Tree, 4, 735, 150)
 end)
