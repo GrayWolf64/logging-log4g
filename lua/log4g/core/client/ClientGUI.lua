@@ -167,30 +167,32 @@ concommand.Add("Log4g_MMC", function()
         end
     end)
 
+    local function GetColumnSpecialText(num, listview)
+        local line = listview:GetLine(num)
+        if not IsValid(line) then return end
+        local contextname, configname
+
+        for m, n in ipairs(listview.Columns) do
+            local text = n:GetChild(0):GetText()
+            local str = line:GetColumnText(m)
+
+            if text == "loggercontext" then
+                contextname = str
+            elseif text == "name" then
+                configname = str
+            end
+        end
+
+        return contextname, configname
+    end
+
     PanelTimedFunc(ListView, UpdateInterval, function()
         function ListView:OnRowRightClick(num)
             local Menu = DermaMenu()
             local SubA = Menu:AddSubMenu("Build (SV)")
 
-            local function GetColumnText()
-            end
-
             SubA:AddOption("Default", function()
-                local Line = ListView:GetLine(num)
-                if not IsValid(Line) then return end
-                local LoggerContextName, LoggerConfigName
-
-                for m, n in ipairs(ListView.Columns) do
-                    local Text = n:GetChild(0):GetText()
-                    local Str = Line:GetColumnText(m)
-
-                    if Text == "loggercontext" then
-                        LoggerContextName = Str
-                    elseif Text == "name" then
-                        LoggerConfigName = Str
-                    end
-                end
-
+                local LoggerContextName, LoggerConfigName = GetColumnSpecialText(num, ListView)
                 net.Start("Log4g_CLReq_LoggerConfig_BuildDefault")
                 net.WriteString(LoggerContextName)
                 net.WriteString(LoggerConfigName)
@@ -200,21 +202,7 @@ concommand.Add("Log4g_MMC", function()
             Menu:AddSpacer()
 
             Menu:AddOption("Remove", function()
-                local Line = ListView:GetLine(num)
-                if not IsValid(Line) then return end
-                local LoggerContextName, LoggerConfigName
-
-                for m, n in ipairs(ListView.Columns) do
-                    local Text = n:GetChild(0):GetText()
-                    local Str = Line:GetColumnText(m)
-
-                    if Text == "loggercontext" then
-                        LoggerContextName = Str
-                    elseif Text == "name" then
-                        LoggerConfigName = Str
-                    end
-                end
-
+                local LoggerContextName, LoggerConfigName = GetColumnSpecialText(num, ListView)
                 net.Start("Log4g_CLReq_LoggerConfig_Remove")
                 net.WriteString(LoggerContextName)
                 net.WriteString(LoggerConfigName)
