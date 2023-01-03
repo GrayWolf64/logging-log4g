@@ -172,18 +172,13 @@ concommand.Add("Log4g_MMC", function()
             local Menu = DermaMenu()
             local SubA = Menu:AddSubMenu("Build (SV)")
 
+            local function GetColumnText()
+            end
+
             SubA:AddOption("Default", function()
-                net.Start("Log4g_CLReq_LoggerConfig_BuildDefault")
-                net.SendToServer()
-            end)
-
-            Menu:AddSpacer()
-
-            Menu:AddOption("Remove", function()
                 local Line = ListView:GetLine(num)
                 if not IsValid(Line) then return end
                 local LoggerContextName, LoggerConfigName
-                net.Start("Log4g_CLReq_LoggerConfig_Remove")
 
                 for m, n in ipairs(ListView.Columns) do
                     local Text = n:GetChild(0):GetText()
@@ -196,6 +191,31 @@ concommand.Add("Log4g_MMC", function()
                     end
                 end
 
+                net.Start("Log4g_CLReq_LoggerConfig_BuildDefault")
+                net.WriteString(LoggerContextName)
+                net.WriteString(LoggerConfigName)
+                net.SendToServer()
+            end)
+
+            Menu:AddSpacer()
+
+            Menu:AddOption("Remove", function()
+                local Line = ListView:GetLine(num)
+                if not IsValid(Line) then return end
+                local LoggerContextName, LoggerConfigName
+
+                for m, n in ipairs(ListView.Columns) do
+                    local Text = n:GetChild(0):GetText()
+                    local Str = Line:GetColumnText(m)
+
+                    if Text == "loggercontext" then
+                        LoggerContextName = Str
+                    elseif Text == "name" then
+                        LoggerConfigName = Str
+                    end
+                end
+
+                net.Start("Log4g_CLReq_LoggerConfig_Remove")
                 net.WriteString(LoggerContextName)
                 net.WriteString(LoggerConfigName)
                 net.SendToServer()

@@ -52,7 +52,8 @@ AddNetworkStrsViaTbl({
     ["Log4g_CL_ChkConnected"] = true,
     ["Log4g_CL_IsConnected"] = true,
     ["Log4g_CLUpload_NewLevel"] = true,
-    ["Log4g_CL_PendingTransmission_DPropLoggerConfigMessages"] = true
+    ["Log4g_CL_PendingTransmission_DPropLoggerConfigMessages"] = true,
+    ["Log4g_CLReq_LoggerConfig_BuildDefault"] = true
 })
 
 net.Receive("Log4g_CL_ChkConnected", function(len, ply)
@@ -222,4 +223,10 @@ net.Receive("Log4g_CLUpload_NewLevel", function(len, ply)
     if not IdentChk(ply) then return end
     local Tbl = net.ReadTable()
     Log4g.Registrars.RegisterCustomLevel(Tbl.name, Tbl.int)
+end)
+
+net.Receive("Log4g_CLReq_LoggerConfig_BuildDefault", function(len, ply)
+    local LoggerContextName = net.ReadString()
+    local LoggerConfigName = net.ReadString()
+    Log4g.Builders.DefaultLoggerConfigBuilder(LoggerContextName, LoggerConfigName)
 end)
