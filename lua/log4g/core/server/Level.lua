@@ -78,7 +78,7 @@ end
 -- @param name The Level's name
 -- @param int The Level's intlevel
 -- @return object level
-function Log4g.Registrars.RegisterCustomLevel(name, int)
+function Log4g.Levels.RegisterCustomLevel(name, int)
     if name == "" or int < 0 then return end
 
     if not HasKey(Log4g.Levels, name) then

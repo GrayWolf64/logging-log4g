@@ -12,7 +12,7 @@ end
 -- @param name The name of the Layout
 -- @param func The function of the layouting process
 -- @return object layout
-function Log4g.Registrars.RegisterLayout(name, func)
+function Log4g.Core.Layouts.RegisterLayout(name, func)
     local layout = Layout(name, func)
     table.insert(Log4g.Core.Layouts, layout)
 
