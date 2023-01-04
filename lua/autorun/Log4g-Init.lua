@@ -3,7 +3,7 @@ file.CreateDir("log4g")
 if SERVER then
     Log4g = Log4g or {}
     Log4g.Core = Log4g.Core or {}
-    Log4g.Core.LoggerContexts = Log4g.Core.LoggerContexts or {}
+    Log4g.Core.LoggerContext = Log4g.Core.LoggerContext or {}
     Log4g.Core.LifeCycle = Log4g.Core.LifeCycle or {}
     Log4g.Core.Appenders = Log4g.Core.Appenders or {}
     Log4g.Core.Layouts = Log4g.Core.Layouts or {}
