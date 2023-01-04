@@ -17,7 +17,7 @@ end
 -- If the LoggerContext exists, return true. Else, return false.
 -- @param name The name of the LoggerContext
 -- @return bool hascontext
-function Log4g.HasContext(name)
+function Log4g.Core.LoggerContexts.HasContext(name)
     for k, _ in pairs(Log4g.Core.LoggerContexts) do
         if k == name then return true end
     end

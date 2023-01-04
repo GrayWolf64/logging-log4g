@@ -65,7 +65,7 @@ end
 -- Return the Level associated with the name or nil if the Level cannot be found.
 -- @param name The Level's name
 -- @return object level
-function Log4g.GetLevel(name)
+function Log4g.Levels.GetLevel(name)
     for k, v in pairs(Log4g.Levels) do
         if k == name then return v end
     end
