@@ -1,6 +1,6 @@
 --- The LoggerContext.
 -- @classmod LoggerContext
-Log4g.Core.LoggerContext.Instances = Log4g.Core.LoggerContext.Instances or {}
+Log4g.Instances._LoggerContexts = Log4g.Instances._LoggerContexts or {}
 local LoggerContext = include("log4g/core/impl/Class.lua"):Extend()
 local HasKey = Log4g.Util.HasKey
 
@@ -11,7 +11,7 @@ end
 
 --- Delete the LoggerContext.
 function LoggerContext:Delete()
-    Log4g.Core.LoggerContext.Instances[self.name] = nil
+    Log4g.Instances._LoggerContexts[self.name] = nil
 end
 
 --- Check if a LoggerContext with the given name exists.
@@ -19,7 +19,7 @@ end
 -- @param name The name of the LoggerContext
 -- @return bool hascontext
 function Log4g.Core.LoggerContext.HasContext(name)
-    for k, _ in pairs(Log4g.Core.LoggerContext.Instances) do
+    for k, _ in pairs(Log4g.Instances._LoggerContexts) do
         if k == name then return true end
     end
 
@@ -34,14 +34,14 @@ end
 function Log4g.Core.LoggerContext.RegisterLoggerContext(name, folder)
     if name == "" or folder == "" then return end
 
-    if not HasKey(Log4g.Core.LoggerContext.Instances, name) then
+    if not HasKey(Log4g.Instances._LoggerContexts, name) then
         local loggercontext = LoggerContext(name, folder)
-        Log4g.Core.LoggerContext.Instances[name] = loggercontext
+        Log4g.Instances._LoggerContexts[name] = loggercontext
 
         return loggercontext
     else
-        Log4g.Core.LoggerContext.Instances[name].folder = folder
+        Log4g.Instances._LoggerContexts[name].folder = folder
 
-        return Log4g.Core.LoggerContext.Instances[name]
+        return Log4g.Instances._LoggerContexts[name]
     end
 end
