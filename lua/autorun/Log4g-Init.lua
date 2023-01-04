@@ -1,3 +1,5 @@
+--- Initialization of Log4g on server and client.
+-- @script Log4g-Init.lua
 file.CreateDir("log4g")
 
 if SERVER then
