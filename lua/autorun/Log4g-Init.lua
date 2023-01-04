@@ -4,6 +4,7 @@ if SERVER then
     Log4g = Log4g or {}
     Log4g.Registrars = Log4g.Registrars or {}
     Log4g.Builders = {}
+    Log4g.LifeCycles = {}
     file.CreateDir("log4g/server")
     file.CreateDir("log4g/server/loggercontext")
     include("log4g/core/server/Util.lua")
