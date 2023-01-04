@@ -1,3 +1,5 @@
+--- The LoggerConfig.
+-- @classmod LoggerConfig
 Log4g.Core.Config = Log4g.Core.Config or {}
 Log4g.Core.Config.LoggerConfig = Log4g.Core.Config.LoggerConfig or {}
 Log4g.Core.Config.Builder = Log4g.Core.Config.Builder or {}
