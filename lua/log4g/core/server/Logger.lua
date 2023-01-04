@@ -1,6 +1,6 @@
 --- The Logger.
 -- @classmod Logger
-Log4g.Loggers = {}
+Log4g.Loggers = Log4g.Loggers or {}
 local Logger = include("log4g/core/impl/Class.lua"):Extend()
 
 function Logger:New(name, func, loggerconfig, layout)

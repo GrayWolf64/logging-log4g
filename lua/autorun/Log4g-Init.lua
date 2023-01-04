@@ -2,9 +2,13 @@ file.CreateDir("log4g")
 
 if SERVER then
     Log4g = Log4g or {}
+    Log4g.Core = {}
+    Log4g.Core.LoggerContexts = Log4g.Core.LoggerContexts or {}
+    Log4g.Core.LifeCycles = Log4g.Core.LifeCycles or {}
+    Log4g.Core.Appenders = Log4g.Core.Appenders or {}
+    Log4g.Core.Layouts = Log4g.Core.Layouts or {}
     Log4g.Registrars = Log4g.Registrars or {}
-    Log4g.Builders = {}
-    Log4g.LifeCycles = {}
+    Log4g.Builders = Log4g.Builders or {}
     file.CreateDir("log4g/server")
     file.CreateDir("log4g/server/loggercontext")
     include("log4g/core/server/Util.lua")

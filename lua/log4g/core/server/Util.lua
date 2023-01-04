@@ -1,6 +1,6 @@
 --- The Util Library (Module).
 -- @module Util
-Log4g.Util = {}
+Log4g.Util = Log4g.Util or {}
 
 --- Check if one table has a certain key.
 -- @param tbl The table to check
