@@ -1,4 +1,6 @@
+Log4g.Core.Config = Log4g.Core.Config or {}
 Log4g.Core.Config.LoggerConfig = Log4g.Core.Config.LoggerConfig or {}
+Log4g.Core.Config.Builder = Log4g.Core.Config.Builder or {}
 Log4g.Inst._LoggerConfigs = Log4g.Inst._LoggerConfigs or {}
 local LoggerConfig = include("log4g/core/impl/Class.lua"):Extend()
 
