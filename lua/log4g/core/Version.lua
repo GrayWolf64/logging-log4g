@@ -1,3 +1,3 @@
 concommand.Add("Log4g_Version", function()
-    MsgC("Version Check\n")
+    MsgC("Log4g Version Check\n")
 end)
