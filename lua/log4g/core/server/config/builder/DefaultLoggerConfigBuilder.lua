@@ -1,3 +1,3 @@
-function Log4g.Builders.DefaultLoggerConfigBuilder(LoggerContextName, LoggerConfigName)
+function Log4g.Core.Config.Builder.DefaultLoggerConfigBuilder(LoggerContextName, LoggerConfigName)
     print(LoggerContextName, LoggerConfigName)
 end
