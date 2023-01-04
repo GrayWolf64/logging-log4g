@@ -1,1 +1,1 @@
-Log4g.LifeCycle.State = {}
+Log4g.LifeCycles.States = {}
