@@ -1,6 +1,6 @@
 --- The Level (Log Level).
 -- @classmod Level
-Log4g.Levels = Log4g.Levels or {}
+Log4g.Instances._Levels = Log4g.Instances._Levels or {}
 local Level = include("log4g/core/impl/Class.lua"):Extend()
 local HasKey = Log4g.Util.HasKey
 
@@ -10,14 +10,14 @@ function Level:New(name, int, standard)
     self.standard = standard or false
 end
 
-Log4g.Levels.ALL = Level("ALL", math.huge, true)
-Log4g.Levels.TRACE = Level("TRACE", 600, true)
-Log4g.Levels.DEBUG = Level("DEBUG", 500, true)
-Log4g.Levels.INFO = Level("INFO", 400, true)
-Log4g.Levels.WARN = Level("WARN", 300, true)
-Log4g.Levels.ERROR = Level("ERROR", 200, true)
-Log4g.Levels.FATAL = Level("FATAL", 100, true)
-Log4g.Levels.OFF = Level("OFF", 0, true)
+Log4g.Instances._Levels.ALL = Level("ALL", math.huge, true)
+Log4g.Instances._Levels.TRACE = Level("TRACE", 600, true)
+Log4g.Instances._Levels.DEBUG = Level("DEBUG", 500, true)
+Log4g.Instances._Levels.INFO = Level("INFO", 400, true)
+Log4g.Instances._Levels.WARN = Level("WARN", 300, true)
+Log4g.Instances._Levels.ERROR = Level("ERROR", 200, true)
+Log4g.Instances._Levels.FATAL = Level("FATAL", 100, true)
+Log4g.Instances._Levels.OFF = Level("OFF", 0, true)
 
 --- Delete the Level.
 function Level:Delete()
@@ -65,8 +65,8 @@ end
 -- Return the Level associated with the name or nil if the Level cannot be found.
 -- @param name The Level's name
 -- @return object level
-function Log4g.Levels.GetLevel(name)
-    for k, v in pairs(Log4g.Levels) do
+function Log4g.Level.GetLevel(name)
+    for k, v in pairs(Log4g.Instances._Levels) do
         if k == name then return v end
     end
 
@@ -78,18 +78,18 @@ end
 -- @param name The Level's name
 -- @param int The Level's intlevel
 -- @return object level
-function Log4g.Levels.RegisterCustomLevel(name, int)
+function Log4g.Level.RegisterCustomLevel(name, int)
     if name == "" or int < 0 then return end
 
-    if not HasKey(Log4g.Levels, name) then
+    if not HasKey(Log4g.Instances._Levels, name) then
         local level = Level(name, int, false)
-        Log4g.Levels[name] = level
+        Log4g.Instances._Levels[name] = level
 
         return level
     else
-        Log4g.Levels[name].int = int
-        Log4g.Levels[name].standard = false
+        Log4g.Instances._Levels[name].int = int
+        Log4g.Instances._Levels[name].standard = false
 
-        return Log4g.Levels[name]
+        return Log4g.Instances._Levels[name]
     end
 end

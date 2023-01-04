@@ -10,6 +10,7 @@ if SERVER then
     Log4g.Core.LifeCycle = Log4g.Core.LifeCycle or {}
     Log4g.Core.Appender = Log4g.Core.Appender or {}
     Log4g.Core.Layout = Log4g.Core.Layout or {}
+    Log4g.Level = Log4g.Level or {}
     file.CreateDir("log4g/server")
     file.CreateDir("log4g/server/loggercontext")
     include("log4g/core/server/Util.lua")
