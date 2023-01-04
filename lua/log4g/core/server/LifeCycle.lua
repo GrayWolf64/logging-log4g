@@ -1,1 +1,8 @@
-Log4g.LifeCycles.States = {}
+Log4g.LifeCycles.States = {
+    INITIALIZING = 1,
+    INITIALIZED = 2,
+    STARTING = 3,
+    STARTED = 4,
+    STOPPING = 5,
+    STOPPED = 6
+}
