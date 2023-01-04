@@ -1,5 +1,6 @@
 --- The Layout.
 -- @classmod Layout
+Log4g.Core.Layout = Log4g.Core.Layout or {}
 Log4g.Inst._Layouts = Log4g.Inst._Layouts or {}
 local Layout = include("log4g/core/impl/Class.lua"):Extend()
 

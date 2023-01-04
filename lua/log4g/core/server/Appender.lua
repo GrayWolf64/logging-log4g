@@ -1,5 +1,6 @@
 --- The Appender.
 -- @classmod Appender
+Log4g.Core.Appender = Log4g.Core.Appender or {}
 Log4g.Inst._Appenders = Log4g.Inst._Appenders or {}
 local Appender = include("log4g/core/impl/Class.lua"):Extend()
 
