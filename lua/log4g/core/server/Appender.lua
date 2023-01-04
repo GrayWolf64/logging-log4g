@@ -8,7 +8,7 @@ function Appender:New(name, func)
     self.func = func or function() end
 end
 
-function Log4g.Core.Appenders.RegisterAppender(name, func)
+function Log4g.Core.Appender.RegisterAppender(name, func)
     local appender = Appender(name, func)
     table.insert(Log4g.Instances._Appenders, appender)
 
