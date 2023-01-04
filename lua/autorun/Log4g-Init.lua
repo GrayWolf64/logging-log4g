@@ -7,7 +7,7 @@ if SERVER then
     Log4g.Core.LoggerContext = Log4g.Core.LoggerContext or {}
     Log4g.Core.LifeCycle = Log4g.Core.LifeCycle or {}
     Log4g.Core.Appenders = Log4g.Core.Appenders or {}
-    Log4g.Core.Layouts = Log4g.Core.Layouts or {}
+    Log4g.Core.Layout = Log4g.Core.Layout or {}
     Log4g.Builders = Log4g.Builders or {}
     file.CreateDir("log4g/server")
     file.CreateDir("log4g/server/loggercontext")
