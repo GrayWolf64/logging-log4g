@@ -5,7 +5,7 @@ if SERVER then
     Log4g.Core = Log4g.Core or {}
     Log4g.Core.Config = Log4g.Core.Config or {}
     Log4g.Core.Config.Builder = Log4g.Core.Config.Builder or {}
-    Log4g.Instances = Log4g.Instances or {}
+    Log4g.Inst = Log4g.Inst or {}
     Log4g.Core.LoggerContext = Log4g.Core.LoggerContext or {}
     Log4g.Core.LifeCycle = Log4g.Core.LifeCycle or {}
     Log4g.Core.Appender = Log4g.Core.Appender or {}
