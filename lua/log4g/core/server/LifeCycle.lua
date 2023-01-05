@@ -1,6 +1,6 @@
 Log4g.Core.LifeCycle = Log4g.Core.LifeCycle or {}
 
-Log4g.Core.LifeCycle.States = {
+Log4g.Core.LifeCycle._States = {
     INITIALIZING = 1,
     INITIALIZED = 2,
     STARTING = 3,
