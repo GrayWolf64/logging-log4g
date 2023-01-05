@@ -18,6 +18,11 @@ function LoggerConfig:New(name, eventname, uid, loggercontext, level, appender, 
     self.file = file or ""
 end
 
+--- Delete the LoggerConfig.
+function LoggerConfig:Delete()
+    Log4g.Inst._LoggerConfigs[self.name] = nil
+end
+
 function Log4g.Core.Config.LoggerConfig.RegisterLoggerConfig(name, eventname, uid, loggercontext, level, appender, layout, file)
     if not HasKey(Log4g.Inst._LoggerConfigs, name) then
         local loggerconfig = LoggerConfig(name, eventname, uid, loggercontext, level, appender, layout, file)
