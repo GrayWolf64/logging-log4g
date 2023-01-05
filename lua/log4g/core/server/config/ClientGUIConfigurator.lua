@@ -4,6 +4,10 @@ local AddNetworkStrsViaTbl = Log4g.Util.AddNetworkStrsViaTbl
 local FindFilesInSubFolders = Log4g.Util.FindFilesInSubFolders
 local SendTableAfterRcvNetMsg = Log4g.Util.SendTableAfterRcvNetMsg
 local HasKey = Log4g.Util.HasKey
+local RegisterLoggerContext = Log4g.Core.LoggerContext.RegisterLoggerContext
+local RegisterLoggerConfig = Log4g.Core.Config.LoggerConfig.RegisterLoggerConfig
+local RegisterCustomLevel = Log4g.Level.RegisterCustomLevel
+local DefaultLoggerConfigBuilder = Log4g.Core.Config.Builder.DefaultLoggerConfigBuilder
 local LoggerContextLookupFile = "log4g/server/loggercontext/loggercontext_lookup.json"
 
 local function GetKeyList(tbl)
@@ -72,9 +76,9 @@ net.Receive("Log4g_CLReq_LoggerConfig_Keys", function(len, ply)
 end)
 
 net.Receive("Log4g_CL_PendingTransmission_DPropLoggerConfigMessages", function()
-    SendTableAfterRcvNetMsg("Log4g_CLReq_Levels", "Log4g_CLRcv_Levels", GetKeyList(Log4g.Levels))
-    SendTableAfterRcvNetMsg("Log4g_CLReq_Appenders", "Log4g_CLRcv_Appenders", GetKeyList(Log4g.Appenders))
-    SendTableAfterRcvNetMsg("Log4g_CLReq_Layouts", "Log4g_CLRcv_Layouts", GetKeyList(Log4g.Layouts))
+    SendTableAfterRcvNetMsg("Log4g_CLReq_Levels", "Log4g_CLRcv_Levels", GetKeyList(Log4g.Inst._Levels))
+    SendTableAfterRcvNetMsg("Log4g_CLReq_Appenders", "Log4g_CLRcv_Appenders", GetKeyList(Log4g.Inst._Appenders))
+    SendTableAfterRcvNetMsg("Log4g_CLReq_Layouts", "Log4g_CLRcv_Layouts", GetKeyList(Log4g.Inst._Layouts))
 end)
 
 net.Receive("Log4g_CLReq_Hooks", function(len, ply)
@@ -98,8 +102,8 @@ net.Receive("Log4g_CLUpload_LoggerConfig", function(len, ply)
     file.CreateDir(LoggerContextDir)
     local LoggerConfigFile = Dir .. LoggerContextName .. "/" .. "loggerconfig_" .. LoggerConfigName .. ".json"
     file.Write(LoggerConfigFile, Str)
-    Log4g.Registrars.RegisterLoggerContext(LoggerContextName, LoggerContextDir)
-    Log4g.Registrars.RegisterLoggerConfig(LoggerConfigName, LoggerConfigContent.eventname, LoggerConfigContent.uid, LoggerContextName, LoggerConfigContent.level, LoggerConfigContent.appender, LoggerConfigContent.layout, LoggerConfigFile)
+    RegisterLoggerContext(LoggerContextName, LoggerContextDir)
+    RegisterLoggerConfig(LoggerConfigName, LoggerConfigContent.eventname, LoggerConfigContent.uid, LoggerContextName, LoggerConfigContent.level, LoggerConfigContent.appender, LoggerConfigContent.layout, LoggerConfigFile)
 
     if file.Exists(LoggerContextLookupFile, "DATA") then
         local Tbl = util.JSONToTable(file.Read(LoggerContextLookupFile, "DATA"))
@@ -145,7 +149,7 @@ net.Receive("Log4g_CLReq_LoggerConfig_Remove", function(len, ply)
     local LoggerContextName = net.ReadString()
     local LoggerConfigName = net.ReadString()
     local FileName = "loggerconfig_" .. LoggerConfigName .. ".json"
-    RemoveRegisteredObjectByName(Log4g.LoggerConfigs, LoggerConfigName)
+    RemoveRegisteredObjectByName(Log4g.Inst._LoggerConfigs, LoggerConfigName)
 
     for _, v in ipairs(FindFilesInSubFolders("log4g/server/loggercontext/", "loggerconfig_*.json", "DATA")) do
         if v == "log4g/server/loggercontext/" .. LoggerContextName .. "/" .. FileName then
@@ -188,11 +192,11 @@ net.Receive("Log4g_CLReq_LoggerContext_Remove", function(len, ply)
     if not IdentChk(ply) then return end
     local _, Folders = file.Find("log4g/server/loggercontext/*", "DATA")
     local LoggerContextName = net.ReadString()
-    RemoveRegisteredObjectByName(Log4g.Core.LoggerContexts, LoggerContextName)
+    RemoveRegisteredObjectByName(Log4g.Inst._LoggerContexts, LoggerContextName)
 
-    for k, v in pairs(Log4g.LoggerConfigs) do
+    for k, v in pairs(Log4g.Inst._LoggerConfigs) do
         if v.loggercontext == LoggerContextName then
-            Log4g.LoggerConfigs[k] = nil
+            Log4g.Inst._LoggerConfigs[k] = nil
         end
     end
 
@@ -222,11 +226,11 @@ end)
 net.Receive("Log4g_CLUpload_NewLevel", function(len, ply)
     if not IdentChk(ply) then return end
     local Tbl = net.ReadTable()
-    Log4g.Registrars.RegisterCustomLevel(Tbl.name, Tbl.int)
+    RegisterCustomLevel(Tbl.name, Tbl.int)
 end)
 
 net.Receive("Log4g_CLReq_LoggerConfig_BuildDefault", function(len, ply)
     local LoggerContextName = net.ReadString()
     local LoggerConfigName = net.ReadString()
-    Log4g.Core.Config.Builder.DefaultLoggerConfigBuilder(LoggerContextName, LoggerConfigName)
+    DefaultLoggerConfigBuilder(LoggerContextName, LoggerConfigName)
 end)

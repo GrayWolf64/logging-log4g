@@ -5,6 +5,7 @@ Log4g.Core.Config.LoggerConfig = Log4g.Core.Config.LoggerConfig or {}
 Log4g.Core.Config.Builder = Log4g.Core.Config.Builder or {}
 Log4g.Inst._LoggerConfigs = Log4g.Inst._LoggerConfigs or {}
 local LoggerConfig = include("log4g/core/impl/Class.lua"):Extend()
+local HasKey = Log4g.Util.HasKey
 
 function LoggerConfig:New(name, eventname, uid, loggercontext, level, appender, layout, file)
     self.name = name or ""
@@ -18,8 +19,20 @@ function LoggerConfig:New(name, eventname, uid, loggercontext, level, appender, 
 end
 
 function Log4g.Core.Config.LoggerConfig.RegisterLoggerConfig(name, eventname, uid, loggercontext, level, appender, layout, file)
-    local loggerconfig = LoggerConfig(name, eventname, uid, loggercontext, level, appender, layout, file)
-    table.insert(Log4g.Inst._LoggerConfigs, loggerconfig)
+    if not HasKey(Log4g.Inst._LoggerConfigs, name) then
+        local loggerconfig = LoggerConfig(name, eventname, uid, loggercontext, level, appender, layout, file)
+        Log4g.Inst._LoggerConfigs[name] = loggerconfig
 
-    return loggerconfig
+        return loggerconfig
+    else
+        Log4g.Inst._LoggerConfigs[name].eventname = eventname
+        Log4g.Inst._LoggerConfigs[name].uid = uid
+        Log4g.Inst._LoggerConfigs[name].loggercontext = loggercontext
+        Log4g.Inst._LoggerConfigs[name].level = level
+        Log4g.Inst._LoggerConfigs[name].appender = appender
+        Log4g.Inst._LoggerConfigs[name].layout = layout
+        Log4g.Inst._LoggerConfigs[name].file = file
+
+        return Log4g.Inst._LoggerConfigs[name]
+    end
 end
