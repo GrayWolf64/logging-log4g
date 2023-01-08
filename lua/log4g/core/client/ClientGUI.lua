@@ -394,4 +394,19 @@ concommand.Add("Log4g_MMC", function()
     SheetA:AddSheet("Overview (SV)", SheetPanelC, "icon16/page.png")
     local SheetPanelD = vgui.Create("DPanel", SheetA)
     SheetA:AddSheet("Summary (SV)", SheetPanelD, "icon16/table.png")
+    local SummarySheet = vgui.Create("DProperties", SheetPanelD)
+    SummarySheet:Dock(FILL)
+
+    local function GetRowControl(row)
+        return row:GetChild(1):GetChild(0):GetChild(0)
+    end
+
+    local RowA = SummarySheet:CreateRow("Basic Info", "Client Date")
+    RowA:Setup("Generic")
+
+    function RowA:Think()
+        RowA:SetValue(tostring(os.date()))
+    end
+
+    GetRowControl(RowA):SetEditable(false)
 end)
