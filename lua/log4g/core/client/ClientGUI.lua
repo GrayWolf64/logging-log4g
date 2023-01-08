@@ -393,7 +393,7 @@ concommand.Add("Log4g_MMC", function()
     local SheetPanelC = vgui.Create("DPanel", SheetA)
     SheetA:AddSheet("Overview (SV)", SheetPanelC, "icon16/page.png")
     local SheetPanelD = vgui.Create("DPanel", SheetA)
-    SheetA:AddSheet("Summary (SV)", SheetPanelD, "icon16/table.png")
+    SheetA:AddSheet("Summary", SheetPanelD, "icon16/table.png")
     local SummarySheet = vgui.Create("DProperties", SheetPanelD)
     SummarySheet:Dock(FILL)
 
