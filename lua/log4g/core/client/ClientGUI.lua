@@ -383,7 +383,7 @@ concommand.Add("Log4g_MMC", function()
         AppendRichTextViaTbl(Text, {
             [1] = "Log4g is an open-source addon for Garry's Mod.\n",
             [2] = "\n",
-            [3] = "GitHub Page: https://github.com/GrayWolf64/Log4g\n",
+            [3] = "GitHub Page: https://github.com/GrayWolf64/gmod-logging-log4g\n",
             [4] = "\n",
             [5] = "Documentation can be seen on GitHub Page as well.\n"
         })
