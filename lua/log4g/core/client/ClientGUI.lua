@@ -401,7 +401,7 @@ concommand.Add("Log4g_MMC", function()
         return row:GetChild(1):GetChild(0):GetChild(0)
     end
 
-    local RowA = SummarySheet:CreateRow("Basic Info", "Client Date")
+    local RowA = SummarySheet:CreateRow("Basic Info", "Client OS Date")
     RowA:Setup("Generic")
 
     function RowA:Think()
