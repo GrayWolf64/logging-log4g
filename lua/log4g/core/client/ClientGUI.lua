@@ -141,11 +141,7 @@ concommand.Add("Log4g_MMC", function()
     SheetA:DockMargin(1, 1, 1, 1)
     SheetA:SetPadding(4)
     local SheetPanelA = vgui.Create("DPanel", SheetA)
-
-    function SheetPanelA:Paint()
-        return
-    end
-
+    SheetPanelA.Paint = nil
     SheetA:AddSheet("Configuration", SheetPanelA, "icon16/cog.png")
     local SheetB = vgui.Create("DPropertySheet", SheetPanelA)
     SheetB:Dock(FILL)
