@@ -93,6 +93,12 @@ local function GetGameInfo()
     return "Server: " .. game.GetIPAddress() .. " " .. "SinglePlayer: " .. tostring(game.SinglePlayer())
 end
 
+local function HasNumber(str)
+    if string.find(str, "%d") then return true end
+
+    return false
+end
+
 --- In a Panel's Think, run a function and run another function but timed.
 -- @lfunction PanelTimedFunc
 -- @param panel The Panel which has a Think function to override
@@ -344,15 +350,14 @@ concommand.Add("Log4g_MMC", function()
 
         ButtonA.DoClick = function()
             local InputtedName = GetRowControlValue(RowG)
-            local InputtedUID = GetRowControlValue(RowB)
             local InputtedLoggerContextName = GetRowControlValue(RowC)
-            if (not isstring(InputtedName)) or (not isstring(InputtedUID)) or (not isstring(InputtedLoggerContextName)) then return end
+            if HasNumber(InputtedName) or HasNumber(InputtedLoggerContextName) then return end
             net.Start("Log4g_CLUpload_LoggerConfig")
 
             net.WriteTable({
                 name = string.lower(InputtedName),
                 eventname = GetRowControlValue(RowA),
-                uid = InputtedUID,
+                uid = GetRowControlValue(RowB),
                 loggercontext = string.lower(InputtedLoggerContextName),
                 level = GetRowControlValue(RowD),
                 appender = GetRowControlValue(RowE),
@@ -372,10 +377,12 @@ concommand.Add("Log4g_MMC", function()
         local ButtonB = CreateDButton(Window, BOTTOM, 100, 0, 100, 0, 100, 50, "Submit")
 
         ButtonB.DoClick = function()
+            local InputtedName = GetRowControlValue(RowA)
+            if HasNumber(InputtedName) then return end
             net.Start("Log4g_CLUpload_NewLevel")
 
             net.WriteTable({
-                name = GetRowControlValue(RowA),
+                name = InputtedName,
                 int = tonumber(GetRowControlValue(RowB))
             })
 
