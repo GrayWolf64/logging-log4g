@@ -380,12 +380,8 @@ concommand.Add("Log4g_MMC", function()
             local InputtedName = GetRowControlValue(RowA)
             if HasNumber(InputtedName) then return end
             net.Start("Log4g_CLUpload_NewLevel")
-
-            net.WriteTable({
-                name = InputtedName,
-                int = tonumber(GetRowControlValue(RowB))
-            })
-
+            net.WriteString(InputtedName)
+            net.WriteInt(tonumber(GetRowControlValue(RowB)), 16)
             net.SendToServer()
             Window:Close()
         end

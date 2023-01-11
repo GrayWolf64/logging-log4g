@@ -225,8 +225,7 @@ end)
 
 net.Receive("Log4g_CLUpload_NewLevel", function(len, ply)
     if not IdentChk(ply) then return end
-    local Tbl = net.ReadTable()
-    RegisterCustomLevel(Tbl.name, Tbl.int)
+    RegisterCustomLevel(net.ReadString(), net.ReadInt(16))
 end)
 
 net.Receive("Log4g_CLReq_LoggerConfig_BuildDefault", function(len, ply)
