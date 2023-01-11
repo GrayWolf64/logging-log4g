@@ -381,7 +381,7 @@ concommand.Add("Log4g_MMC", function()
             if HasNumber(InputtedName) then return end
             net.Start("Log4g_CLUpload_NewLevel")
             net.WriteString(InputtedName)
-            net.WriteInt(tonumber(GetRowControlValue(RowB)), 16)
+            net.WriteUInt(tonumber(GetRowControlValue(RowB)), 16)
             net.SendToServer()
             Window:Close()
         end

@@ -225,7 +225,7 @@ end)
 
 net.Receive("Log4g_CLUpload_NewLevel", function(len, ply)
     if not IdentChk(ply) then return end
-    RegisterCustomLevel(net.ReadString(), net.ReadInt(16))
+    RegisterCustomLevel(net.ReadString(), net.ReadUInt(16))
 end)
 
 net.Receive("Log4g_CLReq_LoggerConfig_BuildDefault", function(len, ply)
