@@ -66,12 +66,16 @@ local function DPropNewRow(panel, category, name, prop)
     return row
 end
 
+local function GetRowControl(row)
+    return row:GetChild(1):GetChild(0):GetChild(0)
+end
+
 --- Get a RowControl's value (edited by user) whether it's a DTextEntry or a DComboBox.
 -- @lfunction GetRowControlValue
 -- @param row The row in the DProp Panel
 -- @return string The value obtained
 local function GetRowControlValue(row)
-    local pnl = row:GetChild(1):GetChild(0):GetChild(0)
+    local pnl = GetRowControl(row)
     local class = pnl:GetName()
 
     if class == "DTextEntry" then
@@ -396,11 +400,6 @@ concommand.Add("Log4g_MMC", function()
     SheetA:AddSheet("Summary", SheetPanelD, "icon16/table.png")
     local SummarySheet = vgui.Create("DProperties", SheetPanelD)
     SummarySheet:Dock(FILL)
-
-    local function GetRowControl(row)
-        return row:GetChild(1):GetChild(0):GetChild(0)
-    end
-
     local RowA = SummarySheet:CreateRow("Basic Info", "Client OS Date")
     RowA:Setup("Generic")
 
