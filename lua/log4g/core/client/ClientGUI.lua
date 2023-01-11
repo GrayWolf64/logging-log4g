@@ -356,6 +356,7 @@ concommand.Add("Log4g_MMC", function()
             })
 
             net.SendToServer()
+            Window:Close()
         end
     end):SetIcon("icon16/cog_add.png")
 
@@ -375,6 +376,7 @@ concommand.Add("Log4g_MMC", function()
             })
 
             net.SendToServer()
+            Window:Close()
         end
     end):SetIcon("icon16/chart_bar.png")
 
