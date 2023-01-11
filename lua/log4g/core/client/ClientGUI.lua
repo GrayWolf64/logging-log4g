@@ -58,7 +58,7 @@ end
 -- @param category The category to put the row into
 -- @param name The label of the row
 -- @param prop The name of RowControl to add
--- @return row The created row
+-- @return row created row
 local function DPropNewRow(panel, category, name, prop)
     local row = panel:CreateRow(category, name)
     row:Setup(prop)
@@ -66,6 +66,10 @@ local function DPropNewRow(panel, category, name, prop)
     return row
 end
 
+--- Get a row's RowControl.
+-- @lfunction GetRowControl
+-- @param row The row to get the RowControl from
+-- @return row row obtained
 local function GetRowControl(row)
     return row:GetChild(1):GetChild(0):GetChild(0)
 end
@@ -73,7 +77,7 @@ end
 --- Get a RowControl's value (edited by user) whether it's a DTextEntry or a DComboBox.
 -- @lfunction GetRowControlValue
 -- @param row The row in the DProp Panel
--- @return string The value obtained
+-- @return string value obtained
 local function GetRowControlValue(row)
     local pnl = GetRowControl(row)
     local class = pnl:GetName()
