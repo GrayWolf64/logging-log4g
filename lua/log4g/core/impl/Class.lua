@@ -1,15 +1,14 @@
 --[[
-Class.lua
-Based on https://github.com/rxi/classic.
+    Class.lua
+    Based on https://github.com/rxi/classic.
 
-Copyright (c) 2014 rxi
-Copyright (c) 2022 Christopher Stephen Rafuse, ImpishDeathTech
-Copyright (c) 2023 GrayWolf64
+    Copyright (c) 2014 rxi
+    Copyright (c) 2022 Christopher Stephen Rafuse, ImpishDeathTech
+    Copyright (c) 2023 GrayWolf64
 
-This module is free software; you can redistribute it and/or modify it under
-the terms of the MIT license. See LICENSE for details.
-]]
---
+    This module is free software; you can redistribute it and/or modify it under
+    the terms of the MIT license. See LICENSE for details.
+--]]
 local Object = {}
 Object.__index = Object
 Object.__name = "class"
