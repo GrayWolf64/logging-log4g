@@ -409,12 +409,23 @@ concommand.Add("Log4g_MMC", function()
     SheetA:AddSheet("Summary", SheetPanelD, "icon16/table.png")
     local SummarySheet = vgui.Create("DProperties", SheetPanelD)
     SummarySheet:Dock(FILL)
-    local RowA = SummarySheet:CreateRow("Basic Info", "Client OS Date")
+    local RowA = SummarySheet:CreateRow("Client Info", "Client OS Date")
     RowA:Setup("Generic")
 
     function RowA:Think()
-        RowA:SetValue(tostring(os.date()))
+        self:SetValue(tostring(os.date()))
     end
 
     GetRowControl(RowA):SetEditable(false)
+    local RowB = SummarySheet:CreateRow("Server Info", "Estimate Tickrate")
+    RowB:Setup("Generic")
+
+    function RowB:Think()
+        self:SetValue(tostring(1 / engine.ServerFrameTime()))
+    end
+
+    GetRowControl(RowB):SetEditable(false)
+    net.Start("Log4g_CLReq_SVSummaryData")
+    net.SendToServer()
+    net.Receive("Log4g_CLRcv_SVSummaryData", function() end)
 end)
