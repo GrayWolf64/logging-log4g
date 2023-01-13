@@ -5,9 +5,10 @@ Log4g.Inst._LoggerContexts = Log4g.Inst._LoggerContexts or {}
 local LoggerContext = include("log4g/core/impl/Class.lua"):Extend()
 local HasKey = Log4g.Util.HasKey
 
-function LoggerContext:New(name, folder)
+function LoggerContext:New(name, folder, datestarted)
     self.name = name or ""
     self.folder = folder or ""
+    self.datestarted = datestarted or ""
 end
 
 --- Delete the LoggerContext.
@@ -36,7 +37,7 @@ function Log4g.Core.LoggerContext.RegisterLoggerContext(name, folder)
     if name == "" or folder == "" then return end
 
     if not HasKey(Log4g.Inst._LoggerContexts, name) then
-        local loggercontext = LoggerContext(name, folder)
+        local loggercontext = LoggerContext(name, folder, os.date())
         Log4g.Inst._LoggerContexts[name] = loggercontext
 
         return loggercontext
