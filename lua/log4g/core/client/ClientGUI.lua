@@ -59,7 +59,7 @@ end
 -- @param category The category to put the row into
 -- @param name The label of the row
 -- @param prop The name of RowControl to add
--- @return row created row
+-- @return row row created
 local function DPropNewRow(panel, category, name, prop)
     local row = panel:CreateRow(category, name)
     row:Setup(prop)
@@ -70,7 +70,7 @@ end
 --- Get a row's RowControl.
 -- @lfunction GetRowControl
 -- @param row The row to get the RowControl from
--- @return row row obtained
+-- @return row obtained row
 local function GetRowControl(row)
     return row:GetChild(1):GetChild(0):GetChild(0)
 end
