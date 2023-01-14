@@ -1,6 +1,7 @@
 --- Client GUI (MMC).
 -- @script ClientGUI.lua
 -- @license Apache License 2.0
+-- @copyright GrayWolf64
 local function CreateDFrame(a, b, title, icon, parent)
     local dframe = vgui.Create("DFrame")
     dframe:MakePopup()

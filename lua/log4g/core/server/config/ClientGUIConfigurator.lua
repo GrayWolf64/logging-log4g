@@ -1,6 +1,7 @@
 --- Server-side processing of the Client GUI requests.
 -- @script ClientGUIConfigurator.lua
 -- @license Apache License 2.0
+-- @copyright GrayWolf64
 local AddNetworkStrsViaTbl = Log4g.Util.AddNetworkStrsViaTbl
 local FindFilesInSubFolders = Log4g.Util.FindFilesInSubFolders
 local SendTableAfterRcvNetMsg = Log4g.Util.SendTableAfterRcvNetMsg
