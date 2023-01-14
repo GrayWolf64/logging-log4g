@@ -9,8 +9,6 @@ Log4g is an advanced logging framework for Garry's Mod.
 
 Currently Work-in-Progress.
 
----
-
 | Con-Commands    | Usage   | Desc.                                     |
 | --------------- | ------- | ----------------------------------------- |
 | "Log4g_MMC"     | Console | The Log4g Monitoring & Management Console |
