@@ -72,7 +72,7 @@ net.Receive("Log4g_CLReq_LoggerConfig_Keys", function(len, ply)
     if not IdentChk(ply) then return end
     net.Start("Log4g_CLRcv_LoggerConfig_Keys")
 
-    net.WriteTable({"name", "eventname", "uid", "loggercontext", "level", "appender", "layout"})
+    net.WriteTable({"name", "eventname", "uid", "loggercontext", "level", "appender", "layout", "func"})
 
     net.Send(ply)
 end)
@@ -105,7 +105,7 @@ net.Receive("Log4g_CLUpload_LoggerConfig", function(len, ply)
     local LoggerConfigFile = Dir .. LoggerContextName .. "/" .. "loggerconfig_" .. LoggerConfigName .. ".json"
     file.Write(LoggerConfigFile, Str)
     RegisterLoggerContext(LoggerContextName, LoggerContextDir)
-    RegisterLoggerConfig(LoggerConfigName, LoggerConfigContent.eventname, LoggerConfigContent.uid, LoggerContextName, LoggerConfigContent.level, LoggerConfigContent.appender, LoggerConfigContent.layout, LoggerConfigFile)
+    RegisterLoggerConfig(LoggerConfigName, LoggerConfigContent.eventname, LoggerConfigContent.uid, LoggerContextName, LoggerConfigContent.level, LoggerConfigContent.appender, LoggerConfigContent.layout, LoggerConfigFile, LoggerConfigContent.func)
 
     if file.Exists(LoggerContextLookupFile, "DATA") then
         local Tbl = util.JSONToTable(file.Read(LoggerContextLookupFile, "DATA"))
