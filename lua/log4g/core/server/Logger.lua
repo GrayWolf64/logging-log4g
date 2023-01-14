@@ -3,6 +3,7 @@
 Log4g.Logger = Log4g.Logger or {}
 Log4g.Inst._Loggers = Log4g.Inst._Loggers or {}
 local Logger = include("log4g/core/impl/Class.lua"):Extend()
+local HasKey = Log4g.Util.HasKey
 
 function Logger:New(name, loggerconfig)
     self.name = name or ""

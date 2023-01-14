@@ -2,6 +2,7 @@
 -- @script ClientGUIConfigurator.lua
 -- @license Apache License 2.0
 -- @copyright GrayWolf64
+local AddNetworkStrsViaTbl = Log4g.Util.AddNetworkStrsViaTbl
 local FindFilesInSubFolders = Log4g.Util.FindFilesInSubFolders
 local SendTableAfterRcvNetMsg = Log4g.Util.SendTableAfterRcvNetMsg
 local HasKey = Log4g.Util.HasKey
@@ -35,7 +36,7 @@ local function IdentChk(ply)
     return false
 end
 
-Log4g.Util.AddNetworkStrsViaTbl({
+AddNetworkStrsViaTbl({
     ["Log4g_CLUpload_LoggerConfig"] = true,
     ["Log4g_CLReq_Hooks"] = true,
     ["Log4g_CLRcv_Hooks"] = true,
