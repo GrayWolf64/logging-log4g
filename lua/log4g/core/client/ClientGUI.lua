@@ -69,6 +69,7 @@ local function DPropNewRow(panel, category, name, prop)
 end
 
 --- Get a row's RowControl.
+-- Because the official way to obtain a RowControl doesn't exist, we have to go this way.
 -- @lfunction GetRowControl
 -- @param row The row to get the RowControl from
 -- @return row obtained row
