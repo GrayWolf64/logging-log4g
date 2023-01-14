@@ -2,14 +2,12 @@
 -- @script ClientGUIConfigurator.lua
 -- @license Apache License 2.0
 -- @copyright GrayWolf64
-local AddNetworkStrsViaTbl = Log4g.Util.AddNetworkStrsViaTbl
 local FindFilesInSubFolders = Log4g.Util.FindFilesInSubFolders
 local SendTableAfterRcvNetMsg = Log4g.Util.SendTableAfterRcvNetMsg
 local HasKey = Log4g.Util.HasKey
 local RegisterLoggerContext = Log4g.Core.LoggerContext.RegisterLoggerContext
 local RegisterLoggerConfig = Log4g.Core.Config.LoggerConfig.RegisterLoggerConfig
 local RegisterCustomLevel = Log4g.Level.RegisterCustomLevel
-local DefaultLoggerConfigBuilder = Log4g.Core.Config.Builder.DefaultLoggerConfigBuilder
 local LoggerContextLookupFile = "log4g/server/loggercontext/loggercontext_lookup.json"
 
 local function GetKeyList(tbl)
@@ -37,7 +35,7 @@ local function IdentChk(ply)
     return false
 end
 
-AddNetworkStrsViaTbl({
+Log4g.Util.AddNetworkStrsViaTbl({
     ["Log4g_CLUpload_LoggerConfig"] = true,
     ["Log4g_CLReq_Hooks"] = true,
     ["Log4g_CLRcv_Hooks"] = true,
@@ -233,5 +231,5 @@ end)
 net.Receive("Log4g_CLReq_LoggerConfig_BuildDefault", function(len, ply)
     local LoggerContextName = net.ReadString()
     local LoggerConfigName = net.ReadString()
-    DefaultLoggerConfigBuilder(LoggerContextName, LoggerConfigName)
+    Log4g.Core.Config.Builder.DefaultLoggerConfigBuilder(util.JSONToTable(file.Read("log4g/server/loggercontext/" .. LoggerContextName .. "/" .. "loggerconfig_" .. LoggerConfigName .. ".json", "DATA")))
 end)
