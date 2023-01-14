@@ -7,7 +7,7 @@ Log4g.Inst._LoggerConfigs = Log4g.Inst._LoggerConfigs or {}
 local LoggerConfig = include("log4g/core/impl/Class.lua"):Extend()
 local HasKey = Log4g.Util.HasKey
 
-function LoggerConfig:New(name, eventname, uid, loggercontext, level, appender, layout, file)
+function LoggerConfig:New(name, eventname, uid, loggercontext, level, appender, layout, file, func)
     self.name = name or ""
     self.eventname = eventname or ""
     self.uid = uid or ""
@@ -16,6 +16,7 @@ function LoggerConfig:New(name, eventname, uid, loggercontext, level, appender, 
     self.appender = appender or ""
     self.layout = layout or ""
     self.file = file or ""
+    self.func = func or function() end
 end
 
 --- Delete the LoggerConfig.
@@ -23,7 +24,7 @@ function LoggerConfig:Delete()
     Log4g.Inst._LoggerConfigs[self.name] = nil
 end
 
-function Log4g.Core.Config.LoggerConfig.RegisterLoggerConfig(name, eventname, uid, loggercontext, level, appender, layout, file)
+function Log4g.Core.Config.LoggerConfig.RegisterLoggerConfig(name, eventname, uid, loggercontext, level, appender, layout, file, func)
     if not HasKey(Log4g.Inst._LoggerConfigs, name) then
         local loggerconfig = LoggerConfig(name, eventname, uid, loggercontext, level, appender, layout, file)
         Log4g.Inst._LoggerConfigs[name] = loggerconfig
@@ -37,6 +38,7 @@ function Log4g.Core.Config.LoggerConfig.RegisterLoggerConfig(name, eventname, ui
         Log4g.Inst._LoggerConfigs[name].appender = appender
         Log4g.Inst._LoggerConfigs[name].layout = layout
         Log4g.Inst._LoggerConfigs[name].file = file
+        Log4g.Inst._LoggerConfigs[name].func = func
 
         return Log4g.Inst._LoggerConfigs[name]
     end
