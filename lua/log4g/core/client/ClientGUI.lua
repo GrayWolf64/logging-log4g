@@ -182,6 +182,13 @@ concommand.Add("Log4g_MMC", function()
         end
     end)
 
+    --- Get a line's content text at specific columns.
+    -- There's not an official way to do this, so GetChild can be used here.
+    -- @lfunction GetColumnSpecialText
+    -- @param num The number of the line
+    -- @param listview The DListView containing the line
+    -- @param ... The texts of the specific columns
+    -- @return tbl results
     local function GetColumnSpecialText(num, listview, ...)
         local line = listview:GetLine(num)
         if not IsValid(line) then return end
