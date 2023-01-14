@@ -21,7 +21,7 @@ Log4g.Inst._Levels.OFF = Level("OFF", 0, true)
 
 --- Delete the Level.
 function Level:Delete()
-    Log4g.Levels[self.name] = nil
+    Log4g.Inst._Levels[self.name] = nil
 end
 
 --- Get the Level's name.
