@@ -60,7 +60,7 @@ end
 -- @param category The category to put the row into
 -- @param name The label of the row
 -- @param prop The name of RowControl to add
--- @return row row created
+-- @return row created row
 local function DPropNewRow(panel, category, name, prop)
     local row = panel:CreateRow(category, name)
     row:Setup(prop)
@@ -414,8 +414,14 @@ concommand.Add("Log4g_MMC", function()
     local SummarySheet = vgui.Create("DProperties", SheetPanelD)
     SummarySheet:Dock(FILL)
 
-    local function CreateSpecialRow(sheet, category, name)
-        local row = sheet:CreateRow(category, name)
+    --- Create a row with a Generic RowControl where users can't type into.
+    -- @lfunction CreateSpecialRow
+    -- @param dprop The DProperties to create the row in
+    -- @param category The category to put the row into
+    -- @param name The label of the row
+    -- @return row created row
+    local function CreateSpecialRow(dprop, category, name)
+        local row = dprop:CreateRow(category, name)
         row:Setup("Generic")
         GetRowControl(row):SetEditable(false)
 
