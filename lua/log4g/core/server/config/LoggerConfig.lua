@@ -12,7 +12,7 @@ function LoggerConfig:New(name, eventname, uid, loggercontext, level, appender, 
     self.eventname = eventname or ""
     self.uid = uid or ""
     self.loggercontext = loggercontext or ""
-    self.level = level or ""
+    self.level = level or {}
     self.appender = appender or ""
     self.layout = layout or ""
     self.file = file or ""
