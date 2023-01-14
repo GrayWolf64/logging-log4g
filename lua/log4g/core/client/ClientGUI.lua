@@ -416,7 +416,7 @@ concommand.Add("Log4g_MMC", function()
         })
     end):SetIcon("icon16/information.png")
 
-    CreateDHDivider(SheetPanelB, ListView, Tree, 4, 700, 150)
+    CreateDHDivider(SheetPanelB, ListView, Tree, 4, 720, 120)
     local SheetPanelC = vgui.Create("DPanel", SheetA)
     SheetA:AddSheet("Overview (SV)", SheetPanelC, "icon16/page.png")
     local SheetPanelD = vgui.Create("DPanel", SheetA)
