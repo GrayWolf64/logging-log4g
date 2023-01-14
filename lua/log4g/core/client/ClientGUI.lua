@@ -182,23 +182,24 @@ concommand.Add("Log4g_MMC", function()
         end
     end)
 
-    local function GetColumnSpecialText(num, listview)
+    local function GetColumnSpecialText(num, listview, ...)
         local line = listview:GetLine(num)
         if not IsValid(line) then return end
-        local contextname, configname
+
+        local tbl, args = {}, {...}
 
         for m, n in ipairs(listview.Columns) do
             local text = n:GetChild(0):GetText()
             local str = line:GetColumnText(m)
 
-            if text == "loggercontext" then
-                contextname = str
-            elseif text == "name" then
-                configname = str
+            for _, v in pairs(args) do
+                if v == text then
+                    tbl[text] = str
+                end
             end
         end
 
-        return contextname, configname
+        return tbl
     end
 
     PanelTimedFunc(ListView, UpdateInterval, function()
@@ -207,20 +208,20 @@ concommand.Add("Log4g_MMC", function()
             local SubA = Menu:AddSubMenu("Build (SV)")
 
             SubA:AddOption("Default", function()
-                local LoggerContextName, LoggerConfigName = GetColumnSpecialText(num, ListView)
+                local tbl = GetColumnSpecialText(num, ListView, "loggercontext", "name")
                 net.Start("Log4g_CLReq_LoggerConfig_BuildDefault")
-                net.WriteString(LoggerContextName)
-                net.WriteString(LoggerConfigName)
+                net.WriteString(tbl["loggercontext"])
+                net.WriteString(tbl["name"])
                 net.SendToServer()
             end)
 
             Menu:AddSpacer()
 
             Menu:AddOption("Remove", function()
-                local LoggerContextName, LoggerConfigName = GetColumnSpecialText(num, ListView)
+                local tbl = GetColumnSpecialText(num, ListView, "loggercontext", "name")
                 net.Start("Log4g_CLReq_LoggerConfig_Remove")
-                net.WriteString(LoggerContextName)
-                net.WriteString(LoggerConfigName)
+                net.WriteString(tbl["loggercontext"])
+                net.WriteString(tbl["name"])
                 net.SendToServer()
             end):SetIcon("icon16/cross.png")
 
