@@ -15,6 +15,18 @@ function Logger:Delete()
     Log4g.Inst._Loggers[self.name] = nil
 end
 
+--- Get the Logger name.
+-- @return string name
+function Logger:GetName()
+    return self.name
+end
+
+--- Get the Level associated with the Logger.
+-- @return object level
+function Logger:GetLevel()
+    return self.loggerconfig.level
+end
+
 --- Register a Logger.
 -- If the Logger with the same name already exists, its loggerconfig will be overrode.
 -- @param name The name of the Logger
