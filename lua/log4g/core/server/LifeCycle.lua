@@ -1,4 +1,5 @@
 Log4g.Core.LifeCycle = Log4g.Core.LifeCycle or {}
+Log4g.Core.LifeCycle.States = Log4g.Core.LifeCycle.States or {}
 local State = include("log4g/core/impl/Class.lua"):Extend()
 
 function State:New(name, int)
