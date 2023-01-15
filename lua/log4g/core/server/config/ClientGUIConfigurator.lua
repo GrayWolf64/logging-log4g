@@ -68,7 +68,6 @@ net.Receive("Log4g_CL_ChkConnected", function(len, ply)
 end)
 
 net.Receive("Log4g_CLReq_LoggerConfig_Keys", function(len, ply)
-    if not IdentChk(ply) then return end
     net.Start("Log4g_CLRcv_LoggerConfig_Keys")
 
     net.WriteTable({"name", "eventname", "uid", "loggercontext", "level", "appender", "layout", "func"})
@@ -83,7 +82,6 @@ net.Receive("Log4g_CL_PendingTransmission_DPropLoggerConfigMessages", function()
 end)
 
 net.Receive("Log4g_CLReq_Hooks", function(len, ply)
-    if not IdentChk(ply) then return end
     net.Start("Log4g_CLRcv_Hooks")
     local Data = util.Compress(util.TableToJSON(hook.GetTable()))
     local Len = #Data

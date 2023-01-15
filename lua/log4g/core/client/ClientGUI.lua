@@ -209,6 +209,20 @@ concommand.Add("Log4g_MMC", function()
         return tbl
     end
 
+    --- Set a DListView's line's text correctly using the given table with string keys and string values.
+    -- @lfunction SetProperLineText
+    -- @param tbl The table containing the needed text values, and its keys must be the same with the column texts
+    -- @param line The line to set the texts in
+    local function SetProperLineText(tbl, line)
+        for i, j in pairs(tbl) do
+            for m, n in ipairs(ListView.Columns) do
+                if i == n:GetChild(0):GetText() then
+                    line:SetColumnText(m, j)
+                end
+            end
+        end
+    end
+
     PanelTimedFunc(ListView, UpdateInterval, function()
         function ListView:OnRowRightClick(num)
             local Menu = DermaMenu()
@@ -238,16 +252,6 @@ concommand.Add("Log4g_MMC", function()
         ListView:Clear()
         net.Start("Log4g_CLReq_LoggerConfigs")
         net.SendToServer()
-
-        local function SetProperLineText(tbl, line)
-            for i, j in pairs(tbl) do
-                for m, n in ipairs(ListView.Columns) do
-                    if i == n:GetChild(0):GetText() then
-                        line:SetColumnText(m, j)
-                    end
-                end
-            end
-        end
 
         net.Receive("Log4g_CLRcv_LoggerConfigs", function()
             for _, v in ipairs(util.JSONToTable(util.Decompress(net.ReadData(net.ReadUInt(16))))) do
