@@ -213,9 +213,9 @@ concommand.Add("Log4g_MMC", function()
     -- @lfunction SetProperLineText
     -- @param tbl The table containing the needed text values, and its keys must be the same with the column texts
     -- @param line The line to set the texts in
-    local function SetProperLineText(tbl, line)
+    local function SetProperLineText(tbl, line, listview)
         for i, j in pairs(tbl) do
-            for m, n in ipairs(ListView.Columns) do
+            for m, n in ipairs(listview.Columns) do
                 if i == n:GetChild(0):GetText() then
                     line:SetColumnText(m, j)
                 end
@@ -256,7 +256,7 @@ concommand.Add("Log4g_MMC", function()
         net.Receive("Log4g_CLRcv_LoggerConfigs", function()
             for _, v in ipairs(util.JSONToTable(util.Decompress(net.ReadData(net.ReadUInt(16))))) do
                 local Line = ListView:AddLine()
-                SetProperLineText(v, Line)
+                SetProperLineText(v, Line, ListView)
             end
         end)
     end)
