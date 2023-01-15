@@ -428,7 +428,7 @@ concommand.Add("Log4g_MMC", function()
     local SummarySheet = vgui.Create("DProperties", SheetPanelD)
     SummarySheet:Dock(FILL)
 
-    --- Create a row with a Generic RowControl where users can't type into.
+    --- Create a row with a Generic RowControl which users can't type into.
     -- @lfunction CreateSpecialRow
     -- @param dprop The DProperties to create the row in
     -- @param category The category to put the row into
