@@ -120,7 +120,7 @@ local function PanelTimedFunc(panel, interval, funca, funcb)
     end
 end
 
-CreateClientConVar("Log4g_CL_GUI_ElementUpdateInterval", 5, true, false, "Client GUI elements will be updated every given seconds (between 1 and 10).", 1, 10)
+CreateClientConVar("Log4g_CL_GUI_ElementUpdateInterval", 5, true, false, "Client GUI elements will be updated every given seconds (between 2 and 10).", 2, 10)
 local Frame = nil
 
 concommand.Add("Log4g_MMC", function()
