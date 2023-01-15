@@ -443,7 +443,7 @@ concommand.Add("Log4g_MMC", function()
     end
 
     local RowA, RowB = CreateSpecialRow(SummarySheet, "Client", "OS Date"), CreateSpecialRow(SummarySheet, "Server", "Estimated Tickrate")
-    local RowC, RowD = CreateSpecialRow(SummarySheet, "Server", "Floored Lua Dynamic RAM Usage"), CreateSpecialRow(SummarySheet, "Server", "Entity Count")
+    local RowC, RowD = CreateSpecialRow(SummarySheet, "Server", "Floored Lua Dynamic RAM Usage (kB)"), CreateSpecialRow(SummarySheet, "Server", "Entity Count")
     local RowE, RowF = CreateSpecialRow(SummarySheet, "Server", "Networked Entity (EDICT) Count"), CreateSpecialRow(SummarySheet, "Server", "Net Receiver Count")
     local RowG, RowH = CreateSpecialRow(SummarySheet, "Server", "Lua Registry Table Element Count"), CreateSpecialRow(SummarySheet, "Server", "Constraint Count")
 
@@ -455,7 +455,7 @@ concommand.Add("Log4g_MMC", function()
 
         net.Receive("Log4g_CLRcv_SVSummaryData", function()
             RowB:SetValue(tostring(1 / engine.ServerFrameTime()))
-            RowC:SetValue(tostring(net.ReadFloat()) .. " kB")
+            RowC:SetValue(tostring(net.ReadFloat()))
             RowD:SetValue(tostring(net.ReadUInt(14)))
             RowE:SetValue(tostring(net.ReadUInt(13)))
             RowF:SetValue(tostring(net.ReadUInt(12)))
