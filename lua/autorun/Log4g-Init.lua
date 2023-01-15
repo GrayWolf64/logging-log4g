@@ -24,7 +24,6 @@ if SERVER then
     AddCSLuaFile("log4g/core/client/ClientGUI.lua")
     AddCSLuaFile("log4g/core/Version.lua")
 elseif CLIENT then
-    file.CreateDir("log4g/client")
     include("log4g/core/client/ClientGUI.lua")
     include("log4g/core/Version.lua")
 end
