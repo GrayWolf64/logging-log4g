@@ -12,5 +12,12 @@ net.Receive("Log4g_CLReq_SVSummaryData", function(len, ply)
     net.WriteUInt(ents.GetEdictCount(), 13)
     net.WriteUInt(table.Count(net.Receivers), 12)
     net.WriteUInt(table.Count(debug.getregistry()), 32)
+    local ConstraintCount = 0
+
+    for _, v in pairs(ents.GetAll()) do
+        ConstraintCount = ConstraintCount + table.Count(constraint.GetTable(v))
+    end
+
+    net.WriteUInt(ConstraintCount / 2, 16)
     net.Send(ply)
 end)
