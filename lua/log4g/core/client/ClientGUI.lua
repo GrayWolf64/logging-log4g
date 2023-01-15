@@ -368,7 +368,7 @@ concommand.Add("Log4g_MMC", function()
         ButtonA.DoClick = function()
             local InputName = GetRowControlValue(RowG)
             local InputLoggerContextName = GetRowControlValue(RowC)
-            if HasNumber(InputName) or HasNumber(InputLoggerContextName) then return end
+            if HasNumber(InputName) or HasNumber(InputLoggerContextName) or #InputName == 0 or #InputLoggerContextName == 0 then return end
             net.Start("Log4g_CLUpload_LoggerConfig")
 
             net.WriteTable({
