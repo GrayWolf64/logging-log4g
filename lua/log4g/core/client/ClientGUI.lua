@@ -366,16 +366,16 @@ concommand.Add("Log4g_MMC", function()
         local ButtonA = CreateDButton(Window, BOTTOM, 150, 0, 150, 0, 100, 50, "Submit")
 
         ButtonA.DoClick = function()
-            local InputtedName = GetRowControlValue(RowG)
-            local InputtedLoggerContextName = GetRowControlValue(RowC)
-            if HasNumber(InputtedName) or HasNumber(InputtedLoggerContextName) then return end
+            local InputName = GetRowControlValue(RowG)
+            local InputLoggerContextName = GetRowControlValue(RowC)
+            if HasNumber(InputName) or HasNumber(InputLoggerContextName) then return end
             net.Start("Log4g_CLUpload_LoggerConfig")
 
             net.WriteTable({
-                name = string.lower(InputtedName),
+                name = string.lower(InputName),
                 eventname = GetRowControlValue(RowA),
                 uid = GetRowControlValue(RowB),
-                loggercontext = string.lower(InputtedLoggerContextName),
+                loggercontext = string.lower(InputLoggerContextName),
                 level = GetRowControlValue(RowD),
                 appender = GetRowControlValue(RowE),
                 layout = GetRowControlValue(RowF),
@@ -395,11 +395,12 @@ concommand.Add("Log4g_MMC", function()
         local ButtonB = CreateDButton(Window, BOTTOM, 100, 0, 100, 0, 100, 50, "Submit")
 
         ButtonB.DoClick = function()
-            local InputtedName = GetRowControlValue(RowA)
-            if HasNumber(InputtedName) then return end
+            local InputName = GetRowControlValue(RowA)
+            local InputInt = GetRowControlValue(RowB)
+            if HasNumber(InputName) or #InputName == 0 or #InputInt == 0 then return end
             net.Start("Log4g_CLUpload_NewLevel")
-            net.WriteString(InputtedName)
-            net.WriteUInt(tonumber(GetRowControlValue(RowB)), 16)
+            net.WriteString(InputName)
+            net.WriteUInt(tonumber(InputInt), 16)
             net.SendToServer()
             Window:Close()
         end
