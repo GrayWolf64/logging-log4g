@@ -91,7 +91,6 @@ net.Receive("Log4g_CLReq_Hooks", function(len, ply)
 end)
 
 net.Receive("Log4g_CLUpload_LoggerConfig", function(len, ply)
-    if not IdentChk(ply) then return end
     local LoggerConfigContent = net.ReadTable()
     local LoggerConfigName = LoggerConfigContent.name
     local LoggerContextName = LoggerConfigContent.loggercontext
