@@ -1,23 +1,24 @@
 --- The Level (Log Level).
 -- @classmod Level
 Log4g.Inst._Levels = Log4g.Inst._Levels or {}
-local Level = include("log4g/core/impl/Class.lua"):Extend()
 local HasKey = Log4g.Util.HasKey
+local Class = include("log4g/core/impl/MiddleClass.lua")
+local Level = Class("Level")
 
-function Level:New(name, int, standard)
+function Level:Initialize(name, int, standard)
     self.name = name or ""
     self.int = int or 0
     self.standard = standard or false
 end
 
-Log4g.Inst._Levels.ALL = Level("ALL", math.huge, true)
-Log4g.Inst._Levels.TRACE = Level("TRACE", 600, true)
-Log4g.Inst._Levels.DEBUG = Level("DEBUG", 500, true)
-Log4g.Inst._Levels.INFO = Level("INFO", 400, true)
-Log4g.Inst._Levels.WARN = Level("WARN", 300, true)
-Log4g.Inst._Levels.ERROR = Level("ERROR", 200, true)
-Log4g.Inst._Levels.FATAL = Level("FATAL", 100, true)
-Log4g.Inst._Levels.OFF = Level("OFF", 0, true)
+Log4g.Inst._Levels.ALL = Level:New("ALL", math.huge, true)
+Log4g.Inst._Levels.TRACE = Level:New("TRACE", 600, true)
+Log4g.Inst._Levels.DEBUG = Level:New("DEBUG", 500, true)
+Log4g.Inst._Levels.INFO = Level:New("INFO", 400, true)
+Log4g.Inst._Levels.WARN = Level:New("WARN", 300, true)
+Log4g.Inst._Levels.ERROR = Level:New("ERROR", 200, true)
+Log4g.Inst._Levels.FATAL = Level:New("FATAL", 100, true)
+Log4g.Inst._Levels.OFF = Level:New("OFF", 0, true)
 
 --- Delete the Level.
 function Level:Delete()
@@ -82,7 +83,7 @@ function Log4g.Level.RegisterCustomLevel(name, int)
     if name == "" or int < 0 then return end
 
     if not HasKey(Log4g.Inst._Levels, name) then
-        local level = Level(name, int, false)
+        local level = Level:New(name, int, false)
         Log4g.Inst._Levels[name] = level
 
         return level

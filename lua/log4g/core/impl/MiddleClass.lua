@@ -55,7 +55,7 @@ local function _tostring(self)
 end
 
 local function _call(self, ...)
-    return self:new(...)
+    return self:New(...)
 end
 
 local function _createClass(name, super)
@@ -120,7 +120,7 @@ end
 
 local DefaultMixin = {
     __tostring = function(self) return "instance of " .. tostring(self.class) end,
-    initialize = function(self, ...) end,
+    Initialize = function(self, ...) end,
     isInstanceOf = function(self, aClass) return type(aClass) == "table" and type(self) == "table" and (self.class == aClass or type(self.class) == "table" and type(self.class.isSubclassOf) == "function" and self.class:isSubclassOf(aClass)) end,
     static = {
         allocate = function(self)
@@ -130,10 +130,10 @@ local DefaultMixin = {
                 class = self
             }, self.__instanceDict)
         end,
-        new = function(self, ...)
-            assert(type(self) == "table", "Make sure that you are using 'Class:new' instead of 'Class.new'")
+        New = function(self, ...)
+            assert(type(self) == "table", "Make sure that you are using 'Class:New' instead of 'Class.New'")
             local instance = self:allocate()
-            instance:initialize(...)
+            instance:Initialize(...)
 
             return instance
         end,
@@ -148,7 +148,7 @@ local DefaultMixin = {
                 end
             end
 
-            subclass.initialize = function(instance, ...) return self.initialize(instance, ...) end
+            subclass.Initialize = function(instance, ...) return self.Initialize(instance, ...) end
             self.subclasses[subclass] = true
             self:subclassed(subclass)
 
