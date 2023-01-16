@@ -95,7 +95,10 @@ end
 local function GetGameInfo()
     return "Server: " .. game.GetIPAddress() .. " " .. "SinglePlayer: " .. tostring(game.SinglePlayer())
 end
-
+--- Check if a string has numbers.
+-- @lfunction HasNumber
+-- @param str The string to check
+-- @return bool ifhasnumber
 local function HasNumber(str)
     if string.find(str, "%d") then return true end
 
