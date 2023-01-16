@@ -20,10 +20,8 @@ if SERVER then
     include("log4g/core/server/config/ClientGUIConfigurator.lua")
     include("log4g/core/server/ClientGUISummaryData.lua")
     include("log4g/core/server/config/builder/DefaultLoggerConfigBuilder.lua")
-    include("log4g/core/Version.lua")
+    include("log4g/core/server/Version.lua")
     AddCSLuaFile("log4g/core/client/ClientGUI.lua")
-    AddCSLuaFile("log4g/core/Version.lua")
 elseif CLIENT then
     include("log4g/core/client/ClientGUI.lua")
-    include("log4g/core/Version.lua")
 end

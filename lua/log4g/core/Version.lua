@@ -1,5 +1,0 @@
---- Version handler.
--- @script Version.lua
-concommand.Add("Log4g_Version", function()
-    MsgC("Log4g Version Check\n")
-end)
