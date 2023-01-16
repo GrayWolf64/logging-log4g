@@ -448,9 +448,7 @@ concommand.Add("Log4g_MMC", function()
     local RowE, RowF = CreateSpecialRow(SummarySheet, "Server", "Networked Entity (EDICT) Count"), CreateSpecialRow(SummarySheet, "Server", "Net Receiver Count")
     local RowG, RowH = CreateSpecialRow(SummarySheet, "Server", "Lua Registry Table Element Count"), CreateSpecialRow(SummarySheet, "Server", "Constraint Count")
 
-    PanelTimedFunc(SummarySheet, UpdateInterval, function()
-        RowA:SetValue(tostring(os.date()))
-    end, function()
+    local function UpdateSummary()
         net.Start("Log4g_CLReq_SVSummaryData")
         net.SendToServer()
 
@@ -463,5 +461,13 @@ concommand.Add("Log4g_MMC", function()
             RowG:SetValue(tostring(net.ReadUInt(32)))
             RowH:SetValue(tostring(net.ReadUInt(16)))
         end)
+    end
+
+    PanelTimedFunc(SummarySheet, UpdateInterval, function()
+        RowA:SetValue(tostring(os.date()))
+    end, function()
+        UpdateSummary()
     end)
+
+    UpdateSummary()
 end)
