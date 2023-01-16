@@ -2,10 +2,11 @@
 -- @classmod Logger
 Log4g.Logger = Log4g.Logger or {}
 Log4g.Inst._Loggers = Log4g.Inst._Loggers or {}
-local Logger = include("log4g/core/impl/Class.lua"):Extend()
+local Class = include("log4g/core/impl/MiddleClass.lua")
+local Logger = Class("Logger")
 local HasKey = Log4g.Util.HasKey
 
-function Logger:New(name, loggerconfig)
+function Logger:Initialize(name, loggerconfig)
     self.name = name or ""
     self.loggerconfig = loggerconfig or {}
 end
@@ -36,7 +37,7 @@ function Log4g.Logger.RegisterLogger(name, loggerconfig)
     if name == "" or loggerconfig == {} then return end
 
     if not HasKey(Log4g.Inst._Loggers, name) then
-        local logger = Logger(name, loggerconfig)
+        local logger = Logger:New(name, loggerconfig)
         Log4g.Inst._Loggers[name] = logger
 
         return logger
