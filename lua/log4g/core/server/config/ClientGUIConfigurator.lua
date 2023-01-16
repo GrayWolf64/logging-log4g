@@ -11,16 +11,6 @@ local RegisterLoggerConfig = Log4g.Core.Config.LoggerConfig.RegisterLoggerConfig
 local RegisterCustomLevel = Log4g.Level.RegisterCustomLevel
 local LoggerContextLookupFile = "log4g/server/loggercontext/loggercontext_lookup.json"
 
-local function GetKeyList(tbl)
-    local keys = {}
-
-    for k, _ in pairs(tbl) do
-        table.insert(keys, k)
-    end
-
-    return keys
-end
-
 local function RemoveRegisteredObjectByName(tbl, name)
     for k, v in pairs(tbl) do
         if v.name == name then
@@ -76,9 +66,9 @@ net.Receive("Log4g_CLReq_LoggerConfig_Keys", function(len, ply)
 end)
 
 net.Receive("Log4g_CL_PendingTransmission_DPropLoggerConfigMessages", function()
-    SendTableAfterRcvNetMsg("Log4g_CLReq_Levels", "Log4g_CLRcv_Levels", GetKeyList(Log4g.Inst._Levels))
-    SendTableAfterRcvNetMsg("Log4g_CLReq_Appenders", "Log4g_CLRcv_Appenders", GetKeyList(Log4g.Inst._Appenders))
-    SendTableAfterRcvNetMsg("Log4g_CLReq_Layouts", "Log4g_CLRcv_Layouts", GetKeyList(Log4g.Inst._Layouts))
+    SendTableAfterRcvNetMsg("Log4g_CLReq_Levels", "Log4g_CLRcv_Levels", table.GetKeys(Log4g.Inst._Levels))
+    SendTableAfterRcvNetMsg("Log4g_CLReq_Appenders", "Log4g_CLRcv_Appenders", table.GetKeys(Log4g.Inst._Appenders))
+    SendTableAfterRcvNetMsg("Log4g_CLReq_Layouts", "Log4g_CLRcv_Layouts", table.GetKeys(Log4g.Inst._Layouts))
 end)
 
 net.Receive("Log4g_CLReq_Hooks", function(len, ply)
