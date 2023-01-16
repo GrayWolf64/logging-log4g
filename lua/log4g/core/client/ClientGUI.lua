@@ -95,6 +95,7 @@ end
 local function GetGameInfo()
     return "Server: " .. game.GetIPAddress() .. " " .. "SinglePlayer: " .. tostring(game.SinglePlayer())
 end
+
 --- Check if a string has numbers.
 -- @lfunction HasNumber
 -- @param str The string to check
@@ -393,6 +394,7 @@ concommand.Add("Log4g_MMC", function()
 
     SubMenuB:AddOption("Level", function()
         local Window = CreateDFrame(300, 150, "New Level", "icon16/application.png", Frame)
+        Window:SetDrawOnTop(true)
         local DProp = vgui.Create("DProperties", Window)
         DProp:Dock(FILL)
         local RowA, RowB = DPropNewRow(DProp, "Self", "Name", "Generic"), DPropNewRow(DProp, "Self", "IntLevel", "Generic")
