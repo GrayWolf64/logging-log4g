@@ -20,6 +20,10 @@ Log4g.Inst._Levels.ERROR = Level:New("ERROR", 200, true)
 Log4g.Inst._Levels.FATAL = Level:New("FATAL", 100, true)
 Log4g.Inst._Levels.OFF = Level:New("OFF", 0, true)
 
+function Level:__tostring()
+    return "Level: [name:" .. self.name .. "]" .. "[int:" .. self.int .. "]" .. "[standard:" .. tostring(self.standard) .. "]"
+end
+
 --- Delete the Level.
 function Level:Delete()
     Log4g.Inst._Levels[self.name] = nil
