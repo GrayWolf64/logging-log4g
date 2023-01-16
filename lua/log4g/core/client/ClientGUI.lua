@@ -414,6 +414,7 @@ concommand.Add("Log4g_MMC", function()
 
     MenuC:AddOption("About", function()
         local Window = CreateDFrame(300, 125, "About", "icon16/information.png", Frame)
+        Window:SetDrawOnTop(true)
         local Text = vgui.Create("RichText", Window)
         Text:Dock(FILL)
         Text:InsertColorChange(192, 192, 192, 255)
