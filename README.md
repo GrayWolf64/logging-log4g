@@ -19,5 +19,3 @@ Currently Work-in-Progress.
 The Log4g Documentation is available [here](https://github.com/GrayWolf64/Log4g/wiki).
 
 ## Third-Party Project(s) Used
-
-- [NClassic](https://github.com/ImpishDeathTech/nclassic)
