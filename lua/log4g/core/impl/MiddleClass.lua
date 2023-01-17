@@ -1,6 +1,7 @@
 --- A simple OOP library for Lua which has inheritance, metamethods, class variables and weak mixin support.
 -- @module MiddleClass.lua
 -- @license MIT License
+-- @copyright Enrique García Cota
 local MiddleClass = {}
 
 local function _createIndexWrapper(aClass, f)
