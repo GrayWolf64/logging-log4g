@@ -1,17 +1,14 @@
 --- The Layout.
 -- @classmod Layout
 Log4g.Core.Layout = Log4g.Core.Layout or {}
-Log4g.Inst._Layouts = Log4g.Inst._Layouts or {}
+Log4g.Core.Layout.Buffer = Log4g.Core.Layout.Buffer or {}
 local Class = include("log4g/core/impl/MiddleClass.lua")
 local Layout = Class("Layout")
 
 function Layout:Initialize(name, func)
-    self.name = name or ""
-    self.func = func or function() end
+    self.name = name
+    self.func = func
 end
-
-local PatternLayout = include("log4g/core/server/layout/PatternLayout.lua")
-Log4g.Inst._Layouts.PatternLayout = Layout:New("PatternLayout", PatternLayout)
 
 --- Register a Layout.
 -- If the Layout with the same name already exists, its function will be overrode.
@@ -20,7 +17,9 @@ Log4g.Inst._Layouts.PatternLayout = Layout:New("PatternLayout", PatternLayout)
 -- @return object layout
 function Log4g.Core.Layout.RegisterLayout(name, func)
     local layout = Layout:New(name, func)
-    table.insert(Log4g.Inst._Layouts, layout)
+    table.insert(Log4g.Core.Layout.Buffer, layout)
 
     return layout
 end
+
+Log4g.Core.Layout.Buffer.PatternLayout = Layout:New("PatternLayout", include("log4g/core/server/layout/PatternLayout.lua"))
