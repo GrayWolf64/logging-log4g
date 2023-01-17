@@ -2,6 +2,7 @@
 -- @module Util.lua
 -- @license Apache License 2.0
 -- @copyright GrayWolf64
+------
 --- Check if one table has a certain key.
 -- @param tbl The table to check
 -- @param key The key to find in the table
