@@ -21,11 +21,7 @@ end
 -- @param name The name of the LoggerContext
 -- @return bool hascontext
 function Log4g.Core.LoggerContext.HasContext(name)
-    for k, _ in pairs(Log4g.InstHier) do
-        if k == name then return true end
-    end
-
-    return false
+    return HasKey(Log4g.InstHier, name)
 end
 
 --- Register a LoggerContext.
