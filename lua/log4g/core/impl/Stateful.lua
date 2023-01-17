@@ -1,8 +1,8 @@
 --- State support.
 -- @module Stateful.lua
 -- @license MIT License
+-- @copyright Enrique García Cota
 local Stateful = {}
-
 Stateful.static = {}
 
 local _callbacks = {
