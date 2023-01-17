@@ -360,7 +360,7 @@ concommand.Add("Log4g_MMC", function()
             box:SetValue("Select...")
         end
 
-        function Window:OnFocusChanged()
+        function Window:OnCursorEntered()
             net.Start("Log4g_CL_PendingTransmission_DPropLoggerConfigMessages")
             net.SendToServer()
             AddChoiceViaNetTbl("Log4g_CLReq_Levels", "Log4g_CLRcv_Levels", RowD)
