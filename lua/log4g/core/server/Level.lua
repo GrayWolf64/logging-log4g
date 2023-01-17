@@ -24,6 +24,10 @@ function Level:__tostring()
     return "Level: [name:" .. self.name .. "]" .. "[int:" .. self.int .. "]"
 end
 
+function Level:__eq(lhs, rhs)
+    return lhs == rhs
+end
+
 --- Delete the Custom Level.
 function Level:Delete()
     if HasKey(Log4g.Level.Custom, self.name) then
