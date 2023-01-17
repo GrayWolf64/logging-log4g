@@ -9,15 +9,15 @@ local LoggerConfig = Class("LoggerConfig")
 local HasKey = Log4g.Util.HasKey
 
 function LoggerConfig:Initialize(name, eventname, uid, loggercontext, level, appender, layout, file, func)
-    self.name = name or ""
-    self.eventname = eventname or ""
-    self.uid = uid or ""
-    self.loggercontext = loggercontext or ""
-    self.level = level or {}
-    self.appender = appender or ""
-    self.layout = layout or ""
-    self.file = file or ""
-    self.func = func or function() end
+    self.name = name
+    self.eventname = eventname
+    self.uid = uid
+    self.loggercontext = loggercontext
+    self.level = level
+    self.appender = appender
+    self.layout = layout
+    self.file = file
+    self.func = func
 end
 
 --- Delete the LoggerConfig.
