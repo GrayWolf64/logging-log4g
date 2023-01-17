@@ -7,8 +7,8 @@ local Class = include("log4g/core/impl/MiddleClass.lua")
 local Level = Class("Level")
 
 function Level:Initialize(name, int)
-    self.name = name or ""
-    self.int = int or 0
+    self.name = name
+    self.int = int
 end
 
 Log4g.Level.Standard.ALL = Level:New("ALL", math.huge)
