@@ -13,7 +13,7 @@ end
 
 --- Delete the LoggerContext.
 function LoggerContext:Delete()
-    Log4g.InstHier[self.name] = nil
+    Log4g.Hierarchy[self.name] = nil
 end
 
 --- Check if a LoggerContext with the given name exists.
@@ -21,7 +21,7 @@ end
 -- @param name The name of the LoggerContext
 -- @return bool hascontext
 function Log4g.Core.LoggerContext.HasContext(name)
-    return HasKey(Log4g.InstHier, name)
+    return HasKey(Log4g.Hierarchy, name)
 end
 
 --- Register a LoggerContext.
@@ -32,14 +32,14 @@ end
 function Log4g.Core.LoggerContext.RegisterLoggerContext(name, folder)
     if name == "" or folder == "" then return end
 
-    if not HasKey(Log4g.InstHier, name) then
+    if not HasKey(Log4g.Hierarchy, name) then
         local loggercontext = LoggerContext:New(name, folder, os.date())
-        Log4g.InstHier[name] = loggercontext
+        Log4g.Hierarchy[name] = loggercontext
 
         return loggercontext
     else
-        Log4g.InstHier[name].folder = folder
+        Log4g.Hierarchy[name].folder = folder
 
-        return Log4g.InstHier[name]
+        return Log4g.Hierarchy[name]
     end
 end
