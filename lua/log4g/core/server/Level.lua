@@ -11,15 +11,6 @@ function Level:Initialize(name, int)
     self.int = int
 end
 
-Log4g.Level.Standard.ALL = Level:New("ALL", math.huge)
-Log4g.Level.Standard.TRACE = Level:New("TRACE", 600)
-Log4g.Level.Standard.DEBUG = Level:New("DEBUG", 500)
-Log4g.Level.Standard.INFO = Level:New("INFO", 400)
-Log4g.Level.Standard.WARN = Level:New("WARN", 300)
-Log4g.Level.Standard.ERROR = Level:New("ERROR", 200)
-Log4g.Level.Standard.FATAL = Level:New("FATAL", 100)
-Log4g.Level.Standard.OFF = Level:New("OFF", 0)
-
 function Level:__tostring()
     return "Level: [name:" .. self.name .. "]" .. "[int:" .. self.int .. "]"
 end
@@ -104,3 +95,12 @@ end
 function Log4g.Level.GetStandardLevel()
     return Log4g.Level.Standard
 end
+
+Log4g.Level.Standard.ALL = Level:New("ALL", math.huge)
+Log4g.Level.Standard.TRACE = Level:New("TRACE", 600)
+Log4g.Level.Standard.DEBUG = Level:New("DEBUG", 500)
+Log4g.Level.Standard.INFO = Level:New("INFO", 400)
+Log4g.Level.Standard.WARN = Level:New("WARN", 300)
+Log4g.Level.Standard.ERROR = Level:New("ERROR", 200)
+Log4g.Level.Standard.FATAL = Level:New("FATAL", 100)
+Log4g.Level.Standard.OFF = Level:New("OFF", 0)
