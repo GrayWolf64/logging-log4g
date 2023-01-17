@@ -9,7 +9,7 @@ function LoggerContext:Initialize(name, folder, datestarted)
     self.name = name
     self.folder = folder
     self.datestarted = datestarted
-    self._loggers = {}
+    self.loggers = {}
 end
 
 --- Delete the LoggerContext.
