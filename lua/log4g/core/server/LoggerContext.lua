@@ -6,9 +6,9 @@ local LoggerContext = Class("LoggerContext")
 local HasKey = Log4g.Util.HasKey
 
 function LoggerContext:Initialize(name, folder, datestarted)
-    self.name = name or ""
-    self.folder = folder or ""
-    self.datestarted = datestarted or ""
+    self.name = name
+    self.folder = folder
+    self.datestarted = datestarted
 end
 
 --- Delete the LoggerContext.
