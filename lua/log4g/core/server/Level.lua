@@ -95,3 +95,8 @@ function Log4g.Level.RegisterCustomLevel(name, int)
         return Log4g.Level.Custom[name]
     end
 end
+
+--- Get the Standard Levels as a table.
+function Log4g.Level.GetStandardLevel()
+    return Log4g.Level.Standard
+end
