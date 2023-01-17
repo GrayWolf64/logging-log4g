@@ -28,18 +28,18 @@ end
 function Log4g.Core.Config.LoggerConfig.RegisterLoggerConfig(name, eventname, uid, loggercontext, level, appender, layout, file, func)
     if not HasKey(Log4g.Core.Config.LoggerConfig.Buffer, name) then
         local loggerconfig = LoggerConfig:New(name, eventname, uid, loggercontext, level, appender, layout, file)
-        Log4g.Inst._LoggerConfigs[name] = loggerconfig
+        Log4g.Core.Config.LoggerConfig.Buffer[name] = loggerconfig
 
         return loggerconfig
     else
-        Log4g.Inst._LoggerConfigs[name].eventname = eventname
-        Log4g.Inst._LoggerConfigs[name].uid = uid
-        Log4g.Inst._LoggerConfigs[name].loggercontext = loggercontext
-        Log4g.Inst._LoggerConfigs[name].level = level
-        Log4g.Inst._LoggerConfigs[name].appender = appender
-        Log4g.Inst._LoggerConfigs[name].layout = layout
-        Log4g.Inst._LoggerConfigs[name].file = file
-        Log4g.Inst._LoggerConfigs[name].func = func
+        Log4g.Core.Config.LoggerConfig.Buffer[name].eventname = eventname
+        Log4g.Core.Config.LoggerConfig.Buffer[name].uid = uid
+        Log4g.Core.Config.LoggerConfig.Buffer[name].loggercontext = loggercontext
+        Log4g.Core.Config.LoggerConfig.Buffer[name].level = level
+        Log4g.Core.Config.LoggerConfig.Buffer[name].appender = appender
+        Log4g.Core.Config.LoggerConfig.Buffer[name].layout = layout
+        Log4g.Core.Config.LoggerConfig.Buffer[name].file = file
+        Log4g.Core.Config.LoggerConfig.Buffer[name].func = func
 
         return Log4g.Core.Config.LoggerConfig.Buffer[name]
     end
