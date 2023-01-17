@@ -180,7 +180,7 @@ net.Receive("Log4g_CLReq_LoggerContext_Remove", function(len, ply)
     if not IdentChk(ply) then return end
     local _, Folders = file.Find("log4g/server/loggercontext/*", "DATA")
     local LoggerContextName = net.ReadString()
-    RemoveRegisteredObjectByName(Log4g.Inst._LoggerContexts, LoggerContextName)
+    RemoveRegisteredObjectByName(Log4g.Hierarchy, LoggerContextName)
 
     for k, v in pairs(Log4g.Inst._LoggerConfigs) do
         if v.loggercontext == LoggerContextName then
