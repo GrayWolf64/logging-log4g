@@ -1,5 +1,5 @@
-local function AppendConsole(args)
+local function ConsoleAppender(args)
     MsgC(args)
 end
 
-return AppendConsole
+return ConsoleAppender

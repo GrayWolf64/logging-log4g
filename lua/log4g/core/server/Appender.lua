@@ -1,21 +1,20 @@
 --- The Appender.
 -- @classmod Appender
 Log4g.Core.Appender = Log4g.Core.Appender or {}
-Log4g.Inst._Appenders = Log4g.Inst._Appenders or {}
+Log4g.Core.Appender.Buffer = Log4g.Core.Appender.Buffer or {}
 local Class = include("log4g/core/impl/MiddleClass.lua")
 local Appender = Class("Appender")
 
 function Appender:Initialize(name, func)
-    self.name = name or ""
-    self.func = func or function() end
+    self.name = name
+    self.func = func
 end
-
-local AppendConsole = include("log4g/core/server/appender/ConsoleAppender.lua")
-Log4g.Inst._Appenders.ConsoleAppender = Appender:New("ConsoleAppender", AppendConsole)
 
 function Log4g.Core.Appender.RegisterAppender(name, func)
     local appender = Appender:New(name, func)
-    table.insert(Log4g.Inst._Appenders, appender)
+    table.insert(Log4g.Core.Appender.Buffer, appender)
 
     return appender
 end
+
+Log4g.Core.Appender.Buffer = Appender:New("ConsoleAppender", include("log4g/core/server/appender/ConsoleAppender.lua"))
