@@ -17,4 +17,4 @@ function Log4g.Core.Appender.RegisterAppender(name, func)
     return appender
 end
 
-Log4g.Core.Appender.Buffer = Appender:New("ConsoleAppender", include("log4g/core/server/appender/ConsoleAppender.lua"))
+Log4g.Core.Appender.Buffer.ConsoleAppender = Appender:New("ConsoleAppender", include("log4g/core/server/appender/ConsoleAppender.lua"))
