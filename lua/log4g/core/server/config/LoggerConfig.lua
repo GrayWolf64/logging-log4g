@@ -1,9 +1,9 @@
 --- The LoggerConfig.
 -- @classmod LoggerConfig
 Log4g.Core.Config = Log4g.Core.Config or {}
-Log4g.Core.Config.LoggerConfig = Log4g.Core.Config.LoggerConfig or {}
 Log4g.Core.Config.Builder = Log4g.Core.Config.Builder or {}
-Log4g.Inst._LoggerConfigs = Log4g.Inst._LoggerConfigs or {}
+Log4g.Core.Config.LoggerConfig = Log4g.Core.Config.LoggerConfig or {}
+Log4g.Core.Config.LoggerConfig.Buffer = Log4g.Core.Config.LoggerConfig.Buffer or {}
 local Class = include("log4g/core/impl/MiddleClass.lua")
 local LoggerConfig = Class("LoggerConfig")
 local HasKey = Log4g.Util.HasKey
@@ -22,11 +22,11 @@ end
 
 --- Delete the LoggerConfig.
 function LoggerConfig:Delete()
-    Log4g.Inst._LoggerConfigs[self.name] = nil
+    Log4g.Core.Config.LoggerConfig.Buffer[self.name] = nil
 end
 
 function Log4g.Core.Config.LoggerConfig.RegisterLoggerConfig(name, eventname, uid, loggercontext, level, appender, layout, file, func)
-    if not HasKey(Log4g.Inst._LoggerConfigs, name) then
+    if not HasKey(Log4g.Core.Config.LoggerConfig.Buffer, name) then
         local loggerconfig = LoggerConfig:New(name, eventname, uid, loggercontext, level, appender, layout, file)
         Log4g.Inst._LoggerConfigs[name] = loggerconfig
 
@@ -41,6 +41,6 @@ function Log4g.Core.Config.LoggerConfig.RegisterLoggerConfig(name, eventname, ui
         Log4g.Inst._LoggerConfigs[name].file = file
         Log4g.Inst._LoggerConfigs[name].func = func
 
-        return Log4g.Inst._LoggerConfigs[name]
+        return Log4g.Core.Config.LoggerConfig.Buffer[name]
     end
 end
