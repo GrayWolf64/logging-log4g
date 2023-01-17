@@ -29,9 +29,7 @@ end
 
 local function HasLogger(name)
     for _, v in pairs(Log4g.Hierarchy) do
-        for i, _ in pairs(v.loggers) do
-            if i == name then return true end
-        end
+        if HasKey(v.loggers, name) then return true end
     end
 
     return false
