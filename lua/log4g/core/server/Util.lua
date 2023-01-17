@@ -1,5 +1,5 @@
 --- The Util Library (Module).
--- @module Util
+-- @module Util.lua
 Log4g.Util = Log4g.Util or {}
 
 --- Check if one table has a certain key.
