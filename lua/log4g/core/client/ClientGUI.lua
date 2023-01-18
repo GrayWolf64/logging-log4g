@@ -228,27 +228,32 @@ concommand.Add("Log4g_MMC", function()
         end
     end
 
+    local function NetStrMsgSpecial(num, listview, start, ...)
+        local args = {...}
+
+        local result = GetColumnSpecialText(num, listview, unpack(args))
+        net.Start(start)
+
+        for _, v in ipairs(args) do
+            net.WriteString(result[v])
+        end
+
+        net.SendToServer()
+    end
+
     PanelTimedFunc(ListView, UpdateInterval, function()
         function ListView:OnRowRightClick(num)
             local Menu = DermaMenu()
             local SubA = Menu:AddSubMenu("Build (SV)")
 
             SubA:AddOption("Default", function()
-                local tbl = GetColumnSpecialText(num, ListView, "loggercontext", "name")
-                net.Start("Log4g_CLReq_LoggerConfig_BuildDefault")
-                net.WriteString(tbl["loggercontext"])
-                net.WriteString(tbl["name"])
-                net.SendToServer()
+                NetStrMsgSpecial(num, ListView, "Log4g_CLReq_LoggerConfig_BuildDefault", "loggercontext", "name")
             end)
 
             Menu:AddSpacer()
 
             Menu:AddOption("Remove", function()
-                local tbl = GetColumnSpecialText(num, ListView, "loggercontext", "name")
-                net.Start("Log4g_CLReq_LoggerConfig_Remove")
-                net.WriteString(tbl["loggercontext"])
-                net.WriteString(tbl["name"])
-                net.SendToServer()
+                NetStrMsgSpecial(num, ListView, "Log4g_CLReq_LoggerConfig_Remove", "loggercontext", "name")
             end):SetIcon("icon16/cross.png")
 
             Menu:Open()
