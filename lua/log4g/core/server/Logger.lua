@@ -12,7 +12,7 @@ end
 
 --- Delete the Logger.
 function Logger:Delete()
-    Log4g.Hierarchy[self.loggerconfig.loggercontext].loggers[self.name] = nil
+    Log4g.Hierarchy[self.loggerconfig.loggercontext].logger[self.name] = nil
 end
 
 --- Get the Logger name.
@@ -29,7 +29,7 @@ end
 
 local function HasLogger(name)
     for _, v in pairs(Log4g.Hierarchy) do
-        if HasKey(v.loggers, name) then return true end
+        if HasKey(v.logger, name) then return true end
     end
 
     return false
@@ -45,7 +45,7 @@ function Log4g.Logger.RegisterLogger(name, loggerconfig)
 
     if not HasLogger(name) then
         local logger = Logger:New(name, loggerconfig)
-        Log4g.Hierarchy[loggerconfig.loggercontext].loggers[name] = logger
+        Log4g.Hierarchy[loggerconfig.loggercontext].logger[name] = logger
 
         return logger
     end
