@@ -4,7 +4,7 @@
 -- @copyright Enrique García Cota
 local MiddleClass = {}
 
-local function _createIndexWrapper(aClass, f)
+local function CreateIndexWrapper(aClass, f)
     if f == nil then
         return aClass.__instanceDict
     elseif type(f) == "function" then
@@ -30,13 +30,13 @@ local function _createIndexWrapper(aClass, f)
     end
 end
 
-local function _propagateInstanceMethod(aClass, name, f)
-    f = name == "__index" and _createIndexWrapper(aClass, f) or f
+local function PropagateInstanceMethod(aClass, name, f)
+    f = name == "__index" and CreateIndexWrapper(aClass, f) or f
     aClass.__instanceDict[name] = f
 
     for subclass in pairs(aClass.subclasses) do
         if rawget(subclass.__declaredMethods, name) == nil then
-            _propagateInstanceMethod(subclass, name, f)
+            PropagateInstanceMethod(subclass, name, f)
         end
     end
 end
@@ -48,7 +48,7 @@ local function _declareInstanceMethod(aClass, name, f)
         f = aClass.super.__instanceDict[name]
     end
 
-    _propagateInstanceMethod(aClass, name, f)
+    PropagateInstanceMethod(aClass, name, f)
 end
 
 local function _tostring(self)
@@ -162,7 +162,7 @@ local DefaultMixin = {
 
             for methodName, f in pairs(self.__instanceDict) do
                 if not (methodName == "__index" and type(f) == "table") then
-                    _propagateInstanceMethod(subclass, methodName, f)
+                    PropagateInstanceMethod(subclass, methodName, f)
                 end
             end
 
