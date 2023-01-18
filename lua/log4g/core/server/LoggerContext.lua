@@ -30,7 +30,7 @@ function Log4g.Core.LoggerContext.HasContext(name)
 end
 
 --- Register a LoggerContext.
--- If the LoggerContext with the same name already exists, its folder will be overrode.
+-- If the LoggerContext with the same name already exists, an error will be thrown without halt.
 -- @param name The name of the LoggerContext
 -- @param folder The folder of the LoggerContext
 -- @return object loggercontext
@@ -44,7 +44,7 @@ function Log4g.Core.LoggerContext.RegisterLoggerContext(name)
 
         return loggercontext
     else
-        Log4g.Hierarchy[name].folder = folder
+        ErrorNoHalt("LoggerContext registration failed: A LoggerContext with the same name already exists.\n")
 
         return Log4g.Hierarchy[name]
     end
