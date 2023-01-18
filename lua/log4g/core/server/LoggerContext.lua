@@ -17,6 +17,10 @@ function LoggerContext:Delete()
     Log4g.Hierarchy[self.name] = nil
 end
 
+function LoggerContext:GetLoggers()
+    return self.logger
+end
+
 --- Check if a LoggerContext with the given name exists.
 -- If the LoggerContext exists, return true. Else, return false.
 -- @param name The name of the LoggerContext
