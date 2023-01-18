@@ -129,7 +129,11 @@ local DefaultMixin = {
     isInstanceOf = function(self, aClass) return type(aClass) == "table" and type(self) == "table" and (self.class == aClass or type(self.class) == "table" and type(self.class.isSubclassOf) == "function" and self.class:isSubclassOf(aClass)) end,
     static = {
         allocate = function(self)
-            if type(self) ~= "table" then return end
+            if type(self) ~= "table" then
+                error()
+
+                return
+            end
 
             return setmetatable({
                 class = self
