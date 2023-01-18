@@ -3,7 +3,6 @@
 -- @license Apache License 2.0
 -- @copyright GrayWolf64
 local AddNetworkStrsViaTbl = Log4g.Util.AddNetworkStrsViaTbl
-local FindFilesInSubFolders = Log4g.Util.FindFilesInSubFolders
 local SendTableAfterRcvNetMsg = Log4g.Util.SendTableAfterRcvNetMsg
 local HasKey = Log4g.Util.HasKey
 local RegisterLoggerContext = Log4g.Core.LoggerContext.RegisterLoggerContext
@@ -141,12 +140,19 @@ net.Receive("Log4g_CLReq_LoggerConfig_Remove", function(len, ply)
     if not IdentChk(ply) then return end
     local LoggerContextName = net.ReadString()
     local LoggerConfigName = net.ReadString()
-    local FileName = "loggerconfig_" .. LoggerConfigName .. ".json"
+    local FileName = LoggerConfigName .. ".json"
     RemoveRegisteredObjectByName(Log4g.Core.Config.LoggerConfig.Buffer, LoggerConfigName)
+    local _, Folders = file.Find("log4g/server/loggercontext/*", "DATA")
 
-    for _, v in ipairs(FindFilesInSubFolders("log4g/server/loggercontext/", "loggerconfig_*.json", "DATA")) do
-        if v == "log4g/server/loggercontext/" .. LoggerContextName .. "/" .. FileName then
-            file.Delete(v)
+    for _, v in pairs(Folders) do
+        local Files, _ = file.Find("log4g/server/loggercontext/" .. v .. "/loggerconfig/*.json", "DATA")
+
+        if v == LoggerContextName then
+            for _, j in pairs(Files) do
+                if j == FileName then
+                    file.Delete("log4g/server/loggercontext/" .. v .. "/loggerconfig/" .. j)
+                end
+            end
         end
     end
 
@@ -187,11 +193,11 @@ net.Receive("Log4g_CLReq_LoggerContext_Remove", function(len, ply)
     local LoggerContextName = net.ReadString()
     RemoveRegisteredObjectByName(Log4g.Hierarchy, LoggerContextName)
 
-    for _, v in ipairs(Folders) do
+    for _, v in pairs(Folders) do
         local Files, _ = file.Find("log4g/server/loggercontext/" .. v .. "/loggerconfig/*.json", "DATA")
 
         if v == LoggerContextName then
-            for _, j in ipairs(Files) do
+            for _, j in pairs(Files) do
                 file.Delete("log4g/server/loggercontext/" .. v .. "/loggerconfig/" .. j)
             end
 
