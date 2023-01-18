@@ -222,7 +222,21 @@ net.Receive("Log4g_CLUpload_NewLevel", function(len, ply)
 end)
 
 net.Receive("Log4g_CLReq_LoggerConfig_BuildDefault", function(len, ply)
+    local LoggerContextName = net.ReadString()
     local LoggerConfigName = net.ReadString()
     Log4g.Core.Config.Builder.DefaultLoggerConfigBuilder(Log4g.Core.Config.LoggerConfig.Buffer[LoggerConfigName])
     Log4g.Core.Config.LoggerConfig.Buffer[LoggerConfigName] = nil
+    local Tbl = util.JSONToTable(file.Read(LoggerContextLookupFile, "DATA"))
+
+    for k, v in pairs(Tbl) do
+        if k == LoggerContextName then
+            for i, j in ipairs(v) do
+                if j == LoggerConfigName then
+                    table.remove(v, i)
+                end
+            end
+        end
+    end
+
+    file.Write(LoggerContextLookupFile, util.TableToJSON(Tbl))
 end)
