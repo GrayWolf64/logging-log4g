@@ -81,6 +81,7 @@ net.Receive("Log4g_CLReq_Hooks", function(len, ply)
 end)
 
 net.Receive("Log4g_CLUpload_LoggerConfig", function(len, ply)
+    if not IdentChk(ply) then return end
     local LoggerConfigContent = net.ReadTable()
     local LoggerConfigName = LoggerConfigContent.name
     local LoggerContextName = LoggerConfigContent.loggercontext
@@ -88,7 +89,8 @@ net.Receive("Log4g_CLUpload_LoggerConfig", function(len, ply)
     local Dir = "log4g/server/loggercontext/"
     local LoggerContextDir = Dir .. LoggerContextName
     file.CreateDir(LoggerContextDir)
-    local LoggerConfigFile = Dir .. LoggerContextName .. "/" .. "loggerconfig_" .. LoggerConfigName .. ".json"
+    file.CreateDir(LoggerContextDir .. "/loggerconfig/")
+    local LoggerConfigFile = Dir .. LoggerContextName .. "/loggerconfig/" .. LoggerConfigName .. ".json"
     file.Write(LoggerConfigFile, Str)
     RegisterLoggerContext(LoggerContextName, LoggerContextDir)
     RegisterLoggerConfig(LoggerConfigName, LoggerConfigContent.eventname, LoggerConfigContent.uid, LoggerContextName, LoggerConfigContent.level, LoggerConfigContent.appender, LoggerConfigContent.layout, LoggerConfigFile, LoggerConfigContent.func)
@@ -113,18 +115,23 @@ end)
 
 net.Receive("Log4g_CLReq_LoggerConfigs", function(len, ply)
     local Tbl = {}
+    local _, Folders = file.Find("log4g/server/loggercontext/*", "DATA")
 
-    for _, v in ipairs(FindFilesInSubFolders("log4g/server/loggercontext/", "loggerconfig_*.json", "DATA")) do
-        table.insert(Tbl, v)
+    for _, v in pairs(Folders) do
+        local Files, _ = file.Find("log4g/server/loggercontext/" .. v .. "/loggerconfig/*.json", "DATA")
+
+        for _, j in pairs(Files) do
+            table.insert(Tbl, "log4g/server/loggercontext/" .. v .. "/loggerconfig/" .. j)
+        end
     end
 
-    net.Start("Log4g_CLRcv_LoggerConfigs")
     local Data = {}
 
     for _, v in ipairs(Tbl) do
         table.Add(Data, {util.JSONToTable(file.Read(v, "DATA"))})
     end
 
+    net.Start("Log4g_CLRcv_LoggerConfigs")
     local Str = util.Compress(util.TableToJSON(Data, true))
     local Len = #Str
     net.WriteUInt(Len, 16)
