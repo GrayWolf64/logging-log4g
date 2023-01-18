@@ -27,7 +27,7 @@ end
 
 function Log4g.Core.Config.LoggerConfig.RegisterLoggerConfig(name, eventname, uid, loggercontext, level, appender, layout, file, func)
     if not HasKey(Log4g.Core.Config.LoggerConfig.Buffer, name) then
-        local loggerconfig = LoggerConfig:New(name, eventname, uid, loggercontext, level, appender, layout, file)
+        local loggerconfig = LoggerConfig:New(name, eventname, uid, loggercontext, level, appender, layout, file, func)
         Log4g.Core.Config.LoggerConfig.Buffer[name] = loggerconfig
 
         return loggerconfig
