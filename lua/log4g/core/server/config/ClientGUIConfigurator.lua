@@ -226,6 +226,20 @@ net.Receive("Log4g_CLReq_LoggerConfig_BuildDefault", function(len, ply)
     local LoggerConfigName = net.ReadString()
     Log4g.Core.Config.Builder.DefaultLoggerConfigBuilder(Log4g.Core.Config.LoggerConfig.Buffer[LoggerConfigName])
     Log4g.Core.Config.LoggerConfig.Buffer[LoggerConfigName] = nil
+    local _, Folders = file.Find("log4g/server/loggercontext/*", "DATA")
+
+    for _, v in pairs(Folders) do
+        local Files, _ = file.Find("log4g/server/loggercontext/" .. v .. "/loggerconfig/*.json", "DATA")
+
+        if v == LoggerContextName then
+            for _, j in pairs(Files) do
+                if j == LoggerConfigName .. ".json" then
+                    file.Delete("log4g/server/loggercontext/" .. v .. "/loggerconfig/" .. j)
+                end
+            end
+        end
+    end
+
     local Tbl = util.JSONToTable(file.Read(LoggerContextLookupFile, "DATA"))
 
     for k, v in pairs(Tbl) do
