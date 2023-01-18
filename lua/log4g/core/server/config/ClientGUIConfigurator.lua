@@ -211,7 +211,7 @@ net.Receive("Log4g_CLUpload_NewLevel", function(len, ply)
 end)
 
 net.Receive("Log4g_CLReq_LoggerConfig_BuildDefault", function(len, ply)
-    local LoggerContextName = net.ReadString()
     local LoggerConfigName = net.ReadString()
-    Log4g.Core.Config.Builder.DefaultLoggerConfigBuilder(util.JSONToTable(file.Read("log4g/server/loggercontext/" .. LoggerContextName .. "/" .. "loggerconfig_" .. LoggerConfigName .. ".json", "DATA")))
+    Log4g.Core.Config.Builder.DefaultLoggerConfigBuilder(Log4g.Core.Config.LoggerConfig.Buffer[LoggerConfigName])
+    Log4g.Core.Config.LoggerConfig.Buffer[LoggerConfigName] = nil
 end)
