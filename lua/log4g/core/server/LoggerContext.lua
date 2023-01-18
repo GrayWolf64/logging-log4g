@@ -12,9 +12,23 @@ function LoggerContext:Initialize(name)
     self.logger = {}
 end
 
---- Delete the LoggerContext.
-function LoggerContext:Delete()
-    Log4g.Hierarchy[self.name] = nil
+--- Terminate the LoggerContext.
+function LoggerContext:Terminate()
+    if file.Exists("log4g/server/loggercontext/" .. self.name, "DATA") then
+        local Files, _ = file.Find("log4g/server/loggercontext/" .. self.name .. "/loggerconfig/*.json", "DATA")
+
+        for _, j in pairs(Files) do
+            file.Delete("log4g/server/loggercontext/" .. self.name .. "/loggerconfig/" .. j)
+        end
+    else
+        ErrorNoHalt("LoggerContext termination failed: Can't find the LoggerContext folder.")
+    end
+
+    if HasKey(Log4g.Hierarchy, self.name) then
+        Log4g.Hierarchy[self.name] = nil
+    else
+        ErrorNoHalt("LoggerContext termination failed: Can't find the LoggerContext in Hierarchy, may be nil already.")
+    end
 end
 
 function LoggerContext:GetLoggers()
