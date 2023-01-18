@@ -192,7 +192,7 @@ concommand.Add("Log4g_MMC", function()
     -- @lfunction GetColumnSpecialText
     -- @param num The number of the line
     -- @param listview The DListView containing the line
-    -- @param ... The texts of the specific columns
+    -- @param ... The texts of the specific column headers
     -- @return tbl results
     local function GetColumnSpecialText(num, listview, ...)
         local line = listview:GetLine(num)
@@ -228,6 +228,12 @@ concommand.Add("Log4g_MMC", function()
         end
     end
 
+    --- Start a special net msg for ListView's behaviour after being clicked on.
+    -- @lfunction NetStrMsgSpecial
+    -- @param num The number of the line
+    -- @param listview The DListView containing the line
+    -- @param start The net msg to start
+    -- @param ... The texts of the specific column headers
     local function NetStrMsgSpecial(num, listview, start, ...)
         local args = {...}
 
