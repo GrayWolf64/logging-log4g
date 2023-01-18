@@ -5,10 +5,10 @@ local Class = include("log4g/core/impl/MiddleClass.lua")
 local LoggerContext = Class("LoggerContext")
 local HasKey = Log4g.Util.HasKey
 
-function LoggerContext:Initialize(name, folder, datestarted)
+function LoggerContext:Initialize(name, folder)
     self.name = name
     self.folder = folder
-    self.datestarted = datestarted
+    self.timestarted = os.time()
     self.logger = {}
 end
 
@@ -34,7 +34,7 @@ function Log4g.Core.LoggerContext.RegisterLoggerContext(name, folder)
     if name == "" or folder == "" then return end
 
     if not HasKey(Log4g.Hierarchy, name) then
-        local loggercontext = LoggerContext:New(name, folder, os.date())
+        local loggercontext = LoggerContext:New(name, folder)
         Log4g.Hierarchy[name] = loggercontext
 
         return loggercontext
