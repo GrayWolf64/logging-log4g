@@ -8,6 +8,7 @@ local HasKey = Log4g.Util.HasKey
 local RegisterLoggerContext = Log4g.Core.LoggerContext.RegisterLoggerContext
 local RegisterLoggerConfig = Log4g.Core.Config.LoggerConfig.RegisterLoggerConfig
 local RegisterCustomLevel = Log4g.Level.RegisterCustomLevel
+local UpdateLoggerContextLookup = Log4g.Core.LoggerContext.Lookup.Update
 local LoggerContextLookupFile = "log4g/server/loggercontext/loggercontext_lookup.json"
 
 local function IdentChk(ply)
@@ -77,23 +78,7 @@ net.Receive("Log4g_CLUpload_LoggerConfig", function(len, ply)
     local LoggerContextName, LoggerConfigName = LoggerConfigContent.loggercontext, LoggerConfigContent.name
     RegisterLoggerContext(LoggerContextName)
     RegisterLoggerConfig(LoggerConfigContent)
-
-    if file.Exists(LoggerContextLookupFile, "DATA") then
-        local Tbl = util.JSONToTable(file.Read(LoggerContextLookupFile, "DATA"))
-        local Bool, Key = HasKey(Tbl, LoggerContextName)
-
-        if Bool then
-            table.insert(Tbl[Key], LoggerConfigName)
-        else
-            Tbl[LoggerContextName] = {LoggerConfigName}
-        end
-
-        file.Write(LoggerContextLookupFile, util.TableToJSON(Tbl, true))
-    else
-        file.Write(LoggerContextLookupFile, util.TableToJSON({
-            [LoggerContextName] = {LoggerConfigName}
-        }, true))
-    end
+    UpdateLoggerContextLookup(LoggerContextName, LoggerConfigName)
 end)
 
 net.Receive("Log4g_CLReq_LoggerConfigs", function(len, ply)
