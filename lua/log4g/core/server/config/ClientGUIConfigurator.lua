@@ -134,18 +134,10 @@ net.Receive("Log4g_CLReq_LoggerConfig_Remove", function(len, ply)
     if not IdentChk(ply) then return end
     local LoggerContextName = net.ReadString()
     local LoggerConfigName = net.ReadString()
-    RemoveRegisteredObjectByName(Log4g.Core.Config.LoggerConfig.Buffer, LoggerConfigName)
-    local _, Folders = file.Find("log4g/server/loggercontext/*", "DATA")
 
-    for _, v in pairs(Folders) do
-        local Files, _ = file.Find("log4g/server/loggercontext/" .. v .. "/loggerconfig/*.json", "DATA")
-
-        if v == LoggerContextName then
-            for _, j in pairs(Files) do
-                if j == LoggerConfigName .. ".json" then
-                    file.Delete("log4g/server/loggercontext/" .. v .. "/loggerconfig/" .. j)
-                end
-            end
+    for k, _ in pairs(Log4g.Core.Config.LoggerConfig.Buffer) do
+        if k == LoggerConfigName then
+            Log4g.Core.Config.LoggerConfig.Buffer[k]:Remove()
         end
     end
 
