@@ -141,7 +141,7 @@ function Stateful.static:AddState(stateName, superState)
     return self.static.states[stateName]
 end
 
-function Stateful:gotoState(stateName, ...)
+function Stateful:GoToState(stateName, ...)
     self:popAllStates(...)
 
     if stateName == nil then
