@@ -8,6 +8,11 @@ Log4g.Core.LoggerContext.Lookup = Log4g.Core.LoggerContext.Lookup or {}
 local HasKey = Log4g.Util.HasKey
 local File = "log4g/server/loggercontext/lookup_loggercontext.json"
 
+--- Add a string item to LoggerContext Lookup whether it's the name of a LoggerContext or LoggerConfig.
+-- If the LoggerContext Lookup file doesn't exist, a new file will be created and data will be written into.
+-- If the file exists, new data will be written into while keeping the previous data.
+-- @param contextname The LoggerContext name to write
+-- @param configname The LoggerConfig name to write
 function Log4g.Core.LoggerContext.Lookup.AddItem(contextname, configname)
     if not file.Exists(File, "DATA") then
         file.Write(File, util.TableToJSON({
