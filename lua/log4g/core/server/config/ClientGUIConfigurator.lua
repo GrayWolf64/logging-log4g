@@ -7,7 +7,7 @@ local SendTableAfterRcvNetMsg = Log4g.Util.SendTableAfterRcvNetMsg
 local RegisterLoggerContext = Log4g.Core.LoggerContext.RegisterLoggerContext
 local RegisterLoggerConfig = Log4g.Core.Config.LoggerConfig.RegisterLoggerConfig
 local RegisterCustomLevel = Log4g.Level.RegisterCustomLevel
-local AddLoggerContextLookup = Log4g.Core.LoggerContext.Lookup.Add
+local AddLoggerContextLookupItem = Log4g.Core.LoggerContext.Lookup.AddItem
 local RemoveLoggerContextLookup = Log4g.Core.LoggerContext.Lookup.RemoveLoggerContext
 local RemoveLoggerContextLookupLoggerConfig = Log4g.Core.LoggerContext.Lookup.RemoveLoggerConfig
 local LoggerContextLookupFile = "log4g/server/loggercontext/lookup_loggercontext.json"
@@ -79,7 +79,7 @@ net.Receive("Log4g_CLUpload_LoggerConfig", function(len, ply)
     local LoggerContextName, LoggerConfigName = LoggerConfigContent.loggercontext, LoggerConfigContent.name
     RegisterLoggerContext(LoggerContextName)
     RegisterLoggerConfig(LoggerConfigContent)
-    AddLoggerContextLookup(LoggerContextName, LoggerConfigName)
+    AddLoggerContextLookupItem(LoggerContextName, LoggerConfigName)
 end)
 
 net.Receive("Log4g_CLReq_LoggerConfigs", function(len, ply)
