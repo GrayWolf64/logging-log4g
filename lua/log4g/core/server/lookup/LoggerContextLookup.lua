@@ -2,7 +2,7 @@ Log4g.Core.LoggerContext.Lookup = Log4g.Core.LoggerContext.Lookup or {}
 local HasKey = Log4g.Util.HasKey
 local File = "log4g/server/loggercontext/lookup_loggercontext.json"
 
-function Log4g.Core.LoggerContext.Lookup.Update(contextname, configname)
+function Log4g.Core.LoggerContext.Lookup.Add(contextname, configname)
     if not file.Exists(File, "DATA") then
         file.Write(File, util.TableToJSON({
             [contextname] = {configname}
