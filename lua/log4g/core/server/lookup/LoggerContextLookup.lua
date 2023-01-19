@@ -20,3 +20,15 @@ function Log4g.Core.LoggerContext.Lookup.Add(contextname, configname)
         file.Write(File, util.TableToJSON(tbl, true))
     end
 end
+
+function Log4g.Core.LoggerContext.Lookup.RemoveLoggerContext(name)
+    local tbl = util.JSONToTable(file.Read(File, "DATA"))
+
+    for k, _ in pairs(tbl) do
+        if k == name then
+            tbl[k] = nil
+        end
+    end
+
+    file.Write(File, util.TableToJSON(tbl))
+end

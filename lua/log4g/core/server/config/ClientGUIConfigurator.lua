@@ -8,6 +8,7 @@ local RegisterLoggerContext = Log4g.Core.LoggerContext.RegisterLoggerContext
 local RegisterLoggerConfig = Log4g.Core.Config.LoggerConfig.RegisterLoggerConfig
 local RegisterCustomLevel = Log4g.Level.RegisterCustomLevel
 local AddLoggerContextLookup = Log4g.Core.LoggerContext.Lookup.Add
+local RemoveLoggerContextLookup = Log4g.Core.LoggerContext.Lookup.RemoveLoggerContext
 local LoggerContextLookupFile = "log4g/server/loggercontext/lookup_loggercontext.json"
 
 local function IdentChk(ply)
@@ -158,15 +159,7 @@ net.Receive("Log4g_CLReq_LoggerContext_Remove", function(len, ply)
         end
     end
 
-    local Tbl = util.JSONToTable(file.Read(LoggerContextLookupFile, "DATA"))
-
-    for k, _ in pairs(Tbl) do
-        if k == LoggerContextName then
-            Tbl[k] = nil
-        end
-    end
-
-    file.Write(LoggerContextLookupFile, util.TableToJSON(Tbl))
+    RemoveLoggerContextLookup(LoggerContextName)
 end)
 
 net.Receive("Log4g_CLUpload_NewLevel", function(len, ply)
