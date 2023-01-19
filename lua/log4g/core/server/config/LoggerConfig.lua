@@ -20,9 +20,23 @@ function LoggerConfig:Initialize(tbl)
     self.func = tbl.func
 end
 
---- Delete the LoggerConfig.
-function LoggerConfig:Delete()
-    Log4g.Core.Config.LoggerConfig.Buffer[self.name] = nil
+--- Remove the LoggerConfig.
+function LoggerConfig:Remove()
+    local File = "log4g/server/loggercontext/" .. self.loggercontext .. "/loggerconfig/" .. self.name .. ".json"
+
+    if file.Exists(File, "DATA") then
+        file.Delete(File)
+        MsgN("LoggerConfig deletion: Successfully deleted LoggerConfig file.")
+    else
+        ErrorNoHalt("LoggerConfig deletion failed: Can't find the LoggerConfig file.\n")
+    end
+
+    if HasKey(Log4g.Core.Config.LoggerConfig.Buffer, self.name) then
+        Log4g.Core.Config.LoggerConfig.Buffer[self.name] = nil
+        MsgN("LoggerConfig deletion: Successfully removed LoggerConfig from Buffer.")
+    else
+        ErrorNoHalt("LoggerConfig deletion failed: Can't find the LoggerContext in Buffer, may be removed already.\n")
+    end
 end
 
 function Log4g.Core.Config.LoggerConfig.RegisterLoggerConfig(tbl)
