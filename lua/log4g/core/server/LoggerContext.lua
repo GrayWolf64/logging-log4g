@@ -12,6 +12,10 @@ function LoggerContext:Initialize(name)
     self.logger = {}
 end
 
+function LoggerContext:__tostring()
+    return "LoggerContext: [name:" .. self.name .. "]" .. "[folder:" .. self.folder .. "]" .. "[timestarted:" .. self.timestarted .. "]" .. "[logger:" .. #self.logger .. "]"
+end
+
 --- Terminate the LoggerContext.
 function LoggerContext:Terminate()
     local Folder = "log4g/server/loggercontext/" .. self.name
