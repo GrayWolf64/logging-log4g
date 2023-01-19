@@ -1,0 +1,1 @@
+Log4g.Core.Lookup = Log4g.Core.Lookup or {}
