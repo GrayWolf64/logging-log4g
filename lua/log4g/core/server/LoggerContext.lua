@@ -20,12 +20,15 @@ function LoggerContext:Terminate()
         for _, j in pairs(Files) do
             file.Delete("log4g/server/loggercontext/" .. self.name .. "/loggerconfig/" .. j)
         end
+
+        MsgN("LoggerContext termination: Successfully deleted LoggerContext folder.")
     else
         ErrorNoHalt("LoggerContext termination failed: Can't find the LoggerContext folder.")
     end
 
     if HasKey(Log4g.Hierarchy, self.name) then
         Log4g.Hierarchy[self.name] = nil
+        MsgN("LoggerContext termination: Successfully removed LoggerContext from Hierarchy.")
     else
         ErrorNoHalt("LoggerContext termination failed: Can't find the LoggerContext in Hierarchy, may be nil already.")
     end
