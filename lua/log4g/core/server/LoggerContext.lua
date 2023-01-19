@@ -14,13 +14,16 @@ end
 
 --- Terminate the LoggerContext.
 function LoggerContext:Terminate()
-    if file.Exists("log4g/server/loggercontext/" .. self.name, "DATA") then
-        local Files, _ = file.Find("log4g/server/loggercontext/" .. self.name .. "/loggerconfig/*.json", "DATA")
+    local Folder = "log4g/server/loggercontext/" .. self.name
+
+    if file.Exists(Folder, "DATA") then
+        local Files, _ = file.Find(Folder .. "/loggerconfig/*.json", "DATA")
 
         for _, j in pairs(Files) do
-            file.Delete("log4g/server/loggercontext/" .. self.name .. "/loggerconfig/" .. j)
+            file.Delete(Folder .. "/loggerconfig/" .. j)
         end
 
+        file.Delete(Folder)
         MsgN("LoggerContext termination: Successfully deleted LoggerContext folder which may contain LoggerConfigs.")
     else
         ErrorNoHalt("LoggerContext termination failed: Can't find the LoggerContext folder.\n")
