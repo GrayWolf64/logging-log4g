@@ -23,14 +23,14 @@ function LoggerContext:Terminate()
 
         MsgN("LoggerContext termination: Successfully deleted LoggerContext folder.")
     else
-        ErrorNoHalt("LoggerContext termination failed: Can't find the LoggerContext folder.")
+        ErrorNoHalt("LoggerContext termination failed: Can't find the LoggerContext folder.\n")
     end
 
     if HasKey(Log4g.Hierarchy, self.name) then
         Log4g.Hierarchy[self.name] = nil
         MsgN("LoggerContext termination: Successfully removed LoggerContext from Hierarchy.")
     else
-        ErrorNoHalt("LoggerContext termination failed: Can't find the LoggerContext in Hierarchy, may be nil already.")
+        ErrorNoHalt("LoggerContext termination failed: Can't find the LoggerContext in Hierarchy, may be nil already.\n")
     end
 end
 
@@ -58,6 +58,7 @@ function Log4g.Core.LoggerContext.RegisterLoggerContext(name)
         local loggercontext = LoggerContext:New(name)
         Log4g.Hierarchy[name] = loggercontext
         file.CreateDir("log4g/server/loggercontext/" .. name .. "/loggerconfig/")
+        MsgN("LoggerContext registration: Successfully created folder and Hierarchy item.")
 
         return loggercontext
     else
