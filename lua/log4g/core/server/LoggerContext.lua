@@ -77,6 +77,4 @@ function Log4g.Core.LoggerContext.RegisterLoggerContext(name)
 
         return Log4g.Hierarchy[name]
     end
-
-    MsgN("Registration completed.")
 end

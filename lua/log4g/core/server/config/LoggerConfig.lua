@@ -65,6 +65,4 @@ function Log4g.Core.Config.LoggerConfig.RegisterLoggerConfig(tbl)
 
         return Log4g.Core.Config.LoggerConfig.Buffer[tbl.name]
     end
-
-    MsgN("Registration completed.")
 end
