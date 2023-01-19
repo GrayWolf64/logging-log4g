@@ -1,3 +1,5 @@
+--- The LoggerContext Lookup.
+-- @script LoggerContextLookup.lua
 Log4g.Core.LoggerContext.Lookup = Log4g.Core.LoggerContext.Lookup or {}
 local HasKey = Log4g.Util.HasKey
 local File = "log4g/server/loggercontext/lookup_loggercontext.json"
