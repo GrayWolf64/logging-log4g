@@ -88,7 +88,7 @@ net.Receive("Log4g_CLUpload_LoggerConfig", function(len, ply)
     RegisterLoggerContext(LoggerContextName)
     local LoggerConfigFile = Dir .. LoggerContextName .. "/loggerconfig/" .. LoggerConfigName .. ".json"
     file.Write(LoggerConfigFile, Str)
-    RegisterLoggerConfig(LoggerConfigName, LoggerConfigContent.eventname, LoggerConfigContent.uid, LoggerContextName, LoggerConfigContent.level, LoggerConfigContent.appender, LoggerConfigContent.layout, LoggerConfigFile, LoggerConfigContent.func)
+    RegisterLoggerConfig(LoggerConfigName, LoggerConfigContent.eventname, LoggerConfigContent.uid, LoggerContextName, LoggerConfigContent.level, LoggerConfigContent.appender, LoggerConfigContent.layout, LoggerConfigContent.func)
 
     if file.Exists(LoggerContextLookupFile, "DATA") then
         local Tbl = util.JSONToTable(file.Read(LoggerContextLookupFile, "DATA"))
