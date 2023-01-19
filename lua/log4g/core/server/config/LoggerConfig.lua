@@ -51,6 +51,7 @@ function STARTED:Remove()
 end
 
 --- Register a LoggerConfig.
+-- If the LoggerConfig with the same name already exists, an error will be thrown without halt.
 -- @param tbl The table containing data that a LoggerConfig needs
 -- @return object loggerconfig
 function Log4g.Core.Config.LoggerConfig.RegisterLoggerConfig(tbl)
