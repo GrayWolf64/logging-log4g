@@ -50,6 +50,9 @@ function STARTED:Remove()
     ErrorNoHalt("LoggerConfig deletion failed: The LoggerConfig is already started and applied to a Logger.\n")
 end
 
+--- Register a LoggerConfig.
+-- @param tbl The table containing data that a LoggerConfig needs
+-- @return object loggerconfig
 function Log4g.Core.Config.LoggerConfig.RegisterLoggerConfig(tbl)
     MsgN("Starting the registration of LoggerConfig: " .. tbl.name .. "...")
 
