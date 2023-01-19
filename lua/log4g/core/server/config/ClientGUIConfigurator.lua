@@ -4,7 +4,6 @@
 -- @copyright GrayWolf64
 local AddNetworkStrsViaTbl = Log4g.Util.AddNetworkStrsViaTbl
 local SendTableAfterRcvNetMsg = Log4g.Util.SendTableAfterRcvNetMsg
-local HasKey = Log4g.Util.HasKey
 local RegisterLoggerContext = Log4g.Core.LoggerContext.RegisterLoggerContext
 local RegisterLoggerConfig = Log4g.Core.Config.LoggerConfig.RegisterLoggerConfig
 local RegisterCustomLevel = Log4g.Level.RegisterCustomLevel
