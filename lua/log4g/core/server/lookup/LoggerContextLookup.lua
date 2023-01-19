@@ -1,5 +1,6 @@
 --- The LoggerContext Lookup.
 -- LoggerContext Lookups contain LoggerContext names and associated LoggerConfig (not started) names in a form of a table.
+-- When a LoggerConfig has started (been built and applied to a Logger), it will be removed from LoggerContext Lookup.
 -- @script LoggerContextLookup.lua
 -- @license Apache License 2.0
 -- @copyright GrayWolf64
