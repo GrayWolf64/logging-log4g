@@ -32,3 +32,19 @@ function Log4g.Core.LoggerContext.Lookup.RemoveLoggerContext(name)
 
     file.Write(File, util.TableToJSON(tbl))
 end
+
+function Log4g.Core.LoggerContext.Lookup.RemoveLoggerConfig(contextname, configname)
+    local tbl = util.JSONToTable(file.Read(File, "DATA"))
+
+    for k, v in pairs(tbl) do
+        if k == contextname then
+            for i, j in ipairs(v) do
+                if j == configname then
+                    table.remove(v, i)
+                end
+            end
+        end
+    end
+
+    file.Write(File, util.TableToJSON(tbl))
+end

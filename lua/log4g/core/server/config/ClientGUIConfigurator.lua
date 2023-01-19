@@ -9,6 +9,7 @@ local RegisterLoggerConfig = Log4g.Core.Config.LoggerConfig.RegisterLoggerConfig
 local RegisterCustomLevel = Log4g.Level.RegisterCustomLevel
 local AddLoggerContextLookup = Log4g.Core.LoggerContext.Lookup.Add
 local RemoveLoggerContextLookup = Log4g.Core.LoggerContext.Lookup.RemoveLoggerContext
+local RemoveLoggerContextLookupLoggerConfig = Log4g.Core.LoggerContext.Lookup.RemoveLoggerConfig
 local LoggerContextLookupFile = "log4g/server/loggercontext/lookup_loggercontext.json"
 
 local function IdentChk(ply)
@@ -118,19 +119,7 @@ net.Receive("Log4g_CLReq_LoggerConfig_Remove", function(len, ply)
         end
     end
 
-    local Tbl = util.JSONToTable(file.Read(LoggerContextLookupFile, "DATA"))
-
-    for k, v in pairs(Tbl) do
-        if k == LoggerContextName then
-            for i, j in ipairs(v) do
-                if j == LoggerConfigName then
-                    table.remove(v, i)
-                end
-            end
-        end
-    end
-
-    file.Write(LoggerContextLookupFile, util.TableToJSON(Tbl))
+    RemoveLoggerContextLookupLoggerConfig(LoggerContextName, LoggerConfigName)
 end)
 
 net.Receive("Log4g_CLReq_LoggerContext_Lookup", function(len, ply)
@@ -173,17 +162,5 @@ net.Receive("Log4g_CLReq_LoggerConfig_BuildDefault", function(len, ply)
     Log4g.Core.Config.LoggerConfig.Buffer[LoggerConfigName]:GoToState("STARTED")
     Log4g.Core.Config.Builder.DefaultLoggerConfigBuilder(Log4g.Core.Config.LoggerConfig.Buffer[LoggerConfigName])
     Log4g.Core.Config.LoggerConfig.Buffer[LoggerConfigName]:Remove()
-    local Tbl = util.JSONToTable(file.Read(LoggerContextLookupFile, "DATA"))
-
-    for k, v in pairs(Tbl) do
-        if k == LoggerContextName then
-            for i, j in ipairs(v) do
-                if j == LoggerConfigName then
-                    table.remove(v, i)
-                end
-            end
-        end
-    end
-
-    file.Write(LoggerContextLookupFile, util.TableToJSON(Tbl))
+    RemoveLoggerContextLookupLoggerConfig(LoggerContextName, LoggerConfigName)
 end)
