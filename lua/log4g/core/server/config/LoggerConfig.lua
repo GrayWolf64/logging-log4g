@@ -75,17 +75,17 @@ end
 -- If the Hierarchy or LoggerConfig Buffer table is empty, an error will be thrown.
 -- @return tbl stringfiles
 function Log4g.Core.Config.LoggerConfig.GetFiles()
-    local tbl = {}
-
     if not table.IsEmpty(Log4g.Hierarchy) then
         if not table.IsEmpty(Log4g.Core.Config.LoggerConfig.Buffer) then
+            local tbl = {}
+
             for k, _ in pairs(Log4g.Hierarchy) do
                 for i, _ in pairs(Log4g.Core.Config.LoggerConfig.Buffer) do
                     table.insert(tbl, "log4g/server/loggercontext/" .. k .. "/loggerconfig/" .. i .. ".json")
                 end
-
-                return tbl
             end
+
+            return tbl
         else
             ErrorNoHalt("Get LoggerConfig files failed: No LoggerConfig available in Buffer.\n")
         end
