@@ -27,6 +27,7 @@ function LoggerContext:Terminate()
             file.Delete(Folder .. "/loggerconfig/" .. j)
         end
 
+        file.Delete(Folder .. "/loggerconfig")
         file.Delete(Folder)
         MsgN("LoggerContext termination: Successfully deleted LoggerContext folder which may contain LoggerConfigs.")
     else
