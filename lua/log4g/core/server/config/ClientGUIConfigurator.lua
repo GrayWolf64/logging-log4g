@@ -10,14 +10,6 @@ local RegisterLoggerConfig = Log4g.Core.Config.LoggerConfig.RegisterLoggerConfig
 local RegisterCustomLevel = Log4g.Level.RegisterCustomLevel
 local LoggerContextLookupFile = "log4g/server/loggercontext/loggercontext_lookup.json"
 
-local function RemoveRegisteredObjectByName(tbl, name)
-    for k, v in pairs(tbl) do
-        if v.name == name then
-            tbl[k] = nil
-        end
-    end
-end
-
 local function IdentChk(ply)
     if not IsValid(ply) then return end
     if ply:IsAdmin() then return true end
