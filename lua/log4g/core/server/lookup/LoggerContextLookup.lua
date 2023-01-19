@@ -1,5 +1,8 @@
 --- The LoggerContext Lookup.
+-- LoggerContext Lookups contain LoggerContext names and associated LoggerConfig (not started) names in a form of a table.
 -- @script LoggerContextLookup.lua
+-- @license Apache License 2.0
+-- @copyright GrayWolf64
 Log4g.Core.LoggerContext.Lookup = Log4g.Core.LoggerContext.Lookup or {}
 local HasKey = Log4g.Util.HasKey
 local File = "log4g/server/loggercontext/lookup_loggercontext.json"
