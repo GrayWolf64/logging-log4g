@@ -18,6 +18,7 @@ end
 
 --- Terminate the LoggerContext.
 function LoggerContext:Terminate()
+    MsgN("Starting the termination of LoggerContext: " .. self.name .. "...")
     local Folder = "log4g/server/loggercontext/" .. self.name
 
     if file.Exists(Folder, "DATA") then
@@ -40,6 +41,8 @@ function LoggerContext:Terminate()
     else
         ErrorNoHalt("LoggerContext termination failed: Can't find the LoggerContext in Hierarchy, may be nil already.\n")
     end
+
+    MsgN("Termination completed.")
 end
 
 function LoggerContext:GetLoggers()
@@ -60,6 +63,7 @@ end
 -- @param folder The folder of the LoggerContext
 -- @return object loggercontext
 function Log4g.Core.LoggerContext.RegisterLoggerContext(name)
+    MsgN("Starting the registration of LoggerContext: " .. name .. "...")
     if name == "" or folder == "" then return end
 
     if not HasKey(Log4g.Hierarchy, name) then
@@ -74,4 +78,6 @@ function Log4g.Core.LoggerContext.RegisterLoggerContext(name)
 
         return Log4g.Hierarchy[name]
     end
+
+    MsgN("Registration completed.")
 end
