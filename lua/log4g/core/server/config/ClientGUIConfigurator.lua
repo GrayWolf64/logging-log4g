@@ -83,11 +83,7 @@ net.Receive("Log4g_CLUpload_LoggerConfig", function(len, ply)
     if not IdentChk(ply) then return end
     local LoggerConfigContent = net.ReadTable()
     local LoggerContextName, LoggerConfigName = LoggerConfigContent.loggercontext, LoggerConfigContent.name
-    local Str = util.TableToJSON(LoggerConfigContent, true)
-    local Dir = "log4g/server/loggercontext/"
     RegisterLoggerContext(LoggerContextName)
-    local LoggerConfigFile = Dir .. LoggerContextName .. "/loggerconfig/" .. LoggerConfigName .. ".json"
-    file.Write(LoggerConfigFile, Str)
     RegisterLoggerConfig(LoggerConfigContent)
 
     if file.Exists(LoggerContextLookupFile, "DATA") then

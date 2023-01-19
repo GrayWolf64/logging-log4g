@@ -29,6 +29,7 @@ function Log4g.Core.Config.LoggerConfig.RegisterLoggerConfig(tbl)
     if not HasKey(Log4g.Core.Config.LoggerConfig.Buffer, tbl.name) then
         local loggerconfig = LoggerConfig:New(tbl)
         Log4g.Core.Config.LoggerConfig.Buffer[tbl.name] = loggerconfig
+        file.Write("log4g/server/loggercontext/" .. tbl.loggercontext .. "/loggerconfig/" .. tbl.name .. ".json", util.TableToJSON(tbl, true))
 
         return loggerconfig
     else
