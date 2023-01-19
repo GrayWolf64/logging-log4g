@@ -21,7 +21,7 @@ function LoggerContext:Terminate()
             file.Delete("log4g/server/loggercontext/" .. self.name .. "/loggerconfig/" .. j)
         end
 
-        MsgN("LoggerContext termination: Successfully deleted LoggerContext folder.")
+        MsgN("LoggerContext termination: Successfully deleted LoggerContext folder which may contain LoggerConfigs.")
     else
         ErrorNoHalt("LoggerContext termination failed: Can't find the LoggerContext folder.\n")
     end
