@@ -15,10 +15,10 @@ function Log4g.Core.LoggerContext.Lookup.AddItem(contextname, configname)
         }, true))
     else
         local tbl = util.JSONToTable(file.Read(File, "DATA"))
-        local bool, Key = HasKey(tbl, contextname)
+        local bool, key = HasKey(tbl, contextname)
 
         if bool then
-            table.insert(tbl[Key], configname)
+            table.insert(tbl[key], configname)
         else
             tbl[contextname] = {configname}
         end
