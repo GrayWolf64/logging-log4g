@@ -30,9 +30,12 @@ function Log4g.Core.Config.LoggerConfig.RegisterLoggerConfig(tbl)
         local loggerconfig = LoggerConfig:New(tbl)
         Log4g.Core.Config.LoggerConfig.Buffer[tbl.name] = loggerconfig
         file.Write(loggerconfig.file, util.TableToJSON(tbl, true))
+        MsgN("LoggerConfig registration: Successfully created folder and Buffer item.")
 
         return loggerconfig
     else
+        ErrorNoHalt("LoggerConfig registration failed: A LoggerConfig with the same name already exists.\n")
+
         return Log4g.Core.Config.LoggerConfig.Buffer[tbl.name]
     end
 end
