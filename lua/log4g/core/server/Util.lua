@@ -39,27 +39,3 @@ Log4g.Util.AddNetworkStrsViaTbl = function(tbl)
         util.AddNetworkString(k)
     end
 end
-
---- Find all the files in all the folder's subfolders using wildcard.
--- @param dir The folder which contains subfolders
--- @param wildcard The wildcard to use
--- @param path The game path
--- @return tbl filesfound
-Log4g.Util.FindFilesInSubFolders = function(dir, wildcard, path)
-    local tbl = {}
-    local _, subfolders = file.Find(dir .. "*", path)
-
-    if #subfolders ~= 0 then
-        for _, v in ipairs(subfolders) do
-            local files, _ = file.Find(dir .. v .. "/" .. wildcard, path)
-
-            if #files ~= 0 then
-                for _, j in ipairs(files) do
-                    table.insert(tbl, dir .. v .. "/" .. j)
-                end
-            end
-        end
-    end
-
-    return tbl
-end
