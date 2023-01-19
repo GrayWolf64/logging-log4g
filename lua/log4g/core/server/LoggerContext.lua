@@ -60,7 +60,6 @@ end
 --- Register a LoggerContext.
 -- If the LoggerContext with the same name already exists, an error will be thrown without halt.
 -- @param name The name of the LoggerContext
--- @param folder The folder of the LoggerContext
 -- @return object loggercontext
 function Log4g.Core.LoggerContext.RegisterLoggerContext(name)
     MsgN("Starting the registration of LoggerContext: " .. name .. "...")
