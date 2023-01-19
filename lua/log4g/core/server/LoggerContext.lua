@@ -47,7 +47,7 @@ function LoggerContext:GetLoggers()
 end
 
 --- Check if a LoggerContext with the given name exists.
--- If the LoggerContext exists, return true. Else, return false.
+-- If the LoggerContext exists, return true.
 -- @param name The name of the LoggerContext
 -- @return bool hascontext
 function Log4g.Core.LoggerContext.HasContext(name)
