@@ -32,6 +32,9 @@ function Log4g.Core.LoggerContext.Lookup.AddItem(contextname, configname)
     end
 end
 
+--- Remove a LoggerContext name item from the LoggerContext Lookup.
+-- The child LoggerConfig names will be removed at the same time.
+-- @param name The name of the LoggerContext to find and remove from the Lookup table
 function Log4g.Core.LoggerContext.Lookup.RemoveLoggerContext(name)
     local tbl = util.JSONToTable(file.Read(File, "DATA"))
 
