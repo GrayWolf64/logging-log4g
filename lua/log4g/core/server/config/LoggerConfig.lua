@@ -24,6 +24,7 @@ end
 
 --- Remove the LoggerConfig.
 function LoggerConfig:Remove()
+    MsgN("Starting the removal of LoggerConfig: " .. self.name .. "...")
     local File = "log4g/server/loggercontext/" .. self.loggercontext .. "/loggerconfig/" .. self.name .. ".json"
 
     if file.Exists(File, "DATA") then
@@ -39,6 +40,8 @@ function LoggerConfig:Remove()
     else
         ErrorNoHalt("LoggerConfig deletion failed: Can't find the LoggerConfig in Buffer, may be removed already.\n")
     end
+
+    MsgN("Removal completed.")
 end
 
 local STARTED = LoggerConfig:AddState("STARTED")
@@ -48,6 +51,8 @@ function STARTED:Remove()
 end
 
 function Log4g.Core.Config.LoggerConfig.RegisterLoggerConfig(tbl)
+    MsgN("Starting the registration of LoggerConfig: " .. tbl.name .. "...")
+
     if not HasKey(Log4g.Core.Config.LoggerConfig.Buffer, tbl.name) then
         local loggerconfig = LoggerConfig:New(tbl)
         Log4g.Core.Config.LoggerConfig.Buffer[tbl.name] = loggerconfig
@@ -60,4 +65,6 @@ function Log4g.Core.Config.LoggerConfig.RegisterLoggerConfig(tbl)
 
         return Log4g.Core.Config.LoggerConfig.Buffer[tbl.name]
     end
+
+    MsgN("Registration completed.")
 end
