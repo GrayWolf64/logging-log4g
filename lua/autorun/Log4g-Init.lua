@@ -17,6 +17,7 @@ if SERVER then
     include("log4g/core/server/Logger.lua")
     include("log4g/core/server/Appender.lua")
     include("log4g/core/server/Layout.lua")
+    include("log4g/core/server/lookup/LoggerContextLookup.lua")
     include("log4g/core/server/config/ClientGUIConfigurator.lua")
     include("log4g/core/server/ClientGUISummaryData.lua")
     include("log4g/core/server/config/builder/DefaultLoggerConfigBuilder.lua")
