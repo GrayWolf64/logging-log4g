@@ -8,7 +8,7 @@ local RegisterLoggerContext = Log4g.Core.LoggerContext.RegisterLoggerContext
 local RegisterLoggerConfig = Log4g.Core.Config.LoggerConfig.RegisterLoggerConfig
 local RegisterCustomLevel = Log4g.Level.RegisterCustomLevel
 local AddLoggerContextLookup = Log4g.Core.LoggerContext.Lookup.Add
-local LoggerContextLookupFile = "log4g/server/loggercontext/loggercontext_lookup.json"
+local LoggerContextLookupFile = "log4g/server/loggercontext/lookup_loggercontext.json"
 
 local function IdentChk(ply)
     if not IsValid(ply) then return end
