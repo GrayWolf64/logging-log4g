@@ -84,6 +84,7 @@ end)
 
 net.Receive("Log4g_CLReq_LoggerConfigs", function(len, ply)
     local Tbl = Log4g.Core.Config.LoggerConfig.GetFiles()
+    if table.IsEmpty(Tbl) then return end
     local Data = {}
 
     for _, v in ipairs(Tbl) do
