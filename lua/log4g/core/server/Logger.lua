@@ -5,9 +5,9 @@ local Class = include("log4g/core/impl/MiddleClass.lua")
 local Logger = Class("Logger")
 local HasKey = Log4g.Util.HasKey
 
-function Logger:Initialize(name, loggerconfig)
-    self.name = name
-    self.loggerconfig = loggerconfig
+function Logger:Initialize(tbl)
+    self.name = tbl.name
+    self.loggerconfig = tbl.loggerconfig
 end
 
 --- Delete the Logger.
@@ -40,13 +40,22 @@ end
 -- @param name The name of the Logger
 -- @param loggerconfig The Loggerconfig
 -- @return object logger
-function Log4g.Logger.RegisterLogger(name, loggerconfig)
-    if name == "" or table.IsEmpty(loggerconfig) then return end
+function Log4g.Logger.RegisterLogger(loggerconfig)
+    if not table.IsEmpty(loggerconfig) then
+        error("Logger registration failed: LoggerConfig object invalid.\n")
+    end
+
+    MsgN("Starting the registration of Logger: " .. loggerconfig.name .. "...")
 
     if not HasLogger(name) then
-        local logger = Logger:New(name, loggerconfig)
-        Log4g.Hierarchy[loggerconfig.loggercontext].logger[name] = logger
+        local logger = Logger:New(loggerconfig)
+        Log4g.Hierarchy[loggerconfig.loggercontext].logger[loggerconfig.name] = logger
+        MsgN("Logger registration: Successfully created Hierarchy LoggerContext child item.")
 
-        return logger
+        return Log4g.Hierarchy[loggerconfig.loggercontext].logger[loggerconfig.name]
+    else
+        ErrorNoHalt("Logger registration failed: Logger already exists.\n")
+
+        return Log4g.Hierarchy[loggerconfig.loggercontext].logger[loggerconfig.name]
     end
 end

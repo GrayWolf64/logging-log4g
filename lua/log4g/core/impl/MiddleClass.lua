@@ -102,8 +102,6 @@ end
 local function _includeMixin(aClass, mixin)
     if type(mixin) ~= "table" then
         error()
-
-        return
     end
 
     for name, method in pairs(mixin) do
@@ -131,8 +129,6 @@ local DefaultMixin = {
         allocate = function(self)
             if type(self) ~= "table" then
                 error()
-
-                return
             end
 
             return setmetatable({
@@ -142,8 +138,6 @@ local DefaultMixin = {
         New = function(self, ...)
             if type(self) ~= "table" then
                 error()
-
-                return
             end
 
             local instance = self:allocate()
@@ -154,8 +148,6 @@ local DefaultMixin = {
         subclass = function(self, name)
             if type(self) ~= "table" or type(name) ~= "string" then
                 error()
-
-                return
             end
 
             local subclass = _createClass(name, self)
@@ -193,8 +185,6 @@ local DefaultMixin = {
 function MiddleClass.class(name, super)
     if type(name) ~= "string" then
         error()
-
-        return
     end
 
     return super and super:subclass(name) or _includeMixin(_createClass(name), DefaultMixin)

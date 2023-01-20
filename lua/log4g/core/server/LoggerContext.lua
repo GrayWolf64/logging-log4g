@@ -71,7 +71,7 @@ function Log4g.Core.LoggerContext.RegisterLoggerContext(name)
         file.CreateDir("log4g/server/loggercontext/" .. name .. "/loggerconfig")
         MsgN("LoggerContext registration: Successfully created folder and Hierarchy item.")
 
-        return loggercontext
+        return Log4g.Hierarchy[name]
     else
         ErrorNoHalt("LoggerContext registration failed: A LoggerContext with the same name already exists.\n")
 

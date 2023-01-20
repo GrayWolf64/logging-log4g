@@ -47,6 +47,8 @@ function INITIALIZED:Remove()
 end
 
 function INITIALIZED:BuildDefault()
+    -- Log4g.Logger.RegisterLogger(loggerconfig.name, loggerconfig)
+    hook.Add(self.eventname, self.uid, CompileString(self.func))
 end
 
 local STARTED = LoggerConfig:AddState("STARTED")
@@ -69,7 +71,7 @@ function Log4g.Core.Config.LoggerConfig.RegisterLoggerConfig(tbl)
         file.Write(loggerconfig.file, util.TableToJSON(tbl, true))
         MsgN("LoggerConfig registration: Successfully created file and Buffer item.")
 
-        return loggerconfig
+        return Log4g.Core.Config.LoggerConfig.Buffer[tbl.name]
     else
         ErrorNoHalt("LoggerConfig registration failed: A LoggerConfig with the same name already exists.\n")
 

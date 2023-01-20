@@ -343,7 +343,7 @@ concommand.Add("Log4g_MMC", function()
         local RowA, RowB = DPropNewRow(DProp, "Hook", "Event Name", "Combo"), DPropNewRow(DProp, "Hook", "Unique Identifier", "Generic")
         local RowC, RowD = DPropNewRow(DProp, "Logger", "LoggerContext", "Generic"), DPropNewRow(DProp, "Logger", "Level", "Combo")
         local RowE, RowF = DPropNewRow(DProp, "Logger", "Appender", "Combo"), DPropNewRow(DProp, "Logger", "Layout", "Combo")
-        local RowG, RowH = DPropNewRow(DProp, "Self", "LoggerConfig Name", "Generic"), DPropNewRow(DProp, "Logger", "Function", "Generic")
+        local RowG, RowH = DPropNewRow(DProp, "Logger", "Name", "Generic"), DPropNewRow(DProp, "Logger", "Function", "Generic")
         net.Start("Log4g_CLReq_Hooks")
         net.SendToServer()
 
