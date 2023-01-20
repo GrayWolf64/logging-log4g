@@ -4,11 +4,11 @@ Log4g.Core.Config = Log4g.Core.Config or {}
 Log4g.Core.Config.Builder = Log4g.Core.Config.Builder or {}
 Log4g.Core.Config.LoggerConfig = Log4g.Core.Config.LoggerConfig or {}
 Log4g.Core.Config.LoggerConfig.Buffer = Log4g.Core.Config.LoggerConfig.Buffer or {}
+local HasKey = Log4g.Util.HasKey
 local Class = include("log4g/core/impl/MiddleClass.lua")
 local Stateful = include("log4g/core/impl/Stateful.lua")
 local LoggerConfig = Class("LoggerConfig")
 LoggerConfig:include(Stateful)
-local HasKey = Log4g.Util.HasKey
 
 function LoggerConfig:Initialize(tbl)
     self.name = tbl.name
@@ -22,12 +22,8 @@ function LoggerConfig:Initialize(tbl)
     self.func = tbl.func
 end
 
-local INITIALIZING = LoggerConfig:addState("INITIALIZING")
 local INITIALIZED = LoggerConfig:addState("INITIALIZED")
-local STARTING = LoggerConfig:addState("STARTING")
 local STARTED = LoggerConfig:addState("STARTED")
-local STOPPING = LoggerConfig:addState("STOPPING")
-local STOPPED = LoggerConfig:addState("STOPPED")
 
 --- Remove the LoggerConfig.
 function INITIALIZED:Remove()
@@ -52,11 +48,10 @@ function INITIALIZED:Remove()
 end
 
 function INITIALIZED:BuildDefault()
-    self:gotoState("STARTING")
     Log4g.Logger.RegisterLogger(self)
     Log4g.Hierarchy[self.loggercontext].logger[self.name].loggerconfig:gotoState("STARTED")
     hook.Add(self.eventname, self.uid, CompileString(self.func))
-    self:gotoState("STARTED")
+    self:gotoState(nil)
     self:Remove()
 end
 
@@ -78,7 +73,6 @@ function Log4g.Core.Config.LoggerConfig.RegisterLoggerConfig(tbl)
     if not HasKey(Log4g.Core.Config.LoggerConfig.Buffer, tbl.name) then
         local loggerconfig = LoggerConfig:New(tbl)
         Log4g.Core.Config.LoggerConfig.Buffer[tbl.name] = loggerconfig
-        Log4g.Core.Config.LoggerConfig.Buffer[tbl.name]:gotoState("INITIALIZING")
         file.Write(loggerconfig.file, util.TableToJSON(tbl, true))
         Log4g.Core.Config.LoggerConfig.Buffer[tbl.name]:gotoState("INITIALIZED")
         MsgN("LoggerConfig registration: Successfully created file and Buffer item.")
