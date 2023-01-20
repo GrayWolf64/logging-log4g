@@ -385,19 +385,22 @@ concommand.Add("Log4g_MMC", function()
 
         ButtonA.DoClick = function()
             local InputName = GetRowControlValue(RowG)
+            local InputEventName = GetRowControlValue(RowA)
+            local InputUID = GetRowControlValue(RowB)
             local InputLoggerContextName = GetRowControlValue(RowC)
-            if HasNumber(InputName) or HasNumber(InputLoggerContextName) or #InputName == 0 or #InputLoggerContextName == 0 then return end
+            local InputFunc = GetRowControlValue(RowH)
+            if HasNumber(InputName) or HasNumber(InputLoggerContextName) or #InputName == 0 or #InputLoggerContextName == 0 or #InputEventName == 0 or #InputUID == 0 or #InputFunc == 0 then return end
             net.Start("Log4g_CLUpload_LoggerConfig")
 
             net.WriteTable({
                 name = string.lower(InputName),
-                eventname = GetRowControlValue(RowA),
-                uid = GetRowControlValue(RowB),
+                eventname = InputEventName,
+                uid = InputUID,
                 loggercontext = string.lower(InputLoggerContextName),
                 level = GetRowControlValue(RowD),
                 appender = GetRowControlValue(RowE),
                 layout = GetRowControlValue(RowF),
-                func = GetRowControlValue(RowH)
+                func = InputFunc
             })
 
             net.SendToServer()
