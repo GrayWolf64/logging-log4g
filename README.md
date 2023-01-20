@@ -20,6 +20,4 @@ The Log4g Documentation is available [here](https://github.com/GrayWolf64/Log4g/
 
 ## Third-Party Project(s) Used
 
-* [Stateful](https://github.com/kikito/stateful.lua)
-
 * [MiddleClass](https://github.com/kikito/middleclass)
