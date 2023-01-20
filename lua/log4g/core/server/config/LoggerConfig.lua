@@ -46,6 +46,9 @@ function INITIALIZED:Remove()
     MsgN("Removal completed.")
 end
 
+function INITIALIZED:BuildDefault()
+end
+
 local STARTED = LoggerConfig:AddState("STARTED")
 
 function STARTED:Remove()
