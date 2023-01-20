@@ -63,7 +63,7 @@ end
 -- @return object loggercontext
 function Log4g.Core.LoggerContext.RegisterLoggerContext(name)
     if not isstring(name) then
-        error("LoggerContext registration failed: name must be a string.")
+        error("LoggerContext registration failed: name must be a string.\n")
     end
 
     MsgN("Starting the registration of LoggerContext: " .. name .. "...")
