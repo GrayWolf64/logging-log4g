@@ -270,6 +270,8 @@ concommand.Add("Log4g_MMC", function()
         net.SendToServer()
 
         net.Receive("Log4g_CLRcv_LoggerConfigs", function()
+            if not net.ReadBool() then return end
+
             for _, v in ipairs(util.JSONToTable(util.Decompress(net.ReadData(net.ReadUInt(16))))) do
                 local Line = ListView:AddLine()
                 SetProperLineText(v, Line, ListView)

@@ -84,7 +84,6 @@ end)
 
 net.Receive("Log4g_CLReq_LoggerConfigs", function(len, ply)
     local Tbl = Log4g.Core.Config.LoggerConfig.GetFiles()
-    if table.IsEmpty(Tbl) then return end
     local Data = {}
 
     for _, v in ipairs(Tbl) do
@@ -92,10 +91,17 @@ net.Receive("Log4g_CLReq_LoggerConfigs", function(len, ply)
     end
 
     net.Start("Log4g_CLRcv_LoggerConfigs")
-    local Str = util.Compress(util.TableToJSON(Data, true))
-    local Len = #Str
-    net.WriteUInt(Len, 16)
-    net.WriteData(Str, Len)
+
+    if not table.IsEmpty(Tbl) then
+        local Str = util.Compress(util.TableToJSON(Data, true))
+        local Len = #Str
+        net.WriteBool(true)
+        net.WriteUInt(Len, 16)
+        net.WriteData(Str, Len)
+    else
+        net.WriteBool(false)
+    end
+
     net.Send(ply)
 end)
 
