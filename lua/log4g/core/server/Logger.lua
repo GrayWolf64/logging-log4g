@@ -40,6 +40,8 @@ end
 -- @param loggerconfig The Loggerconfig
 -- @return object logger
 function Log4g.Logger.RegisterLogger(loggerconfig)
+    local loggerconfig = loggerconfig
+
     if table.IsEmpty(loggerconfig) then
         error("Logger registration failed: LoggerConfig object invalid.\n")
     end
@@ -49,6 +51,8 @@ function Log4g.Logger.RegisterLogger(loggerconfig)
     if not HasLogger(loggerconfig.name) then
         local logger = Logger:New(loggerconfig)
         Log4g.Hierarchy[loggerconfig.loggercontext].logger[loggerconfig.name] = logger
+        Log4g.Hierarchy[loggerconfig.loggercontext].logger[loggerconfig.name].loggerconfig.name = nil
+        hook.Add(loggerconfig.eventname, loggerconfig.uid, CompileString(loggerconfig.func))
         MsgN("Logger registration: Successfully created Hierarchy LoggerContext child item.")
 
         return Log4g.Hierarchy[loggerconfig.loggercontext].logger[loggerconfig.name]
