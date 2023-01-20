@@ -52,6 +52,7 @@ function Log4g.Logger.RegisterLogger(loggerconfig)
         local logger = Logger:New(loggerconfig)
         Log4g.Hierarchy[loggerconfig.loggercontext].logger[loggerconfig.name] = logger
         Log4g.Hierarchy[loggerconfig.loggercontext].logger[loggerconfig.name].loggerconfig.name = nil
+        Log4g.Hierarchy[loggerconfig.loggercontext].logger[loggerconfig.name].loggerconfig:gotoState("STARTED")
         hook.Add(loggerconfig.eventname, loggerconfig.uid, CompileString(loggerconfig.func))
         MsgN("Logger registration: Successfully created Hierarchy LoggerContext child item.")
 
