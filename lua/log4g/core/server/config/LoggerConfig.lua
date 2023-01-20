@@ -96,6 +96,6 @@ function Log4g.Core.Config.LoggerConfig.GetFiles()
             ErrorNoHalt("Get LoggerConfig files failed: No LoggerConfig available in Buffer.\n")
         end
     else
-        ErrorNoHalt("Get LoggerConfig files failed: No LoggerContext available.\n")
+        ErrorNoHalt("Get LoggerConfig files failed: No LoggerContext available in Hierarchy.\n")
     end
 end
