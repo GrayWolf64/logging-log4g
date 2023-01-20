@@ -48,9 +48,6 @@ function INITIALIZED:Remove()
 end
 
 function INITIALIZED:BuildDefault()
-    Log4g.Logger.RegisterLogger(self)
-    self:gotoState("INITIALIZED")
-    self:Remove()
 end
 
 function STARTED:Remove()
