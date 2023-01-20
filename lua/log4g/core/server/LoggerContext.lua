@@ -19,17 +19,17 @@ end
 --- Terminate the LoggerContext.
 function LoggerContext:Terminate()
     MsgN("Starting the termination of LoggerContext: " .. self.name .. "...")
-    local Folder = "log4g/server/loggercontext/" .. self.name
+    local folder = "log4g/server/loggercontext/" .. self.name
 
-    if file.Exists(Folder, "DATA") then
-        local Files, _ = file.Find(Folder .. "/loggerconfig/*.json", "DATA")
+    if file.Exists(folder, "DATA") then
+        local Files, _ = file.Find(folder .. "/loggerconfig/*.json", "DATA")
 
         for _, j in pairs(Files) do
-            file.Delete(Folder .. "/loggerconfig/" .. j)
+            file.Delete(folder .. "/loggerconfig/" .. j)
         end
 
-        file.Delete(Folder .. "/loggerconfig")
-        file.Delete(Folder)
+        file.Delete(folder .. "/loggerconfig")
+        file.Delete(folder)
         MsgN("LoggerContext termination: Successfully deleted LoggerContext folder which may contain LoggerConfigs.")
     else
         ErrorNoHalt("LoggerContext termination failed: Can't find the LoggerContext folder.\n")
@@ -62,8 +62,11 @@ end
 -- @param name The name of the LoggerContext
 -- @return object loggercontext
 function Log4g.Core.LoggerContext.RegisterLoggerContext(name)
+    if not isstring(name) then
+        error("LoggerContext registration failed: name must be a string.")
+    end
+
     MsgN("Starting the registration of LoggerContext: " .. name .. "...")
-    if name == "" or folder == "" then return end
 
     if not HasKey(Log4g.Hierarchy, name) then
         local loggercontext = LoggerContext:New(name)
