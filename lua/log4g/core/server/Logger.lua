@@ -7,7 +7,7 @@ local HasKey = Log4g.Util.HasKey
 
 function Logger:Initialize(tbl)
     self.name = tbl.name
-    self.loggerconfig = tbl.loggerconfig
+    self.loggerconfig = tbl
 end
 
 --- Delete the Logger.
