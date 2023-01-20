@@ -76,7 +76,7 @@ function Log4g.Core.LoggerContext.RegisterLoggerContext(name)
 
         return Log4g.Hierarchy[name]
     else
-        ErrorNoHalt("LoggerContext registration failed: A LoggerContext with the same name already exists.\n")
+        MsgN("LoggerContext registration not needed: A LoggerContext with the same name already exists.")
 
         return Log4g.Hierarchy[name]
     end
