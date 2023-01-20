@@ -136,7 +136,7 @@ concommand.Add("Log4g_MMC", function()
         return
     end
 
-    Frame = CreateDFrame(900, 540, "Log4g Monitoring & Management Console" .. " - " .. GetGameInfo(), "icon16/application.png", nil)
+    Frame = CreateDFrame(900, 500, "Log4g Monitoring & Management Console" .. " - " .. GetGameInfo(), "icon16/application.png", nil)
     local MenuBar = vgui.Create("DMenuBar", Frame)
     local Icon = vgui.Create("DImageButton", MenuBar)
     Icon:Dock(RIGHT)
