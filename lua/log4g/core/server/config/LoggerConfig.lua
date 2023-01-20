@@ -26,6 +26,8 @@ local INITIALIZING = LoggerConfig:addState("INITIALIZING")
 local INITIALIZED = LoggerConfig:addState("INITIALIZED")
 local STARTING = LoggerConfig:addState("STARTING")
 local STARTED = LoggerConfig:addState("STARTED")
+local STOPPING = LoggerConfig:addState("STOPPING")
+local STOPPED = LoggerConfig:addState("STOPPED")
 
 --- Remove the LoggerConfig.
 function INITIALIZED:Remove()
@@ -53,7 +55,7 @@ function INITIALIZED:BuildDefault()
 end
 
 -- Log4g.Logger.RegisterLogger(self)
--- Log4g.Hierarchy[self.loggercontext].logger[self.name].loggerconfig:GoToState("STARTED")
+-- Log4g.Hierarchy[self.loggercontext].logger[self.name].loggerconfig:gotoState("STARTED")
 -- hook.Add(self.eventname, self.uid, CompileString(self.func))
 -- self:Remove()
 function STARTED:Remove()
@@ -74,7 +76,7 @@ function Log4g.Core.Config.LoggerConfig.RegisterLoggerConfig(tbl)
     if not HasKey(Log4g.Core.Config.LoggerConfig.Buffer, tbl.name) then
         local loggerconfig = LoggerConfig:New(tbl)
         Log4g.Core.Config.LoggerConfig.Buffer[tbl.name] = loggerconfig
-        Log4g.Core.Config.LoggerConfig.Buffer[tbl.name]:GoToState("INITIALIZED")
+        Log4g.Core.Config.LoggerConfig.Buffer[tbl.name]:gotoState("INITIALIZED")
         file.Write(loggerconfig.file, util.TableToJSON(tbl, true))
         MsgN("LoggerConfig registration: Successfully created file and Buffer item.")
 
