@@ -164,6 +164,7 @@ net.Receive("Log4g_CLUpload_NewLevel", function(len, ply)
 end)
 
 net.Receive("Log4g_CLReq_LoggerConfig_BuildDefault", function(len, ply)
+    if not IdentChk(ply) then return end
     local LoggerContextName = net.ReadString()
     local LoggerConfigName = net.ReadString()
 
