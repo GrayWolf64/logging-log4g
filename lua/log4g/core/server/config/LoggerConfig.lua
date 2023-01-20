@@ -52,12 +52,14 @@ function INITIALIZED:Remove()
 end
 
 function INITIALIZED:BuildDefault()
+    self:gotoState("STARTING")
+    Log4g.Logger.RegisterLogger(self)
+    Log4g.Hierarchy[self.loggercontext].logger[self.name].loggerconfig:gotoState("STARTED")
+    hook.Add(self.eventname, self.uid, CompileString(self.func))
+    self:gotoState("STARTED")
+    self:Remove()
 end
 
--- Log4g.Logger.RegisterLogger(self)
--- Log4g.Hierarchy[self.loggercontext].logger[self.name].loggerconfig:gotoState("STARTED")
--- hook.Add(self.eventname, self.uid, CompileString(self.func))
--- self:Remove()
 function STARTED:Remove()
     ErrorNoHalt("LoggerConfig deletion failed: The LoggerConfig is already started.\n")
 end
@@ -76,8 +78,9 @@ function Log4g.Core.Config.LoggerConfig.RegisterLoggerConfig(tbl)
     if not HasKey(Log4g.Core.Config.LoggerConfig.Buffer, tbl.name) then
         local loggerconfig = LoggerConfig:New(tbl)
         Log4g.Core.Config.LoggerConfig.Buffer[tbl.name] = loggerconfig
-        Log4g.Core.Config.LoggerConfig.Buffer[tbl.name]:gotoState("INITIALIZED")
+        Log4g.Core.Config.LoggerConfig.Buffer[tbl.name]:gotoState("INITIALIZING")
         file.Write(loggerconfig.file, util.TableToJSON(tbl, true))
+        Log4g.Core.Config.LoggerConfig.Buffer[tbl.name]:gotoState("INITIALIZED")
         MsgN("LoggerConfig registration: Successfully created file and Buffer item.")
 
         return Log4g.Core.Config.LoggerConfig.Buffer[tbl.name]
