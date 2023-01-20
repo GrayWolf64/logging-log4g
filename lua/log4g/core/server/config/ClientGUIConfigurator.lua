@@ -83,10 +83,21 @@ net.Receive("Log4g_CLUpload_LoggerConfig", function(len, ply)
 end)
 
 net.Receive("Log4g_CLReq_LoggerConfigs", function(len, ply)
-    local Tbl = Log4g.Core.Config.LoggerConfig.GetFiles()
+    local Tbl = {}
+    local _, Folders = file.Find("log4g/server/loggercontext/*", "DATA")
+
+    for _, v in pairs(Folders) do
+        local Files, _ = file.Find("log4g/server/loggercontext/" .. v .. "/loggerconfig/*.json", "DATA")
+
+        for _, j in pairs(Files) do
+            table.insert(Tbl, "log4g/server/loggercontext/" .. v .. "/loggerconfig/" .. j)
+        end
+    end
+
     net.Start("Log4g_CLRcv_LoggerConfigs")
 
     if not table.IsEmpty(Tbl) then
+        net.WriteBool(true)
         local Data = {}
 
         for _, v in ipairs(Tbl) do
@@ -95,7 +106,6 @@ net.Receive("Log4g_CLReq_LoggerConfigs", function(len, ply)
 
         local Str = util.Compress(util.TableToJSON(Data, true))
         local Len = #Str
-        net.WriteBool(true)
         net.WriteUInt(Len, 16)
         net.WriteData(Str, Len)
     else
