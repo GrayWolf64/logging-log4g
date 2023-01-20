@@ -6,9 +6,7 @@ Log4g.Core.Config.LoggerConfig = Log4g.Core.Config.LoggerConfig or {}
 Log4g.Core.Config.LoggerConfig.Buffer = Log4g.Core.Config.LoggerConfig.Buffer or {}
 local HasKey = Log4g.Util.HasKey
 local Class = include("log4g/core/impl/MiddleClass.lua")
-local Stateful = include("log4g/core/impl/Stateful.lua")
 local LoggerConfig = Class("LoggerConfig")
-LoggerConfig:include(Stateful)
 
 function LoggerConfig:Initialize(tbl)
     self.name = tbl.name
@@ -22,11 +20,8 @@ function LoggerConfig:Initialize(tbl)
     self.func = tbl.func
 end
 
-local INITIALIZED = LoggerConfig:addState("INITIALIZED")
-local STARTED = LoggerConfig:addState("STARTED")
-
 --- Remove the LoggerConfig.
-function INITIALIZED:Remove()
+function LoggerConfig:Remove()
     MsgN("Starting the removal of LoggerConfig: " .. self.name .. "...")
     local File = "log4g/server/loggercontext/" .. self.loggercontext .. "/loggerconfig/" .. self.name .. ".json"
 
@@ -47,15 +42,7 @@ function INITIALIZED:Remove()
     MsgN("Removal completed.")
 end
 
-function INITIALIZED:BuildDefault()
-end
-
-function STARTED:Remove()
-    ErrorNoHalt("LoggerConfig deletion failed: The LoggerConfig is already started.\n")
-end
-
-function STARTED:BuildDefault()
-    ErrorNoHalt("LoggerConfig default build failed: The LoggerConfig is already started and built.\n")
+function LoggerConfig:BuildDefault()
 end
 
 --- Register a LoggerConfig.
@@ -69,7 +56,6 @@ function Log4g.Core.Config.LoggerConfig.RegisterLoggerConfig(tbl)
         local loggerconfig = LoggerConfig:New(tbl)
         Log4g.Core.Config.LoggerConfig.Buffer[tbl.name] = loggerconfig
         file.Write(loggerconfig.file, util.TableToJSON(tbl, true))
-        Log4g.Core.Config.LoggerConfig.Buffer[tbl.name]:gotoState("INITIALIZED")
         MsgN("LoggerConfig registration: Successfully created file and Buffer item.")
 
         return Log4g.Core.Config.LoggerConfig.Buffer[tbl.name]
