@@ -47,14 +47,19 @@ function INITIALIZED:Remove()
 end
 
 function INITIALIZED:BuildDefault()
-    -- Log4g.Logger.RegisterLogger(loggerconfig.name, loggerconfig)
+    Log4g.Logger.RegisterLogger(self).loggerconfig:GoToState("STARTED")
     hook.Add(self.eventname, self.uid, CompileString(self.func))
+    self:Remove()
 end
 
 local STARTED = LoggerConfig:AddState("STARTED")
 
 function STARTED:Remove()
     ErrorNoHalt("LoggerConfig deletion failed: The LoggerConfig is already started and applied to a Logger.\n")
+end
+
+function STARTED:BuildDefault()
+    ErrorNoHalt("LoggerConfig default build failed: The LoggerConfig is already started and built.\n")
 end
 
 --- Register a LoggerConfig.
