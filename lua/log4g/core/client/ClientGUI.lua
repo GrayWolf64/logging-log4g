@@ -183,7 +183,7 @@ concommand.Add("Log4g_MMC", function()
 
     net.Receive("Log4g_CLRcv_LoggerConfig_Keys", function()
         for _, v in pairs(net.ReadTable()) do
-            ListView:AddColumn(v):SetFixedWidth(90)
+            ListView:AddColumn(v)
         end
     end)
 
