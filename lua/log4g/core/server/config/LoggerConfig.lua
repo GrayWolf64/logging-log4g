@@ -22,8 +22,10 @@ function LoggerConfig:Initialize(tbl)
     self.func = tbl.func
 end
 
+local INITIALIZED = LoggerConfig:AddState("INITIALIZED")
+
 --- Remove the LoggerConfig.
-function LoggerConfig:Remove()
+function INITIALIZED:Remove()
     MsgN("Starting the removal of LoggerConfig: " .. self.name .. "...")
     local File = "log4g/server/loggercontext/" .. self.loggercontext .. "/loggerconfig/" .. self.name .. ".json"
 
@@ -60,6 +62,7 @@ function Log4g.Core.Config.LoggerConfig.RegisterLoggerConfig(tbl)
     if not HasKey(Log4g.Core.Config.LoggerConfig.Buffer, tbl.name) then
         local loggerconfig = LoggerConfig:New(tbl)
         Log4g.Core.Config.LoggerConfig.Buffer[tbl.name] = loggerconfig
+        Log4g.Core.Config.LoggerConfig.Buffer[tbl.name]:GoToState("INITIALIZED")
         file.Write(loggerconfig.file, util.TableToJSON(tbl, true))
         MsgN("LoggerConfig registration: Successfully created file and Buffer item.")
 
