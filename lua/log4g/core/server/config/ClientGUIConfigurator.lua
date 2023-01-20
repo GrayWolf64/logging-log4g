@@ -84,15 +84,15 @@ end)
 
 net.Receive("Log4g_CLReq_LoggerConfigs", function(len, ply)
     local Tbl = Log4g.Core.Config.LoggerConfig.GetFiles()
-    local Data = {}
-
-    for _, v in ipairs(Tbl) do
-        table.Add(Data, {util.JSONToTable(file.Read(v, "DATA"))})
-    end
-
     net.Start("Log4g_CLRcv_LoggerConfigs")
 
     if not table.IsEmpty(Tbl) then
+        local Data = {}
+
+        for _, v in ipairs(Tbl) do
+            table.Add(Data, {util.JSONToTable(file.Read(v, "DATA"))})
+        end
+
         local Str = util.Compress(util.TableToJSON(Data, true))
         local Len = #Str
         net.WriteBool(true)
