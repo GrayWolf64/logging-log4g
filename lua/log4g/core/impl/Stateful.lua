@@ -20,7 +20,7 @@ local function _addStatesToClass(klass, superStates)
     klass.static.states = {}
 
     for stateName, state in pairs(superStates or {}) do
-        klass:AddState(stateName, state)
+        klass:addState(stateName, state)
     end
 end
 
@@ -129,7 +129,7 @@ function Stateful:included(klass)
     _modifyAllocateMethod(klass)
 end
 
-function Stateful.static:AddState(stateName, superState)
+function Stateful.static:addState(stateName, superState)
     superState = superState or _BaseState
     _assertType(stateName, "stateName", "string")
     _assertInexistingState(self, stateName)
@@ -141,7 +141,7 @@ function Stateful.static:AddState(stateName, superState)
     return self.static.states[stateName]
 end
 
-function Stateful:GoToState(stateName, ...)
+function Stateful:gotoState(stateName, ...)
     self:popAllStates(...)
 
     if stateName == nil then

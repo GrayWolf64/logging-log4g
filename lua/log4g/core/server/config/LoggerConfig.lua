@@ -22,7 +22,10 @@ function LoggerConfig:Initialize(tbl)
     self.func = tbl.func
 end
 
-local INITIALIZED = LoggerConfig:AddState("INITIALIZED")
+local INITIALIZING = LoggerConfig:addState("INITIALIZING")
+local INITIALIZED = LoggerConfig:addState("INITIALIZED")
+local STARTING = LoggerConfig:addState("STARTING")
+local STARTED = LoggerConfig:addState("STARTED")
 
 --- Remove the LoggerConfig.
 function INITIALIZED:Remove()
@@ -47,15 +50,14 @@ function INITIALIZED:Remove()
 end
 
 function INITIALIZED:BuildDefault()
-    Log4g.Logger.RegisterLogger(self).loggerconfig:GoToState("STARTED")
-    hook.Add(self.eventname, self.uid, CompileString(self.func))
-    Log4g.Core.Config.LoggerConfig.Buffer[self.name]:Remove()
 end
 
-local STARTED = LoggerConfig:AddState("STARTED")
-
+-- Log4g.Logger.RegisterLogger(self)
+-- Log4g.Hierarchy[self.loggercontext].logger[self.name].loggerconfig:GoToState("STARTED")
+-- hook.Add(self.eventname, self.uid, CompileString(self.func))
+-- self:Remove()
 function STARTED:Remove()
-    ErrorNoHalt("LoggerConfig deletion failed: The LoggerConfig is already started and applied to a Logger.\n")
+    ErrorNoHalt("LoggerConfig deletion failed: The LoggerConfig is already started.\n")
 end
 
 function STARTED:BuildDefault()
