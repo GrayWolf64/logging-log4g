@@ -166,6 +166,12 @@ end)
 net.Receive("Log4g_CLReq_LoggerConfig_BuildDefault", function(len, ply)
     local LoggerContextName = net.ReadString()
     local LoggerConfigName = net.ReadString()
-    Log4g.Core.Config.Builder.DefaultLoggerConfigBuilder(Log4g.Core.Config.LoggerConfig.Buffer[LoggerConfigName])
+
+    for k, _ in pairs(Log4g.Core.Config.LoggerConfig.Buffer) do
+        if k == LoggerConfigName then
+            Log4g.Core.Config.LoggerConfig.Buffer[k]:BuildDefault()
+        end
+    end
+
     RemoveLoggerContextLookupLoggerConfig(LoggerContextName, LoggerConfigName)
 end)
