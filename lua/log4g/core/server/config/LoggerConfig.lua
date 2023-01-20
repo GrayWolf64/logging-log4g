@@ -51,7 +51,7 @@ function INITIALIZED:BuildDefault()
     Log4g.Logger.RegisterLogger(self)
     Log4g.Hierarchy[self.loggercontext].logger[self.name].loggerconfig:gotoState("STARTED")
     hook.Add(self.eventname, self.uid, CompileString(self.func))
-    self:gotoState(nil)
+    self:gotoState("INITIALIZED")
     self:Remove()
 end
 
