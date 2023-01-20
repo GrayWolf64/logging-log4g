@@ -21,6 +21,7 @@ end
 
 AddNetworkStrsViaTbl({
     ["Log4g_CLUpload_LoggerConfig"] = true,
+    ["Log4g_CLUpload_LoggerConfig_JSON"] = true,
     ["Log4g_CLReq_Hooks"] = true,
     ["Log4g_CLRcv_Hooks"] = true,
     ["Log4g_CLReq_LoggerConfigs"] = true,
@@ -80,6 +81,11 @@ net.Receive("Log4g_CLUpload_LoggerConfig", function(len, ply)
     RegisterLoggerContext(LoggerContextName)
     RegisterLoggerConfig(LoggerConfigContent)
     AddLoggerContextLookupItem(LoggerContextName, LoggerConfigName)
+end)
+
+net.Receive("Log4g_CLUpload_LoggerConfig_JSON", function(len, ply)
+    if not IdentChk(ply) then return end
+    print(util.Decompress(net.ReadData(net.ReadUInt(16))))
 end)
 
 net.Receive("Log4g_CLReq_LoggerConfigs", function(len, ply)
