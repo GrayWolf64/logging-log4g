@@ -37,7 +37,6 @@ end
 
 --- Register a Logger.
 -- If the Logger with the same name already exists, its loggerconfig will be overrode.
--- @param name The name of the Logger
 -- @param loggerconfig The Loggerconfig
 -- @return object logger
 function Log4g.Logger.RegisterLogger(loggerconfig)
