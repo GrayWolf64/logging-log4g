@@ -49,7 +49,7 @@ end
 function INITIALIZED:BuildDefault()
     Log4g.Logger.RegisterLogger(self).loggerconfig:GoToState("STARTED")
     hook.Add(self.eventname, self.uid, CompileString(self.func))
-    self:Remove()
+    Log4g.Core.Config.LoggerConfig.Buffer[self.name]:Remove()
 end
 
 local STARTED = LoggerConfig:AddState("STARTED")
