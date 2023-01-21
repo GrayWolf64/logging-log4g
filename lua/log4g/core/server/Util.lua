@@ -34,8 +34,7 @@ end
 -- @param tbl The table of network strings to add
 Log4g.Util.AddNetworkStrsViaTbl = function(tbl)
     for k, _ in pairs(tbl) do
-        if not tbl[k] then return end
-        if not isstring(k) then return end
+        if not isstring(k) or not tbl[k] then return end
         util.AddNetworkString(k)
     end
 end
