@@ -107,9 +107,11 @@ function Log4g.Core.Config.LoggerConfig.GetLocalFiles()
         if not table.IsEmpty(tbl) then
             return tbl
         else
-            ErrorNoHalt("Get LoggerConfig local files failed: No LoggerConfig file available in data/log4g/server/loggercontext/.../loggerconfig/\n")
+            MsgN("Get LoggerConfig local files failed: No LoggerConfig file available in data/log4g/server/loggercontext/.../loggerconfig/")
+
+            return nil
         end
     else
-        ErrorNoHalt("Get LoggerConfig local files failed: No LoggerContext folder available in data/log4g/server/loggercontext/.\n")
+        MsgN("Get LoggerConfig local files failed: No LoggerContext folder available in data/log4g/server/loggercontext/.")
     end
 end

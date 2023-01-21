@@ -96,7 +96,7 @@ net.Receive("Log4g_CLReq_LoggerConfigs", function(len, ply)
     local Tbl = Log4g.Core.Config.LoggerConfig.GetLocalFiles()
     net.Start("Log4g_CLRcv_LoggerConfigs")
 
-    if not table.IsEmpty(Tbl) then
+    if istable(Tbl) and not table.IsEmpty(Tbl) then
         net.WriteBool(true)
         local Data = {}
 
