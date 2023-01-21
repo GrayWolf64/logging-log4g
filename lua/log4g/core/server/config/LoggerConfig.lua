@@ -50,6 +50,10 @@ end
 -- @param tbl The table containing data that a LoggerConfig needs
 -- @return object loggerconfig
 function Log4g.Core.Config.LoggerConfig.RegisterLoggerConfig(tbl)
+    if not istable(tbl) or table.IsEmpty(tbl) then
+        error("LoggerConfig registration failed: arg must be a not empty table.\n")
+    end
+
     MsgN("Starting the registration of LoggerConfig: " .. tbl.name .. "...")
 
     if not HasKey(Log4g.Core.Config.LoggerConfig.Buffer, tbl.name) then
