@@ -21,8 +21,8 @@ function LoggerContext:Initialize(name)
 end
 
 function LoggerContext:Start()
-    SetState(Log4g.Hierarchy[name], STARTING)
-    SetState(Log4g.Hierarchy[name], STARTED)
+    SetState(self, STARTING)
+    SetState(self, STARTED)
 end
 
 function LoggerContext:__tostring()
