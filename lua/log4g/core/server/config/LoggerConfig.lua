@@ -126,30 +126,3 @@ function Log4g.Core.Config.LoggerConfig.GetFiles()
         return nil
     end
 end
-
---- Get all the file paths of all the not started LoggerConfig JSONs stored locally on server.
--- If no LoggerContext or no LoggerConfig can be found, nil will be returned instead of a table.
--- @return tbl filepaths
-function Log4g.Core.Config.LoggerConfig.GetLocalFiles()
-    local tbl = {}
-    local _, folders = file.Find("log4g/server/loggercontext/*", "DATA")
-
-    if istable(folders) and not table.IsEmpty(folders) then
-        for _, v in pairs(folders) do
-            local files, _ = file.Find("log4g/server/loggercontext/" .. v .. "/loggerconfig/*.json", "DATA")
-            if not istable(files) and table.IsEmpty(files) then return end
-
-            for _, j in pairs(files) do
-                table.insert(tbl, "log4g/server/loggercontext/" .. v .. "/loggerconfig/" .. j)
-            end
-        end
-
-        if not table.IsEmpty(tbl) then
-            return tbl
-        else
-            return nil
-        end
-    else
-        return nil
-    end
-end
