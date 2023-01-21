@@ -3,7 +3,7 @@
 Log4g.Core.LifeCycle = Log4g.Core.LifeCycle or {}
 local HasKey = Log4g.Util.HasKey
 
---- LifeCycle states.
+--- LifeCycle states (status of a life cycle).
 -- @table Log4g.Core.LifeCycle.State
 -- @field INITIALIZING Object is in its initial state and not yet initialized.
 -- @field INITIALIZED Initialized but not yet started.
