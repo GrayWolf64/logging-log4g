@@ -136,7 +136,7 @@ concommand.Add("Log4g_MMC", function()
         return
     end
 
-    Frame = CreateDFrame(900, 500, "Log4g Monitoring & Management Console" .. " - " .. GetGameInfo(), "icon16/application.png", nil)
+    Frame = CreateDFrame(860, 500, "Log4g Monitoring & Management Console" .. " - " .. GetGameInfo(), "icon16/application.png", nil)
     local MenuBar = vgui.Create("DMenuBar", Frame)
     local Icon = vgui.Create("DImageButton", MenuBar)
     Icon:Dock(RIGHT)
@@ -464,7 +464,7 @@ concommand.Add("Log4g_MMC", function()
         })
     end):SetIcon("icon16/information.png")
 
-    CreateDHDivider(SheetPanelB, ListView, Tree, 4, 720, 120)
+    CreateDHDivider(SheetPanelB, ListView, Tree, 4, 688, 120)
     local SheetPanelC = vgui.Create("DPanel", SheetA)
     SheetA:AddSheet("Overview (SV)", SheetPanelC, "icon16/page.png")
     local SheetPanelD = vgui.Create("DPanel", SheetA)
