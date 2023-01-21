@@ -74,10 +74,6 @@ function LoggerConfig:BuildDefault()
     MsgN("Starting LoggerConfig...")
     local logger = Log4g.Logger.RegisterLogger(self)
 
-    function logger.loggerconfig:RemoveBuffer()
-        MsgN("LoggerConfig removal failed: already started.")
-    end
-
     function logger.loggerconfig:BuildDefault()
         MsgN("LoggerConfig build not needed: already started.")
     end
