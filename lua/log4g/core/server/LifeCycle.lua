@@ -1,12 +1,12 @@
 Log4g.Core.LifeCycle = Log4g.Core.LifeCycle or {}
 
 Log4g.Core.LifeCycle.State = {
-    INITIALIZING = "INITIALIZING",
-    INITIALIZED = "INITIALIZED",
-    STARTING = "STARTING",
-    STARTED = "STARTED",
-    STOPPING = "STOPPING",
-    STOPPED = "STOPPED"
+    INITIALIZING = function() return "INITIALIZING" end,
+    INITIALIZED = function() return "INITIALIZED" end,
+    STARTING = function() return "STARTING" end,
+    STARTED = function() return "STARTED" end,
+    STOPPING = function() return "STOPPING" end,
+    STOPPED = function() return "STOPPED" end
 }
 
 function Log4g.Core.LifeCycle.SetState(obj, state)
