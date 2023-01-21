@@ -38,3 +38,14 @@ Log4g.Util.AddNetworkStrsViaTbl = function(tbl)
         util.AddNetworkString(k)
     end
 end
+
+--- Write simple compressed data.
+-- Must be used between net start and send.
+-- @param content The content to compress
+-- @param bits The number of bits for net.WriteUInt() to write the length of compressed binary data
+Log4g.Util.WriteDataSimple = function(content, bits)
+    local bindata = util.Compress(content)
+    local len = #bindata
+    net.WriteUInt(len, bits)
+    net.WriteData(bindata, len)
+end
