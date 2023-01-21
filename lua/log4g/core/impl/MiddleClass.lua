@@ -7,7 +7,7 @@ local MiddleClass = {}
 local function _createIndexWrapper(aClass, f)
     if f == nil then
         return aClass.__instanceDict
-    elseif type(f) == "function" then
+    elseif isfunction(f) then
         return function(self, name)
             local value = aClass.__instanceDict[name]
 
@@ -100,7 +100,7 @@ local function _createClass(name, super)
 end
 
 local function _includeMixin(aClass, mixin)
-    if type(mixin) ~= "table" then
+    if not istable(mixin) then
         error()
     end
 
@@ -114,7 +114,7 @@ local function _includeMixin(aClass, mixin)
         aClass.static[name] = method
     end
 
-    if type(mixin.included) == "function" then
+    if isfunction(mixin.included) then
         mixin:included(aClass)
     end
 
@@ -127,7 +127,7 @@ local DefaultMixin = {
     isInstanceOf = function(self, aClass) return type(aClass) == "table" and type(self) == "table" and (self.class == aClass or type(self.class) == "table" and type(self.class.isSubclassOf) == "function" and self.class:isSubclassOf(aClass)) end,
     static = {
         allocate = function(self)
-            if type(self) ~= "table" then
+            if not istable(self) then
                 error()
             end
 
@@ -136,7 +136,7 @@ local DefaultMixin = {
             }, self.__instanceDict)
         end,
         New = function(self, ...)
-            if type(self) ~= "table" then
+            if not istable(self) then
                 error()
             end
 
@@ -146,14 +146,14 @@ local DefaultMixin = {
             return instance
         end,
         subclass = function(self, name)
-            if type(self) ~= "table" or type(name) ~= "string" then
+            if not istable(self) or not isstring(name) then
                 error()
             end
 
             local subclass = _createClass(name, self)
 
             for methodName, f in pairs(self.__instanceDict) do
-                if not (methodName == "__index" and type(f) == "table") then
+                if not (methodName == "__index" and istable(f)) then
                     _propagateInstanceMethod(subclass, methodName, f)
                 end
             end
@@ -167,7 +167,7 @@ local DefaultMixin = {
         subclassed = function(self, other) end,
         isSubclassOf = function(self, other) return type(other) == "table" and type(self.super) == "table" and (self.super == other or self.super:isSubclassOf(other)) end,
         include = function(self, ...)
-            if type(self) ~= "table" then
+            if not istable(self) then
                 error()
 
                 return
@@ -183,7 +183,7 @@ local DefaultMixin = {
 }
 
 function MiddleClass.class(name, super)
-    if type(name) ~= "string" then
+    if not isstring(name) then
         error()
     end
 
