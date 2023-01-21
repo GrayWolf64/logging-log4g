@@ -59,10 +59,15 @@ function LoggerConfig:Remove()
 end
 
 function LoggerConfig:BuildDefault()
+    MsgN("Start default building for LoggerConfig: " .. self.name .. "...")
     SetState(self, STARTING)
+    MsgN("Starting LoggerConfig...")
     local logger = Log4g.Logger.RegisterLogger(self)
+    MsgN("Logger: " .. self.name .. " has been registered based on provided LoggerConfig.")
     self:Remove()
+    MsgN("Provided LoggerConfig has been removed from Buffer.")
     SetState(logger.loggerconfig, STARTED)
+    MsgN("Logger's LoggerConfig has started, default build complete.")
 end
 
 --- Register a LoggerConfig.
