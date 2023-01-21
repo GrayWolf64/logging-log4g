@@ -4,10 +4,25 @@ Log4g.Logger = Log4g.Logger or {}
 local Class = include("log4g/core/impl/MiddleClass.lua")
 local Logger = Class("Logger")
 local HasKey = Log4g.Util.HasKey
+local SetState = Log4g.Core.LifeCycle.SetState
+local IsStarted = Log4g.Core.LifeCycle.IsStarted
+local INITIALIZING = Log4g.Core.LifeCycle.State.INITIALIZING
+local INITIALIZED = Log4g.Core.LifeCycle.State.INITIALIZED
+local STARTING = Log4g.Core.LifeCycle.State.STARTING
+local STARTED = Log4g.Core.LifeCycle.State.STARTED
+local STOPPING = Log4g.Core.LifeCycle.State.STOPPING
+local STOPPED = Log4g.Core.LifeCycle.State.STOPPED
 
 function Logger:Initialize(tbl)
+    SetState(self, INITIALIZING)
     self.name = tbl.name
     self.loggerconfig = tbl
+    SetState(self, INITIALIZED)
+end
+
+function Logger:Start()
+    SetState(self, STARTING)
+    SetState(self, STARTED)
 end
 
 --- Delete the Logger.
@@ -53,6 +68,7 @@ function Log4g.Logger.RegisterLogger(loggerconfig)
     if not HasLogger(loggerconfig.name) then
         local logger = Logger:New(loggerconfig)
         Log4g.Hierarchy[loggerconfig.loggercontext].logger[loggerconfig.name] = logger
+        Log4g.Hierarchy[loggerconfig.loggercontext].logger[loggerconfig.name]:Start()
         hook.Add(loggerconfig.eventname, loggerconfig.uid, CompileString(loggerconfig.func))
         MsgN("Logger registration: Successfully created Hierarchy LoggerContext child item.")
 
