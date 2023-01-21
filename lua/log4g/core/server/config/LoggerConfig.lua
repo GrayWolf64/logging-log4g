@@ -47,6 +47,7 @@ function LoggerConfig:RemoveBuffer()
     MsgN("Buffer removal completed.")
 end
 
+--- Remove the LoggerConfig JSON from local storge.
 function LoggerConfig:RemoveFile()
     MsgN("Starting the removal of LoggerConfig file: " .. self.name .. "...")
 
