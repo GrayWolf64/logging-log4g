@@ -70,9 +70,9 @@ function Log4g.Core.Config.LoggerConfig.RegisterLoggerConfig(tbl)
     end
 end
 
---- Get all the files of the LoggerConfigs in Buffer in the form of a string table.
+--- Get all the file paths of the LoggerConfigs in Buffer in the form of a string table.
 -- If the Hierarchy or LoggerConfig Buffer table is empty, an error will be thrown.
--- @return tbl stringfiles
+-- @return tbl filepaths
 function Log4g.Core.Config.LoggerConfig.GetFiles()
     if not table.IsEmpty(Log4g.Hierarchy) then
         if not table.IsEmpty(Log4g.Core.Config.LoggerConfig.Buffer) then
@@ -90,5 +90,32 @@ function Log4g.Core.Config.LoggerConfig.GetFiles()
         end
     else
         ErrorNoHalt("Get LoggerConfig files failed: No LoggerContext available in Hierarchy.\n")
+    end
+end
+
+--- Get all the file paths of all the not started LoggerConfig JSONs stored locally on server.
+-- If no LoggerContext or no LoggerConfig can be found, an error will be thrown.
+-- @return tbl filepaths
+function Log4g.Core.Config.LoggerConfig.GetLocalFiles()
+    local tbl = {}
+    local _, folders = file.Find("log4g/server/loggercontext/*", "DATA")
+
+    if not table.IsEmpty(folders) then
+        for _, v in pairs(folders) do
+            local files, _ = file.Find("log4g/server/loggercontext/" .. v .. "/loggerconfig/*.json", "DATA")
+            if table.IsEmpty(files) then return end
+
+            for _, j in pairs(files) do
+                table.insert(tbl, "log4g/server/loggercontext/" .. v .. "/loggerconfig/" .. j)
+            end
+        end
+
+        if not table.IsEmpty(tbl) then
+            return tbl
+        else
+            ErrorNoHalt("Get LoggerConfig local files failed: No LoggerConfig file available in data/log4g/server/loggercontext/.../loggerconfig/\n")
+        end
+    else
+        ErrorNoHalt("Get LoggerConfig local files failed: No LoggerContext folder available in data/log4g/server/loggercontext/.\n")
     end
 end
