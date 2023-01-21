@@ -4,12 +4,25 @@ Log4g.Core.LoggerContext = Log4g.Core.LoggerContext or {}
 local Class = include("log4g/core/impl/MiddleClass.lua")
 local LoggerContext = Class("LoggerContext")
 local HasKey = Log4g.Util.HasKey
+local SetState = Log4g.Core.LifeCycle.SetState
+local INITIALIZING = Log4g.Core.LifeCycle.State.INITIALIZING
+local INITIALIZED = Log4g.Core.LifeCycle.State.INITIALIZED
+local STARTING = Log4g.Core.LifeCycle.State.STARTING
+local STARTED = Log4g.Core.LifeCycle.State.STARTED
+local STOPPING = Log4g.Core.LifeCycle.State.STOPPING
+local STOPPED = Log4g.Core.LifeCycle.State.STOPPED
 
 function LoggerContext:Initialize(name)
+    SetState(self, INITIALIZING)
     self.name = name
     self.folder = "log4g/server/loggercontext/" .. name
     self.timestarted = os.time()
     self.logger = {}
+end
+
+function LoggerContext:Start()
+    SetState(Log4g.Hierarchy[name], STARTING)
+    SetState(Log4g.Hierarchy[name], STARTED)
 end
 
 function LoggerContext:__tostring()
@@ -19,6 +32,7 @@ end
 --- Terminate the LoggerContext.
 function LoggerContext:Terminate()
     MsgN("Starting the termination of LoggerContext: " .. self.name .. "...")
+    SetState(self, STOPPING)
     local folder = "log4g/server/loggercontext/" .. self.name
 
     if file.Exists(folder, "DATA") then
@@ -34,6 +48,8 @@ function LoggerContext:Terminate()
     else
         ErrorNoHalt("LoggerContext termination failed: Can't find the LoggerContext folder data/log4g/server/loggercontext/.\n")
     end
+
+    SetState(self, STOPPED)
 
     if HasKey(Log4g.Hierarchy, self.name) then
         Log4g.Hierarchy[self.name] = nil
@@ -84,6 +100,8 @@ function Log4g.Core.LoggerContext.RegisterLoggerContext(name)
         local loggercontext = LoggerContext:New(name)
         Log4g.Hierarchy[name] = loggercontext
         file.CreateDir("log4g/server/loggercontext/" .. name .. "/loggerconfig")
+        SetState(Log4g.Hierarchy[name], INITIALIZED)
+        Log4g.Hierarchy[name]:Start()
         MsgN("LoggerContext registration: Successfully created folder and Hierarchy item.")
 
         return Log4g.Hierarchy[name]
