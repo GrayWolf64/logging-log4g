@@ -91,7 +91,7 @@ net.Receive("Log4g_CLUpload_LoggerConfig_JSON", function(len, ply)
 end)
 
 net.Receive("Log4g_CLReq_LoggerConfigs", function(len, ply)
-    local Tbl = Log4g.Core.Config.LoggerConfig.GetLocalFiles()
+    local Tbl = Log4g.Core.Config.LoggerConfig.GetFiles()
     net.Start("Log4g_CLRcv_LoggerConfigs")
 
     if istable(Tbl) and not table.IsEmpty(Tbl) then
