@@ -1,6 +1,7 @@
 --- The LifeCycle for objects.
 -- @script LifeCycle.lua
 Log4g.Core.LifeCycle = Log4g.Core.LifeCycle or {}
+local HasKey = Log4g.Util.HasKey
 
 Log4g.Core.LifeCycle.State = {
     INITIALIZING = function() return "INITIALIZING" end,
@@ -25,15 +26,30 @@ function Log4g.Core.LifeCycle.SetState(obj, state)
 end
 
 --- Get the LifeCycle state that the object is at.
+-- If the object doesn't have a state, an error will be returned.
 -- @param obj The object to get the state
+-- @return function state
 function Log4g.Core.LifeCycle.GetState(obj)
+    if not HasKey(obj, "state") then
+        error("GetState failed: The object doesn't have a state.\n")
+
+        return
+    end
+
     return obj.state
 end
 
 --- Check whether the obeject's state is STARTED.
+-- If the object doesn't have a state, an error will be returned.
 -- @param obj The object to check
 -- @return bool isstarted
 function Log4g.Core.LifeCycle.IsStarted(obj)
+    if not HasKey(obj, "state") then
+        error("Failed to check IsStarted: The object doesn't have a state.\n")
+
+        return
+    end
+
     if obj.state == Log4g.Core.LifeCycle.State.STARTED then return true end
 
     return false
