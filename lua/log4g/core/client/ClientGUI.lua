@@ -228,7 +228,7 @@ concommand.Add("Log4g_MMC", function()
         end
     end
 
-    --- Start a special net msg for ListView's behaviour after being clicked on.
+    --- Start a special net msg for ListView's line behaviour after being clicked on.
     -- @lfunction NetStrMsgSpecial
     -- @param num The number of the line
     -- @param listview The DListView containing the line
