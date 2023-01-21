@@ -30,10 +30,14 @@ function LoggerConfig:Initialize(tbl)
 end
 
 --- Remove the LoggerConfig.
+-- This will first try to find and delete the LoggerConfig's JSON file stored on the server.
+-- Then it will check if the LoggerConfig Buffer table contains the LoggerConfig and remove it.
+-- Before deleting the file, the LoggerConfig's LifeCycle state will be STOPPING.
+-- And before removing it from the table, its state will be set to STOPPED.
 function LoggerConfig:Remove()
     MsgN("Starting the removal of LoggerConfig: " .. self.name .. "...")
     SetState(self, STOPPING)
-    local File = "log4g/server/loggercontext/" .. self.loggercontext .. "/loggerconfig/" .. self.name .. ".json"
+    local File = self.file
 
     if file.Exists(File, "DATA") then
         file.Delete(File)
