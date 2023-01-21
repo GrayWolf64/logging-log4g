@@ -4,6 +4,7 @@ Log4g.Core.LoggerContext = Log4g.Core.LoggerContext or {}
 local Class = include("log4g/core/impl/MiddleClass.lua")
 local LoggerContext = Class("LoggerContext")
 local HasKey = Log4g.Util.HasKey
+local DeleteFolderRecursive = Log4g.Util.DeleteFolderRecursive
 local SetState = Log4g.Core.LifeCycle.SetState
 local INITIALIZING = Log4g.Core.LifeCycle.State.INITIALIZING
 local INITIALIZED = Log4g.Core.LifeCycle.State.INITIALIZED
@@ -37,7 +38,7 @@ function LoggerContext:Terminate()
     local folder = "log4g/server/loggercontext/" .. self.name
 
     if file.Exists(folder, "DATA") then
-
+        DeleteFolderRecursive(folder, "DATA")
         MsgN("LoggerContext termination: Successfully deleted LoggerContext folder which may contain Loggers or not started LoggerConfigs.")
     else
         ErrorNoHalt("LoggerContext termination failed: Can't find the LoggerContext folder data/log4g/server/loggercontext/.\n")
