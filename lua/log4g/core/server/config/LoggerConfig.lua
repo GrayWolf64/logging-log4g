@@ -127,7 +127,7 @@ function Log4g.Core.Config.LoggerConfig.GetFiles()
 
         return tbl
     else
-        ErrorNoHalt("Get LoggerConfig files failed: No LoggerConfig available in Buffer.\n")
+        return nil
     end
 end
 
