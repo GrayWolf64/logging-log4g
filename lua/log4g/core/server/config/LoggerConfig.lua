@@ -60,7 +60,7 @@ end
 
 --- Start the default building procedure for the LoggerConfig.
 -- It will first set the LoggerConfig's LifeCycle to STARTING.
--- Then a Logger based on the LoggerConfig will be registered, and the provided LoggerConfig will be removed from buffer.
+-- Then a Logger based on the LoggerConfig will be registered, and the provided LoggerConfig will be removed from Buffer.
 -- At last the registered Logger's LoggerConfig's state will be set to STARTED, and the procedure has completed.
 function LoggerConfig:BuildDefault()
     MsgN("Start default building for LoggerConfig: " .. self.name .. "...")
