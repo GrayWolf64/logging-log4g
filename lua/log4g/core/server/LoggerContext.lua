@@ -37,15 +37,8 @@ function LoggerContext:Terminate()
     local folder = "log4g/server/loggercontext/" .. self.name
 
     if file.Exists(folder, "DATA") then
-        local Files, _ = file.Find(folder .. "/loggerconfig/*.json", "DATA")
 
-        for _, j in pairs(Files) do
-            file.Delete(folder .. "/loggerconfig/" .. j)
-        end
-
-        file.Delete(folder .. "/loggerconfig")
-        file.Delete(folder)
-        MsgN("LoggerContext termination: Successfully deleted LoggerContext folder which may contain LoggerConfigs.")
+        MsgN("LoggerContext termination: Successfully deleted LoggerContext folder which may contain Loggers or not started LoggerConfigs.")
     else
         ErrorNoHalt("LoggerContext termination failed: Can't find the LoggerContext folder data/log4g/server/loggercontext/.\n")
     end
@@ -102,6 +95,7 @@ function Log4g.Core.LoggerContext.RegisterLoggerContext(name)
         Log4g.Hierarchy[name] = loggercontext
         Log4g.Hierarchy[name]:Start()
         file.CreateDir("log4g/server/loggercontext/" .. name .. "/loggerconfig")
+        file.CreateDir("log4g/server/loggercontext/" .. name .. "/logger")
         MsgN("LoggerContext registration: Successfully created folder and Hierarchy item.")
 
         return Log4g.Hierarchy[name]

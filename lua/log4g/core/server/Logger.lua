@@ -16,6 +16,7 @@ function Logger:Initialize(tbl)
     SetState(self, INITIALIZING)
     self.name = tbl.name
     self.loggerconfig = tbl
+    self.file = "log4g/server/loggercontext/" .. tbl.loggercontext .. "/logger/" .. tbl.name .. ".json"
     SetState(self, INITIALIZED)
 end
 

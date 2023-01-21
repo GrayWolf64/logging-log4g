@@ -49,3 +49,28 @@ Log4g.Util.WriteDataSimple = function(content, bits)
     net.WriteUInt(len, bits)
     net.WriteData(bindata, len)
 end
+
+--- Recursively delete a folder's content and eventually delete the folder itself.
+-- @param folder The folder to delete which doesn't end with "/"
+-- @param path File search path
+Log4g.Util.DeleteFolderRecursive = function(folder, path)
+    if not file.Exists(folder, path) then return end
+    local files, folders = file.Find(folder .. "/*", path)
+
+    if istable(files) and not table.IsEmpty(files) then
+        for k, v in pairs(files) do
+            file.Delete(folder .. "/" .. v)
+        end
+    end
+
+    if istable(folders) and not table.IsEmpty(folders) then
+        local DeleteFolderRecursive = Log4g.Util.DeleteFolderRecursive
+
+        for i, j in pairs(folders) do
+            DeleteFolderRecursive(folder .. "/" .. j, path)
+            file.Delete(folder .. "/" .. j)
+        end
+    end
+
+    file.Delete(folder)
+end
