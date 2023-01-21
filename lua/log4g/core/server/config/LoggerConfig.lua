@@ -5,6 +5,7 @@ Log4g.Core.Config.Builder = Log4g.Core.Config.Builder or {}
 Log4g.Core.Config.LoggerConfig = Log4g.Core.Config.LoggerConfig or {}
 Log4g.Core.Config.LoggerConfig.Buffer = Log4g.Core.Config.LoggerConfig.Buffer or {}
 local HasKey = Log4g.Util.HasKey
+local SetState = Log4g.Core.LifeCycle.SetState
 local Class = include("log4g/core/impl/MiddleClass.lua")
 local LoggerConfig = Class("LoggerConfig")
 
@@ -61,7 +62,7 @@ function Log4g.Core.Config.LoggerConfig.RegisterLoggerConfig(tbl)
         local loggerconfig = LoggerConfig:New(tbl)
         Log4g.Core.Config.LoggerConfig.Buffer[tbl.name] = loggerconfig
         file.Write(loggerconfig.file, util.TableToJSON(tbl, true))
-        Log4g.Core.LifeCycle.SetState(Log4g.Core.Config.LoggerConfig.Buffer[tbl.name], Log4g.Core.LifeCycle.State.INITIALIZED)
+        SetState(Log4g.Core.Config.LoggerConfig.Buffer[tbl.name], Log4g.Core.LifeCycle.State.INITIALIZED)
         MsgN("LoggerConfig registration: Successfully created file and Buffer item.")
 
         return Log4g.Core.Config.LoggerConfig.Buffer[tbl.name]
