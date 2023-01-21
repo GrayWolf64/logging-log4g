@@ -1,7 +1,6 @@
 --- The Level (Log Level).
 -- @classmod Level
 local HasKey = Log4g.Util.HasKey
-Log4g.Level.Standard = Log4g.Level.Standard or {}
 Log4g.Level.Custom = Log4g.Level.Custom or {}
 local Class = include("log4g/core/impl/MiddleClass.lua")
 local Level = Class("Level")
@@ -96,11 +95,23 @@ function Log4g.Level.GetStandardLevel()
     return Log4g.Level.Standard
 end
 
-Log4g.Level.Standard.ALL = Level:New("ALL", math.huge)
-Log4g.Level.Standard.TRACE = Level:New("TRACE", 600)
-Log4g.Level.Standard.DEBUG = Level:New("DEBUG", 500)
-Log4g.Level.Standard.INFO = Level:New("INFO", 400)
-Log4g.Level.Standard.WARN = Level:New("WARN", 300)
-Log4g.Level.Standard.ERROR = Level:New("ERROR", 200)
-Log4g.Level.Standard.FATAL = Level:New("FATAL", 100)
-Log4g.Level.Standard.OFF = Level:New("OFF", 0)
+--- Standard Logging Levels as a table for use internally.
+-- @table Log4g.Level.Standard
+-- @field ALL All events should be logged.
+-- @field TRACE A fine-grained debug message, typically capturing the flow through the game.
+-- @field DEBUG A general debugging event.
+-- @field INFO An event for informational purposes.
+-- @field WARN An event that might possible lead to an error.
+-- @field ERROR An error in game, possibly recoverable.
+-- @field FATAL A severe error that will prevent the game from continuing.
+-- @field OFF No events will be logged.
+Log4g.Level.Standard = {
+    ALL = Level:New("ALL", math.huge),
+    TRACE = Level:New("TRACE", 600),
+    DEBUG = Level:New("DEBUG", 500),
+    INFO = Level:New("INFO", 400),
+    WARN = Level:New("WARN", 300),
+    ERROR = Level:New("ERROR", 200),
+    FATAL = Level:New("FATAL", 100),
+    OFF = Level:New("OFF", 0)
+}
