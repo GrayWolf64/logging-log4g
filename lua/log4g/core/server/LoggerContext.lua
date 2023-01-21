@@ -45,8 +45,16 @@ function LoggerContext:Terminate()
     MsgN("Termination completed.")
 end
 
+--- Get all the Loggers of the LoggerContext.
+-- @return tbl loggers
 function LoggerContext:GetLoggers()
     return self.logger
+end
+
+--- Get the name of the LoggerContext.
+-- @return string name
+function LoggerContext:GetName()
+    return self.name
 end
 
 --- Check if a LoggerContext with the given name exists.
