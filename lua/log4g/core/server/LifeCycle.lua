@@ -12,3 +12,7 @@ Log4g.Core.LifeCycle.State = {
 function Log4g.Core.LifeCycle.SetState(obj, state)
     obj.state = state
 end
+
+function Log4g.Core.LifeCycle.GetState(obj)
+    return obj.state
+end
