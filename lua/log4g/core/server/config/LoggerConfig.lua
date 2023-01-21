@@ -10,6 +10,7 @@ local Class = include("log4g/core/impl/MiddleClass.lua")
 local LoggerConfig = Class("LoggerConfig")
 
 function LoggerConfig:Initialize(tbl)
+    SetState(self, Log4g.Core.LifeCycle.State.INITIALIZING)
     self.name = tbl.name
     self.eventname = tbl.eventname
     self.uid = tbl.uid
@@ -19,7 +20,6 @@ function LoggerConfig:Initialize(tbl)
     self.layout = tbl.layout
     self.file = "log4g/server/loggercontext/" .. tbl.loggercontext .. "/loggerconfig/" .. tbl.name .. ".json"
     self.func = tbl.func
-    Log4g.Core.LifeCycle.SetState(self, Log4g.Core.LifeCycle.State.INITIALIZING)
 end
 
 --- Remove the LoggerConfig.
