@@ -5,7 +5,6 @@ local Class = include("log4g/core/impl/MiddleClass.lua")
 local Logger = Class("Logger")
 local HasKey = Log4g.Util.HasKey
 local SetState = Log4g.Core.LifeCycle.SetState
-local IsStarted = Log4g.Core.LifeCycle.IsStarted
 local INITIALIZING = Log4g.Core.LifeCycle.State.INITIALIZING
 local INITIALIZED = Log4g.Core.LifeCycle.State.INITIALIZED
 local STARTING = Log4g.Core.LifeCycle.State.STARTING
@@ -27,6 +26,8 @@ end
 
 --- Delete the Logger.
 function Logger:Delete()
+    SetState(self, STOPPING)
+    SetState(self, STOPPED)
     Log4g.Hierarchy[self.loggerconfig.loggercontext].logger[self.name] = nil
 end
 
