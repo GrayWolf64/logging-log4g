@@ -54,6 +54,10 @@ end
 -- @param name The name of the LoggerContext
 -- @return bool hascontext
 function Log4g.Core.LoggerContext.HasContext(name)
+    if not isstring(name) then
+        error("LoggerContext search failed: name must be a string.\n")
+    end
+
     return HasKey(Log4g.Hierarchy, name)
 end
 
