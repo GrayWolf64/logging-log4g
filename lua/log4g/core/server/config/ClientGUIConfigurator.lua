@@ -85,7 +85,11 @@ end)
 
 net.Receive("Log4g_CLUpload_LoggerConfig_JSON", function(len, ply)
     if not IdentChk(ply) then return end
-    print(util.Decompress(net.ReadData(net.ReadUInt(16))))
+    local Tbl = util.JSONToTable(util.Decompress(net.ReadData(net.ReadUInt(16))))
+    local LoggerContextName, LoggerConfigName = Tbl.loggercontext, Tbl.name
+    RegisterLoggerContext(LoggerContextName)
+    RegisterLoggerConfig(Tbl)
+    AddLoggerContextLookupItem(LoggerContextName, LoggerConfigName)
 end)
 
 net.Receive("Log4g_CLReq_LoggerConfigs", function(len, ply)
