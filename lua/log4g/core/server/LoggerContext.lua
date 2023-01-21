@@ -18,6 +18,7 @@ function LoggerContext:Initialize(name)
     self.folder = "log4g/server/loggercontext/" .. name
     self.timestarted = os.time()
     self.logger = {}
+    SetState(self, INITIALIZED)
 end
 
 function LoggerContext:Start()
@@ -100,7 +101,6 @@ function Log4g.Core.LoggerContext.RegisterLoggerContext(name)
         local loggercontext = LoggerContext:New(name)
         Log4g.Hierarchy[name] = loggercontext
         file.CreateDir("log4g/server/loggercontext/" .. name .. "/loggerconfig")
-        SetState(Log4g.Hierarchy[name], INITIALIZED)
         Log4g.Hierarchy[name]:Start()
         MsgN("LoggerContext registration: Successfully created folder and Hierarchy item.")
 

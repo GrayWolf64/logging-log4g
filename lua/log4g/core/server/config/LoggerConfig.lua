@@ -26,6 +26,7 @@ function LoggerConfig:Initialize(tbl)
     self.layout = tbl.layout
     self.file = "log4g/server/loggercontext/" .. tbl.loggercontext .. "/loggerconfig/" .. tbl.name .. ".json"
     self.func = tbl.func
+    SetState(self, INITIALIZED)
 end
 
 --- Remove the LoggerConfig.
@@ -75,7 +76,6 @@ function Log4g.Core.Config.LoggerConfig.RegisterLoggerConfig(tbl)
         local loggerconfig = LoggerConfig:New(tbl)
         Log4g.Core.Config.LoggerConfig.Buffer[tbl.name] = loggerconfig
         file.Write(loggerconfig.file, util.TableToJSON(tbl, true))
-        SetState(Log4g.Core.Config.LoggerConfig.Buffer[tbl.name], INITIALIZED)
         MsgN("LoggerConfig registration: Successfully created file and Buffer item.")
 
         return Log4g.Core.Config.LoggerConfig.Buffer[tbl.name]
