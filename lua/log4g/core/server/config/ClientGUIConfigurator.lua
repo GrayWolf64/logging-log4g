@@ -10,6 +10,7 @@ local RegisterCustomLevel = Log4g.Level.RegisterCustomLevel
 local AddLoggerContextLookupItem = Log4g.Core.LoggerContext.Lookup.AddItem
 local RemoveLoggerContextLookup = Log4g.Core.LoggerContext.Lookup.RemoveLoggerContext
 local RemoveLoggerContextLookupLoggerConfig = Log4g.Core.LoggerContext.Lookup.RemoveLoggerConfig
+local WriteDataSimple = Log4g.Util.WriteDataSimple
 local LoggerContextLookupFile = "log4g/server/loggercontext/lookup_loggercontext.json"
 
 local function IdentChk(ply)
@@ -67,10 +68,7 @@ end)
 
 net.Receive("Log4g_CLReq_Hooks", function(len, ply)
     net.Start("Log4g_CLRcv_Hooks")
-    local Data = util.Compress(util.TableToJSON(hook.GetTable()))
-    local Len = #Data
-    net.WriteUInt(Len, 16)
-    net.WriteData(Data, Len)
+    WriteDataSimple(util.TableToJSON(hook.GetTable()), 16)
     net.Send(ply)
 end)
 
@@ -104,10 +102,7 @@ net.Receive("Log4g_CLReq_LoggerConfigs", function(len, ply)
             table.Add(Data, {util.JSONToTable(file.Read(v, "DATA"))})
         end
 
-        local Str = util.Compress(util.TableToJSON(Data, true))
-        local Len = #Str
-        net.WriteUInt(Len, 16)
-        net.WriteData(Str, Len)
+        WriteDataSimple(util.TableToJSON(Data, true), 16)
     else
         net.WriteBool(false)
     end
@@ -134,10 +129,7 @@ net.Receive("Log4g_CLReq_LoggerContext_Lookup", function(len, ply)
 
     if file.Exists(LoggerContextLookupFile, "DATA") then
         net.WriteBool(true)
-        local Str = util.Compress(file.Read(LoggerContextLookupFile, "DATA"))
-        local Len = #Str
-        net.WriteUInt(Len, 16)
-        net.WriteData(Str, Len)
+        WriteDataSimple(file.Read(LoggerContextLookupFile, "DATA"), 16)
     else
         net.WriteBool(false)
     end
