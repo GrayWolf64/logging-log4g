@@ -96,7 +96,6 @@ function Log4g.Core.LoggerContext.RegisterLoggerContext(name)
         Log4g.Hierarchy[name] = loggercontext
         Log4g.Hierarchy[name]:Start()
         file.CreateDir("log4g/server/loggercontext/" .. name .. "/loggerconfig")
-        file.CreateDir("log4g/server/loggercontext/" .. name .. "/logger")
         MsgN("LoggerContext registration: Successfully created folder and Hierarchy item.")
 
         return Log4g.Hierarchy[name]
