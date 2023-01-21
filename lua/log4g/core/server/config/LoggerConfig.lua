@@ -94,10 +94,10 @@ function Log4g.Core.Config.LoggerConfig.GetLocalFiles()
     local tbl = {}
     local _, folders = file.Find("log4g/server/loggercontext/*", "DATA")
 
-    if not table.IsEmpty(folders) then
+    if istable(folders) and not table.IsEmpty(folders) then
         for _, v in pairs(folders) do
             local files, _ = file.Find("log4g/server/loggercontext/" .. v .. "/loggerconfig/*.json", "DATA")
-            if table.IsEmpty(files) then return end
+            if not istable(files) and table.IsEmpty(files) then return end
 
             for _, j in pairs(files) do
                 table.insert(tbl, "log4g/server/loggercontext/" .. v .. "/loggerconfig/" .. j)
