@@ -5,12 +5,18 @@ Log4g.Core.Config.Builder = Log4g.Core.Config.Builder or {}
 Log4g.Core.Config.LoggerConfig = Log4g.Core.Config.LoggerConfig or {}
 Log4g.Core.Config.LoggerConfig.Buffer = Log4g.Core.Config.LoggerConfig.Buffer or {}
 local HasKey = Log4g.Util.HasKey
-local SetState = Log4g.Core.LifeCycle.SetState
 local Class = include("log4g/core/impl/MiddleClass.lua")
 local LoggerConfig = Class("LoggerConfig")
+local SetState = Log4g.Core.LifeCycle.SetState
+local INITIALIZING = Log4g.Core.LifeCycle.State.INITIALIZING
+local INITIALIZED = Log4g.Core.LifeCycle.State.INITIALIZED
+local STARTING = Log4g.Core.LifeCycle.State.STARTING
+local STARTED = Log4g.Core.LifeCycle.State.STARTED
+local STOPPING = Log4g.Core.LifeCycle.State.STOPPING
+local STOPPED = Log4g.Core.LifeCycle.State.STOPPED
 
 function LoggerConfig:Initialize(tbl)
-    SetState(self, Log4g.Core.LifeCycle.State.INITIALIZING)
+    SetState(self, INITIALIZING)
     self.name = tbl.name
     self.eventname = tbl.eventname
     self.uid = tbl.uid
@@ -25,6 +31,7 @@ end
 --- Remove the LoggerConfig.
 function LoggerConfig:Remove()
     MsgN("Starting the removal of LoggerConfig: " .. self.name .. "...")
+    SetState(self, STOPPING)
     local File = "log4g/server/loggercontext/" .. self.loggercontext .. "/loggerconfig/" .. self.name .. ".json"
 
     if file.Exists(File, "DATA") then
@@ -33,6 +40,8 @@ function LoggerConfig:Remove()
     else
         ErrorNoHalt("LoggerConfig deletion failed: Can't find the LoggerConfig file.\n")
     end
+
+    SetState(self, STOPPED)
 
     if HasKey(Log4g.Core.Config.LoggerConfig.Buffer, self.name) then
         Log4g.Core.Config.LoggerConfig.Buffer[self.name] = nil
@@ -45,6 +54,10 @@ function LoggerConfig:Remove()
 end
 
 function LoggerConfig:BuildDefault()
+    SetState(self, STARTING)
+    local logger = Log4g.Logger.RegisterLogger(self)
+    self:Remove()
+    SetState(logger.loggerconfig, STARTED)
 end
 
 --- Register a LoggerConfig.
@@ -62,7 +75,7 @@ function Log4g.Core.Config.LoggerConfig.RegisterLoggerConfig(tbl)
         local loggerconfig = LoggerConfig:New(tbl)
         Log4g.Core.Config.LoggerConfig.Buffer[tbl.name] = loggerconfig
         file.Write(loggerconfig.file, util.TableToJSON(tbl, true))
-        SetState(Log4g.Core.Config.LoggerConfig.Buffer[tbl.name], Log4g.Core.LifeCycle.State.INITIALIZED)
+        SetState(Log4g.Core.Config.LoggerConfig.Buffer[tbl.name], INITIALIZED)
         MsgN("LoggerConfig registration: Successfully created file and Buffer item.")
 
         return Log4g.Core.Config.LoggerConfig.Buffer[tbl.name]
