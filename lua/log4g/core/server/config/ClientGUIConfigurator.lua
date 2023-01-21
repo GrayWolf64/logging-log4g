@@ -117,7 +117,8 @@ net.Receive("Log4g_CLReq_LoggerConfig_Remove", function(len, ply)
 
     for k, _ in pairs(Log4g.Core.Config.LoggerConfig.Buffer) do
         if k == LoggerConfigName then
-            Log4g.Core.Config.LoggerConfig.Buffer[k]:Remove()
+            Log4g.Core.Config.LoggerConfig.Buffer[k]:RemoveBuffer()
+            Log4g.Core.Config.LoggerConfig.Buffer[k]:RemoveFile()
         end
     end
 

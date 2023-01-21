@@ -30,11 +30,8 @@ function LoggerConfig:Initialize(tbl)
     SetState(self, INITIALIZED)
 end
 
---- Remove the LoggerConfig.
--- This will first try to find and delete the LoggerConfig's JSON file stored on the server.
--- Then it will check if the LoggerConfig Buffer table contains the LoggerConfig and remove it.
--- Before deleting the file, the LoggerConfig's LifeCycle state will be STOPPING.
--- And before removing it from the table, its state will be set to STOPPED.
+--- Remove the LoggerConfig from Buffer.
+-- This will check if the LoggerConfig Buffer table contains the LoggerConfig and remove it.
 function LoggerConfig:RemoveBuffer()
     MsgN("Starting the removal of LoggerConfig Buffer: " .. self.name .. "...")
     SetState(self, STOPPING)
@@ -47,7 +44,20 @@ function LoggerConfig:RemoveBuffer()
         ErrorNoHalt("LoggerConfig deletion failed: Can't find the LoggerConfig in Buffer, may be removed already.\n")
     end
 
-    MsgN("Buffer Removal completed.")
+    MsgN("Buffer removal completed.")
+end
+
+function LoggerConfig:RemoveFile()
+    MsgN("Starting the removal of LoggerConfig file: " .. self.name .. "...")
+
+    if file.Exists(self.file, "DATA") then
+        file.Delete(self.file)
+        MsgN("LoggerConfig deletion: Successfully deleted LoggerConfig file.")
+    else
+        ErrorNoHalt("LoggerConfig deletion failed: Can't find the LoggerConfig file.\n")
+    end
+
+    MsgN("File removal completed.")
 end
 
 --- Start the default building procedure for the LoggerConfig.
