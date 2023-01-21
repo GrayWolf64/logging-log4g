@@ -35,18 +35,9 @@ end
 -- Then it will check if the LoggerConfig Buffer table contains the LoggerConfig and remove it.
 -- Before deleting the file, the LoggerConfig's LifeCycle state will be STOPPING.
 -- And before removing it from the table, its state will be set to STOPPED.
-function LoggerConfig:Remove()
-    MsgN("Starting the removal of LoggerConfig: " .. self.name .. "...")
+function LoggerConfig:RemoveBuffer()
+    MsgN("Starting the removal of LoggerConfig Buffer: " .. self.name .. "...")
     SetState(self, STOPPING)
-    local File = self.file
-
-    if file.Exists(File, "DATA") then
-        file.Delete(File)
-        MsgN("LoggerConfig deletion: Successfully deleted LoggerConfig file.")
-    else
-        ErrorNoHalt("LoggerConfig deletion failed: Can't find the LoggerConfig file.\n")
-    end
-
     SetState(self, STOPPED)
 
     if HasKey(Log4g.Core.Config.LoggerConfig.Buffer, self.name) then
@@ -56,7 +47,7 @@ function LoggerConfig:Remove()
         ErrorNoHalt("LoggerConfig deletion failed: Can't find the LoggerConfig in Buffer, may be removed already.\n")
     end
 
-    MsgN("Removal completed.")
+    MsgN("Buffer Removal completed.")
 end
 
 --- Start the default building procedure for the LoggerConfig.
@@ -73,7 +64,7 @@ function LoggerConfig:BuildDefault()
     MsgN("Starting LoggerConfig...")
     local logger = Log4g.Logger.RegisterLogger(self)
 
-    function logger.loggerconfig:Remove()
+    function logger.loggerconfig:RemoveBuffer()
         MsgN("LoggerConfig removal failed: already started.")
     end
 
@@ -82,7 +73,7 @@ function LoggerConfig:BuildDefault()
     end
 
     MsgN("Logger: " .. self.name .. " has been registered based on provided LoggerConfig.")
-    self:Remove()
+    self:RemoveBuffer()
     MsgN("Provided LoggerConfig has been removed from Buffer.")
     SetState(logger.loggerconfig, STARTED)
     MsgN("Logger's LoggerConfig has started, default build complete.")
