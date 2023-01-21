@@ -16,3 +16,9 @@ end
 function Log4g.Core.LifeCycle.GetState(obj)
     return obj.state
 end
+
+function Log4g.Core.LifeCycle.IsStarted(obj)
+    if obj.state == Log4g.Core.LifeCycle.State.STARTED then return true end
+
+    return false
+end

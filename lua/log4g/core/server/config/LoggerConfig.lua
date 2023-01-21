@@ -8,6 +8,7 @@ local HasKey = Log4g.Util.HasKey
 local Class = include("log4g/core/impl/MiddleClass.lua")
 local LoggerConfig = Class("LoggerConfig")
 local SetState = Log4g.Core.LifeCycle.SetState
+local IsStarted = Log4g.Core.LifeCycle.IsStarted
 local INITIALIZING = Log4g.Core.LifeCycle.State.INITIALIZING
 local INITIALIZED = Log4g.Core.LifeCycle.State.INITIALIZED
 local STARTING = Log4g.Core.LifeCycle.State.STARTING
@@ -63,6 +64,10 @@ end
 -- Then a Logger based on the LoggerConfig will be registered, and the provided LoggerConfig will be removed from Buffer.
 -- At last the registered Logger's LoggerConfig's state will be set to STARTED, and the procedure has completed.
 function LoggerConfig:BuildDefault()
+    if IsStarted(self) then
+        error("Build not needed: LoggerConfig already started.\n")
+    end
+
     MsgN("Start default building for LoggerConfig: " .. self.name .. "...")
     SetState(self, STARTING)
     MsgN("Starting LoggerConfig...")
