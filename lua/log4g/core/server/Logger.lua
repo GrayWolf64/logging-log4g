@@ -28,6 +28,10 @@ function Logger:GetLevel()
 end
 
 local function HasLogger(name)
+    if not isstring(name) then
+        error("HasLogger search failed: name must be a string.\n")
+    end
+
     for _, v in pairs(Log4g.Hierarchy) do
         if HasKey(v.logger, name) then return true end
     end
@@ -40,7 +44,7 @@ end
 -- @param loggerconfig The Loggerconfig
 -- @return object logger
 function Log4g.Logger.RegisterLogger(loggerconfig)
-    if table.IsEmpty(loggerconfig) then
+    if not istable(loggerconfig) or table.IsEmpty(loggerconfig) then
         error("Logger registration failed: LoggerConfig object invalid.\n")
     end
 
