@@ -21,7 +21,6 @@ end
 
 local function AppendRichTextViaTbl(panel, tbl)
     for _, v in ipairs(tbl) do
-        if not isstring(v) then return end
         panel:AppendText(v)
     end
 end
