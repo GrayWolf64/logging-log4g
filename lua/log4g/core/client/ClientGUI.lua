@@ -46,11 +46,13 @@ local function CreateDHDivider(parent, left, right, width, lmin, rmin)
     dhdivider:SetRightMin(rmin)
 end
 
-local function CreateDListView(parent, docktype, x, y, z, w)
+local function CreateDListView(parent, docktype, x, y, z, w, ha, hb)
     local dlistview = vgui.Create("DListView", parent)
     dlistview:SetMultiSelect(false)
     dlistview:Dock(docktype)
     dlistview:DockMargin(x, y, z, w)
+    dlistview:SetHeaderHeight(ha)
+    dlistview:SetDataHeight(hb)
 
     return dlistview
 end
@@ -181,12 +183,10 @@ concommand.Add("Log4g_MMC", function()
     SheetB:SetPadding(4)
     local SheetPanelB = vgui.Create("DPanel", SheetB)
     SheetB:AddSheet("LoggerConfig", SheetPanelB)
-    local ListView = CreateDListView(SheetPanelB, LEFT, 1, 1, 1, 0)
-    ListView:SetHeaderHeight(18)
-    ListView:SetDataHeight(18.5)
+    local ListView = CreateDListView(SheetPanelB, LEFT, 0, 0, 0, 0, 18, 18.5)
     local Tree = vgui.Create("DTree", SheetPanelB)
     Tree:Dock(RIGHT)
-    Tree:DockMargin(1, 1, 1, 0)
+    Tree:DockMargin(0, 0, 0, 0)
     SendEmptyMsgToSV("Log4g_CLReq_CFG_LoggerConfig_ColumnText")
 
     net.Receive("Log4g_CLRcv_CFG_LoggerConfig_ColumnText", function()
@@ -518,7 +518,7 @@ concommand.Add("Log4g_MMC", function()
     UpdateSummary()
     local SheetPanelE = vgui.Create("DPanel", SheetA)
     SheetA:AddSheet("LOGGER", SheetPanelE, "icon16/brick.png")
-    local ListViewB = CreateDListView(SheetPanelE, FILL, 0, 0, 0, 0)
+    local ListViewB = CreateDListView(SheetPanelE, FILL, 0, 0, 0, 0, 18, 18.5)
     SendEmptyMsgToSV("Log4g_CLReq_Logger_ColumnText")
 
     net.Receive("Log4g_CLRcv_Logger_ColumnText", function()
