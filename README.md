@@ -7,7 +7,7 @@
 
 Log4g is an advanced logging framework for Garry's Mod.
 
-Currently Work-in-Progress.
+### Currently Work-in-Progress.
 
 | Con-Commands    | Usage   | Desc.                                     |
 | --------------- | ------- | ----------------------------------------- |
@@ -18,6 +18,7 @@ Currently Work-in-Progress.
 
 The Log4g Documentation is available [here](https://github.com/GrayWolf64/Log4g/wiki).
 
-## Third-Party Project(s) Used
+## Thanks to Third-party Projects Below
 
+* [Apache Log4j 2](https://github.com/apache/logging-log4j2)
 * [MiddleClass](https://github.com/kikito/middleclass)
