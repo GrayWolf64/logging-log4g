@@ -1,12 +1,12 @@
 --- The Logger Lookup.
--- Logger Lookups contain active loggers' names and associated LoggerContext and LoggerConfig names.
+-- Logger Lookups contain active loggers' names and associated LoggerContext names and LoggerConfig file paths.
 -- @script LoggerLookup.lua
 -- @license Apache License 2.0
 -- @copyright GrayWolf64
 Log4g.Logger.Lookup = Log4g.Logger.Lookup or {}
 local File = "log4g/server/loggercontext/lookup_logger.json"
 
---- Add a table item to Logger Lookup whose key is Logger name and its content are the associated names of LoggerContext and LoggerConfig.
+--- Add a table item to Logger Lookup whose key is Logger name and its content are the associated names of LoggerContext and file paths of LoggerConfig.
 -- If the Lookup doesn't exist, it will create one and write into it.
 -- @param loggername The name of the Logger to write
 -- @param contextname The name of the LoggerContext to write
