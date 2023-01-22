@@ -538,13 +538,11 @@ concommand.Add("Log4g_MMC", function()
             for k, v in pairs(util.JSONToTable(util.Decompress(net.ReadData(net.ReadUInt(16))))) do
                 local Line = ListViewB:AddLine()
 
-                local tbl = {
+                SetProperLineText({
                     name = k,
                     loggercontext = v.loggercontext,
                     configfile = v.configfile
-                }
-
-                SetProperLineText(tbl, Line, ListViewB)
+                }, Line, ListViewB)
             end
         end)
     end)
