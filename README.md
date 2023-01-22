@@ -18,6 +18,6 @@ Currently Work-in-Progress.
 
 The Log4g Documentation is available [here](https://github.com/GrayWolf64/Log4g/wiki).
 
-## Third-Party Project(s) Used
+## Thanks to Third-Party Project(s) Below
 
 * [MiddleClass](https://github.com/kikito/middleclass)
