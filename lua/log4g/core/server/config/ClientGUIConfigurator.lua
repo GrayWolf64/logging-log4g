@@ -10,6 +10,7 @@ local RegisterCustomLevel = Log4g.Level.RegisterCustomLevel
 local AddLoggerContextLookupItem = Log4g.Core.LoggerContext.Lookup.AddItem
 local RemoveLoggerContextLookup = Log4g.Core.LoggerContext.Lookup.RemoveLoggerContext
 local RemoveLoggerContextLookupLoggerConfig = Log4g.Core.LoggerContext.Lookup.RemoveLoggerConfig
+local RemoveLoggerLookupViaContext = Log4g.Logger.Lookup.RemoveLoggerViaContext
 local WriteDataSimple = Log4g.Util.WriteDataSimple
 local LoggerContextLookupFile = "log4g/server/loggercontext/lookup_loggercontext.json"
 
@@ -149,6 +150,7 @@ net.Receive("Log4g_CLReq_LoggerContext_Remove", function(len, ply)
     end
 
     RemoveLoggerContextLookup(LoggerContextName)
+    RemoveLoggerLookupViaContext(LoggerContextName)
 end)
 
 net.Receive("Log4g_CLUpload_NewLevel", function(len, ply)

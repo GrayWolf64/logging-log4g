@@ -28,5 +28,16 @@ function Log4g.Logger.Lookup.AddItem(loggername, contextname, configfile)
     end
 end
 
+--- Remove any Logger items whose LoggerContext's name is the given contextname.
+-- @param contextname The LoggerContext's name
 function Log4g.Logger.Lookup.RemoveLoggerViaContext(contextname)
+    local tbl = util.JSONToTable(file.Read(File, "DATA"))
+
+    for k, v in pairs(tbl) do
+        if v.loggercontext == contextname then
+            tbl.k = nil
+        end
+    end
+
+    file.Write(File, util.TableToJSON(tbl))
 end
