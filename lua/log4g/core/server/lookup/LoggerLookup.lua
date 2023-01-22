@@ -1,5 +1,8 @@
 --- The Logger Lookup.
 -- Logger Lookups contain active loggers' names and associated LoggerContext and LoggerConfig names.
+-- @script LoggerLookup.lua
+-- @license Apache License 2.0
+-- @copyright GrayWolf64
 Log4g.Logger.Lookup = Log4g.Logger.Lookup or {}
 local File = "log4g/server/loggercontext/lookup_logger.json"
 
