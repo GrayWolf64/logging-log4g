@@ -39,7 +39,7 @@ function LoggerContext:Terminate()
 
     if file.Exists(folder, "DATA") then
         DeleteFolderRecursive(folder, "DATA")
-        MsgN("LoggerContext termination: Successfully deleted LoggerContext folder which may contain Loggers or not started LoggerConfigs.")
+        MsgN("LoggerContext termination: Successfully deleted LoggerContext folder.")
     else
         ErrorNoHalt("LoggerContext termination failed: Can't find the LoggerContext folder data/log4g/server/loggercontext/.\n")
     end
