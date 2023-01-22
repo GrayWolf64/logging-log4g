@@ -1,4 +1,4 @@
---- Server-side processing of the Client GUI requests.
+--- Server-side processing of the Client GUI Configurator requests.
 -- @script ClientGUIConfigurator.lua
 -- @license Apache License 2.0
 -- @copyright GrayWolf64
