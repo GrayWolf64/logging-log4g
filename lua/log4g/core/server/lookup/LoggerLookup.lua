@@ -4,12 +4,12 @@ Log4g.Logger.Lookup = Log4g.Logger.Lookup or {}
 local File = "log4g/server/loggercontext/lookup_logger.json"
 
 --- Add a table item to Logger Lookup whose key is Logger name and its content are the associated names of LoggerContext and LoggerConfig.
-function Log4g.Logger.Lookup.AddItem(loggername, contextname, configname)
+function Log4g.Logger.Lookup.AddItem(loggername, contextname, configfile)
     if not file.Exists(File, "DATA") then
         file.Write(File, util.TableToJSON({
             [loggername] = {
                 loggercontext = contextname,
-                loggerconfig = configname
+                configfile = configfile
             }
         }, true))
     else
@@ -17,7 +17,7 @@ function Log4g.Logger.Lookup.AddItem(loggername, contextname, configname)
 
         tbl[loggername] = {
             loggercontext = contextname,
-            loggerconfig = configname
+            configfile = configfile
         }
 
         file.Write(File, util.TableToJSON(tbl, true))

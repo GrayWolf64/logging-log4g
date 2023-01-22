@@ -15,6 +15,7 @@ local STARTING = Log4g.Core.LifeCycle.State.STARTING
 local STARTED = Log4g.Core.LifeCycle.State.STARTED
 local STOPPING = Log4g.Core.LifeCycle.State.STOPPING
 local STOPPED = Log4g.Core.LifeCycle.State.STOPPED
+local AddLoggerLookupItem = Log4g.Logger.Lookup.AddItem
 
 function LoggerConfig:Initialize(tbl)
     SetState(self, INITIALIZING)
@@ -74,6 +75,7 @@ function LoggerConfig:BuildDefault()
     SetState(self, STARTING)
     MsgN("Starting LoggerConfig...")
     local logger = Log4g.Logger.RegisterLogger(self)
+    AddLoggerLookupItem(self.name, self.loggercontext, self.file)
 
     function logger.loggerconfig:BuildDefault()
         MsgN("LoggerConfig build not needed: already started.")
