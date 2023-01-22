@@ -125,6 +125,10 @@ local function PanelTimedFunc(panel, interval, funca, funcb)
     end
 end
 
+--- Send an empty message to the server.
+-- This is used as a signal message to tell the server to send another message to client.
+-- @lfunction SendEmptyMsgToSV
+-- @param start The net msg to start
 local function SendEmptyMsgToSV(start)
     net.Start(start)
     net.SendToServer()
