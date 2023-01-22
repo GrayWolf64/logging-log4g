@@ -1,6 +1,5 @@
 --- The Logger.
 -- @classmod Logger
-Log4g.Logger = Log4g.Logger or {}
 local Class = include("log4g/core/impl/MiddleClass.lua")
 local Logger = Class("Logger")
 local HasKey = Log4g.Util.HasKey
