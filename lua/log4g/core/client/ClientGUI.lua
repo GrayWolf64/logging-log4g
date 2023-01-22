@@ -145,10 +145,10 @@ concommand.Add("Log4g_MMC", function()
 
     PanelTimedFunc(Icon, UpdateInterval, function() end, function()
         Icon:SetImage("icon16/disconnect.png")
-        net.Start("Log4g_CL_ChkConnected")
+        net.Start("Log4g_CLReq_ChkConnected")
         net.SendToServer()
 
-        net.Receive("Log4g_CL_IsConnected", function()
+        net.Receive("Log4g_CLRcv_ChkConnected", function()
             if net.ReadBool() ~= true then return end
             Icon:SetImage("icon16/connect.png")
         end)
@@ -179,10 +179,10 @@ concommand.Add("Log4g_MMC", function()
     local Tree = vgui.Create("DTree", SheetPanelB)
     Tree:Dock(RIGHT)
     Tree:DockMargin(1, 1, 1, 0)
-    net.Start("Log4g_CLReq_LoggerConfig_Keys")
+    net.Start("Log4g_CLReq_CFG_LoggerConfig_ColumnText")
     net.SendToServer()
 
-    net.Receive("Log4g_CLRcv_LoggerConfig_Keys", function()
+    net.Receive("Log4g_CLRcv_CFG_LoggerConfig_ColumnText", function()
         for _, v in pairs(net.ReadTable()) do
             ListView:AddColumn(v)
         end
@@ -377,9 +377,9 @@ concommand.Add("Log4g_MMC", function()
         function Window:OnCursorEntered()
             net.Start("Log4g_CL_PendingTransmission_DPropLoggerConfigMessages")
             net.SendToServer()
-            AddChoiceViaNetTbl("Log4g_CLReq_Levels", "Log4g_CLRcv_Levels", RowD)
-            AddChoiceViaNetTbl("Log4g_CLReq_Appenders", "Log4g_CLRcv_Appenders", RowE)
-            AddChoiceViaNetTbl("Log4g_CLReq_Layouts", "Log4g_CLRcv_Layouts", RowF)
+            AddChoiceViaNetTbl("Log4g_CLReq_Level_Names", "Log4g_CLRcv_Level_Names", RowD)
+            AddChoiceViaNetTbl("Log4g_CLReq_Appender_Names", "Log4g_CLRcv_Appender_Names", RowE)
+            AddChoiceViaNetTbl("Log4g_CLReq_Layout_Names", "Log4g_CLRcv_Layout_Names", RowF)
         end
 
         local ButtonA = CreateDButton(Window, BOTTOM, 150, 0, 150, 0, 100, 50, "Submit")

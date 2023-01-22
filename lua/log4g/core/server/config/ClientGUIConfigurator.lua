@@ -23,6 +23,7 @@ end
 AddNetworkStrsViaTbl({
     ["Log4g_CLUpload_LoggerConfig"] = true,
     ["Log4g_CLUpload_LoggerConfig_JSON"] = true,
+    ["Log4g_CLUpload_NewLevel"] = true,
     ["Log4g_CLReq_Hooks"] = true,
     ["Log4g_CLRcv_Hooks"] = true,
     ["Log4g_CLReq_LoggerConfigs"] = true,
@@ -31,29 +32,28 @@ AddNetworkStrsViaTbl({
     ["Log4g_CLReq_LoggerContext_Lookup"] = true,
     ["Log4g_CLRcv_LoggerContext_Lookup"] = true,
     ["Log4g_CLReq_LoggerContext_Remove"] = true,
-    ["Log4g_CLReq_Levels"] = true,
-    ["Log4g_CLRcv_Levels"] = true,
-    ["Log4g_CLReq_Appenders"] = true,
-    ["Log4g_CLRcv_Appenders"] = true,
-    ["Log4g_CLReq_Layouts"] = true,
-    ["Log4g_CLRcv_Layouts"] = true,
-    ["Log4g_CLReq_LoggerConfig_Keys"] = true,
-    ["Log4g_CLRcv_LoggerConfig_Keys"] = true,
-    ["Log4g_CL_ChkConnected"] = true,
-    ["Log4g_CL_IsConnected"] = true,
-    ["Log4g_CLUpload_NewLevel"] = true,
+    ["Log4g_CLReq_Level_Names"] = true,
+    ["Log4g_CLRcv_Level_Names"] = true,
+    ["Log4g_CLReq_Appender_Names"] = true,
+    ["Log4g_CLRcv_Appender_Names"] = true,
+    ["Log4g_CLReq_Layout_Names"] = true,
+    ["Log4g_CLRcv_Layout_Names"] = true,
+    ["Log4g_CLReq_CFG_LoggerConfig_ColumnText"] = true,
+    ["Log4g_CLRcv_CFG_LoggerConfig_ColumnText"] = true,
+    ["Log4g_CLReq_ChkConnected"] = true,
+    ["Log4g_CLRcv_ChkConnected"] = true,
     ["Log4g_CL_PendingTransmission_DPropLoggerConfigMessages"] = true,
     ["Log4g_CLReq_LoggerConfig_BuildDefault"] = true
 })
 
-net.Receive("Log4g_CL_ChkConnected", function(len, ply)
-    net.Start("Log4g_CL_IsConnected")
+net.Receive("Log4g_CLReq_ChkConnected", function(len, ply)
+    net.Start("Log4g_CLRcv_ChkConnected")
     net.WriteBool(IsValid(ply) == ply:IsConnected() == true)
     net.Send(ply)
 end)
 
-net.Receive("Log4g_CLReq_LoggerConfig_Keys", function(len, ply)
-    net.Start("Log4g_CLRcv_LoggerConfig_Keys")
+net.Receive("Log4g_CLReq_CFG_LoggerConfig_ColumnText", function(len, ply)
+    net.Start("Log4g_CLRcv_CFG_LoggerConfig_ColumnText")
 
     net.WriteTable({"name", "eventname", "uid", "loggercontext", "level", "appender", "layout", "func"})
 
@@ -61,9 +61,9 @@ net.Receive("Log4g_CLReq_LoggerConfig_Keys", function(len, ply)
 end)
 
 net.Receive("Log4g_CL_PendingTransmission_DPropLoggerConfigMessages", function()
-    SendTableAfterRcvNetMsg("Log4g_CLReq_Levels", "Log4g_CLRcv_Levels", table.Add(table.GetKeys(Log4g.Level.Standard), table.GetKeys(Log4g.Level.Custom)))
-    SendTableAfterRcvNetMsg("Log4g_CLReq_Appenders", "Log4g_CLRcv_Appenders", table.GetKeys(Log4g.Core.Appender.Buffer))
-    SendTableAfterRcvNetMsg("Log4g_CLReq_Layouts", "Log4g_CLRcv_Layouts", table.GetKeys(Log4g.Core.Layout.Buffer))
+    SendTableAfterRcvNetMsg("Log4g_CLReq_Level_Names", "Log4g_CLRcv_Level_Names", table.Add(table.GetKeys(Log4g.Level.Standard), table.GetKeys(Log4g.Level.Custom)))
+    SendTableAfterRcvNetMsg("Log4g_CLReq_Appender_Names", "Log4g_CLRcv_Appender_Names", table.GetKeys(Log4g.Core.Appender.Buffer))
+    SendTableAfterRcvNetMsg("Log4g_CLReq_Layout_Names", "Log4g_CLRcv_Layout_Names", table.GetKeys(Log4g.Core.Layout.Buffer))
 end)
 
 net.Receive("Log4g_CLReq_Hooks", function(len, ply)
