@@ -514,4 +514,8 @@ concommand.Add("Log4g_MMC", function()
     end)
 
     UpdateSummary()
+    local SheetPanelE = vgui.Create("DPanel", SheetA)
+    SheetA:AddSheet("LOGGER", SheetPanelE, "icon16/brick.png")
+    local ListViewB = vgui.Create("DListView", SheetPanelE)
+    ListViewB:Dock(FILL)
 end)
