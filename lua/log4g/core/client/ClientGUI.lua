@@ -125,6 +125,11 @@ local function PanelTimedFunc(panel, interval, funca, funcb)
     end
 end
 
+local function SendEmptyMsgToSV(start)
+    net.Start(start)
+    net.SendToServer()
+end
+
 CreateClientConVar("Log4g_CL_GUI_ElementUpdateInterval", 5, true, false, "Client GUI elements will be updated every given seconds (between 2 and 10).", 2, 10)
 local Frame = nil
 
@@ -145,8 +150,7 @@ concommand.Add("Log4g_MMC", function()
 
     PanelTimedFunc(Icon, UpdateInterval, function() end, function()
         Icon:SetImage("icon16/disconnect.png")
-        net.Start("Log4g_CLReq_ChkConnected")
-        net.SendToServer()
+        SendEmptyMsgToSV("Log4g_CLReq_ChkConnected")
 
         net.Receive("Log4g_CLRcv_ChkConnected", function()
             if net.ReadBool() ~= true then return end
@@ -179,8 +183,7 @@ concommand.Add("Log4g_MMC", function()
     local Tree = vgui.Create("DTree", SheetPanelB)
     Tree:Dock(RIGHT)
     Tree:DockMargin(1, 1, 1, 0)
-    net.Start("Log4g_CLReq_CFG_LoggerConfig_ColumnText")
-    net.SendToServer()
+    SendEmptyMsgToSV("Log4g_CLReq_CFG_LoggerConfig_ColumnText")
 
     net.Receive("Log4g_CLRcv_CFG_LoggerConfig_ColumnText", function()
         for _, v in pairs(net.ReadTable()) do
@@ -267,8 +270,7 @@ concommand.Add("Log4g_MMC", function()
         end
     end, function()
         ListView:Clear()
-        net.Start("Log4g_CLReq_LoggerConfigs")
-        net.SendToServer()
+        SendEmptyMsgToSV("Log4g_CLReq_LoggerConfigs")
 
         net.Receive("Log4g_CLRcv_LoggerConfigs", function()
             if not net.ReadBool() then return end
@@ -316,8 +318,7 @@ concommand.Add("Log4g_MMC", function()
         end
     end, function()
         Tree:Clear()
-        net.Start("Log4g_CLReq_LoggerContext_Lookup")
-        net.SendToServer()
+        SendEmptyMsgToSV("Log4g_CLReq_LoggerContext_Lookup")
 
         net.Receive("Log4g_CLRcv_LoggerContext_Lookup", function()
             if not net.ReadBool() then return end
@@ -345,8 +346,7 @@ concommand.Add("Log4g_MMC", function()
         local RowC, RowD = DPropNewRow(DProp, "Logger", "LoggerContext", "Generic"), DPropNewRow(DProp, "Logger", "Level", "Combo")
         local RowE, RowF = DPropNewRow(DProp, "Logger", "Appender", "Combo"), DPropNewRow(DProp, "Logger", "Layout", "Combo")
         local RowG, RowH = DPropNewRow(DProp, "Logger", "Name", "Generic"), DPropNewRow(DProp, "Logger", "Function", "Generic")
-        net.Start("Log4g_CLReq_Hooks")
-        net.SendToServer()
+        SendEmptyMsgToSV("Log4g_CLReq_Hooks")
 
         net.Receive("Log4g_CLRcv_Hooks", function()
             for k, _ in pairs(util.JSONToTable(util.Decompress(net.ReadData(net.ReadUInt(16))))) do
@@ -375,8 +375,7 @@ concommand.Add("Log4g_MMC", function()
         end
 
         function Window:OnCursorEntered()
-            net.Start("Log4g_CL_PendingTransmission_DPropLoggerConfigMessages")
-            net.SendToServer()
+            SendEmptyMsgToSV("Log4g_CL_PendingTransmission_DPropLoggerConfigMessages")
             AddChoiceViaNetTbl("Log4g_CLReq_Level_Names", "Log4g_CLRcv_Level_Names", RowD)
             AddChoiceViaNetTbl("Log4g_CLReq_Appender_Names", "Log4g_CLRcv_Appender_Names", RowE)
             AddChoiceViaNetTbl("Log4g_CLReq_Layout_Names", "Log4g_CLRcv_Layout_Names", RowF)
@@ -493,8 +492,7 @@ concommand.Add("Log4g_MMC", function()
     local RowG, RowH = CreateSpecialRow(SummarySheet, "Server", "Lua Registry Table Element Count"), CreateSpecialRow(SummarySheet, "Server", "Constraint Count")
 
     local function UpdateSummary()
-        net.Start("Log4g_CLReq_SVSummaryData")
-        net.SendToServer()
+        SendEmptyMsgToSV("Log4g_CLReq_SVSummaryData")
 
         net.Receive("Log4g_CLRcv_SVSummaryData", function()
             RowB:SetValue(tostring(1 / engine.ServerFrameTime()))
@@ -518,8 +516,7 @@ concommand.Add("Log4g_MMC", function()
     SheetA:AddSheet("LOGGER", SheetPanelE, "icon16/brick.png")
     local ListViewB = vgui.Create("DListView", SheetPanelE)
     ListViewB:Dock(FILL)
-    net.Start("Log4g_CLReq_Logger_ColumnText")
-    net.SendToServer()
+    SendEmptyMsgToSV("Log4g_CLReq_Logger_ColumnText")
 
     net.Receive("Log4g_CLRcv_Logger_ColumnText", function()
         for _, v in pairs(net.ReadTable()) do
@@ -529,8 +526,7 @@ concommand.Add("Log4g_MMC", function()
 
     PanelTimedFunc(ListViewB, UpdateInterval, function() end, function()
         ListViewB:Clear()
-        net.Start("Log4g_CLReq_Logger_Lookup")
-        net.SendToServer()
+        SendEmptyMsgToSV("Log4g_CLReq_Logger_Lookup")
 
         net.Receive("Log4g_CLRcv_Logger_Lookup", function()
             if not net.ReadBool() then return end
