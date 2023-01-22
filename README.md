@@ -20,4 +20,5 @@ The Log4g Documentation is available [here](https://github.com/GrayWolf64/Log4g/
 
 ## Thanks to Third-Party Project(s) Below
 
+* [Apache Log4j 2](https://github.com/apache/logging-log4j2)
 * [MiddleClass](https://github.com/kikito/middleclass)
