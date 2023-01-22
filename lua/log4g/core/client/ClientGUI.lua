@@ -458,13 +458,7 @@ concommand.Add("Log4g_MMC", function()
         Text:Dock(FILL)
         Text:InsertColorChange(192, 192, 192, 255)
 
-        AppendRichTextViaTbl(Text, {
-            [1] = "Log4g is an open-source addon for Garry's Mod.\n",
-            [2] = "\n",
-            [3] = "GitHub Page: https://github.com/GrayWolf64/gmod-logging-log4g\n",
-            [4] = "\n",
-            [5] = "Documentation can be seen on GitHub Page as well.\n"
-        })
+        AppendRichTextViaTbl(Text, {"Log4g is an open-source addon for Garry's Mod.\n", "\n", "GitHub Page: https://github.com/GrayWolf64/gmod-logging-log4g\n", "\n", "Documentation can be seen on GitHub Page as well.\n"})
     end):SetIcon("icon16/information.png")
 
     CreateDHDivider(SheetPanelB, ListView, Tree, 2.5, 680, 120)
