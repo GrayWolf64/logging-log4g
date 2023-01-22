@@ -305,21 +305,21 @@ concommand.Add("Log4g_MMC", function()
         Window:SetDrawOnTop(true)
     end):SetIcon("icon16/clock_edit.png")
 
-    PanelTimedFunc(Tree, UpdateInterval, function()
-        function Tree:DoRightClick(node)
-            if node:GetIcon() ~= "icon16/folder.png" then return end
-            local Menu = DermaMenu()
+    function Tree:DoRightClick(node)
+        if node:GetIcon() ~= "icon16/folder.png" then return end
+        local Menu = DermaMenu()
 
-            Menu:AddOption("Remove", function()
-                if not IsValid(node) then return end
-                net.Start("Log4g_CLReq_LoggerContext_Remove")
-                net.WriteString(node:GetText())
-                net.SendToServer()
-            end):SetIcon("icon16/cross.png")
+        Menu:AddOption("Remove", function()
+            if not IsValid(node) then return end
+            net.Start("Log4g_CLReq_LoggerContext_Remove")
+            net.WriteString(node:GetText())
+            net.SendToServer()
+        end):SetIcon("icon16/cross.png")
 
-            Menu:Open()
-        end
-    end, function()
+        Menu:Open()
+    end
+
+    PanelTimedFunc(Tree, UpdateInterval, function() end, function()
         Tree:Clear()
         SendEmptyMsgToSV("Log4g_CLReq_LoggerContext_Lookup")
 
