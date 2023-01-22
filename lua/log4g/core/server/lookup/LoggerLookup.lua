@@ -31,19 +31,9 @@ end
 --- Remove any Logger items whose LoggerContext's name is the given contextname.
 -- @param contextname The LoggerContext's name
 function Log4g.Logger.Lookup.RemoveLoggerViaContext(contextname)
-    if not file.Exists(File, "DATA") then
-        ErrorNoHalt("RemoveLoggerViaContext failed: LoggerLookup file doesn't exist.\n")
-
-        return
-    end
-
+    if not file.Exists(File, "DATA") then return end
     local tbl = util.JSONToTable(file.Read(File, "DATA"))
-
-    if table.IsEmpty(tbl) then
-        ErrorNoHalt("RemoveLoggerViaContext failed: LoggerLookup file doesn't have any content.\n")
-
-        return
-    end
+    if table.IsEmpty(tbl) then return end
 
     for k, v in pairs(tbl) do
         if v.loggercontext == contextname then
