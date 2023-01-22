@@ -113,8 +113,7 @@ end)
 
 net.Receive("Log4g_CLReq_LoggerConfig_Remove", function(len, ply)
     if not IdentChk(ply) then return end
-    local LoggerContextName = net.ReadString()
-    local LoggerConfigName = net.ReadString()
+    local LoggerContextName, LoggerConfigName = net.ReadString(), net.ReadString()
 
     for k, _ in pairs(Log4g.Core.Config.LoggerConfig.Buffer) do
         if k == LoggerConfigName then
