@@ -518,4 +518,34 @@ concommand.Add("Log4g_MMC", function()
     SheetA:AddSheet("LOGGER", SheetPanelE, "icon16/brick.png")
     local ListViewB = vgui.Create("DListView", SheetPanelE)
     ListViewB:Dock(FILL)
+    net.Start("Log4g_CLReq_Logger_ColumnText")
+    net.SendToServer()
+
+    net.Receive("Log4g_CLRcv_Logger_ColumnText", function()
+        for _, v in pairs(net.ReadTable()) do
+            ListViewB:AddColumn(v)
+        end
+    end)
+
+    PanelTimedFunc(ListViewB, UpdateInterval, function() end, function()
+        ListViewB:Clear()
+        net.Start("Log4g_CLReq_Logger_Lookup")
+        net.SendToServer()
+
+        net.Receive("Log4g_CLRcv_Logger_Lookup", function()
+            if not net.ReadBool() then return end
+
+            for k, v in pairs(util.JSONToTable(util.Decompress(net.ReadData(net.ReadUInt(16))))) do
+                local Line = ListViewB:AddLine()
+
+                local tbl = {
+                    name = k,
+                    loggercontext = v.loggercontext,
+                    configfile = v.configfile
+                }
+
+                SetProperLineText(tbl, Line, ListViewB)
+            end
+        end)
+    end)
 end)
