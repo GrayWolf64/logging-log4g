@@ -9,6 +9,7 @@ if SERVER then
     Log4g.Level = Log4g.Level or {}
     Log4g.Logger = Log4g.Logger or {}
     file.CreateDir("log4g/server/loggercontext")
+    include("log4g/core/server/Version.lua")
     include("log4g/core/server/Util.lua")
     include("log4g/core/server/LifeCycle.lua")
     include("log4g/core/server/LoggerContext.lua")
@@ -19,11 +20,10 @@ if SERVER then
     include("log4g/core/server/config/LoggerConfig.lua")
     include("log4g/core/server/Appender.lua")
     include("log4g/core/server/Layout.lua")
-    include("log4g/core/server/config/ClientGUIConfigurator.lua")
-    include("log4g/core/server/ClientGUIManagement.lua")
-    include("log4g/core/server/ClientGUISummaryData.lua")
-    include("log4g/core/server/Version.lua")
-    AddCSLuaFile("log4g/core/client/ClientGUI.lua")
+    include("log4g/mmc-gui/server/ClientGUIConfigurator.lua")
+    include("log4g/mmc-gui/server/ClientGUIManagement.lua")
+    include("log4g/mmc-gui/server/ClientGUISummaryData.lua")
+    AddCSLuaFile("log4g/mmc-gui/client/ClientGUI.lua")
 elseif CLIENT then
-    include("log4g/core/client/ClientGUI.lua")
+    include("log4g/mmc-gui/client/ClientGUI.lua")
 end
