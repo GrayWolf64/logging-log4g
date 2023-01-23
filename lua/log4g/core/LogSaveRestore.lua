@@ -1,3 +1,4 @@
+local RegisterLoggerContext = Log4g.Core.LoggerContext.RegisterLoggerContext
 local LoggerContextSaveFile = "log4g/server/saverestore_loggercontext.json"
 
 local function SaveLoggerContext()
@@ -11,17 +12,23 @@ local function SaveLoggerContext()
     file.Write(LoggerContextSaveFile, util.TableToJSON(tbl, true))
 end
 
-local function SaveAll()
+local function Save()
     SaveLoggerContext()
 end
 
-hook.Add("ShutDown", "Log4g_SaveLogEnvironment", SaveAll)
+hook.Add("ShutDown", "Log4g_SaveLogEnvironment", Save)
 
 local function RestoreLoggerContext()
+    if not file.Exists(LoggerContextSaveFile) then return end
+    local tbl = util.JSONToTable(file.Read(LoggerContextSaveFile, "DATA"))
+
+    for _, v in pairs(tbl) do
+        RegisterLoggerContext(v)
+    end
 end
 
-local function RestoreAll()
+local function Restore()
     RestoreLoggerContext()
 end
 
-hook.Add("PostGamemodeLoaded", "Log4g_RestoreLogEnvironment", RestoreAll)
+hook.Add("PostGamemodeLoaded", "Log4g_RestoreLogEnvironment", Restore)
