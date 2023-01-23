@@ -1,4 +1,4 @@
 local function Restore()
 end
 
-hook.Add("PostGamemodeLoaded", "Spawn_Notification", Restore)
+hook.Add("PostGamemodeLoaded", "Log4g_RestoreLogEnvironment", Restore)
