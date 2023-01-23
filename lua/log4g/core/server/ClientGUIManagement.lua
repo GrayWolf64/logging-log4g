@@ -6,7 +6,8 @@ AddNetworkStrsViaTbl({
     ["Log4g_CLReq_Logger_Lookup"] = true,
     ["Log4g_CLRcv_Logger_Lookup"] = true,
     ["Log4g_CLReq_Logger_ColumnText"] = true,
-    ["Log4g_CLRcv_Logger_ColumnText"] = true
+    ["Log4g_CLRcv_Logger_ColumnText"] = true,
+    ["Log4g_CLReq_Logger_Remove"] = true
 })
 
 net.Receive("Log4g_CLReq_Logger_ColumnText", function(len, ply)
@@ -28,4 +29,9 @@ net.Receive("Log4g_CLReq_Logger_Lookup", function(len, ply)
     end
 
     net.Send(ply)
+end)
+
+net.Receive("Log4g_CLReq_Logger_Remove", function(len, ply)
+    local LoggerContextName, LoggerName = net.ReadString(), net.ReadString()
+    print(LoggerContextName, LoggerName)
 end)

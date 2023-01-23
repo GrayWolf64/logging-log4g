@@ -517,6 +517,16 @@ concommand.Add("Log4g_MMC", function()
         end
     end)
 
+    function ListViewB:OnRowRightClick(num)
+        local Menu = DermaMenu()
+
+        Menu:AddOption("Remove", function()
+            NetStrMsgSpecial(num, ListViewB, "Log4g_CLReq_Logger_Remove", "loggercontext", "name")
+        end):SetIcon("icon16/cross.png")
+
+        Menu:Open()
+    end
+
     PanelTimedFunc(ListViewB, UpdateInterval, function() end, function()
         ListViewB:Clear()
         SendEmptyMsgToSV("Log4g_CLReq_Logger_Lookup")
