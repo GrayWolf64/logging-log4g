@@ -46,3 +46,20 @@ function Log4g.Logger.Lookup.RemoveLoggerViaContext(contextname)
 
     file.Write(File, util.TableToJSON(tbl))
 end
+
+--- Remove a Logger item from LoggerLookup.
+-- @param contextname The LoggerContext's name
+-- @param loggername The Logger's name
+function Log4g.Logger.Lookup.RemoveLogger(contextname, loggername)
+    if not file.Exists(File, "DATA") then return end
+    local tbl = util.JSONToTable(file.Read(File, "DATA"))
+    if table.IsEmpty(tbl) then return end
+
+    for k, v in pairs(tbl) do
+        if k == loggername and v.loggercontext == contextname then
+            tbl.k = nil
+        end
+    end
+
+    file.Write(File, util.TableToJSON(tbl))
+end
