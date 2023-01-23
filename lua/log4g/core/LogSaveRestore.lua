@@ -1,6 +1,8 @@
 local RegisterLoggerContext = Log4g.Core.LoggerContext.RegisterLoggerContext
 local LoggerContextSaveFile = "log4g/server/saverestore_loggercontext.json"
 
+--- Save all the LoggerContexts' names into a JSON file before server shutting down.
+-- @lfunction SaveLoggerContext
 local function SaveLoggerContext()
     if table.IsEmpty(Log4g.Hierarchy) then return end
     local tbl = {}
@@ -18,6 +20,8 @@ end
 
 hook.Add("ShutDown", "Log4g_SaveLogEnvironment", Save)
 
+--- Restore all the LoggerContexts using previously stored names.
+-- @lfunction RestoreLoggerContext
 local function RestoreLoggerContext()
     if not file.Exists(LoggerContextSaveFile, "DATA") then return end
     local tbl = util.JSONToTable(file.Read(LoggerContextSaveFile, "DATA"))
