@@ -1,5 +1,4 @@
 --- Client GUI (MMC).
--- This will be moved out of log4g/core soon.
 -- @script ClientGUI.lua
 -- @license Apache License 2.0
 -- @copyright GrayWolf64
