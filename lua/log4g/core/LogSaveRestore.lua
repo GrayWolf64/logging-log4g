@@ -19,12 +19,14 @@ end
 hook.Add("ShutDown", "Log4g_SaveLogEnvironment", Save)
 
 local function RestoreLoggerContext()
-    if not file.Exists(LoggerContextSaveFile) then return end
+    if not file.Exists(LoggerContextSaveFile, "DATA") then return end
     local tbl = util.JSONToTable(file.Read(LoggerContextSaveFile, "DATA"))
 
     for _, v in pairs(tbl) do
         RegisterLoggerContext(v)
     end
+
+    file.Delete(LoggerContextSaveFile)
 end
 
 local function Restore()
