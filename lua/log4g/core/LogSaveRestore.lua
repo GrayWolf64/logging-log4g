@@ -72,6 +72,8 @@ local function RestoreBufferedLoggerConfig()
     for _, v in pairs(tbl) do
         RegisterLoggerConfig(util.JSONToTable(file.Read("log4g/server/loggercontext/" .. v.loggercontext .. "/loggerconfig/" .. v.name .. ".json", "DATA")))
     end
+
+    file.Delete(BufferedLoggerConfigSaveFile)
 end
 
 local function Restore()
