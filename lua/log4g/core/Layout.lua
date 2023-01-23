@@ -22,4 +22,4 @@ function Log4g.Core.Layout.RegisterLayout(name, func)
     return layout
 end
 
-Log4g.Core.Layout.Buffer.PatternLayout = Layout:New("PatternLayout", include("log4g/core/server/layout/PatternLayout.lua"))
+Log4g.Core.Layout.Buffer.PatternLayout = Layout:New("PatternLayout", include("log4g/core/layout/PatternLayout.lua"))
