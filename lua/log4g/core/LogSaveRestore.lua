@@ -6,6 +6,10 @@ local RegisterLoggerContext = Log4g.Core.LoggerContext.RegisterLoggerContext
 local LoggerContextSaveFile = "log4g/server/saverestore_loggercontext.json"
 local BufferedLoggerConfigSaveFile = "log4g/server/saverestore_loggerconfig_buffered.json"
 
+--- Save all the table's keys into a table then store it in a file.
+-- @lfunction SaveKey
+-- @param tbl The table to get keys
+-- @param file The file to save keys in
 local function SaveKey(tbl, file)
     if table.IsEmpty(tbl) then return end
     local result = {}
@@ -17,12 +21,14 @@ local function SaveKey(tbl, file)
     file.Write(file, util.TableToJSON(result, true))
 end
 
---- Save all the LoggerContexts' names into a JSON file before server shutting down.
+--- Save all the LoggerContexts' names into a JSON file.
 -- @lfunction SaveLoggerContext
 local function SaveLoggerContext()
     SaveKey(Log4g.LogManager, LoggerContextSaveFile)
 end
 
+--- Save all the Buffered LoggerConfig' names into a JSON file.
+-- @lfunction SaveBufferedLoggerConfig
 local function SaveBufferedLoggerConfig()
     SaveKey(Log4g.Core.Config.LoggerConfig.Buffer, BufferedLoggerConfigSaveFile)
 end
