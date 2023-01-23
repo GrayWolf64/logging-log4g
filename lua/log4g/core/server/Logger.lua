@@ -20,12 +20,14 @@ end
 
 function Logger:Start()
     SetState(self, STARTING)
+    hook.Add(self.loggerconfig.eventname, self.loggerconfig.uid, CompileString(self.loggerconfig.func))
     SetState(self, STARTED)
 end
 
---- Delete the Logger.
-function Logger:Delete()
+--- Terminate the Logger.
+function Logger:Terminate()
     SetState(self, STOPPING)
+    hook.Remove(self.loggerconfig.eventname, self.loggerconfig.uid)
     SetState(self, STOPPED)
     Log4g.Hierarchy[self.loggerconfig.loggercontext].logger[self.name] = nil
 end
@@ -69,7 +71,6 @@ function Log4g.Logger.RegisterLogger(loggerconfig)
         local logger = Logger:New(loggerconfig)
         Log4g.Hierarchy[loggerconfig.loggercontext].logger[loggerconfig.name] = logger
         Log4g.Hierarchy[loggerconfig.loggercontext].logger[loggerconfig.name]:Start()
-        hook.Add(loggerconfig.eventname, loggerconfig.uid, CompileString(loggerconfig.func))
         MsgN("Logger registration: Successfully created Hierarchy LoggerContext child item.")
 
         return Log4g.Hierarchy[loggerconfig.loggercontext].logger[loggerconfig.name]

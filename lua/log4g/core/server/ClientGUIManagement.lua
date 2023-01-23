@@ -33,5 +33,5 @@ end)
 
 net.Receive("Log4g_CLReq_Logger_Remove", function(len, ply)
     local LoggerContextName, LoggerName = net.ReadString(), net.ReadString()
-    print(LoggerContextName, LoggerName)
+    Log4g.Hierarchy[LoggerContextName].logger[LoggerName]:Terminate()
 end)
