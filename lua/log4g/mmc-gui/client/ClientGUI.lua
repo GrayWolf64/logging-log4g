@@ -520,7 +520,7 @@ concommand.Add("Log4g_MMC", function()
     function ListViewB:OnRowRightClick(num)
         local Menu = DermaMenu()
 
-        Menu:AddOption("Remove", function()
+        Menu:AddOption("Terminate", function()
             NetStrMsgSpecial(num, ListViewB, "Log4g_CLReq_Logger_Remove", "loggercontext", "name")
         end):SetIcon("icon16/cross.png")
 
