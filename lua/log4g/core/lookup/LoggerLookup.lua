@@ -3,7 +3,7 @@
 -- @script LoggerLookup.lua
 -- @license Apache License 2.0
 -- @copyright GrayWolf64
-Log4g.Logger.Lookup = Log4g.Logger.Lookup or {}
+Log4g.Core.Logger.Lookup = Log4g.Core.Logger.Lookup or {}
 local File = "log4g/server/loggercontext/lookup_logger.json"
 
 --- Add a table item to Logger Lookup whose key is Logger name and its content are the associated names of LoggerContext and file paths of LoggerConfig.
@@ -11,7 +11,7 @@ local File = "log4g/server/loggercontext/lookup_logger.json"
 -- @param loggername The name of the Logger to write
 -- @param contextname The name of the LoggerContext to write
 -- @param configfile The string filepath of the Logger's associated LoggerConfig to write
-function Log4g.Logger.Lookup.AddItem(loggername, contextname, configfile)
+function Log4g.Core.Logger.Lookup.AddItem(loggername, contextname, configfile)
     if not file.Exists(File, "DATA") then
         file.Write(File, util.TableToJSON({
             [loggername] = {
@@ -33,7 +33,7 @@ end
 
 --- Remove any Logger items whose LoggerContext's name is the given contextname.
 -- @param contextname The LoggerContext's name
-function Log4g.Logger.Lookup.RemoveLoggerViaContext(contextname)
+function Log4g.Core.Logger.Lookup.RemoveLoggerViaContext(contextname)
     if not file.Exists(File, "DATA") then return end
     local tbl = util.JSONToTable(file.Read(File, "DATA"))
     if table.IsEmpty(tbl) then return end
@@ -50,7 +50,7 @@ end
 --- Remove a Logger item from LoggerLookup.
 -- @param contextname The LoggerContext's name
 -- @param loggername The Logger's name
-function Log4g.Logger.Lookup.RemoveLogger(contextname, loggername)
+function Log4g.Core.Logger.Lookup.RemoveLogger(contextname, loggername)
     if not file.Exists(File, "DATA") then return end
     local tbl = util.JSONToTable(file.Read(File, "DATA"))
     if table.IsEmpty(tbl) then return end

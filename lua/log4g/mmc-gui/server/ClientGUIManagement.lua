@@ -1,6 +1,6 @@
 local AddNetworkStrsViaTbl = Log4g.Util.AddNetworkStrsViaTbl
 local WriteDataSimple = Log4g.Util.WriteDataSimple
-local RemoveLoggerLookupLogger = Log4g.Logger.Lookup.RemoveLogger
+local RemoveLoggerLookupLogger = Log4g.Core.Logger.Lookup.RemoveLogger
 local LoggerLookupFile = "log4g/server/loggercontext/lookup_logger.json"
 
 AddNetworkStrsViaTbl({

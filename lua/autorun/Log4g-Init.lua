@@ -7,7 +7,7 @@ if SERVER then
     Log4g.Core = Log4g.Core or {}
     Log4g.LogManager = Log4g.LogManager or {}
     Log4g.Level = Log4g.Level or {}
-    Log4g.Logger = Log4g.Logger or {}
+    Log4g.Core.Logger = Log4g.Core.Logger or {}
     file.CreateDir("log4g/server/loggercontext")
     include("log4g/core/Version.lua")
     include("log4g/core/Util.lua")

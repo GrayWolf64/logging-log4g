@@ -60,7 +60,7 @@ end
 -- If the Logger with the same name already exists, its loggerconfig will be overrode.
 -- @param loggerconfig The Loggerconfig
 -- @return object logger
-function Log4g.Logger.RegisterLogger(loggerconfig)
+function Log4g.Core.Logger.RegisterLogger(loggerconfig)
     if not istable(loggerconfig) or table.IsEmpty(loggerconfig) then
         error("Logger registration failed: LoggerConfig object invalid.\n")
     end
