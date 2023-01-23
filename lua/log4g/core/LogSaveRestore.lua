@@ -6,28 +6,25 @@ local RegisterLoggerContext = Log4g.Core.LoggerContext.RegisterLoggerContext
 local LoggerContextSaveFile = "log4g/server/saverestore_loggercontext.json"
 local BufferedLoggerConfigSaveFile = "log4g/server/saverestore_loggerconfig_buffered.json"
 
+local function SaveKey(tbl, file)
+    if table.IsEmpty(tbl) then return end
+    local result = {}
+
+    for k, _ in pairs(tbl) do
+        table.insert(result, k)
+    end
+
+    file.Write(file, util.TableToJSON(result, true))
+end
+
 --- Save all the LoggerContexts' names into a JSON file before server shutting down.
 -- @lfunction SaveLoggerContext
 local function SaveLoggerContext()
-    if table.IsEmpty(Log4g.LogManager) then return end
-    local tbl = {}
-
-    for k, _ in pairs(Log4g.LogManager) do
-        table.insert(tbl, k)
-    end
-
-    file.Write(LoggerContextSaveFile, util.TableToJSON(tbl, true))
+    SaveKey(Log4g.LogManager, LoggerContextSaveFile)
 end
 
 local function SaveBufferedLoggerConfig()
-    if table.IsEmpty(Log4g.Core.Config.LoggerConfig.Buffer) then return end
-    local tbl = {}
-
-    for k, _ in pairs(Log4g.Core.Config.LoggerConfig.Buffer) do
-        table.insert(tbl, k)
-    end
-
-    file.Write(BufferedLoggerConfigSaveFile, util.TableToJSON(tbl, true))
+    SaveKey(Log4g.Core.Config.LoggerConfig.Buffer, BufferedLoggerConfigSaveFile)
 end
 
 local function Save()
