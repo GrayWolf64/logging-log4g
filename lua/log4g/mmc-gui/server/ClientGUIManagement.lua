@@ -34,6 +34,6 @@ end)
 
 net.Receive("Log4g_CLReq_Logger_Remove", function(len, ply)
     local LoggerContextName, LoggerName = net.ReadString(), net.ReadString()
-    Log4g.Hierarchy[LoggerContextName].logger[LoggerName]:Terminate()
+    Log4g.LogManager[LoggerContextName].logger[LoggerName]:Terminate()
     RemoveLoggerLookupLogger(LoggerContextName, LoggerName)
 end)

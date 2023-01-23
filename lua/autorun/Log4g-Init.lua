@@ -5,7 +5,7 @@ file.CreateDir("log4g")
 if SERVER then
     Log4g = Log4g or {}
     Log4g.Core = Log4g.Core or {}
-    Log4g.Hierarchy = Log4g.Hierarchy or {}
+    Log4g.LogManager = Log4g.LogManager or {}
     Log4g.Level = Log4g.Level or {}
     Log4g.Logger = Log4g.Logger or {}
     file.CreateDir("log4g/server/loggercontext")

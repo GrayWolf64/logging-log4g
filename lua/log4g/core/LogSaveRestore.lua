@@ -8,10 +8,10 @@ local LoggerContextSaveFile = "log4g/server/saverestore_loggercontext.json"
 --- Save all the LoggerContexts' names into a JSON file before server shutting down.
 -- @lfunction SaveLoggerContext
 local function SaveLoggerContext()
-    if table.IsEmpty(Log4g.Hierarchy) then return end
+    if table.IsEmpty(Log4g.LogManager) then return end
     local tbl = {}
 
-    for k, _ in pairs(Log4g.Hierarchy) do
+    for k, _ in pairs(Log4g.LogManager) do
         table.insert(tbl, k)
     end
 

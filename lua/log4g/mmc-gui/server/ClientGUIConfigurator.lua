@@ -141,9 +141,9 @@ net.Receive("Log4g_CLReq_LoggerContext_Remove", function(len, ply)
     if not IdentChk(ply) then return end
     local LoggerContextName = net.ReadString()
 
-    for k, _ in pairs(Log4g.Hierarchy) do
+    for k, _ in pairs(Log4g.LogManager) do
         if k == LoggerContextName then
-            Log4g.Hierarchy[k]:Terminate()
+            Log4g.LogManager[k]:Terminate()
         end
     end
 

@@ -46,8 +46,8 @@ function LoggerContext:Terminate()
 
     SetState(self, STOPPED)
 
-    if HasKey(Log4g.Hierarchy, self.name) then
-        Log4g.Hierarchy[self.name] = nil
+    if HasKey(Log4g.LogManager, self.name) then
+        Log4g.LogManager[self.name] = nil
         MsgN("LoggerContext termination: Successfully removed LoggerContext from Hierarchy.")
     else
         ErrorNoHalt("LoggerContext termination failed: Can't find the LoggerContext in Hierarchy, may be nil already.\n")
@@ -77,7 +77,7 @@ function Log4g.Core.LoggerContext.HasContext(name)
         error("LoggerContext search failed: name must be a string.\n")
     end
 
-    return HasKey(Log4g.Hierarchy, name)
+    return HasKey(Log4g.LogManager, name)
 end
 
 --- Register a LoggerContext.
@@ -91,17 +91,17 @@ function Log4g.Core.LoggerContext.RegisterLoggerContext(name)
 
     MsgN("Starting the registration of LoggerContext: " .. name .. "...")
 
-    if not HasKey(Log4g.Hierarchy, name) then
+    if not HasKey(Log4g.LogManager, name) then
         local loggercontext = LoggerContext:New(name)
-        Log4g.Hierarchy[name] = loggercontext
-        Log4g.Hierarchy[name]:Start()
+        Log4g.LogManager[name] = loggercontext
+        Log4g.LogManager[name]:Start()
         file.CreateDir("log4g/server/loggercontext/" .. name .. "/loggerconfig")
         MsgN("LoggerContext registration: Successfully created folder and Hierarchy item.")
 
-        return Log4g.Hierarchy[name]
+        return Log4g.LogManager[name]
     else
         MsgN("LoggerContext registration not needed: A LoggerContext with the same name already exists.")
 
-        return Log4g.Hierarchy[name]
+        return Log4g.LogManager[name]
     end
 end

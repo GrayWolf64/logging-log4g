@@ -29,7 +29,7 @@ function Logger:Terminate()
     SetState(self, STOPPING)
     hook.Remove(self.loggerconfig.eventname, self.loggerconfig.uid)
     SetState(self, STOPPED)
-    Log4g.Hierarchy[self.loggerconfig.loggercontext].logger[self.name] = nil
+    Log4g.LogManager[self.loggerconfig.loggercontext].logger[self.name] = nil
 end
 
 --- Get the Logger name.
@@ -49,7 +49,7 @@ local function HasLogger(name)
         error("HasLogger search failed: name must be a string.\n")
     end
 
-    for _, v in pairs(Log4g.Hierarchy) do
+    for _, v in pairs(Log4g.LogManager) do
         if HasKey(v.logger, name) then return true end
     end
 
@@ -69,14 +69,14 @@ function Log4g.Logger.RegisterLogger(loggerconfig)
 
     if not HasLogger(loggerconfig.name) then
         local logger = Logger:New(loggerconfig)
-        Log4g.Hierarchy[loggerconfig.loggercontext].logger[loggerconfig.name] = logger
-        Log4g.Hierarchy[loggerconfig.loggercontext].logger[loggerconfig.name]:Start()
+        Log4g.LogManager[loggerconfig.loggercontext].logger[loggerconfig.name] = logger
+        Log4g.LogManager[loggerconfig.loggercontext].logger[loggerconfig.name]:Start()
         MsgN("Logger registration: Successfully created Hierarchy LoggerContext child item.")
 
-        return Log4g.Hierarchy[loggerconfig.loggercontext].logger[loggerconfig.name]
+        return Log4g.LogManager[loggerconfig.loggercontext].logger[loggerconfig.name]
     else
         ErrorNoHalt("Logger registration failed: Logger already exists.\n")
 
-        return Log4g.Hierarchy[loggerconfig.loggercontext].logger[loggerconfig.name]
+        return Log4g.LogManager[loggerconfig.loggercontext].logger[loggerconfig.name]
     end
 end
