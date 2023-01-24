@@ -1,7 +1,6 @@
 --- The Layout.
 -- @classmod Layout
 Log4g.Core.Layout = Log4g.Core.Layout or {}
-Log4g.Core.Layout = Log4g.Core.Layout or {}
 local Class = include("log4g/core/impl/MiddleClass.lua")
 local Layout = Class("Layout")
 
