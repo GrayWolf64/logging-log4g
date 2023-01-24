@@ -96,7 +96,7 @@ local function RebuildLoggerConfig()
 
     for _, v in pairs(tbl) do
         RegisterLoggerConfig(util.JSONToTable(file.Read("log4g/server/loggercontext/" .. v.loggercontext .. "/loggerconfig/" .. v.name .. ".json", "DATA")))
-        Log4g.LogManager[v.loggercontext].logger[v.name]:BuildDefault()
+        Log4g.Core.Config.LoggerConfig.Buffer[v.name]:BuildDefault()
     end
 
     file.Delete(BuiltLoggerConfigSaveFile)
