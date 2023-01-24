@@ -9,16 +9,4 @@ function Layout:Initialize(name, func)
     self.func = func
 end
 
---- Register a Layout.
--- If the Layout with the same name already exists, its function will be overrode.
--- @param name The name of the Layout
--- @param func The function of the layouting process
--- @return object layout
-function Log4g.Core.Layout.RegisterLayout(name, func)
-    local layout = Layout:New(name, func)
-    table.insert(Log4g.Core.Layout, layout)
-
-    return layout
-end
-
 Log4g.Core.Layout.PatternLayout = Layout:New("PatternLayout", include("log4g/core/layout/PatternLayout.lua"))
