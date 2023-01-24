@@ -176,7 +176,6 @@ concommand.Add("Log4g_MMC", function()
     local MenuA = MenuBar:AddMenu("New")
     local MenuB = MenuBar:AddMenu("Options")
     MenuB:AddOption("General", function() end):SetIcon("icon16/wrench.png")
-    local MenuC = MenuBar:AddMenu("Help")
     local SheetA = CreateDPropertySheet(Frame, FILL, 0, 0, 0, 0, 4)
     local SheetPanelA = vgui.Create("DPanel", SheetA)
     SheetPanelA.Paint = nil
