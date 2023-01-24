@@ -1,5 +1,6 @@
 --- Initialization of Log4g on server and client.
 -- @script Log4g-Init.lua
+local MMC = "log4g/mmc-gui/Log4g-MMC-Init.lua"
 file.CreateDir("log4g")
 
 if SERVER then
@@ -21,10 +22,13 @@ if SERVER then
     include("log4g/core/Appender.lua")
     include("log4g/core/Layout.lua")
     include("log4g/core/LogSaveRestore.lua")
-    include("log4g/mmc-gui/server/ClientGUIConfigurator.lua")
-    include("log4g/mmc-gui/server/ClientGUIManagement.lua")
-    include("log4g/mmc-gui/server/ClientGUISummaryData.lua")
-    AddCSLuaFile("log4g/mmc-gui/client/ClientGUI.lua")
+
+    if file.Exists(MMC, "lsv") then
+        include(MMC)
+        AddCSLuaFile(MMC)
+    end
 elseif CLIENT then
-    include("log4g/mmc-gui/client/ClientGUI.lua")
+    if file.Exists(MMC, "lcl") then
+        include(MMC)
+    end
 end
