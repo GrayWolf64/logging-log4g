@@ -20,7 +20,7 @@ local function SaveLoggerContext()
     file.Write(LoggerContextSaveFile, util.TableToJSON(result, true))
 end
 
---- Save all the Buffered LoggerConfig' names into a JSON file.
+--- Save all the Buffered LoggerConfigs' names and associated LoggerContexts' names into a JSON file.
 -- @lfunction SaveBufferedLoggerConfig
 local function SaveBufferedLoggerConfig()
     if table.IsEmpty(Log4g.Core.Config.LoggerConfig.Buffer) then return end
