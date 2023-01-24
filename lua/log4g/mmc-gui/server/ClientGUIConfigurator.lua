@@ -63,7 +63,7 @@ end)
 net.Receive("Log4g_CL_PendingTransmission_DPropLoggerConfigMessages", function()
     SendTableAfterRcvNetMsg("Log4g_CLReq_Level_Names", "Log4g_CLRcv_Level_Names", table.Add(table.GetKeys(Log4g.Level.Standard), table.GetKeys(Log4g.Level.Custom)))
     SendTableAfterRcvNetMsg("Log4g_CLReq_Appender_Names", "Log4g_CLRcv_Appender_Names", table.GetKeys(Log4g.Core.Appender.Buffer))
-    SendTableAfterRcvNetMsg("Log4g_CLReq_Layout_Names", "Log4g_CLRcv_Layout_Names", table.GetKeys(Log4g.Core.Layout.Buffer))
+    SendTableAfterRcvNetMsg("Log4g_CLReq_Layout_Names", "Log4g_CLRcv_Layout_Names", table.GetKeys(Log4g.Core.Layout))
 end)
 
 net.Receive("Log4g_CLReq_Hooks", function(len, ply)

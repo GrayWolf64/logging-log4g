@@ -1,7 +1,7 @@
 --- The Layout.
 -- @classmod Layout
 Log4g.Core.Layout = Log4g.Core.Layout or {}
-Log4g.Core.Layout.Buffer = Log4g.Core.Layout.Buffer or {}
+Log4g.Core.Layout = Log4g.Core.Layout or {}
 local Class = include("log4g/core/impl/MiddleClass.lua")
 local Layout = Class("Layout")
 
@@ -17,9 +17,9 @@ end
 -- @return object layout
 function Log4g.Core.Layout.RegisterLayout(name, func)
     local layout = Layout:New(name, func)
-    table.insert(Log4g.Core.Layout.Buffer, layout)
+    table.insert(Log4g.Core.Layout, layout)
 
     return layout
 end
 
-Log4g.Core.Layout.Buffer.PatternLayout = Layout:New("PatternLayout", include("log4g/core/layout/PatternLayout.lua"))
+Log4g.Core.Layout.PatternLayout = Layout:New("PatternLayout", include("log4g/core/layout/PatternLayout.lua"))
