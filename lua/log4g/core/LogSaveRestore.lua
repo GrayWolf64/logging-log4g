@@ -37,6 +37,8 @@ local function SaveBufferedLoggerConfig()
     file.Write(BufferedLoggerConfigSaveFile, util.TableToJSON(result, true))
 end
 
+--- Save all the built LoggerConfigs' names and associated LoggerContexts' names into a JSON file.
+-- @lfunction SaveBuiltLoggerConfig
 local function SaveBuiltLoggerConfig()
     if table.IsEmpty(Log4g.LogManager) then return end
     local result = {}
@@ -88,13 +90,22 @@ local function RestoreBufferedLoggerConfig()
     file.Delete(BufferedLoggerConfigSaveFile)
 end
 
-local function RebuildBufferedLoggerConfig()
+local function RebuildLoggerConfig()
+    if not file.Exists(BuiltLoggerConfigSaveFile, "DATA") then return end
+    local tbl = util.JSONToTable(file.Read(BuiltLoggerConfigSaveFile, "DATA"))
+
+    for _, v in pairs(tbl) do
+        RegisterLoggerConfig(util.JSONToTable(file.Read("log4g/server/loggercontext/" .. v.loggercontext .. "/loggerconfig/" .. v.name .. ".json", "DATA")))
+        Log4g.LogManager[v.loggercontext].logger[v.name]:BuildDefault()
+    end
+
+    file.Delete(BuiltLoggerConfigSaveFile)
 end
 
 local function Restore()
     RestoreLoggerContext()
     RestoreBufferedLoggerConfig()
-    RebuildBufferedLoggerConfig()
+    RebuildLoggerConfig()
 end
 
 hook.Add("PostGamemodeLoaded", "Log4g_RestoreLogEnvironment", Restore)
