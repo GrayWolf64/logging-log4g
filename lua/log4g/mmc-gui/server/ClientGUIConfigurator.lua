@@ -83,22 +83,22 @@ end)
 
 net.Receive("Log4g_CLUpload_LoggerConfig_JSON", function(len, ply)
     if not IdentChk(ply) then return end
-    local Tbl = util.JSONToTable(util.Decompress(net.ReadData(net.ReadUInt(16))))
-    local LoggerContextName, LoggerConfigName = Tbl.loggercontext, Tbl.name
+    local tbl = util.JSONToTable(util.Decompress(net.ReadData(net.ReadUInt(16))))
+    local LoggerContextName, LoggerConfigName = tbl.loggercontext, tbl.name
     RegisterLoggerContext(LoggerContextName)
-    RegisterLoggerConfig(Tbl)
+    RegisterLoggerConfig(tbl)
     AddLoggerContextLookupItem(LoggerContextName, LoggerConfigName)
 end)
 
 net.Receive("Log4g_CLReq_LoggerConfigs", function(len, ply)
-    local Tbl = Log4g.Core.Config.LoggerConfig.GetFiles()
+    local tbl = Log4g.Core.Config.LoggerConfig.GetFiles()
     net.Start("Log4g_CLRcv_LoggerConfigs")
 
-    if istable(Tbl) and not table.IsEmpty(Tbl) then
+    if istable(tbl) and not table.IsEmpty(tbl) then
         net.WriteBool(true)
         local Data = {}
 
-        for _, v in ipairs(Tbl) do
+        for _, v in ipairs(tbl) do
             local str = file.Read(v, "DATA")
             if not isstring(str) or #str == 0 then return end
 
