@@ -6,6 +6,7 @@ local RegisterLoggerContext = Log4g.Core.LoggerContext.RegisterLoggerContext
 local RegisterLoggerConfig = Log4g.Core.Config.LoggerConfig.RegisterLoggerConfig
 local LoggerContextSaveFile = "log4g/server/saverestore_loggercontext.json"
 local BufferedLoggerConfigSaveFile = "log4g/server/saverestore_loggerconfig_buffered.json"
+local BuiltLoggerConfigSaveFile = "log4g/server/saverestore_loggerconfig_built.json"
 
 --- Save all the LoggerContexts' names into a JSON file.
 -- @lfunction SaveLoggerContext
@@ -36,9 +37,28 @@ local function SaveBufferedLoggerConfig()
     file.Write(BufferedLoggerConfigSaveFile, util.TableToJSON(result, true))
 end
 
+local function SaveBuiltLoggerConfig()
+    if table.IsEmpty(Log4g.LogManager) then return end
+    local result = {}
+
+    for k, v in pairs(Log4g.LogManager) do
+        if table.IsEmpty(v.logger) then return end
+
+        for i, _ in pairs(v.logger) do
+            table.insert(result, {
+                name = i,
+                loggercontext = k
+            })
+        end
+    end
+
+    file.Write(BuiltLoggerConfigSaveFile, util.TableToJSON(result, true))
+end
+
 local function Save()
     SaveLoggerContext()
     SaveBufferedLoggerConfig()
+    SaveBuiltLoggerConfig()
 end
 
 hook.Add("ShutDown", "Log4g_SaveLogEnvironment", Save)
@@ -68,9 +88,13 @@ local function RestoreBufferedLoggerConfig()
     file.Delete(BufferedLoggerConfigSaveFile)
 end
 
+local function RebuildBufferedLoggerConfig()
+end
+
 local function Restore()
     RestoreLoggerContext()
     RestoreBufferedLoggerConfig()
+    RebuildBufferedLoggerConfig()
 end
 
 hook.Add("PostGamemodeLoaded", "Log4g_RestoreLogEnvironment", Restore)
