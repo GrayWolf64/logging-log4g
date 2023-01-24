@@ -1,8 +1,8 @@
 local AddNetworkStrsViaTbl = Log4g.Util.AddNetworkStrsViaTbl
 
 AddNetworkStrsViaTbl({
-    ["Log4g_CLReq_SVSummaryData"] = true,
-    ["Log4g_CLRcv_SVSummaryData"] = true
+    [1] = "Log4g_CLReq_SVSummaryData",
+    [2] = "Log4g_CLRcv_SVSummaryData"
 })
 
 net.Receive("Log4g_CLReq_SVSummaryData", function(len, ply)

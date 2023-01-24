@@ -33,9 +33,8 @@ end
 --- Add all the string keys in a table to network string table.
 -- @param tbl The table of network strings to add
 Log4g.Util.AddNetworkStrsViaTbl = function(tbl)
-    for k, _ in pairs(tbl) do
-        if not isstring(k) or not tbl[k] then return end
-        util.AddNetworkString(k)
+    for _, v in pairs(tbl) do
+        util.AddNetworkString(v)
     end
 end
 
