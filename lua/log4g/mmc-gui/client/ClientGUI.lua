@@ -331,7 +331,7 @@ concommand.Add("Log4g_MMC", function()
 
             for k, v in pairs(Tbl) do
                 local Node = Tree:AddNode(k, "icon16/folder.png")
-                Node:SetExpanded(true)
+                Node:SetExpanded(true, true)
 
                 for _, j in pairs(v) do
                     Node:AddNode(j, "icon16/brick.png")
