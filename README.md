@@ -12,7 +12,7 @@ Log4g is an advanced logging framework for Garry's Mod.
 
 | Con-Commands    | Usage   | Desc.                                     |
 | --------------- | ------- | ----------------------------------------- |
-| "Log4g_MMC"     | Console | Log4g Monitoring & Management Console |
+| "Log4g_MMC"     | Console | Log4g Monitoring & Management Console (Component)     |
 | "Log4g_Version" | Console | Check for Log4g's version                 |
 
 ## Documentation
@@ -23,3 +23,4 @@ The Log4g Documentation is available [here](https://github.com/GrayWolf64/Log4g/
 
 * [Apache Log4j 2](https://github.com/apache/logging-log4j2)
 * [MiddleClass](https://github.com/kikito/middleclass)
+* [Lua Logging](https://github.com/lunarmodules/lualogging/)
