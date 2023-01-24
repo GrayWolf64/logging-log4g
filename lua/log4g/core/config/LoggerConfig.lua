@@ -34,32 +34,28 @@ end
 --- Remove the LoggerConfig from Buffer.
 -- This will check if the LoggerConfig Buffer table contains the LoggerConfig and remove it.
 function LoggerConfig:RemoveBuffer()
-    MsgN("Starting the removal of LoggerConfig Buffer: " .. self.name .. "...")
+    hook.Run("Log4g_PreBufferedLoggerConfigRemoval", self.name)
     SetState(self, STOPPING)
     SetState(self, STOPPED)
 
     if HasKey(Log4g.Core.Config.LoggerConfig.Buffer, self.name) then
         Log4g.Core.Config.LoggerConfig.Buffer[self.name] = nil
-        MsgN("LoggerConfig deletion: Successfully removed LoggerConfig from Buffer.")
+        hook.Run("Log4g_PostBufferedLoggerConfigRemovalSuccess")
     else
-        ErrorNoHalt("LoggerConfig deletion failed: Can't find the LoggerConfig in Buffer, may be removed already.\n")
+        hook.Run("Log4g_OnBufferedLoggerConfigRemovalFailure")
     end
-
-    MsgN("Buffer removal completed.")
 end
 
 --- Remove the LoggerConfig JSON from local storge.
 function LoggerConfig:RemoveFile()
-    MsgN("Starting the removal of LoggerConfig file: " .. self.name .. "...")
+    hook.Run("Log4g_PreLoggerConfigFileDeletion", self.name)
 
     if file.Exists(self.file, "DATA") then
         file.Delete(self.file)
-        MsgN("LoggerConfig deletion: Successfully deleted LoggerConfig file.")
+        hook.Run("Log4g_PostLoggerConfigFileDeletionSuccess")
     else
-        ErrorNoHalt("LoggerConfig deletion failed: Can't find the LoggerConfig file.\n")
+        hook.Run("Log4g_OnLoggerConfigFileDeletionFailure")
     end
-
-    MsgN("File removal completed.")
 end
 
 --- Start the default building procedure for the LoggerConfig.
@@ -71,7 +67,7 @@ function LoggerConfig:BuildDefault()
         error("Build not needed: LoggerConfig already started.\n")
     end
 
-    MsgN("Start default building for LoggerConfig: " .. self.name .. "...")
+    hook.Run("Log4g_PreLoggerConfigBuild", self.name)
     SetState(self, STARTING)
     MsgN("Starting LoggerConfig...")
     local logger = Log4g.Core.Logger.RegisterLogger(self)
@@ -81,11 +77,9 @@ function LoggerConfig:BuildDefault()
         MsgN("LoggerConfig build not needed: already started.")
     end
 
-    MsgN("Logger: " .. self.name .. " has been registered based on provided LoggerConfig.")
     self:RemoveBuffer()
-    MsgN("Provided LoggerConfig has been removed from Buffer.")
     SetState(logger.loggerconfig, STARTED)
-    MsgN("Logger's LoggerConfig has started, default build complete.")
+    hook.Run("Log4g_PostLoggerConfigBuild")
 end
 
 --- Register a LoggerConfig.
@@ -93,21 +87,17 @@ end
 -- @param tbl The table containing data that a LoggerConfig needs
 -- @return object loggerconfig
 function Log4g.Core.Config.LoggerConfig.RegisterLoggerConfig(tbl)
-    if not istable(tbl) or table.IsEmpty(tbl) then
-        error("LoggerConfig registration failed: arg must be a not empty table.\n")
-    end
-
-    MsgN("Starting the registration of LoggerConfig: " .. tbl.name .. "...")
+    hook.Run("Log4g_PreLoggerConfigRegistration", tbl.name)
 
     if not HasKey(Log4g.Core.Config.LoggerConfig.Buffer, tbl.name) then
         local loggerconfig = LoggerConfig:New(tbl)
         Log4g.Core.Config.LoggerConfig.Buffer[tbl.name] = loggerconfig
         file.Write(loggerconfig.file, util.TableToJSON(tbl, true))
-        MsgN("LoggerConfig registration: Successfully created file and Buffer item.")
+        hook.Run("Log4g_PostLoggerConfigRegistration")
 
         return Log4g.Core.Config.LoggerConfig.Buffer[tbl.name]
     else
-        ErrorNoHalt("LoggerConfig registration failed: A LoggerConfig with the same name already exists.\n")
+        hook.Run("Log4g_OnLoggerConfigRegistrationFailure")
 
         return Log4g.Core.Config.LoggerConfig.Buffer[tbl.name]
     end
