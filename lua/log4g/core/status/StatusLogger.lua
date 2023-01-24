@@ -30,7 +30,7 @@ AddHookAutoPrefix("PostLoggerContextTerminationSuccess", function()
 end)
 
 AddHookAutoPrefix("PreLoggerContextRegistration", function(name)
-    MsgN("LoggerContext registration: Starting for: " .. name .. "...")
+    MsgN("LoggerContext registration: Starting for " .. name .. "...")
 end)
 
 AddHookAutoPrefix("PostLoggerContextRegistration", function()
