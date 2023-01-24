@@ -52,16 +52,20 @@ end
 --- Remove the LoggerConfig JSON from local storge.
 -- `Log4g_PreLoggerConfigFileDeletion` will be called first.
 -- This will check if the file exists. When not, `Log4g_OnLoggerConfigFileDeletionFailure` will be called.
--- If file is successfully deleted, `Log4g_PostLoggerConfigFileDeletion` will be called.
+-- If file is successfully deleted and the LoggerConfig's file is set to nil, `Log4g_PostLoggerConfigFileDeletion` will be called.
+-- @return object self
 function LoggerConfig:RemoveFile()
     hook.Run("Log4g_PreLoggerConfigFileDeletion", self.name)
 
     if file.Exists(self.file, "DATA") then
         file.Delete(self.file)
+        self.file = nil
         hook.Run("Log4g_PostLoggerConfigFileDeletion")
     else
         hook.Run("Log4g_OnLoggerConfigFileDeletionFailure")
     end
+
+    return self
 end
 
 --- Start the default building procedure for the LoggerConfig.
