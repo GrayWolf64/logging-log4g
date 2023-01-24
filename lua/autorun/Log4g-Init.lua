@@ -22,6 +22,7 @@ if SERVER then
     include("log4g/core/Appender.lua")
     include("log4g/core/Layout.lua")
     include("log4g/core/LogSaveRestore.lua")
+    include("log4g/core/status/StatusLogger.lua")
 
     if file.Exists(MMC, "lsv") then
         include(MMC)

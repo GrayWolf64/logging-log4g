@@ -33,27 +33,26 @@ end
 
 --- Terminate the LoggerContext.
 function LoggerContext:Terminate()
-    MsgN("Starting the termination of LoggerContext: " .. self.name .. "...")
+    hook.Run("Log4g_PreLoggerContextTermination", self)
     SetState(self, STOPPING)
-    local folder = "log4g/server/loggercontext/" .. self.name
 
-    if file.Exists(folder, "DATA") then
-        DeleteFolderRecursive(folder, "DATA")
-        MsgN("LoggerContext termination: Successfully deleted LoggerContext folder.")
+    if file.Exists(self.folder, "DATA") then
+        DeleteFolderRecursive(self.folder, "DATA")
+        hook.Run("Log4g_OnLoggerContextFolderDeletionSuccess", self)
     else
-        ErrorNoHalt("LoggerContext termination failed: Can't find the LoggerContext folder data/log4g/server/loggercontext/.\n")
+        hook.Run("Log4g_OnLoggerContextFolderDeletionFailure", self)
     end
 
     SetState(self, STOPPED)
 
     if HasKey(Log4g.LogManager, self.name) then
         Log4g.LogManager[self.name] = nil
-        MsgN("LoggerContext termination: Successfully removed LoggerContext from Hierarchy.")
+        hook.Run("Log4g_PostLoggerContextObjectRemovalSuccess")
     else
-        ErrorNoHalt("LoggerContext termination failed: Can't find the LoggerContext in Hierarchy, may be nil already.\n")
+        hook.Run("Log4g_OnLoggerContextObjectRemovalFailure")
     end
 
-    MsgN("Termination completed.")
+    hook.Run("Log4g_PostLoggerContextTerminationSuccess")
 end
 
 --- Get all the Loggers of the LoggerContext.
@@ -73,10 +72,6 @@ end
 -- @param name The name of the LoggerContext
 -- @return bool hascontext
 function Log4g.Core.LoggerContext.HasContext(name)
-    if not isstring(name) then
-        error("LoggerContext search failed: name must be a string.\n")
-    end
-
     return HasKey(Log4g.LogManager, name)
 end
 
@@ -85,22 +80,18 @@ end
 -- @param name The name of the LoggerContext
 -- @return object loggercontext
 function Log4g.Core.LoggerContext.RegisterLoggerContext(name)
-    if not isstring(name) then
-        error("LoggerContext registration failed: name must be a string.\n")
-    end
-
-    MsgN("Starting the registration of LoggerContext: " .. name .. "...")
+    hook.Run("Log4g_PreLoggerContextRegistration", name)
 
     if not HasKey(Log4g.LogManager, name) then
         local loggercontext = LoggerContext:New(name)
         Log4g.LogManager[name] = loggercontext
         Log4g.LogManager[name]:Start()
         file.CreateDir("log4g/server/loggercontext/" .. name .. "/loggerconfig")
-        MsgN("LoggerContext registration: Successfully created folder and Hierarchy item.")
+        hook.Run("Log4g_PostLoggerContextRegistration")
 
         return Log4g.LogManager[name]
     else
-        MsgN("LoggerContext registration not needed: A LoggerContext with the same name already exists.")
+        hook.Run("Log4g_OnLoggerContextRegistrationFailure")
 
         return Log4g.LogManager[name]
     end
