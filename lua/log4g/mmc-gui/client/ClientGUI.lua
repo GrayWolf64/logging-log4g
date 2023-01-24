@@ -55,6 +55,15 @@ local function CreateDListView(parent, docktype, x, y, z, w, ha, hb)
     return dlistview
 end
 
+local function CreateDPropertySheet(parent, docktype, x, y, z, w, padding)
+    local dpropertysheet = vgui.Create("DPropertySheet", parent)
+    dpropertysheet:Dock(docktype)
+    dpropertysheet:DockMargin(x, y, z, w)
+    dpropertysheet:SetPadding(padding)
+
+    return dpropertysheet
+end
+
 --- Create a new row in a DProp.
 -- @lfunction DPropNewRow
 -- @param panel The DProp
@@ -168,17 +177,11 @@ concommand.Add("Log4g_MMC", function()
     local MenuB = MenuBar:AddMenu("Options")
     MenuB:AddOption("General", function() end):SetIcon("icon16/wrench.png")
     local MenuC = MenuBar:AddMenu("Help")
-    local SheetA = vgui.Create("DPropertySheet", Frame)
-    SheetA:Dock(FILL)
-    SheetA:DockMargin(0, 0, 0, 0)
-    SheetA:SetPadding(4)
+    local SheetA = CreateDPropertySheet(Frame, FILL, 0, 0, 0, 0, 4)
     local SheetPanelA = vgui.Create("DPanel", SheetA)
     SheetPanelA.Paint = nil
     SheetA:AddSheet("Configuration", SheetPanelA, "icon16/cog.png")
-    local SheetB = vgui.Create("DPropertySheet", SheetPanelA)
-    SheetB:Dock(FILL)
-    SheetB:DockMargin(0, 0, 0, 0)
-    SheetB:SetPadding(4)
+    local SheetB = CreateDPropertySheet(SheetPanelA, FILL, 0, 0, 0, 0, 4)
     local SheetPanelB = vgui.Create("DPanel", SheetB)
     SheetB:AddSheet("LoggerConfig", SheetPanelB)
     local ListView = CreateDListView(SheetPanelB, LEFT, 0, 0, 0, 0, 18, 18.5)
