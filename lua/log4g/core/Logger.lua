@@ -27,6 +27,7 @@ end
 --- Terminate the Logger.
 function Logger:Terminate()
     SetState(self, STOPPING)
+    file.Delete(self.loggerconfig.file)
     hook.Remove(self.loggerconfig.eventname, self.loggerconfig.uid)
     SetState(self, STOPPED)
     Log4g.LogManager[self.loggerconfig.loggercontext].logger[self.name] = nil
