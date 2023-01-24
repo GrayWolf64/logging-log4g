@@ -93,16 +93,16 @@ net.Receive("Log4g_CLReq_LoggerConfigs", function(len, ply)
 
     if istable(tbl) and not table.IsEmpty(tbl) then
         net.WriteBool(true)
-        local Data = {}
+        local data = {}
 
         for _, v in ipairs(tbl) do
             local str = file.Read(v, "DATA")
             if not isstring(str) or #str == 0 then return end
 
-            table.Add(Data, {util.JSONToTable(str)})
+            table.Add(data, {util.JSONToTable(str)})
         end
 
-        WriteDataSimple(util.TableToJSON(Data, true), 16)
+        WriteDataSimple(util.TableToJSON(data, true), 16)
     else
         net.WriteBool(false)
     end
