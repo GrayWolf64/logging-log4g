@@ -42,7 +42,6 @@ AddNetworkStrsViaTbl({
     [19] = "Log4g_CLRcv_CFG_LoggerConfig_ColumnText",
     [20] = "Log4g_CLReq_ChkConnected",
     [21] = "Log4g_CLRcv_ChkConnected",
-    [22] = "Log4g_CL_PendingTransmission_DPropLoggerConfigMessages",
     [23] = "Log4g_CLReq_LoggerConfig_BuildDefault"
 })
 
@@ -60,11 +59,9 @@ net.Receive("Log4g_CLReq_CFG_LoggerConfig_ColumnText", function(len, ply)
     net.Send(ply)
 end)
 
-net.Receive("Log4g_CL_PendingTransmission_DPropLoggerConfigMessages", function()
-    SendTableAfterRcvNetMsg("Log4g_CLReq_Level_Names", "Log4g_CLRcv_Level_Names", table.Add(table.GetKeys(Log4g.Level.Standard), table.GetKeys(Log4g.Level.Custom)))
-    SendTableAfterRcvNetMsg("Log4g_CLReq_Appender_Names", "Log4g_CLRcv_Appender_Names", table.GetKeys(Log4g.Core.Appender))
-    SendTableAfterRcvNetMsg("Log4g_CLReq_Layout_Names", "Log4g_CLRcv_Layout_Names", table.GetKeys(Log4g.Core.Layout))
-end)
+SendTableAfterRcvNetMsg("Log4g_CLReq_Level_Names", "Log4g_CLRcv_Level_Names", table.Add(table.GetKeys(Log4g.Level.Standard), table.GetKeys(Log4g.Level.Custom)))
+SendTableAfterRcvNetMsg("Log4g_CLReq_Appender_Names", "Log4g_CLRcv_Appender_Names", table.GetKeys(Log4g.Core.Appender))
+SendTableAfterRcvNetMsg("Log4g_CLReq_Layout_Names", "Log4g_CLRcv_Layout_Names", table.GetKeys(Log4g.Core.Layout))
 
 net.Receive("Log4g_CLReq_Hooks", function(len, ply)
     net.Start("Log4g_CLRcv_Hooks")

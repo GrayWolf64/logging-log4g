@@ -379,7 +379,6 @@ concommand.Add("Log4g_MMC", function()
             box:SetValue("Select...")
         end
 
-        SendEmptyMsgToSV("Log4g_CL_PendingTransmission_DPropLoggerConfigMessages")
         AddChoiceViaNetTbl("Log4g_CLReq_Level_Names", "Log4g_CLRcv_Level_Names", RowD)
         AddChoiceViaNetTbl("Log4g_CLReq_Appender_Names", "Log4g_CLRcv_Appender_Names", RowE)
         AddChoiceViaNetTbl("Log4g_CLReq_Layout_Names", "Log4g_CLRcv_Layout_Names", RowF)
