@@ -79,6 +79,8 @@ local function RestoreLoggerContext()
     file.Delete(LoggerContextSaveFile)
 end
 
+--- Re-register all the previously buffered LoggerConfigs.
+-- @lfunction RestoreBufferedLoggerConfig
 local function RestoreBufferedLoggerConfig()
     if not file.Exists(BufferedLoggerConfigSaveFile, "DATA") then return end
     local tbl = util.JSONToTable(file.Read(BufferedLoggerConfigSaveFile, "DATA"))
@@ -90,6 +92,9 @@ local function RestoreBufferedLoggerConfig()
     file.Delete(BufferedLoggerConfigSaveFile)
 end
 
+--- Rebuild all the LoggerConfigs that were previously built.
+-- First re-register them according to the JSON file then perform BuildDefault method.
+-- @lfunction RebuildLoggerConfig
 local function RebuildLoggerConfig()
     if not file.Exists(BuiltLoggerConfigSaveFile, "DATA") then return end
     local tbl = util.JSONToTable(file.Read(BuiltLoggerConfigSaveFile, "DATA"))
