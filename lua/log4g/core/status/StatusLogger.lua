@@ -2,7 +2,7 @@
 -- It records events that occur in the logging system.
 -- @script StatusLogger.lua
 local function AddHookAutoPrefix(eventname, func)
-    hook.Add("Log4g_" .. eventname, "Log4g_" .. eventname, func)
+    hook.Add("Log4g_" .. eventname, "Log4g_StatusLogger", func)
 end
 
 AddHookAutoPrefix("PreLoggerContextTermination", function(self)
