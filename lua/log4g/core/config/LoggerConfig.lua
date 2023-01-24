@@ -33,6 +33,9 @@ end
 
 --- Remove the LoggerConfig from Buffer.
 -- This will check if the LoggerConfig Buffer table contains the LoggerConfig and remove it.
+-- `Log4g_PreBufferedLoggerConfigRemoval` will be called before the removal.
+-- Then `Log4g_PostBufferedLoggerConfigRemovalSuccess` will be called after removal.
+-- When it fails to find the Buffered LoggerConfig, `Log4g_OnBufferedLoggerConfigRemovalFailure` will be called.
 function LoggerConfig:RemoveBuffer()
     hook.Run("Log4g_PreBufferedLoggerConfigRemoval", self.name)
     SetState(self, STOPPING)
@@ -47,12 +50,15 @@ function LoggerConfig:RemoveBuffer()
 end
 
 --- Remove the LoggerConfig JSON from local storge.
+-- `Log4g_PreLoggerConfigFileDeletion` will be called first.
+-- This will check if the file exists. When not, `Log4g_OnLoggerConfigFileDeletionFailure` will be called.
+-- If file is successfully deleted, `Log4g_PostLoggerConfigFileDeletion` will be called.
 function LoggerConfig:RemoveFile()
     hook.Run("Log4g_PreLoggerConfigFileDeletion", self.name)
 
     if file.Exists(self.file, "DATA") then
         file.Delete(self.file)
-        hook.Run("Log4g_PostLoggerConfigFileDeletionSuccess")
+        hook.Run("Log4g_PostLoggerConfigFileDeletion")
     else
         hook.Run("Log4g_OnLoggerConfigFileDeletionFailure")
     end
@@ -62,6 +68,9 @@ end
 -- It will first set the LoggerConfig's LifeCycle to STARTING.
 -- Then a Logger based on the LoggerConfig will be registered, and the provided LoggerConfig will be removed from Buffer.
 -- At last the registered Logger's LoggerConfig's state will be set to STARTED, and the procedure has completed.
+-- If the LoggerConfig is already started, it will simply return end.
+-- `Log4g_PreLoggerConfigBuild` will be called first after the check.
+-- `Log4g_PostLoggerConfigBuild` will be called after the build.
 function LoggerConfig:BuildDefault()
     if IsStarted(self) then return end
     hook.Run("Log4g_PreLoggerConfigBuild", self.name)
@@ -71,7 +80,7 @@ function LoggerConfig:BuildDefault()
     AddLoggerLookupItem(self.name, self.loggercontext, self.file)
 
     function logger.loggerconfig:BuildDefault()
-        MsgN("LoggerConfig build not needed: already started.")
+        MsgN("LoggerConfig build not needed: Already started.")
     end
 
     self:RemoveBuffer()
