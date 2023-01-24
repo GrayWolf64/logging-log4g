@@ -63,10 +63,7 @@ end
 -- Then a Logger based on the LoggerConfig will be registered, and the provided LoggerConfig will be removed from Buffer.
 -- At last the registered Logger's LoggerConfig's state will be set to STARTED, and the procedure has completed.
 function LoggerConfig:BuildDefault()
-    if IsStarted(self) then
-        error("Build not needed: LoggerConfig already started.\n")
-    end
-
+    if IsStarted(self) then return end
     hook.Run("Log4g_PreLoggerConfigBuild", self.name)
     SetState(self, STARTING)
     MsgN("Starting LoggerConfig...")
