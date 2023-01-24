@@ -90,6 +90,9 @@ end
 
 --- Register a LoggerConfig.
 -- If the LoggerConfig with the same name already exists, an error will be thrown without halt.
+-- `Log4g_PreLoggerConfigRegistration` will be called before registering.
+-- `Log4g_PostLoggerConfigRegistration` will be called afer registration succeeds.
+-- `Log4g_OnLoggerConfigRegistrationFailure` will be called when registration fails.
 -- @param tbl The table containing data that a LoggerConfig needs
 -- @return object loggerconfig
 function Log4g.Core.Config.LoggerConfig.RegisterLoggerConfig(tbl)
