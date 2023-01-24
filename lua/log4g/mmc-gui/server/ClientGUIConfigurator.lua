@@ -42,7 +42,7 @@ AddNetworkStrsViaTbl({
     [19] = "Log4g_CLRcv_CFG_LoggerConfig_ColumnText",
     [20] = "Log4g_CLReq_ChkConnected",
     [21] = "Log4g_CLRcv_ChkConnected",
-    [23] = "Log4g_CLReq_LoggerConfig_BuildDefault"
+    [22] = "Log4g_CLReq_LoggerConfig_BuildDefault"
 })
 
 net.Receive("Log4g_CLReq_ChkConnected", function(len, ply)
