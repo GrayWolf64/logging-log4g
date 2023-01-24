@@ -34,8 +34,8 @@ end
 --- Remove the LoggerConfig from Buffer.
 -- This will check if the LoggerConfig Buffer table contains the LoggerConfig and remove it.
 -- `Log4g_PreBufferedLoggerConfigRemoval` will be called before the removal.
--- Then `Log4g_PostBufferedLoggerConfigRemovalSuccess` will be called after removal.
--- When it fails to find the Buffered LoggerConfig, `Log4g_OnBufferedLoggerConfigRemovalFailure` will be called.
+-- `Log4g_PostBufferedLoggerConfigRemovalSuccess` will be called after removal.
+-- `Log4g_OnBufferedLoggerConfigRemovalFailure` will be called when failed to find the LoggerConfig.
 function LoggerConfig:RemoveBuffer()
     hook.Run("Log4g_PreBufferedLoggerConfigRemoval", self.name)
     SetState(self, STOPPING)
