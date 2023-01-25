@@ -56,7 +56,9 @@ local function HasLogger(name)
 end
 
 --- Register a Logger.
--- If the Logger with the same name already exists, its loggerconfig will be overrode.
+-- `Log4g_PreLoggerRegistration` will be called before the registration.
+-- `Log4g_PostLoggerRegistration` will be called after the registration succeeds.
+-- If the Logger with the same name already exists, `Log4g_OnLoggerRegistrationFailure` will be called.
 -- @param loggerconfig The Loggerconfig
 -- @return object logger
 function Log4g.Core.Logger.RegisterLogger(loggerconfig)
