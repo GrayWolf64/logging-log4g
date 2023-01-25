@@ -22,6 +22,10 @@ Log4g is an advanced logging framework for Garry's Mod.
 | Logger          | Not complete         |
 | ...             | ...                  |
 
+### Component Src Dir
+
+[Core, MMC-GUI](https://github.com/GrayWolf64/gmod-logging-log4g/tree/main/lua/log4g)
+
 ## Documentation
 
 The Log4g Documentation is available [here](https://github.com/GrayWolf64/Log4g/wiki).
