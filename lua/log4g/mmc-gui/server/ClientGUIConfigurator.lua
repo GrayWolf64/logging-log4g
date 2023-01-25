@@ -11,6 +11,7 @@ local AddLoggerContextLookupItem = Log4g.Core.LoggerContext.Lookup.AddItem
 local RemoveLoggerContextLookup = Log4g.Core.LoggerContext.Lookup.RemoveLoggerContext
 local RemoveLoggerContextLookupLoggerConfig = Log4g.Core.LoggerContext.Lookup.RemoveLoggerConfig
 local WriteDataSimple = Log4g.Util.WriteDataSimple
+local GetLoggerConfigFiles = Log4g.Core.Config.LoggerConfig.GetFiles
 local LoggerContextLookupFile = "log4g/server/loggercontext/lookup_loggercontext.json"
 
 local function IdentChk(ply)
@@ -88,7 +89,7 @@ net.Receive("Log4g_CLUpload_LoggerConfig_JSON", function(len, ply)
 end)
 
 net.Receive("Log4g_CLReq_LoggerConfigs", function(len, ply)
-    local tbl = Log4g.Core.Config.LoggerConfig.GetFiles()
+    local tbl = GetLoggerConfigFiles()
     net.Start("Log4g_CLRcv_LoggerConfigs")
 
     if istable(tbl) and not table.IsEmpty(tbl) then
@@ -113,13 +114,7 @@ end)
 net.Receive("Log4g_CLReq_LoggerConfig_Remove", function(len, ply)
     if not IdentChk(ply) then return end
     local LoggerContextName, LoggerConfigName = net.ReadString(), net.ReadString()
-
-    for k, _ in pairs(Log4g.Core.Config.LoggerConfig.Buffer) do
-        if k == LoggerConfigName then
-            Log4g.Core.Config.LoggerConfig.Buffer[k]:RemoveFile():RemoveBuffer()
-        end
-    end
-
+    Log4g.Core.Config.LoggerConfig.Buffer[LoggerConfigName]:RemoveFile():RemoveBuffer()
     RemoveLoggerContextLookupLoggerConfig(LoggerContextName, LoggerConfigName)
 end)
 
@@ -139,13 +134,7 @@ end)
 net.Receive("Log4g_CLReq_LoggerContext_Remove", function(len, ply)
     if not IdentChk(ply) then return end
     local LoggerContextName = net.ReadString()
-
-    for k, _ in pairs(Log4g.LogManager) do
-        if k == LoggerContextName then
-            Log4g.LogManager[k]:Terminate()
-        end
-    end
-
+    Log4g.LogManager[LoggerContextName]:Terminate()
     RemoveLoggerContextLookup(LoggerContextName)
 end)
 
@@ -157,12 +146,6 @@ end)
 net.Receive("Log4g_CLReq_LoggerConfig_BuildDefault", function(len, ply)
     if not IdentChk(ply) then return end
     local LoggerContextName, LoggerConfigName = net.ReadString(), net.ReadString()
-
-    for k, _ in pairs(Log4g.Core.Config.LoggerConfig.Buffer) do
-        if k == LoggerConfigName then
-            Log4g.Core.Config.LoggerConfig.Buffer[k]:BuildDefault()
-        end
-    end
-
+    Log4g.Core.Config.LoggerConfig.Buffer[LoggerConfigName]:BuildDefault()
     RemoveLoggerContextLookupLoggerConfig(LoggerContextName, LoggerConfigName)
 end)
