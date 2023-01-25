@@ -20,8 +20,10 @@ end
 
 --- Delete the Custom Level.
 function Level:Delete()
-    if HasKey(Log4g.Level.Custom, self.name) then
-        Log4g.Level.Custom[self.name] = nil
+    local custom = Log4g.Level.Custom
+
+    if HasKey(custom, self.name) then
+        custom[self.name] = nil
     end
 end
 
@@ -61,10 +63,13 @@ end
 -- @param name The Level's name
 -- @return object level
 function Log4g.Level.GetLevel(name)
-    if HasKey(Log4g.Level.Standard, name) then
-        return Log4g.Level.Standard[name]
-    elseif HasKey(Log4g.Level.Custom, name) then
-        return Log4g.Level.Custom[name]
+    local standard = Log4g.Level.Standard
+    local custom = Log4g.Level.Custom
+
+    if HasKey(standard, name) then
+        return standard[name]
+    elseif HasKey(custom, name) then
+        return custom[name]
     else
         return nil
     end
@@ -76,17 +81,19 @@ end
 -- @param int The Level's intlevel
 -- @return object level
 function Log4g.Level.RegisterCustomLevel(name, int)
-    if name == "" or int < 0 or HasKey(Log4g.Level.Standard, name) then return end
+    local standard = Log4g.Level.Standard
+    local custom = Log4g.Level.Custom
+    if name == "" or int < 0 or HasKey(standard, name) then return end
 
-    if not HasKey(Log4g.Level.Custom, name) then
+    if not HasKey(custom, name) then
         local level = Level:New(name, int)
-        Log4g.Level.Custom[name] = level
+        custom[name] = level
 
         return level
     else
-        Log4g.Level.Custom[name].int = int
+        custom[name].int = int
 
-        return Log4g.Level.Custom[name]
+        return custom[name]
     end
 end
 
