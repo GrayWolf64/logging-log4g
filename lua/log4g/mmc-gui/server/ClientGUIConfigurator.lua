@@ -13,6 +13,7 @@ local RemoveLoggerContextLookupLoggerConfig = Log4g.Core.LoggerContext.Lookup.Re
 local WriteDataSimple = Log4g.Util.WriteDataSimple
 local GetLoggerConfigFiles = Log4g.Core.Config.LoggerConfig.GetFiles
 local GetStandardLevel = Log4g.Level.GetStandardLevel
+local GetCustomLevel = Log4g.Level.GetCustomLevel()
 local LoggerContextLookupFile = "log4g/server/loggercontext/lookup_loggercontext.json"
 
 local function IdentChk(ply)
@@ -61,7 +62,7 @@ net.Receive("Log4g_CLReq_CFG_LoggerConfig_ColumnText", function(len, ply)
     net.Send(ply)
 end)
 
-SendTableAfterRcvNetMsg("Log4g_CLReq_Level_Names", "Log4g_CLRcv_Level_Names", table.Add(table.GetKeys(GetStandardLevel()), table.GetKeys(Log4g.Level.Custom)))
+SendTableAfterRcvNetMsg("Log4g_CLReq_Level_Names", "Log4g_CLRcv_Level_Names", table.Add(table.GetKeys(GetStandardLevel()), table.GetKeys(GetCustomLevel())))
 SendTableAfterRcvNetMsg("Log4g_CLReq_Appender_Names", "Log4g_CLRcv_Appender_Names", table.GetKeys(Log4g.Core.Appender))
 SendTableAfterRcvNetMsg("Log4g_CLReq_Layout_Names", "Log4g_CLRcv_Layout_Names", table.GetKeys(Log4g.Core.Layout))
 

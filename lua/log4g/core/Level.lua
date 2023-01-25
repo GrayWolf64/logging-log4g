@@ -1,7 +1,6 @@
 --- The Level (Log Level).
 -- @classmod Level
 local HasKey = Log4g.Util.HasKey
-Log4g.Level.Custom = Log4g.Level.Custom or {}
 local Class = include("log4g/core/impl/MiddleClass.lua")
 local Level = Class("Level")
 
@@ -16,15 +15,6 @@ end
 
 function Level:__eq(lhs, rhs)
     return lhs == rhs
-end
-
---- Delete the Custom Level.
-function Level:Delete()
-    local custom = Log4g.Level.Custom
-
-    if HasKey(custom, self.name) then
-        custom[self.name] = nil
-    end
 end
 
 --- Get the Level's name.
@@ -56,6 +46,17 @@ function Level:IsInRange(minlevel, maxlevel)
     else
         return false
     end
+end
+
+--- Custom Logging Levels created by users.
+-- @local
+-- @table CustomLevel
+local CustomLevel = {}
+
+--- Get the Custom Levels as a table.
+-- @return table customlevel
+function Log4g.Level.GetCustomLevel()
+    return CustomLevel
 end
 
 --- Standard Logging Levels as a table for use internally.
@@ -91,12 +92,10 @@ end
 -- @param name The Level's name
 -- @return object level
 function Log4g.Level.GetLevel(name)
-    local custom = Log4g.Level.Custom
-
     if HasKey(StandardLevel, name) then
         return StandardLevel[name]
-    elseif HasKey(custom, name) then
-        return custom[name]
+    elseif HasKey(CustomLevel, name) then
+        return CustomLevel[name]
     else
         return nil
     end
@@ -108,17 +107,16 @@ end
 -- @param int The Level's intlevel
 -- @return object level
 function Log4g.Level.RegisterCustomLevel(name, int)
-    local custom = Log4g.Level.Custom
     if #name == 0 or int < 0 or HasKey(StandardLevel, name) then return end
 
-    if not HasKey(custom, name) then
+    if not HasKey(CustomLevel, name) then
         local level = Level:New(name, int)
-        custom[name] = level
+        CustomLevel[name] = level
 
         return level
     else
-        custom[name].int = int
+        CustomLevel[name].int = int
 
-        return custom[name]
+        return CustomLevel[name]
     end
 end
