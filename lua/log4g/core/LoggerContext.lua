@@ -6,12 +6,9 @@ local LoggerContext = Class("LoggerContext")
 local HasKey = Log4g.Util.HasKey
 local DeleteFolderRecursive = Log4g.Util.DeleteFolderRecursive
 local SetState = Log4g.Core.LifeCycle.SetState
-local INITIALIZING = Log4g.Core.LifeCycle.State.INITIALIZING
-local INITIALIZED = Log4g.Core.LifeCycle.State.INITIALIZED
-local STARTING = Log4g.Core.LifeCycle.State.STARTING
-local STARTED = Log4g.Core.LifeCycle.State.STARTED
-local STOPPING = Log4g.Core.LifeCycle.State.STOPPING
-local STOPPED = Log4g.Core.LifeCycle.State.STOPPED
+local INITIALIZING, INITIALIZED = Log4g.Core.LifeCycle.State.INITIALIZING, Log4g.Core.LifeCycle.State.INITIALIZED
+local STARTING, STARTED = Log4g.Core.LifeCycle.State.STARTING, Log4g.Core.LifeCycle.State.STARTED
+local STOPPING, STOPPED = Log4g.Core.LifeCycle.State.STOPPING, Log4g.Core.LifeCycle.State.STOPPED
 
 function LoggerContext:Initialize(name)
     SetState(self, INITIALIZING)
