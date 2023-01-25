@@ -17,6 +17,7 @@ local STOPPING = Log4g.Core.LifeCycle.State.STOPPING
 local STOPPED = Log4g.Core.LifeCycle.State.STOPPED
 local AddLoggerLookupItem = Log4g.Core.Logger.Lookup.AddItem
 local RegisterLogger = Log4g.Core.Logger.RegisterLogger
+local GetLevel = Log4g.Level.GetLevel
 
 function LoggerConfig:Initialize(tbl)
     SetState(self, INITIALIZING)
@@ -105,6 +106,7 @@ function Log4g.Core.Config.LoggerConfig.RegisterLoggerConfig(tbl)
     local buffer = Log4g.Core.Config.LoggerConfig.Buffer
 
     if not HasKey(buffer, tbl.name) then
+        tbl.level = GetLevel(tbl.level)
         local loggerconfig = LoggerConfig:New(tbl)
         buffer[tbl.name] = loggerconfig
         file.Write(loggerconfig.file, util.TableToJSON(tbl, true))
