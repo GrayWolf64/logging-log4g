@@ -24,10 +24,11 @@ end
 --- Save all the Buffered LoggerConfigs' names and associated LoggerContexts' names into a JSON file.
 -- @lfunction SaveBufferedLoggerConfig
 local function SaveBufferedLoggerConfig()
-    if table.IsEmpty(Log4g.Core.Config.LoggerConfig.Buffer) then return end
+    local buffer = Log4g.Core.Config.LoggerConfig.Buffer
+    if table.IsEmpty(buffer) then return end
     local result = {}
 
-    for k, v in pairs(Log4g.Core.Config.LoggerConfig.Buffer) do
+    for k, v in pairs(buffer) do
         table.insert(result, {
             name = k,
             loggercontext = v.loggercontext
@@ -40,10 +41,11 @@ end
 --- Save all the built LoggerConfigs' names and associated LoggerContexts' names into a JSON file.
 -- @lfunction SaveBuiltLoggerConfig
 local function SaveBuiltLoggerConfig()
-    if table.IsEmpty(Log4g.LogManager) then return end
+    local manager = Log4g.LogManager
+    if table.IsEmpty(manager) then return end
     local result = {}
 
-    for k, v in pairs(Log4g.LogManager) do
+    for k, v in pairs(manager) do
         if table.IsEmpty(v.logger) then return end
 
         for i, _ in pairs(v.logger) do
