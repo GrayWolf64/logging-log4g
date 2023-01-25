@@ -4,6 +4,11 @@ local MMC = "log4g/mmc-gui/Log4g-MMC-Init.lua"
 file.CreateDir("log4g")
 
 if SERVER then
+    --- The global table for the logging system.
+    -- @table Log4g
+    -- @field Core
+    -- @field LogManager
+    -- @field Level
     Log4g = Log4g or {}
     Log4g.Core = Log4g.Core or {}
     Log4g.LogManager = Log4g.LogManager or {}
