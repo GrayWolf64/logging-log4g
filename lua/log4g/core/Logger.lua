@@ -46,11 +46,9 @@ function Logger:GetLevel()
 end
 
 local function HasLogger(name)
-    if not isstring(name) then
-        error("HasLogger search failed: name must be a string.\n")
-    end
+    local manager = Log4g.LogManager
 
-    for _, v in pairs(Log4g.LogManager) do
+    for _, v in pairs(manager) do
         if HasKey(v.logger, name) then return true end
     end
 
@@ -70,14 +68,15 @@ function Log4g.Core.Logger.RegisterLogger(loggerconfig)
 
     if not HasLogger(loggerconfig.name) then
         local logger = Logger:New(loggerconfig)
-        Log4g.LogManager[loggerconfig.loggercontext].logger[loggerconfig.name] = logger
-        Log4g.LogManager[loggerconfig.loggercontext].logger[loggerconfig.name]:Start()
+        local manager = Log4g.LogManager
+        manager[loggerconfig.loggercontext].logger[loggerconfig.name] = logger
+        manager[loggerconfig.loggercontext].logger[loggerconfig.name]:Start()
         MsgN("Logger registration: Successfully created Hierarchy LoggerContext child item.")
 
-        return Log4g.LogManager[loggerconfig.loggercontext].logger[loggerconfig.name]
+        return manager[loggerconfig.loggercontext].logger[loggerconfig.name]
     else
         ErrorNoHalt("Logger registration failed: Logger already exists.\n")
 
-        return Log4g.LogManager[loggerconfig.loggercontext].logger[loggerconfig.name]
+        return manager[loggerconfig.loggercontext].logger[loggerconfig.name]
     end
 end
