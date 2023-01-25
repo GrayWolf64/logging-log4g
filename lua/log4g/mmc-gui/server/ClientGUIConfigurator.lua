@@ -3,7 +3,6 @@
 -- @license Apache License 2.0
 -- @copyright GrayWolf64
 local AddNetworkStrsViaTbl = Log4g.Util.AddNetworkStrsViaTbl
-local SendTableAfterRcvNetMsg = Log4g.Util.SendTableAfterRcvNetMsg
 local RegisterLoggerContext = Log4g.Core.LoggerContext.RegisterLoggerContext
 local RegisterLoggerConfig = Log4g.Core.Config.LoggerConfig.RegisterLoggerConfig
 local RegisterCustomLevel = Log4g.Level.RegisterCustomLevel
@@ -12,8 +11,6 @@ local RemoveLoggerContextLookup = Log4g.Core.LoggerContext.Lookup.RemoveLoggerCo
 local RemoveLoggerContextLookupLoggerConfig = Log4g.Core.LoggerContext.Lookup.RemoveLoggerConfig
 local WriteDataSimple = Log4g.Util.WriteDataSimple
 local GetLoggerConfigFiles = Log4g.Core.Config.LoggerConfig.GetFiles
-local GetStandardLevel = Log4g.Level.GetStandardLevel
-local GetCustomLevel = Log4g.Level.GetCustomLevel
 local LoggerContextLookupFile = "log4g/server/loggercontext/lookup_loggercontext.json"
 
 local function IdentChk(ply)
@@ -60,25 +57,6 @@ net.Receive("Log4g_CLReq_CFG_LoggerConfig_ColumnText", function(len, ply)
     net.WriteTable({"name", "eventname", "uid", "loggercontext", "level", "appender", "layout", "func"})
 
     net.Send(ply)
-end)
-
-SendTableAfterRcvNetMsg("Log4g_CLReq_Level_Names", "Log4g_CLRcv_Level_Names", table.Add(table.GetKeys(GetStandardLevel()), table.GetKeys(GetCustomLevel())))
-SendTableAfterRcvNetMsg("Log4g_CLReq_Appender_Names", "Log4g_CLRcv_Appender_Names", table.GetKeys(Log4g.Core.Appender))
-SendTableAfterRcvNetMsg("Log4g_CLReq_Layout_Names", "Log4g_CLRcv_Layout_Names", table.GetKeys(Log4g.Core.Layout))
-
-net.Receive("Log4g_CLReq_Hooks", function(len, ply)
-    net.Start("Log4g_CLRcv_Hooks")
-    WriteDataSimple(util.TableToJSON(hook.GetTable()), 16)
-    net.Send(ply)
-end)
-
-net.Receive("Log4g_CLUpload_LoggerConfig", function(len, ply)
-    if not IdentChk(ply) then return end
-    local ConfigContent = net.ReadTable()
-    local ContextName, ConfigName = ConfigContent.loggercontext, ConfigContent.name
-    RegisterLoggerContext(ContextName)
-    RegisterLoggerConfig(ConfigContent)
-    AddLoggerContextLookupItem(ContextName, ConfigName)
 end)
 
 net.Receive("Log4g_CLUpload_LoggerConfig_JSON", function(len, ply)
