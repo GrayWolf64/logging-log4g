@@ -13,7 +13,7 @@ local RemoveLoggerContextLookupLoggerConfig = Log4g.Core.LoggerContext.Lookup.Re
 local WriteDataSimple = Log4g.Util.WriteDataSimple
 local GetLoggerConfigFiles = Log4g.Core.Config.LoggerConfig.GetFiles
 local GetStandardLevel = Log4g.Level.GetStandardLevel
-local GetCustomLevel = Log4g.Level.GetCustomLevel()
+local GetCustomLevel = Log4g.Level.GetCustomLevel
 local LoggerContextLookupFile = "log4g/server/loggercontext/lookup_loggercontext.json"
 
 local function IdentChk(ply)
