@@ -41,9 +41,10 @@ function LoggerConfig:RemoveBuffer()
     hook.Run("Log4g_PreBufferedLoggerConfigRemoval", self.name)
     SetState(self, STOPPING)
     SetState(self, STOPPED)
+    local buffer = Log4g.Core.Config.LoggerConfig.Buffer
 
-    if HasKey(Log4g.Core.Config.LoggerConfig.Buffer, self.name) then
-        Log4g.Core.Config.LoggerConfig.Buffer[self.name] = nil
+    if HasKey(buffer, self.name) then
+        buffer[self.name] = nil
         hook.Run("Log4g_PostBufferedLoggerConfigRemovalSuccess")
     else
         hook.Run("Log4g_OnBufferedLoggerConfigRemovalFailure")
@@ -101,18 +102,19 @@ end
 -- @return object loggerconfig
 function Log4g.Core.Config.LoggerConfig.RegisterLoggerConfig(tbl)
     hook.Run("Log4g_PreLoggerConfigRegistration", tbl.name)
+    local buffer = Log4g.Core.Config.LoggerConfig.Buffer
 
-    if not HasKey(Log4g.Core.Config.LoggerConfig.Buffer, tbl.name) then
+    if not HasKey(buffer, tbl.name) then
         local loggerconfig = LoggerConfig:New(tbl)
-        Log4g.Core.Config.LoggerConfig.Buffer[tbl.name] = loggerconfig
+        buffer[tbl.name] = loggerconfig
         file.Write(loggerconfig.file, util.TableToJSON(tbl, true))
         hook.Run("Log4g_PostLoggerConfigRegistration")
 
-        return Log4g.Core.Config.LoggerConfig.Buffer[tbl.name]
+        return buffer[tbl.name]
     else
         hook.Run("Log4g_OnLoggerConfigRegistrationFailure")
 
-        return Log4g.Core.Config.LoggerConfig.Buffer[tbl.name]
+        return buffer[tbl.name]
     end
 end
 

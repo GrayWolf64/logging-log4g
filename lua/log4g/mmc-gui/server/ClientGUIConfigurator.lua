@@ -135,6 +135,13 @@ net.Receive("Log4g_CLReq_LoggerContext_Remove", function(len, ply)
     if not IdentChk(ply) then return end
     local ContextName = net.ReadString()
     Log4g.LogManager[ContextName]:Terminate()
+
+    for k, v in pairs(Log4g.Core.Config.LoggerConfig.Buffer) do
+        if v.loggercontext == ContextName then
+            Log4g.Core.Config.LoggerConfig.Buffer[k] = nil
+        end
+    end
+
     RemoveLoggerContextLookup(ContextName)
 end)
 
