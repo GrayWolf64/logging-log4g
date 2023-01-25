@@ -106,9 +106,11 @@ function Log4g.Core.Config.LoggerConfig.RegisterLoggerConfig(tbl)
     local buffer = Log4g.Core.Config.LoggerConfig.Buffer
 
     if not HasKey(buffer, tbl.name) then
-        tbl.level = GetLevel(tbl.level)
+        local strlevel = tbl.level
+        tbl.level = GetLevel(strlevel)
         local loggerconfig = LoggerConfig:New(tbl)
         buffer[tbl.name] = loggerconfig
+        tbl.level = strlevel
         file.Write(loggerconfig.file, util.TableToJSON(tbl, true))
         hook.Run("Log4g_PostLoggerConfigRegistration")
 
