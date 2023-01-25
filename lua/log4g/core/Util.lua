@@ -19,18 +19,6 @@ Log4g.Util.HasKey = function(tbl, key)
     return false
 end
 
---- Send a table after receiving a net message.
--- @param receive The message to receive (from a player)
--- @param start The message for sending the table
--- @param tbl The table to send
-Log4g.Util.SendTableAfterRcvNetMsg = function(receive, start, tbl)
-    net.Receive(receive, function(len, ply)
-        net.Start(start)
-        net.WriteTable(tbl)
-        net.Send(ply)
-    end)
-end
-
 --- Add all the string keys in a table to network string table.
 -- @param tbl The table of network strings to add
 Log4g.Util.AddNetworkStrsViaTbl = function(tbl)
