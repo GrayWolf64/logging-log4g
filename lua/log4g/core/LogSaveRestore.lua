@@ -86,7 +86,9 @@ local function RestoreBufferedLoggerConfig()
     local tbl = util.JSONToTable(file.Read(BufferedLoggerConfigSaveFile, "DATA"))
 
     for _, v in pairs(tbl) do
-        RegisterLoggerConfig(util.JSONToTable(file.Read("log4g/server/loggercontext/" .. v.loggercontext .. "/loggerconfig/" .. v.name .. ".json", "DATA")))
+        local save = "log4g/server/loggercontext/" .. v.loggercontext .. "/loggerconfig/" .. v.name .. ".json"
+        if not file.Exists(save, "DATA") then return end
+        RegisterLoggerConfig(util.JSONToTable(file.Read(save, "DATA")))
     end
 
     file.Delete(BufferedLoggerConfigSaveFile)
@@ -100,7 +102,9 @@ local function RebuildLoggerConfig()
     local tbl = util.JSONToTable(file.Read(BuiltLoggerConfigSaveFile, "DATA"))
 
     for _, v in pairs(tbl) do
-        RegisterLoggerConfig(util.JSONToTable(file.Read("log4g/server/loggercontext/" .. v.loggercontext .. "/loggerconfig/" .. v.name .. ".json", "DATA")))
+        local save = "log4g/server/loggercontext/" .. v.loggercontext .. "/loggerconfig/" .. v.name .. ".json"
+        if not file.Exists(save, "DATA") then return end
+        RegisterLoggerConfig(util.JSONToTable(file.Read(save, "DATA")))
         Log4g.Core.Config.LoggerConfig.Buffer[v.name]:BuildDefault()
     end
 
