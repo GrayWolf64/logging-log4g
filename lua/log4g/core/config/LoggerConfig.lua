@@ -16,6 +16,7 @@ local STARTED = Log4g.Core.LifeCycle.State.STARTED
 local STOPPING = Log4g.Core.LifeCycle.State.STOPPING
 local STOPPED = Log4g.Core.LifeCycle.State.STOPPED
 local AddLoggerLookupItem = Log4g.Core.Logger.Lookup.AddItem
+local RegisterLogger = Log4g.Core.Logger.RegisterLogger
 
 function LoggerConfig:Initialize(tbl)
     SetState(self, INITIALIZING)
@@ -80,7 +81,7 @@ function LoggerConfig:BuildDefault()
     hook.Run("Log4g_PreLoggerConfigBuild", self.name)
     SetState(self, STARTING)
     MsgN("Starting LoggerConfig...")
-    local logger = Log4g.Core.Logger.RegisterLogger(self)
+    local logger = RegisterLogger(self)
     AddLoggerLookupItem(self.name, self.loggercontext, self.file)
 
     function logger.loggerconfig:BuildDefault()
@@ -119,10 +120,12 @@ end
 -- If the LoggerConfig Buffer table is empty, nil will be the return value.
 -- @return tbl filepaths
 function Log4g.Core.Config.LoggerConfig.GetFiles()
-    if not table.IsEmpty(Log4g.Core.Config.LoggerConfig.Buffer) then
+    local buffer = Log4g.Core.Config.LoggerConfig.Buffer
+
+    if not table.IsEmpty(buffer) then
         local tbl = {}
 
-        for _, v in pairs(Log4g.Core.Config.LoggerConfig.Buffer) do
+        for _, v in pairs(buffer) do
             table.insert(tbl, v.file)
         end
 
