@@ -11,10 +11,11 @@ local BuiltLoggerConfigSaveFile = "log4g/server/saverestore_loggerconfig_built.j
 --- Save all the LoggerContexts' names into a JSON file.
 -- @lfunction SaveLoggerContext
 local function SaveLoggerContext()
-    if table.IsEmpty(Log4g.LogManager) then return end
+    local manager = Log4g.LogManager
+    if table.IsEmpty(manager) then return end
     local result = {}
 
-    for k, _ in pairs(Log4g.LogManager) do
+    for k, _ in pairs(manager) do
         table.insert(result, k)
     end
 
