@@ -72,20 +72,20 @@ end)
 
 net.Receive("Log4g_CLUpload_LoggerConfig", function(len, ply)
     if not IdentChk(ply) then return end
-    local LoggerConfigContent = net.ReadTable()
-    local LoggerContextName, LoggerConfigName = LoggerConfigContent.loggercontext, LoggerConfigContent.name
-    RegisterLoggerContext(LoggerContextName)
-    RegisterLoggerConfig(LoggerConfigContent)
-    AddLoggerContextLookupItem(LoggerContextName, LoggerConfigName)
+    local ConfigContent = net.ReadTable()
+    local ContextName, ConfigName = ConfigContent.loggercontext, ConfigContent.name
+    RegisterLoggerContext(ContextName)
+    RegisterLoggerConfig(ConfigContent)
+    AddLoggerContextLookupItem(ContextName, ConfigName)
 end)
 
 net.Receive("Log4g_CLUpload_LoggerConfig_JSON", function(len, ply)
     if not IdentChk(ply) then return end
     local tbl = util.JSONToTable(util.Decompress(net.ReadData(net.ReadUInt(16))))
-    local LoggerContextName, LoggerConfigName = tbl.loggercontext, tbl.name
-    RegisterLoggerContext(LoggerContextName)
+    local ContextName, ConfigName = tbl.loggercontext, tbl.name
+    RegisterLoggerContext(ContextName)
     RegisterLoggerConfig(tbl)
-    AddLoggerContextLookupItem(LoggerContextName, LoggerConfigName)
+    AddLoggerContextLookupItem(ContextName, ConfigName)
 end)
 
 net.Receive("Log4g_CLReq_LoggerConfigs", function(len, ply)
@@ -113,9 +113,9 @@ end)
 
 net.Receive("Log4g_CLReq_LoggerConfig_Remove", function(len, ply)
     if not IdentChk(ply) then return end
-    local LoggerContextName, LoggerConfigName = net.ReadString(), net.ReadString()
-    Log4g.Core.Config.LoggerConfig.Buffer[LoggerConfigName]:RemoveFile():RemoveBuffer()
-    RemoveLoggerContextLookupLoggerConfig(LoggerContextName, LoggerConfigName)
+    local ContextName, ConfigName = net.ReadString(), net.ReadString()
+    Log4g.Core.Config.LoggerConfig.Buffer[ConfigName]:RemoveFile():RemoveBuffer()
+    RemoveLoggerContextLookupLoggerConfig(ContextName, ConfigName)
 end)
 
 net.Receive("Log4g_CLReq_LoggerContext_Lookup", function(len, ply)
@@ -133,9 +133,9 @@ end)
 
 net.Receive("Log4g_CLReq_LoggerContext_Remove", function(len, ply)
     if not IdentChk(ply) then return end
-    local LoggerContextName = net.ReadString()
-    Log4g.LogManager[LoggerContextName]:Terminate()
-    RemoveLoggerContextLookup(LoggerContextName)
+    local ContextName = net.ReadString()
+    Log4g.LogManager[ContextName]:Terminate()
+    RemoveLoggerContextLookup(ContextName)
 end)
 
 net.Receive("Log4g_CLUpload_NewLevel", function(len, ply)
@@ -145,7 +145,7 @@ end)
 
 net.Receive("Log4g_CLReq_LoggerConfig_BuildDefault", function(len, ply)
     if not IdentChk(ply) then return end
-    local LoggerContextName, LoggerConfigName = net.ReadString(), net.ReadString()
-    Log4g.Core.Config.LoggerConfig.Buffer[LoggerConfigName]:BuildDefault()
-    RemoveLoggerContextLookupLoggerConfig(LoggerContextName, LoggerConfigName)
+    local ContextName, ConfigName = net.ReadString(), net.ReadString()
+    Log4g.Core.Config.LoggerConfig.Buffer[ConfigName]:BuildDefault()
+    RemoveLoggerContextLookupLoggerConfig(ContextName, ConfigName)
 end)
