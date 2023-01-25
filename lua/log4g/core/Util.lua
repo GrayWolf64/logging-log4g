@@ -57,7 +57,7 @@ Log4g.Util.DeleteFolderRecursive = function(folder, path)
     local files, folders = file.Find(folder .. "/*", path)
 
     if istable(files) and not table.IsEmpty(files) then
-        for k, v in pairs(files) do
+        for _, v in pairs(files) do
             file.Delete(folder .. "/" .. v)
         end
     end
@@ -65,7 +65,7 @@ Log4g.Util.DeleteFolderRecursive = function(folder, path)
     if istable(folders) and not table.IsEmpty(folders) then
         local DeleteFolderRecursive = Log4g.Util.DeleteFolderRecursive
 
-        for i, j in pairs(folders) do
+        for _, j in pairs(folders) do
             DeleteFolderRecursive(folder .. "/" .. j, path)
             file.Delete(folder .. "/" .. j)
         end
