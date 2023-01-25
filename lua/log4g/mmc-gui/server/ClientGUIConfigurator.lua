@@ -97,10 +97,7 @@ net.Receive("Log4g_CLReq_LoggerConfigs", function(len, ply)
         local data = {}
 
         for _, v in ipairs(tbl) do
-            local str = file.Read(v, "DATA")
-            if #str == 0 then return end
-
-            table.Add(data, {util.JSONToTable(str)})
+            table.Add(data, {util.JSONToTable(file.Read(v, "DATA"))})
         end
 
         WriteDataSimple(util.TableToJSON(data, true), 16)
