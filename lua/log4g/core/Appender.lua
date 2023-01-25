@@ -9,4 +9,9 @@ function Appender:Initialize(name, func)
     self.func = func
 end
 
-Log4g.Core.Appender.ConsoleAppender = Appender:New("ConsoleAppender", include("log4g/core/appender/ConsoleAppender.lua"))
+local ConsoleAppender = Appender:subclass("ConsoleAppender")
+
+function ConsoleAppender:Initialize(name, func, layout)
+    Appender.Initialize(self, name, func)
+    self.layout = layout
+end

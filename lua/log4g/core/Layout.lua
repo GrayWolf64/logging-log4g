@@ -9,4 +9,8 @@ function Layout:Initialize(name, func)
     self.func = func
 end
 
-Log4g.Core.Layout.PatternLayout = Layout:New("PatternLayout", include("log4g/core/layout/PatternLayout.lua"))
+local PatternLayout = Layout:subclass("PatternLayout")
+
+function PatternLayout:Initialize(name, func)
+    Layout.Initialize(self, name, func)
+end
