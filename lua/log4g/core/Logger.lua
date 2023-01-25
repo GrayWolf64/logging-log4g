@@ -60,22 +60,19 @@ end
 -- @param loggerconfig The Loggerconfig
 -- @return object logger
 function Log4g.Core.Logger.RegisterLogger(loggerconfig)
-    if not istable(loggerconfig) or table.IsEmpty(loggerconfig) then
-        error("Logger registration failed: LoggerConfig object invalid.\n")
-    end
-
-    MsgN("Starting the registration of Logger: " .. loggerconfig.name .. "...")
+    if not istable(loggerconfig) or table.IsEmpty(loggerconfig) then return end
+    hook.Run("Log4g_PreLoggerRegistration", loggerconfig.name)
 
     if not HasLogger(loggerconfig.name) then
         local logger = Logger:New(loggerconfig)
         local manager = Log4g.LogManager
         manager[loggerconfig.loggercontext].logger[loggerconfig.name] = logger
         manager[loggerconfig.loggercontext].logger[loggerconfig.name]:Start()
-        MsgN("Logger registration: Successfully created Hierarchy LoggerContext child item.")
+        hook.Run("Log4g_PostLoggerRegistration", loggerconfig.name)
 
         return manager[loggerconfig.loggercontext].logger[loggerconfig.name]
     else
-        ErrorNoHalt("Logger registration failed: Logger already exists.\n")
+        hook.Run("Log4g_OnLoggerRegistrationFailure", loggerconfig.name)
 
         return manager[loggerconfig.loggercontext].logger[loggerconfig.name]
     end
