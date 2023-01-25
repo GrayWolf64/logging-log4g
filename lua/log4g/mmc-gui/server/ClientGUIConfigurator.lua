@@ -21,28 +21,19 @@ local function IdentChk(ply)
 end
 
 AddNetworkStrsViaTbl({
-    [1] = "Log4g_CLUpload_LoggerConfig",
-    [2] = "Log4g_CLUpload_LoggerConfig_JSON",
-    [3] = "Log4g_CLUpload_NewLevel",
-    [4] = "Log4g_CLReq_Hooks",
-    [5] = "Log4g_CLRcv_Hooks",
-    [6] = "Log4g_CLReq_LoggerConfigs",
-    [7] = "Log4g_CLRcv_LoggerConfigs",
-    [8] = "Log4g_CLReq_LoggerConfig_Remove",
-    [9] = "Log4g_CLReq_LoggerContext_Lookup",
-    [10] = "Log4g_CLRcv_LoggerContext_Lookup",
-    [11] = "Log4g_CLReq_LoggerContext_Remove",
-    [12] = "Log4g_CLReq_Level_Names",
-    [13] = "Log4g_CLRcv_Level_Names",
-    [14] = "Log4g_CLReq_Appender_Names",
-    [15] = "Log4g_CLRcv_Appender_Names",
-    [16] = "Log4g_CLReq_Layout_Names",
-    [17] = "Log4g_CLRcv_Layout_Names",
-    [18] = "Log4g_CLReq_CFG_LoggerConfig_ColumnText",
-    [19] = "Log4g_CLRcv_CFG_LoggerConfig_ColumnText",
-    [20] = "Log4g_CLReq_ChkConnected",
-    [21] = "Log4g_CLRcv_ChkConnected",
-    [22] = "Log4g_CLReq_LoggerConfig_BuildDefault"
+    [1] = "Log4g_CLUpload_LoggerConfig_JSON",
+    [2] = "Log4g_CLUpload_NewLevel",
+    [3] = "Log4g_CLReq_LoggerConfigs",
+    [4] = "Log4g_CLRcv_LoggerConfigs",
+    [5] = "Log4g_CLReq_LoggerConfig_Remove",
+    [6] = "Log4g_CLReq_LoggerContext_Lookup",
+    [7] = "Log4g_CLRcv_LoggerContext_Lookup",
+    [8] = "Log4g_CLReq_LoggerContext_Remove",
+    [9] = "Log4g_CLReq_CFG_LoggerConfig_ColumnText",
+    [10] = "Log4g_CLRcv_CFG_LoggerConfig_ColumnText",
+    [11] = "Log4g_CLReq_ChkConnected",
+    [12] = "Log4g_CLRcv_ChkConnected",
+    [13] = "Log4g_CLReq_LoggerConfig_BuildDefault"
 })
 
 net.Receive("Log4g_CLReq_ChkConnected", function(len, ply)
