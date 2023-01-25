@@ -8,6 +8,7 @@ Log4g.Util = Log4g.Util or {}
 -- @param tbl The table to check
 -- @param key The key to find in the table
 -- @return bool ifhaskey
+-- @return keyfound
 Log4g.Util.HasKey = function(tbl, key)
     if tbl == nil then return false end
 
