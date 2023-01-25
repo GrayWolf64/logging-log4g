@@ -9,6 +9,8 @@ if SERVER then
     -- @field Core
     -- @field LogManager
     -- @field Level
+    -- @field Util
+    -- @field _VERSION
     Log4g = Log4g or {}
     Log4g.Core = Log4g.Core or {}
     Log4g.LogManager = Log4g.LogManager or {}
