@@ -32,6 +32,7 @@ function LoggerConfig:Initialize(tbl)
     SetState(self, INITIALIZED)
 end
 
+--- Remove the LoggerConfig.
 function LoggerConfig:Remove()
     SetState(self, STOPPING)
     SetState(self, STOPPED)
@@ -57,8 +58,13 @@ function LoggerConfig:RemoveFile()
     return self
 end
 
+--- All the LoggerConfigs will be stored here.
+-- @local
+-- @table LoggerConfigs
 local LoggerConfigs = {}
 
+--- Get all the LoggerConfigs in the LoggerConfigs table.
+-- @return table loggerconfigs
 function Log4g.Core.Config.LoggerConfig.GetAll()
     return LoggerConfigs
 end
