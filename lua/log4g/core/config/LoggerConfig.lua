@@ -16,6 +16,7 @@ local AddLoggerLookupItem = Log4g.Core.Logger.Lookup.AddItem
 local RegisterLogger = Log4g.Core.Logger.RegisterLogger
 local GetLevel = Log4g.Level.GetLevel
 local GetLayout = Log4g.Core.Layout.GetLayout
+local GetAppender = Log4g.Core.Appender.GetAppender
 
 function LoggerConfig:Initialize(tbl)
     SetState(self, INITIALIZING)
@@ -107,12 +108,15 @@ function Log4g.Core.Config.LoggerConfig.RegisterLoggerConfig(tbl)
     if not HasKey(buffer, tbl.name) then
         local strlevel = tbl.level
         local strlayout = tbl.layout
+        local strappender = tbl.appender
         tbl.level = GetLevel(strlevel)
         tbl.layout = GetLayout(strlayout)
+        tbl.appender = GetAppender(strappender)
         local loggerconfig = LoggerConfig:New(tbl)
         buffer[tbl.name] = loggerconfig
         tbl.level = strlevel
         tbl.layout = strlayout
+        tbl.appender = strappender
         file.Write(loggerconfig.file, util.TableToJSON(tbl, true))
         hook.Run("Log4g_PostLoggerConfigRegistration")
 
