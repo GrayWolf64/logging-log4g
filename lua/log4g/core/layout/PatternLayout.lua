@@ -1,7 +1,7 @@
 local function PatternLayout(input)
-    string.gsub(input, "%%d{DEFAULT}", os.date("%Y-%m-%d %H-%M-%S"))
+    local ddefault = string.gsub(input, "%%d{DEFAULT}", os.date("%Y-%m-%d %H-%M-%S"))
 
-    return input
+    return ddefault
 end
 
 return PatternLayout
