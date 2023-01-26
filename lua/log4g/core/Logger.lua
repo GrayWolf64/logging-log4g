@@ -19,7 +19,7 @@ function Logger:Start()
     SetState(self, STARTING)
 
     hook.Add(self.loggerconfig.eventname, self.loggerconfig.uid, function()
-        Msg(self.loggerconfig.layout.func(self.loggerconfig.logmsg))
+        self.loggerconfig.appender:Append(self.layout, self.logmsg)
         CompileString(self.loggerconfig.callback)
     end)
 
