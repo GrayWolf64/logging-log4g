@@ -16,10 +16,6 @@ function ConsoleAppender:Initialize(name, func)
     Appender.Initialize(self, name, func)
 end
 
-function ConsoleAppender:Append(layout, msg)
-    self.func(layout.func(msg))
-end
-
 local Appenders = {
     ConsoleAppender = ConsoleAppender:New("ConsoleAppender", include("log4g/core/layout/PatternLayout.lua"))
 }
