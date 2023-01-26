@@ -54,10 +54,10 @@ end)
 net.Receive("Log4g_CLUpload_LoggerConfig_JSON", function(len, ply)
     if not IdentChk(ply) then return end
     local tbl = util.JSONToTable(util.Decompress(net.ReadData(net.ReadUInt(16))))
-    local ContextName, ConfigName = tbl.loggercontext, tbl.name
-    RegisterLoggerContext(ContextName)
+    local contextname, configname = tbl.loggercontext, tbl.name
+    RegisterLoggerContext(contextname)
     RegisterLoggerConfig(tbl)
-    AddLoggerContextLookupItem(ContextName, ConfigName)
+    AddLoggerContextLookupItem(contextname, configname)
 end)
 
 net.Receive("Log4g_CLReq_LoggerConfigs", function(len, ply)
@@ -82,9 +82,9 @@ end)
 
 net.Receive("Log4g_CLReq_LoggerConfig_Remove", function(len, ply)
     if not IdentChk(ply) then return end
-    local ContextName, ConfigName = net.ReadString(), net.ReadString()
-    GetAllLoggerConfigs()[ConfigName]:RemoveFile():Remove()
-    RemoveLoggerContextLookupLoggerConfig(ContextName, ConfigName)
+    local contextname, configname = net.ReadString(), net.ReadString()
+    GetAllLoggerConfigs()[configname]:RemoveFile():Remove()
+    RemoveLoggerContextLookupLoggerConfig(contextname, configname)
 end)
 
 net.Receive("Log4g_CLReq_LoggerContext_Lookup", function(len, ply)
@@ -102,17 +102,17 @@ end)
 
 net.Receive("Log4g_CLReq_LoggerContext_Remove", function(len, ply)
     if not IdentChk(ply) then return end
-    local ContextName = net.ReadString()
-    Log4g.LogManager[ContextName]:Terminate()
+    local contextname = net.ReadString()
+    Log4g.LogManager[contextname]:Terminate()
     local LoggerConfigs = GetAllLoggerConfigs()
 
     for k, v in pairs(LoggerConfigs) do
-        if v.loggercontext == ContextName then
+        if v.loggercontext == contextname then
             LoggerConfigs[k] = nil
         end
     end
 
-    RemoveLoggerContextLookup(ContextName)
+    RemoveLoggerContextLookup(contextname)
 end)
 
 net.Receive("Log4g_CLUpload_NewLevel", function(len, ply)
@@ -122,7 +122,7 @@ end)
 
 net.Receive("Log4g_CLReq_LoggerConfig_BuildDefault", function(len, ply)
     if not IdentChk(ply) then return end
-    local ContextName, ConfigName = net.ReadString(), net.ReadString()
-    GetAllLoggerConfigs()[ConfigName]:BuildDefault()
-    RemoveLoggerContextLookupLoggerConfig(ContextName, ConfigName)
+    local contextname, configname = net.ReadString(), net.ReadString()
+    GetAllLoggerConfigs()[configname]:BuildDefault()
+    RemoveLoggerContextLookupLoggerConfig(contextname, configname)
 end)
