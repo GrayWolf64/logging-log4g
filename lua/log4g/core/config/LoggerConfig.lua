@@ -3,7 +3,6 @@
 Log4g.Core.Config = Log4g.Core.Config or {}
 Log4g.Core.Config.Builder = Log4g.Core.Config.Builder or {}
 Log4g.Core.Config.LoggerConfig = Log4g.Core.Config.LoggerConfig or {}
-Log4g.Core.Config.LoggerConfig.Buffer = Log4g.Core.Config.LoggerConfig.Buffer or {}
 local HasKey = Log4g.Util.HasKey
 local Class = include("log4g/core/impl/MiddleClass.lua")
 local LoggerConfig = Class("LoggerConfig")
@@ -33,23 +32,10 @@ function LoggerConfig:Initialize(tbl)
     SetState(self, INITIALIZED)
 end
 
---- Remove the LoggerConfig from Buffer.
--- This will check if the LoggerConfig Buffer table contains the LoggerConfig and remove it.
--- `Log4g_PreBufferedLoggerConfigRemoval` will be called before the removal.
--- `Log4g_PostBufferedLoggerConfigRemovalSuccess` will be called after removal.
--- `Log4g_OnBufferedLoggerConfigRemovalFailure` will be called when failed to find the LoggerConfig.
-function LoggerConfig:RemoveBuffer()
-    hook.Run("Log4g_PreBufferedLoggerConfigRemoval", self.name)
+function LoggerConfig:Remove()
     SetState(self, STOPPING)
     SetState(self, STOPPED)
-    local buffer = Log4g.Core.Config.LoggerConfig.Buffer
-
-    if HasKey(buffer, self.name) then
-        buffer[self.name] = nil
-        hook.Run("Log4g_PostBufferedLoggerConfigRemovalSuccess")
-    else
-        hook.Run("Log4g_OnBufferedLoggerConfigRemovalFailure")
-    end
+    self = nil
 end
 
 --- Remove the LoggerConfig JSON from local storge.
@@ -71,9 +57,15 @@ function LoggerConfig:RemoveFile()
     return self
 end
 
+local LoggerConfigs = {}
+
+function Log4g.Core.Config.LoggerConfig.GetAll()
+    return LoggerConfigs
+end
+
 --- Start the default building procedure for the LoggerConfig.
 -- It will first set the LoggerConfig's LifeCycle to STARTING.
--- Then a Logger based on the LoggerConfig will be registered, and the provided LoggerConfig will be removed from Buffer.
+-- Then a Logger based on the LoggerConfig will be registered.
 -- At last the registered Logger's LoggerConfig's state will be set to STARTED, and the procedure has completed.
 -- If the LoggerConfig is already started, it will simply return end.
 -- `Log4g_PreLoggerConfigBuild` will be called first after the check.
@@ -82,15 +74,14 @@ function LoggerConfig:BuildDefault()
     if IsStarted(self) then return end
     hook.Run("Log4g_PreLoggerConfigBuild", self.name)
     SetState(self, STARTING)
-    MsgN("Starting LoggerConfig...")
     local logger = RegisterLogger(self)
     AddLoggerLookupItem(self.name, self.loggercontext, self.file)
 
     function logger.loggerconfig:BuildDefault()
-        MsgN("LoggerConfig build not needed: Already started.")
+        return
     end
 
-    self:RemoveBuffer()
+    self:Remove()
     SetState(logger.loggerconfig, STARTED)
     hook.Run("Log4g_PostLoggerConfigBuild")
 end
@@ -103,9 +94,8 @@ end
 -- @return object loggerconfig
 function Log4g.Core.Config.LoggerConfig.RegisterLoggerConfig(tbl)
     hook.Run("Log4g_PreLoggerConfigRegistration", tbl.name)
-    local buffer = Log4g.Core.Config.LoggerConfig.Buffer
 
-    if not HasKey(buffer, tbl.name) then
+    if not HasKey(LoggerConfigs, tbl.name) then
         local strlevel = tbl.level
         local strlayout = tbl.layout
         local strappender = tbl.appender
@@ -113,32 +103,32 @@ function Log4g.Core.Config.LoggerConfig.RegisterLoggerConfig(tbl)
         tbl.layout = GetLayout(strlayout)
         tbl.appender = GetAppender(strappender)
         local loggerconfig = LoggerConfig:New(tbl)
-        buffer[tbl.name] = loggerconfig
+        LoggerConfigs[tbl.name] = loggerconfig
         tbl.level = strlevel
         tbl.layout = strlayout
         tbl.appender = strappender
         file.Write(loggerconfig.file, util.TableToJSON(tbl, true))
         hook.Run("Log4g_PostLoggerConfigRegistration")
 
-        return buffer[tbl.name]
+        return LoggerConfigs[tbl.name]
     else
         hook.Run("Log4g_OnLoggerConfigRegistrationFailure")
 
-        return buffer[tbl.name]
+        return LoggerConfigs[tbl.name]
     end
 end
 
---- Get all the file paths of the LoggerConfigs in Buffer in the form of a string table.
--- If the LoggerConfig Buffer table is empty, nil will be the return value.
+--- Get all the file paths of the all the LoggerConfigs in the form of a string table.
+-- If the LoggerConfig table is empty, nil will be the return value.
 -- @return tbl filepaths
 function Log4g.Core.Config.LoggerConfig.GetFiles()
-    local buffer = Log4g.Core.Config.LoggerConfig.Buffer
-
-    if not table.IsEmpty(buffer) then
+    if not table.IsEmpty(LoggerConfigs) then
         local tbl = {}
 
-        for _, v in pairs(buffer) do
-            table.insert(tbl, v.file)
+        for _, v in pairs(LoggerConfigs) do
+            if not IsStarted(v) then
+                table.insert(tbl, v.file)
+            end
         end
 
         return tbl

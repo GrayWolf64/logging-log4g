@@ -5,8 +5,10 @@
 local RegisterLoggerContext = Log4g.Core.LoggerContext.RegisterLoggerContext
 local RegisterLoggerConfig = Log4g.Core.Config.LoggerConfig.RegisterLoggerConfig
 local LoggerContextSaveFile = "log4g/server/saverestore_loggercontext.json"
-local BufferedLoggerConfigSaveFile = "log4g/server/saverestore_loggerconfig_buffered.json"
-local BuiltLoggerConfigSaveFile = "log4g/server/saverestore_loggerconfig_built.json"
+local UnstartedLoggerConfigSaveFile = "log4g/server/saverestore_loggerconfig_unstarted.json"
+local StartedLoggerConfigSaveFile = "log4g/server/saverestore_loggerconfig_started.json"
+local GetAllLoggerConfigs = Log4g.Core.Config.LoggerConfig.GetAll
+local IsStarted = Log4g.Core.LifeCycle.IsStarted
 
 --- Save all the LoggerContexts' names into a JSON file.
 -- @lfunction SaveLoggerContext
@@ -22,21 +24,23 @@ local function SaveLoggerContext()
     file.Write(LoggerContextSaveFile, util.TableToJSON(result, true))
 end
 
---- Save all the Buffered LoggerConfigs' names and associated LoggerContexts' names into a JSON file.
--- @lfunction SaveBufferedLoggerConfig
-local function SaveBufferedLoggerConfig()
-    local buffer = Log4g.Core.Config.LoggerConfig.Buffer
-    if table.IsEmpty(buffer) then return end
+--- Save all the Unstarted LoggerConfigs' names and associated LoggerContexts' names into a JSON file.
+-- @lfunction SaveUnstartedLoggerConfig
+local function SaveUnstartedLoggerConfig()
+    local configs = GetAllLoggerConfigs()
+    if table.IsEmpty(configs) then return end
     local result = {}
 
-    for k, v in pairs(buffer) do
-        table.insert(result, {
-            name = k,
-            loggercontext = v.loggercontext
-        })
+    for k, v in pairs(configs) do
+        if not IsStarted(v) then
+            table.insert(result, {
+                name = k,
+                loggercontext = v.loggercontext
+            })
+        end
     end
 
-    file.Write(BufferedLoggerConfigSaveFile, util.TableToJSON(result, true))
+    file.Write(UnstartedLoggerConfigSaveFile, util.TableToJSON(result, true))
 end
 
 --- Save all the built LoggerConfigs' names and associated LoggerContexts' names into a JSON file.
@@ -57,12 +61,12 @@ local function SaveBuiltLoggerConfig()
         end
     end
 
-    file.Write(BuiltLoggerConfigSaveFile, util.TableToJSON(result, true))
+    file.Write(StartedLoggerConfigSaveFile, util.TableToJSON(result, true))
 end
 
 local function Save()
     SaveLoggerContext()
-    SaveBufferedLoggerConfig()
+    SaveUnstartedLoggerConfig()
     SaveBuiltLoggerConfig()
 end
 
@@ -82,11 +86,11 @@ local function RestoreLoggerContext()
     file.Delete(LoggerContextSaveFile)
 end
 
---- Re-register all the previously buffered LoggerConfigs.
--- @lfunction RestoreBufferedLoggerConfig
-local function RestoreBufferedLoggerConfig()
-    if not file.Exists(BufferedLoggerConfigSaveFile, "DATA") then return end
-    local tbl = util.JSONToTable(file.Read(BufferedLoggerConfigSaveFile, "DATA"))
+--- Re-register all the previously unstarted LoggerConfigs.
+-- @lfunction RestoreUnstartedLoggerConfig
+local function RestoreUnstartedLoggerConfig()
+    if not file.Exists(UnstartedLoggerConfigSaveFile, "DATA") then return end
+    local tbl = util.JSONToTable(file.Read(UnstartedLoggerConfigSaveFile, "DATA"))
 
     for _, v in pairs(tbl) do
         local save = "log4g/server/loggercontext/" .. v.loggercontext .. "/loggerconfig/" .. v.name .. ".json"
@@ -94,29 +98,29 @@ local function RestoreBufferedLoggerConfig()
         RegisterLoggerConfig(util.JSONToTable(file.Read(save, "DATA")))
     end
 
-    file.Delete(BufferedLoggerConfigSaveFile)
+    file.Delete(UnstartedLoggerConfigSaveFile)
 end
 
 --- Rebuild all the LoggerConfigs that were previously built.
 -- First re-register them according to the JSON file then perform BuildDefault method.
 -- @lfunction RebuildLoggerConfig
 local function RebuildLoggerConfig()
-    if not file.Exists(BuiltLoggerConfigSaveFile, "DATA") then return end
-    local tbl = util.JSONToTable(file.Read(BuiltLoggerConfigSaveFile, "DATA"))
+    if not file.Exists(StartedLoggerConfigSaveFile, "DATA") then return end
+    local tbl = util.JSONToTable(file.Read(StartedLoggerConfigSaveFile, "DATA"))
 
     for _, v in pairs(tbl) do
         local save = "log4g/server/loggercontext/" .. v.loggercontext .. "/loggerconfig/" .. v.name .. ".json"
         if not file.Exists(save, "DATA") then return end
         RegisterLoggerConfig(util.JSONToTable(file.Read(save, "DATA")))
-        Log4g.Core.Config.LoggerConfig.Buffer[v.name]:BuildDefault()
+        GetAllLoggerConfigs()[v.name]:BuildDefault()
     end
 
-    file.Delete(BuiltLoggerConfigSaveFile)
+    file.Delete(StartedLoggerConfigSaveFile)
 end
 
 local function Restore()
     RestoreLoggerContext()
-    RestoreBufferedLoggerConfig()
+    RestoreUnstartedLoggerConfig()
     RebuildLoggerConfig()
 end
 
