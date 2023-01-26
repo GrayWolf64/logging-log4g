@@ -50,7 +50,7 @@ function LoggerContext:Terminate()
         hook.Run("Log4g_OnLoggerContextObjectRemovalFailure")
     end
 
-    hook.Run("Log4g_PostLoggerContextTerminationSuccess")
+    hook.Run("Log4g_PostLoggerContextTermination")
 end
 
 --- Get all the Loggers of the LoggerContext.
@@ -86,7 +86,7 @@ function Log4g.Core.LoggerContext.RegisterLoggerContext(name)
         manager[name] = loggercontext
         manager[name]:Start()
         file.CreateDir("log4g/server/loggercontext/" .. name .. "/loggerconfig")
-        hook.Run("Log4g_PostLoggerContextRegistrationSuccess")
+        hook.Run("Log4g_PostLoggerContextRegistration")
 
         return manager[name]
     else
