@@ -1,7 +1,13 @@
 local function PatternLayout(input)
-    local ddefault = string.gsub(input, "%%d{DEFAULT}", os.date("%Y-%m-%d %H-%M-%S"))
+    if string.find(input, "%%d{DEFAULT}") then
+        input = string.gsub(input, "%%d{DEFAULT}", os.date("%Y-%m-%d %H-%M-%S"))
+    end
 
-    return ddefault
+    if string.find(input, "%%d{UNIX}") then
+        input = string.gsub(input, "%%d{UNIX}", os.time())
+    end
+
+    return input
 end
 
 return PatternLayout
