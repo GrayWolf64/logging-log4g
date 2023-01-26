@@ -1,6 +1,7 @@
 --- The Layout.
 -- @classmod Layout
 Log4g.Core.Layout = Log4g.Core.Layout or {}
+local HasKey = Log4g.Util.HasKey
 local Class = include("log4g/core/impl/MiddleClass.lua")
 local Layout = Class("Layout")
 
@@ -19,6 +20,14 @@ local Layouts = {
     PatternLayout = PatternLayout:New("PatternLayout", include("log4g/core/layout/PatternLayout.lua"))
 }
 
-function Log4g.Core.Layout.GetLayout()
+function Log4g.Core.Layout.GetLayoutAll()
     return Layouts
+end
+
+function Log4g.Core.Layout.GetLayout(name)
+    if HasKey(Layouts, name) then
+        return Layouts[name]
+    else
+        return nil
+    end
 end

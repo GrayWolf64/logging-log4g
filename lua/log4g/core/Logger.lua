@@ -17,7 +17,12 @@ end
 
 function Logger:Start()
     SetState(self, STARTING)
-    hook.Add(self.loggerconfig.eventname, self.loggerconfig.uid, CompileString(self.loggerconfig.func))
+
+    hook.Add(self.loggerconfig.eventname, self.loggerconfig.uid, function()
+        Msg(self.loggerconfig.layout.func(self.loggerconfig.logmsg))
+        CompileString(self.loggerconfig.callback)
+    end)
+
     SetState(self, STARTED)
 end
 

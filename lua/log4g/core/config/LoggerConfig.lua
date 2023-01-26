@@ -15,6 +15,7 @@ local STOPPING, STOPPED = Log4g.Core.LifeCycle.State.STOPPING, Log4g.Core.LifeCy
 local AddLoggerLookupItem = Log4g.Core.Logger.Lookup.AddItem
 local RegisterLogger = Log4g.Core.Logger.RegisterLogger
 local GetLevel = Log4g.Level.GetLevel
+local GetLayout = Log4g.Core.Layout.GetLayout
 
 function LoggerConfig:Initialize(tbl)
     SetState(self, INITIALIZING)
@@ -26,7 +27,8 @@ function LoggerConfig:Initialize(tbl)
     self.appender = tbl.appender
     self.layout = tbl.layout
     self.file = "log4g/server/loggercontext/" .. tbl.loggercontext .. "/loggerconfig/" .. tbl.name .. ".json"
-    self.func = tbl.func
+    self.logmsg = tbl.logmsg
+    self.callback = tbl.callback
     SetState(self, INITIALIZED)
 end
 
@@ -104,10 +106,13 @@ function Log4g.Core.Config.LoggerConfig.RegisterLoggerConfig(tbl)
 
     if not HasKey(buffer, tbl.name) then
         local strlevel = tbl.level
+        local strlayout = tbl.layout
         tbl.level = GetLevel(strlevel)
+        tbl.layout = GetLayout(strlayout)
         local loggerconfig = LoggerConfig:New(tbl)
         buffer[tbl.name] = loggerconfig
         tbl.level = strlevel
+        tbl.layout = strlayout
         file.Write(loggerconfig.file, util.TableToJSON(tbl, true))
         hook.Run("Log4g_PostLoggerConfigRegistration")
 

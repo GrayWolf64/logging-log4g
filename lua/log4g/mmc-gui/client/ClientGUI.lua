@@ -34,16 +34,6 @@ local function CreateDButton(parent, docktype, x, y, z, w, a, b, text)
     return dbutton
 end
 
-local function CreateDHDivider(parent, left, right, width, lmin, rmin)
-    local dhdivider = vgui.Create("DHorizontalDivider", parent)
-    dhdivider:Dock(FILL)
-    dhdivider:SetLeft(left)
-    dhdivider:SetRight(right)
-    dhdivider:SetDividerWidth(width)
-    dhdivider:SetLeftMin(lmin)
-    dhdivider:SetRightMin(rmin)
-end
-
 local function CreateDListView(parent, docktype, x, y, z, w, ha, hb)
     local dlistview = vgui.Create("DListView", parent)
     dlistview:SetMultiSelect(false)
@@ -185,8 +175,10 @@ concommand.Add("Log4g_MMC", function()
     local SheetPanelB = vgui.Create("DPanel", SheetB)
     SheetB:AddSheet("LoggerConfig", SheetPanelB)
     local ListView = CreateDListView(SheetPanelB, LEFT, 0, 0, 0, 0, 18, 18.5)
+    ListView:SetWide(693)
     local Tree = vgui.Create("DTree", SheetPanelB)
     Tree:Dock(RIGHT)
+    Tree:SetWide(139)
     Tree:DockMargin(0, 0, 0, 0)
     SendEmptyMsgToSV("Log4g_CLReq_CFG_LoggerConfig_ColumnText")
 
@@ -393,7 +385,6 @@ concommand.Add("Log4g_MMC", function()
         AppendRichTextViaTbl(Text, {"Log4g is an open-source addon for Garry's Mod.\n", "\n", "GitHub Page: https://github.com/GrayWolf64/gmod-logging-log4g\n", "\n", "Documentation can be seen on GitHub Page as well.\n"})
     end):SetIcon("icon16/information.png")
 
-    CreateDHDivider(SheetPanelB, ListView, Tree, 2.5, 680, 120)
     local SheetPanelC = vgui.Create("DPanel", SheetA)
     SheetA:AddSheet("Overview (SV)", SheetPanelC, "icon16/page.png")
     local SheetPanelD = vgui.Create("DPanel", SheetA)
