@@ -14,3 +14,11 @@ local PatternLayout = Layout:subclass("PatternLayout")
 function PatternLayout:Initialize(name, func)
     Layout.Initialize(self, name, func)
 end
+
+local Layouts = {
+    PatternLayout = PatternLayout:New("PatternLayout", include("log4g/core/layout/PatternLayout.lua"))
+}
+
+function Log4g.Core.Layout.GetLayout()
+    return Layouts
+end
