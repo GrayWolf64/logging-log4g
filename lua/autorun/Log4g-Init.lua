@@ -5,7 +5,7 @@ file.CreateDir("log4g")
 
 if SERVER then
     --- The global table for the logging system.
-    -- It provides easy access of some functions for other components of the logging system that require them.
+    -- It provides easy access to some functions for other components of the logging system that require them.
     -- @table Log4g
     -- @field Core
     -- @field LogManager
