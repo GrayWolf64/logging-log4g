@@ -16,13 +16,13 @@ function ConsoleAppender:Initialize(name, func)
     Appender.Initialize(self, name, func)
 end
 
-local Appenders = {
+local Instances = {
     ConsoleAppender = ConsoleAppender:New("ConsoleAppender", include("log4g/core/layout/PatternLayout.lua"))
 }
 
 function Log4g.Core.Appender.GetAppender(name)
-    if HasKey(Appenders, name) then
-        return Appenders[name]
+    if HasKey(Instances, name) then
+        return Instances[name]
     else
         return nil
     end
