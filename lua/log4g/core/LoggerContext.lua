@@ -35,7 +35,6 @@ function LoggerContext:Terminate()
 
     if file.Exists(self.folder, "DATA") then
         DeleteFolderRecursive(self.folder, "DATA")
-        hook.Run("Log4g_PostLoggerContextFolderDeletion", self)
     else
         hook.Run("Log4g_OnLoggerContextFolderDeletionFailure", self)
     end
@@ -45,7 +44,6 @@ function LoggerContext:Terminate()
 
     if HasKey(manager, self.name) then
         manager[self.name] = nil
-        hook.Run("Log4g_PostLoggerContextObjectRemoval")
     else
         hook.Run("Log4g_OnLoggerContextObjectRemovalFailure")
     end
@@ -86,7 +84,7 @@ function Log4g.Core.LoggerContext.RegisterLoggerContext(name)
         manager[name] = loggercontext
         manager[name]:Start()
         file.CreateDir("log4g/server/loggercontext/" .. name .. "/loggerconfig")
-        hook.Run("Log4g_PostLoggerContextRegistration")
+        hook.Run("Log4g_PostLoggerContextRegistration", name)
 
         return manager[name]
     else

@@ -4,11 +4,12 @@
 -- @copyright GrayWolf64
 local RegisterLoggerContext = Log4g.Core.LoggerContext.RegisterLoggerContext
 local RegisterLoggerConfig = Log4g.Core.Config.LoggerConfig.RegisterLoggerConfig
+local GetAllLoggerConfigs = Log4g.Core.Config.LoggerConfig.GetAll
+local IsStarted = Log4g.Core.LifeCycle.IsStarted
 local LoggerContextSaveFile = "log4g/server/saverestore_loggercontext.json"
 local UnstartedLoggerConfigSaveFile = "log4g/server/saverestore_loggerconfig_unstarted.json"
 local StartedLoggerConfigSaveFile = "log4g/server/saverestore_loggerconfig_started.json"
-local GetAllLoggerConfigs = Log4g.Core.Config.LoggerConfig.GetAll
-local IsStarted = Log4g.Core.LifeCycle.IsStarted
+local CustomLevelSaveFile = "log4g/server/saverestore_customlevel.json"
 
 --- Save all the LoggerContexts' names into a JSON file.
 -- @lfunction SaveLoggerContext
@@ -64,10 +65,14 @@ local function SaveBuiltLoggerConfig()
     file.Write(StartedLoggerConfigSaveFile, util.TableToJSON(result, true))
 end
 
+local function SaveCustomLevel()
+end
+
 local function Save()
     SaveLoggerContext()
     SaveUnstartedLoggerConfig()
     SaveBuiltLoggerConfig()
+    SaveCustomLevel()
 end
 
 hook.Add("ShutDown", "Log4g_SaveLogEnvironment", Save)
@@ -118,10 +123,14 @@ local function RebuildLoggerConfig()
     file.Delete(StartedLoggerConfigSaveFile)
 end
 
+local function RestoreCustomLevel()
+end
+
 local function Restore()
     RestoreLoggerContext()
     RestoreUnstartedLoggerConfig()
     RebuildLoggerConfig()
+    RestoreCustomLevel()
 end
 
 hook.Add("PostGamemodeLoaded", "Log4g_RestoreLogEnvironment", Restore)
