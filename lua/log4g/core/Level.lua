@@ -51,7 +51,7 @@ end
 --- Custom Logging Levels created by users.
 -- @local
 -- @table CustomLevel
-local CustomLevel = {}
+local CustomLevel = CustomLevel or {}
 
 --- Get the Custom Levels as a table.
 -- @return table customlevel
