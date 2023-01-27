@@ -64,7 +64,7 @@ end
 local Instances = Instances or {}
 
 --- Get all the LoggerConfigs in the LoggerConfigs table.
--- @return table loggerconfigs
+-- @return table instances
 function Log4g.Core.Config.LoggerConfig.GetAll()
     return Instances
 end

@@ -28,8 +28,14 @@ function LoggerContext:__tostring()
     return "LoggerContext: [name:" .. self.name .. "]" .. "[folder:" .. self.folder .. "]" .. "[timestarted:" .. self.timestarted .. "]" .. "[logger:" .. #self.logger .. "]"
 end
 
+--- This is where all the LoggerContexts are stored.
+-- LoggerContexts may include some Loggers which may also include Appender, Level objects and so on.
+-- @local
+-- @table Instances
 local Instances = Instances or {}
 
+--- Get all the LoggerContexts.
+-- @return table instances
 function Log4g.Core.LoggerContext.GetAll()
     return Instances
 end
