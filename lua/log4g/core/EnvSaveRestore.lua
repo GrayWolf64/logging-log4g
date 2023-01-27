@@ -1,5 +1,5 @@
 --- SaveRestore system for the Logging environment.
--- @script LogSaveRestore.lua
+-- @script EnvSaveRestore.lua
 -- @license Apache License 2.0
 -- @copyright GrayWolf64
 local RegisterLoggerContext = Log4g.Core.LoggerContext.RegisterLoggerContext
