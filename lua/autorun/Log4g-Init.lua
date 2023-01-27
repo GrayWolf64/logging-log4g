@@ -1,6 +1,6 @@
 --- Initialization of Log4g on server and client.
 -- @script Log4g-Init.lua
-local MMC = "log4g/mmc-gui/Log4g-MMC-Init.lua"
+local MMC = "log4g/mmc-gui/MMC-Init.lua"
 file.CreateDir("log4g")
 
 if SERVER then
