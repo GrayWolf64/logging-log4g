@@ -61,7 +61,7 @@ end
 --- All the LoggerConfigs will be stored here.
 -- @local
 -- @table LoggerConfigs
-local LoggerConfigs = {}
+local LoggerConfigs = LoggerConfigs or {}
 
 --- Get all the LoggerConfigs in the LoggerConfigs table.
 -- @return table loggerconfigs
