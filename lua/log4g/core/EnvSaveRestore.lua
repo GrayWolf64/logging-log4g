@@ -6,6 +6,8 @@ local RegisterLoggerContext = Log4g.Core.LoggerContext.RegisterLoggerContext
 local RegisterLoggerConfig = Log4g.Core.Config.LoggerConfig.RegisterLoggerConfig
 local GetAllLoggerConfigs = Log4g.Core.Config.LoggerConfig.GetAll
 local IsStarted = Log4g.Core.LifeCycle.IsStarted
+local GetCustomLevel = Log4g.Level.GetCustomLevel
+local RegisterCustomLevel = Log4g.Level.RegisterCustomLevel
 local LoggerContextSaveFile = "log4g/server/saverestore_loggercontext.json"
 local UnstartedLoggerConfigSaveFile = "log4g/server/saverestore_loggerconfig_unstarted.json"
 local StartedLoggerConfigSaveFile = "log4g/server/saverestore_loggerconfig_started.json"
@@ -65,7 +67,21 @@ local function SaveBuiltLoggerConfig()
     file.Write(StartedLoggerConfigSaveFile, util.TableToJSON(result, true))
 end
 
+--- Save all the previously registered Custom Levels.
+-- @lfunction SaveCustomLevel
 local function SaveCustomLevel()
+    local customlevel = GetCustomLevel()
+    if table.IsEmpty(customlevel) then return end
+    local result = {}
+
+    for k, v in pairs(customlevel) do
+        table.insert(result, {
+            name = k,
+            int = v.int
+        })
+    end
+
+    file.Write(CustomLevelSaveFile, util.TableToJSON(result, true))
 end
 
 local function Save()
@@ -123,7 +139,17 @@ local function RebuildLoggerConfig()
     file.Delete(StartedLoggerConfigSaveFile)
 end
 
+--- Restore all the previously saved Custom Levels.
+-- @lfunction RestoreCustomLevel
 local function RestoreCustomLevel()
+    if not file.Exists(CustomLevelSaveFile, "DATA") then return end
+    local tbl = util.JSONToTable(file.Read(CustomLevelSaveFile, "DATA"))
+
+    for _, v in pairs(tbl) do
+        RegisterCustomLevel(v.name, v.int)
+    end
+
+    file.Delete(CustomLevelSaveFile)
 end
 
 local function Restore()
