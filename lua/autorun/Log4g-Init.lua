@@ -8,7 +8,6 @@ if SERVER then
     -- It provides easy access to some functions for other components of the logging system that require them.
     -- @table Log4g
     -- @field Core
-    -- @field LogManager
     -- @field Level
     -- @field Util
     -- @field _VERSION
