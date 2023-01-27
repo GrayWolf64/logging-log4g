@@ -14,7 +14,6 @@ if SERVER then
     -- @field _VERSION
     Log4g = Log4g or {}
     Log4g.Core = Log4g.Core or {}
-    Log4g.LogManager = Log4g.LogManager or {}
     Log4g.Level = Log4g.Level or {}
     Log4g.Core.Logger = Log4g.Core.Logger or {}
     file.CreateDir("log4g/server/loggercontext")

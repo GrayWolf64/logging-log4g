@@ -28,6 +28,12 @@ function LoggerContext:__tostring()
     return "LoggerContext: [name:" .. self.name .. "]" .. "[folder:" .. self.folder .. "]" .. "[timestarted:" .. self.timestarted .. "]" .. "[logger:" .. #self.logger .. "]"
 end
 
+local Instances = Instances or {}
+
+function Log4g.Core.LoggerContext.GetAll()
+    return Instances
+end
+
 --- Terminate the LoggerContext.
 function LoggerContext:Terminate()
     hook.Run("Log4g_PreLoggerContextTermination", self)
@@ -40,10 +46,9 @@ function LoggerContext:Terminate()
     end
 
     SetState(self, STOPPED)
-    local manager = Log4g.LogManager
 
-    if HasKey(manager, self.name) then
-        manager[self.name] = nil
+    if HasKey(Instances, self.name) then
+        Instances[self.name] = nil
     else
         hook.Run("Log4g_OnLoggerContextObjectRemovalFailure")
     end
@@ -68,7 +73,7 @@ end
 -- @param name The name of the LoggerContext
 -- @return bool hascontext
 function Log4g.Core.LoggerContext.HasContext(name)
-    return HasKey(Log4g.LogManager, name)
+    return HasKey(Instances, name)
 end
 
 --- Register a LoggerContext.
@@ -77,19 +82,18 @@ end
 -- @return object loggercontext
 function Log4g.Core.LoggerContext.RegisterLoggerContext(name)
     hook.Run("Log4g_PreLoggerContextRegistration", name)
-    local manager = Log4g.LogManager
 
-    if not HasKey(manager, name) then
+    if not HasKey(Instances, name) then
         local loggercontext = LoggerContext:New(name)
-        manager[name] = loggercontext
-        manager[name]:Start()
+        Instances[name] = loggercontext
+        Instances[name]:Start()
         file.CreateDir("log4g/server/loggercontext/" .. name .. "/loggerconfig")
         hook.Run("Log4g_PostLoggerContextRegistration", name)
 
-        return manager[name]
+        return Instances[name]
     else
         hook.Run("Log4g_OnLoggerContextRegistrationFailure")
 
-        return manager[name]
+        return Instances[name]
     end
 end

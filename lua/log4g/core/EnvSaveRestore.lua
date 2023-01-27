@@ -8,6 +8,7 @@ local GetAllLoggerConfigs = Log4g.Core.Config.LoggerConfig.GetAll
 local IsStarted = Log4g.Core.LifeCycle.IsStarted
 local GetCustomLevel = Log4g.Level.GetCustomLevel
 local RegisterCustomLevel = Log4g.Level.RegisterCustomLevel
+local GetAllLoggerContexts = Log4g.Core.LoggerContext.GetAll
 local LoggerContextSaveFile = "log4g/server/saverestore_loggercontext.json"
 local UnstartedLoggerConfigSaveFile = "log4g/server/saverestore_loggerconfig_unstarted.json"
 local StartedLoggerConfigSaveFile = "log4g/server/saverestore_loggerconfig_started.json"
@@ -16,11 +17,11 @@ local CustomLevelSaveFile = "log4g/server/saverestore_customlevel.json"
 --- Save all the LoggerContexts' names into a JSON file.
 -- @lfunction SaveLoggerContext
 local function SaveLoggerContext()
-    local manager = Log4g.LogManager
-    if table.IsEmpty(manager) then return end
+    local LoggerContexts = GetAllLoggerContexts()
+    if table.IsEmpty(LoggerContexts) then return end
     local result = {}
 
-    for k, _ in pairs(manager) do
+    for k, _ in pairs(LoggerContexts) do
         table.insert(result, k)
     end
 
@@ -49,11 +50,11 @@ end
 --- Save all the built LoggerConfigs' names and associated LoggerContexts' names into a JSON file.
 -- @lfunction SaveBuiltLoggerConfig
 local function SaveBuiltLoggerConfig()
-    local manager = Log4g.LogManager
-    if table.IsEmpty(manager) then return end
+    local LoggerContexts = GetAllLoggerContexts()
+    if table.IsEmpty(LoggerContexts) then return end
     local result = {}
 
-    for k, v in pairs(manager) do
+    for k, v in pairs(LoggerContexts) do
         if table.IsEmpty(v.logger) then return end
 
         for i, _ in pairs(v.logger) do
