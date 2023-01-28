@@ -16,6 +16,3 @@ function Log4g.API.LogManager.Exists(name)
 
     return false
 end
-
-function Log4g.API.LogManager.GetLogger(name)
-end
