@@ -28,12 +28,6 @@ function LoggerContext:__tostring()
     return "LoggerContext: [name:" .. self.name .. "]" .. "[folder:" .. self.folder .. "]" .. "[timestarted:" .. self.timestarted .. "]" .. "[logger:" .. #self.logger .. "]"
 end
 
---- Get all the LoggerContexts.
--- @return table instances
-function Log4g.Core.LoggerContext.GetAll()
-    return Instances
-end
-
 --- Terminate the LoggerContext.
 function LoggerContext:Terminate()
     hook.Run("Log4g_PreLoggerContextTermination", self)
@@ -46,13 +40,7 @@ function LoggerContext:Terminate()
     end
 
     SetState(self, STOPPED)
-
-    if HasKey(Instances, self.name) then
-        Instances[self.name] = nil
-    else
-        hook.Run("Log4g_OnLoggerContextObjectRemovalFailure")
-    end
-
+    self = nil
     hook.Run("Log4g_PostLoggerContextTermination")
 end
 
@@ -68,20 +56,13 @@ function LoggerContext:GetName()
     return self.name
 end
 
---- Check if a LoggerContext with the given name exists.
--- If the LoggerContext exists, return true.
--- @param name The name of the LoggerContext
--- @return bool hascontext
-function Log4g.Core.LoggerContext.HasContext(name)
-    return HasKey(Instances, name)
-end
-
 --- Register a LoggerContext.
+-- This is used for APIs.
 -- If the LoggerContext with the same name already exists, an error will be thrown without halt.
 -- @param collection Where to put the LoggerContext, must be a table
 -- @param name The name of the LoggerContext
 -- @return object loggercontext
-function Log4g.Core.LoggerContext.RegisterLoggerContext(collection, name)
+function Log4g.Core.LoggerContext.Register(collection, name)
     hook.Run("Log4g_PreLoggerContextRegistration", name)
 
     if not HasKey(collection, name) then

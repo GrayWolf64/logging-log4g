@@ -3,7 +3,7 @@
 -- @license Apache License 2.0
 -- @copyright GrayWolf64
 local AddNetworkStrsViaTbl = Log4g.Util.AddNetworkStrsViaTbl
-local RegisterLoggerContext = Log4g.Core.LoggerContext.RegisterLoggerContext
+local CreateLoggerContext = Log4g.API.LoggerContextFactory.GetContext
 local RegisterLoggerConfig = Log4g.Core.Config.LoggerConfig.RegisterLoggerConfig
 local RegisterCustomLevel = Log4g.Level.RegisterCustomLevel
 local AddLoggerContextLookupItem = Log4g.Core.LoggerContext.Lookup.AddItem
@@ -55,7 +55,7 @@ net.Receive("Log4g_CLUpload_LoggerConfig_JSON", function(len, ply)
     if not IdentChk(ply) then return end
     local tbl = util.JSONToTable(util.Decompress(net.ReadData(net.ReadUInt(16))))
     local contextname, configname = tbl.loggercontext, tbl.name
-    RegisterLoggerContext(contextname)
+    CreateLoggerContext(contextname)
     RegisterLoggerConfig(tbl)
     AddLoggerContextLookupItem(contextname, configname)
 end)
