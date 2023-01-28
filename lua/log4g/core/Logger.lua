@@ -2,12 +2,12 @@
 -- @classmod Logger
 local Class = include("log4g/core/impl/MiddleClass.lua")
 local Logger = Class("Logger")
-local HasKey = Log4g.Util.HasKey
 local SetState = Log4g.Core.LifeCycle.SetState
 local INITIALIZING, INITIALIZED = Log4g.Core.LifeCycle.State.INITIALIZING, Log4g.Core.LifeCycle.State.INITIALIZED
 local STARTING, STARTED = Log4g.Core.LifeCycle.State.STARTING, Log4g.Core.LifeCycle.State.STARTED
 local STOPPING, STOPPED = Log4g.Core.LifeCycle.State.STOPPING, Log4g.Core.LifeCycle.State.STOPPED
 local GetAllLoggerContexts = Log4g.API.LoggerContextFactory.GetContextAll
+local HasLogger = Log4g.API.LogManager.Exists
 
 function Logger:Initialize(tbl)
     SetState(self, INITIALIZING)
@@ -46,16 +46,6 @@ end
 -- @return object level
 function Logger:GetLevel()
     return self.loggerconfig.level
-end
-
-local function HasLogger(name)
-    local LoggerContexts = GetAllLoggerContexts()
-
-    for _, v in pairs(LoggerContexts) do
-        if HasKey(v.logger, name) then return true end
-    end
-
-    return false
 end
 
 --- Register a Logger.

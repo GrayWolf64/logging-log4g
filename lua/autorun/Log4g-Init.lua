@@ -24,6 +24,8 @@ if SERVER then
 
     if file.Exists(API, "lsv") then
         include(API)
+    else
+        return
     end
 
     include("log4g/core/Level.lua")
