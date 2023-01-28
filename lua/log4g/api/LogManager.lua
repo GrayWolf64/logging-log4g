@@ -3,6 +3,9 @@
 Log4g.API.LogManager = Log4g.API.LogManager or {}
 local GetAllLoggerContexts = Log4g.API.LoggerContextFactory.GetContextAll
 
+--- Detects if a Logger with the specified name exists.
+-- @param name The name of the Logger
+-- @return bool haslogger
 function Log4g.API.LogManager.Exists(name)
     local LoggerContexts = GetAllLoggerContexts()
 
