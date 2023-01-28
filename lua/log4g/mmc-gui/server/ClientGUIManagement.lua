@@ -1,6 +1,7 @@
 local AddNetworkStrsViaTbl = Log4g.Util.AddNetworkStrsViaTbl
 local WriteDataSimple = Log4g.Util.WriteDataSimple
 local RemoveLoggerLookupLogger = Log4g.Core.Logger.Lookup.RemoveLogger
+local GetAllLoggerContexts = Log4g.API.LoggerContextFactory.GetContextAll
 local LoggerLookupFile = "log4g/server/loggercontext/lookup_logger.json"
 
 AddNetworkStrsViaTbl({
@@ -34,6 +35,6 @@ end)
 
 net.Receive("Log4g_CLReq_Logger_Remove", function(len, ply)
     local ContextName, LoggerName = net.ReadString(), net.ReadString()
-    Log4g.LogManager[ContextName].logger[LoggerName]:Terminate()
+    GetAllLoggerContexts()[ContextName].logger[LoggerName]:Terminate()
     RemoveLoggerLookupLogger(ContextName, LoggerName)
 end)

@@ -7,7 +7,7 @@ local SetState = Log4g.Core.LifeCycle.SetState
 local INITIALIZING, INITIALIZED = Log4g.Core.LifeCycle.State.INITIALIZING, Log4g.Core.LifeCycle.State.INITIALIZED
 local STARTING, STARTED = Log4g.Core.LifeCycle.State.STARTING, Log4g.Core.LifeCycle.State.STARTED
 local STOPPING, STOPPED = Log4g.Core.LifeCycle.State.STOPPING, Log4g.Core.LifeCycle.State.STOPPED
-local GetAllLoggerContexts = Log4g.Core.LoggerContext.GetAll
+local GetAllLoggerContexts = Log4g.API.LoggerContextFactory.GetContextAll
 
 function Logger:Initialize(tbl)
     SetState(self, INITIALIZING)

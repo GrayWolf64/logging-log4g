@@ -1,5 +1,6 @@
 --- Initialization of Log4g on server and client.
 -- @script Log4g-Init
+local API = "log4g/api/API-Init.lua"
 local MMC = "log4g/mmc-gui/MMC-Init.lua"
 file.CreateDir("log4g")
 
@@ -20,6 +21,11 @@ if SERVER then
     include("log4g/core/Util.lua")
     include("log4g/core/LifeCycle.lua")
     include("log4g/core/LoggerContext.lua")
+
+    if file.Exists(API, "lsv") then
+        include(API)
+    end
+
     include("log4g/core/Level.lua")
     include("log4g/core/Logger.lua")
     include("log4g/core/lookup/LoggerContextLookup.lua")
@@ -27,14 +33,13 @@ if SERVER then
     include("log4g/core/Layout.lua")
     include("log4g/core/Appender.lua")
     include("log4g/core/config/LoggerConfig.lua")
-    include("log4g/api/status/StatusLogger.lua")
-    include("log4g/api/spi/LoggerContextFactory.lua")
-    include("log4g/core/EnvSaveRestore.lua")
 
     if file.Exists(MMC, "lsv") then
         include(MMC)
         AddCSLuaFile(MMC)
     end
+
+    include("log4g/core/EnvSaveRestore.lua")
 elseif CLIENT then
     if file.Exists(MMC, "lcl") then
         include(MMC)
