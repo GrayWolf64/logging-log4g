@@ -25,6 +25,8 @@ function Logger:Start()
     end)
 
     SetState(self, STARTED)
+
+    return self
 end
 
 --- Terminate the Logger.
@@ -48,24 +50,23 @@ function Logger:GetLevel()
     return self.loggerconfig.level
 end
 
---- Register a Logger.
+--- Create a Logger.
 -- `Log4g_PreLoggerRegistration` will be called before the registration.
 -- `Log4g_PostLoggerRegistration` will be called after the registration succeeds.
 -- If the Logger with the same name already exists, `Log4g_OnLoggerRegistrationFailure` will be called.
 -- @param loggerconfig The Loggerconfig
 -- @return object logger
-function Log4g.Core.Logger.RegisterLogger(loggerconfig)
+function Log4g.Core.Logger.GetLogger(loggerconfig)
     if not istable(loggerconfig) or table.IsEmpty(loggerconfig) then return end
     hook.Run("Log4g_PreLoggerRegistration", loggerconfig.name)
     local LoggerContexts = GetAllLoggerContexts()
 
     if not HasLogger(loggerconfig.name) then
-        local logger = Logger:New(loggerconfig)
+        local logger = Logger:New(loggerconfig):Start()
         LoggerContexts[loggerconfig.loggercontext].logger[loggerconfig.name] = logger
-        LoggerContexts[loggerconfig.loggercontext].logger[loggerconfig.name]:Start()
         hook.Run("Log4g_PostLoggerRegistration", loggerconfig.name)
 
-        return LoggerContexts[loggerconfig.loggercontext].logger[loggerconfig.name]
+        return logger
     else
         hook.Run("Log4g_OnLoggerRegistrationFailure", loggerconfig.name)
 

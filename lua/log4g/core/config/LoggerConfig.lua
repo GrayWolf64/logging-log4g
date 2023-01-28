@@ -12,7 +12,7 @@ local INITIALIZING, INITIALIZED = Log4g.Core.LifeCycle.State.INITIALIZING, Log4g
 local STARTING, STARTED = Log4g.Core.LifeCycle.State.STARTING, Log4g.Core.LifeCycle.State.STARTED
 local STOPPING, STOPPED = Log4g.Core.LifeCycle.State.STOPPING, Log4g.Core.LifeCycle.State.STOPPED
 local AddLoggerLookupItem = Log4g.Core.Logger.Lookup.AddItem
-local RegisterLogger = Log4g.Core.Logger.RegisterLogger
+local GetLogger = Log4g.Core.Logger.GetLogger
 local GetLevel = Log4g.Level.GetLevel
 local GetLayout = Log4g.Core.Layout.GetLayout
 local GetAppender = Log4g.Core.Appender.GetAppender
@@ -80,7 +80,7 @@ function LoggerConfig:BuildDefault()
     if IsStarted(self) then return end
     hook.Run("Log4g_PreLoggerConfigBuild", self.name)
     SetState(self, STARTING)
-    local logger = RegisterLogger(self)
+    local logger = GetLogger(self)
     AddLoggerLookupItem(self.name, self.loggercontext, self.file)
 
     function logger.loggerconfig:BuildDefault()
