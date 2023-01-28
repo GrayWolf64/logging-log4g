@@ -58,7 +58,7 @@ end
 
 --- Register a LoggerContext.
 -- This is used for APIs.
--- If the LoggerContext with the same name already exists, an error will be thrown without halt.
+-- If the LoggerContext with the same name already exists, `Log4g_OnLoggerContextRegistrationFailure` will be called.
 -- @param collection Where to put the LoggerContext, must be a table
 -- @param name The name of the LoggerContext
 -- @return object loggercontext
