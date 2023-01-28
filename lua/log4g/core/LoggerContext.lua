@@ -51,25 +51,35 @@ function LoggerContext:GetName()
     return self.name
 end
 
+--- This is where all the LoggerContexts are stored.
+-- LoggerContexts may include some Loggers which may also include Appender, Level objects and so on.
+-- @local
+-- @table INSTANCES
+local INSTANCES = INSTANCES or {}
+
+function Log4g.Core.LoggerContext.GetAll()
+    return INSTANCES
+end
+
 --- Register a LoggerContext.
 -- This is used for APIs.
 -- If the LoggerContext with the same name already exists, `Log4g_OnLoggerContextRegistrationFailure` will be called.
 -- @param collection Where to put the LoggerContext, must be a table
 -- @param name The name of the LoggerContext
 -- @return object loggercontext
-function Log4g.Core.LoggerContext.Register(collection, name)
+function Log4g.Core.LoggerContext.Register(name)
     hook.Run("Log4g_PreLoggerContextRegistration", name)
 
-    if not HasKey(collection, name) then
+    if not HasKey(INSTANCES, name) then
         local loggercontext = LoggerContext:New(name)
-        collection[name] = loggercontext:Start()
+        INSTANCES[name] = loggercontext:Start()
         file.CreateDir("log4g/server/loggercontext/" .. name .. "/loggerconfig")
         hook.Run("Log4g_PostLoggerContextRegistration", name)
 
-        return collection[name]
+        return INSTANCES[name]
     else
         hook.Run("Log4g_OnLoggerContextRegistrationFailure")
 
-        return collection[name]
+        return INSTANCES[name]
     end
 end
