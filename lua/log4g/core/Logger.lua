@@ -7,7 +7,7 @@ local INITIALIZING, INITIALIZED = Log4g.Core.LifeCycle.State.INITIALIZING, Log4g
 local STARTING, STARTED = Log4g.Core.LifeCycle.State.STARTING, Log4g.Core.LifeCycle.State.STARTED
 local STOPPING, STOPPED = Log4g.Core.LifeCycle.State.STOPPING, Log4g.Core.LifeCycle.State.STOPPED
 local GetAllLoggerContexts = Log4g.API.LoggerContextFactory.GetContextAll
-local Exists = Log4g.API.LogManager.Exists
+local HasKey = Log4g.Util.HasKey
 
 function Logger:Initialize(tbl)
     SetState(self, INITIALIZING)
@@ -50,25 +50,36 @@ function Logger:GetLevel()
     return self.loggerconfig.level
 end
 
+--- This is where all the Loggers are stored.
+-- @local
+-- @table INSTANCES
+local INSTANCES = INSTANCES or {}
+
+--- Get all the Loggers.
+-- @return table instances
+function Log4g.Core.Logger.GetAll()
+    return INSTANCES
+end
+
 --- Create a Logger.
 -- `Log4g_PreLoggerRegistration` will be called before the registration.
 -- `Log4g_PostLoggerRegistration` will be called after the registration succeeds.
 -- If the Logger with the same name already exists, `Log4g_OnLoggerRegistrationFailure` will be called.
 -- @param loggerconfig The Loggerconfig
 -- @return object logger
-function Log4g.Core.Logger.Register(collection, loggerconfig)
+function Log4g.Core.Logger.Register(loggerconfig)
     if not istable(loggerconfig) or table.IsEmpty(loggerconfig) then return end
     hook.Run("Log4g_PreLoggerRegistration", loggerconfig.name)
 
-    if not Exists(loggerconfig.name) then
+    if not HasKey(INSTANCES, loggerconfig.name) then
         local logger = Logger:New(loggerconfig):Start()
-        collection[loggerconfig.loggercontext].logger[loggerconfig.name] = logger
+        INSTANCES[loggerconfig.name] = logger
         hook.Run("Log4g_PostLoggerRegistration", loggerconfig.name)
 
         return logger
     else
         hook.Run("Log4g_OnLoggerRegistrationFailure", loggerconfig.name)
 
-        return collection[loggerconfig.loggercontext].logger[loggerconfig.name]
+        return INSTANCES[loggerconfig.name]
     end
 end
