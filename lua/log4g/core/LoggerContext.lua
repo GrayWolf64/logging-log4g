@@ -21,6 +21,8 @@ end
 function LoggerContext:Start()
     SetState(self, STARTING)
     SetState(self, STARTED)
+
+    return self
 end
 
 function LoggerContext:__tostring()
@@ -60,8 +62,7 @@ function Log4g.Core.LoggerContext.Register(collection, name)
 
     if not HasKey(collection, name) then
         local loggercontext = LoggerContext:New(name)
-        collection[name] = loggercontext
-        collection[name]:Start()
+        collection[name] = loggercontext:Start()
         file.CreateDir("log4g/server/loggercontext/" .. name .. "/loggerconfig")
         hook.Run("Log4g_PostLoggerContextRegistration", name)
 
