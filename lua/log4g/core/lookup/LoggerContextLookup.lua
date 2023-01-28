@@ -2,7 +2,7 @@
 -- LoggerContext Lookups contain LoggerContext names and associated LoggerConfig (not started) names in the form of a table.
 -- If a LoggerConfig has started (been built and applied to a Logger), it will be removed from LoggerContext Lookup.
 -- This is currently used for populating client's LoggerConfig DTree.
--- @script LoggerContextLookup.lua
+-- @script LoggerContextLookup
 -- @license Apache License 2.0
 -- @copyright GrayWolf64
 Log4g.Core.LoggerContext.Lookup = Log4g.Core.LoggerContext.Lookup or {}

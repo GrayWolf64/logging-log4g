@@ -1,5 +1,5 @@
 --- Server-side processing of the Client GUI Configurator requests.
--- @script ClientGUIConfigurator.lua
+-- @script ClientGUIConfigurator
 -- @license Apache License 2.0
 -- @copyright GrayWolf64
 local AddNetworkStrsViaTbl = Log4g.Util.AddNetworkStrsViaTbl

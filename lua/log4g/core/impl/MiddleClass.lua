@@ -1,5 +1,5 @@
 --- A simple OOP library for Lua which has inheritance, metamethods, class variables and weak mixin support.
--- @module MiddleClass.lua
+-- @module MiddleClass
 -- @license MIT License
 -- @copyright Enrique García Cota
 local MiddleClass = {}

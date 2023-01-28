@@ -1,5 +1,5 @@
 --- Client GUI (MMC).
--- @script ClientGUI.lua
+-- @script ClientGUI
 -- @license Apache License 2.0
 -- @copyright GrayWolf64
 local function CreateDFrame(a, b, title, icon, parent)

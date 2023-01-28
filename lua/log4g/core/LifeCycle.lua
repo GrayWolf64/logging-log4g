@@ -1,5 +1,5 @@
 --- The LifeCycle for objects.
--- @script LifeCycle.lua
+-- @script LifeCycle
 -- @license Apache License 2.0
 -- @copyright GrayWolf64
 Log4g.Core.LifeCycle = Log4g.Core.LifeCycle or {}

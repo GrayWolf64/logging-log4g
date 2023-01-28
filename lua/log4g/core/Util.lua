@@ -1,5 +1,5 @@
 --- The Util Library (Module).
--- @module Util.lua
+-- @module Util
 -- @license Apache License 2.0
 -- @copyright GrayWolf64
 Log4g.Util = Log4g.Util or {}

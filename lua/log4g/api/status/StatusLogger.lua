@@ -1,3 +1,3 @@
 --- Simple Status Logging which is meant to be used internally.
 -- It records events that occur in the logging system.
--- @script StatusLogger.lua
+-- @script StatusLogger

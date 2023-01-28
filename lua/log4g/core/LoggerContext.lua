@@ -28,12 +28,6 @@ function LoggerContext:__tostring()
     return "LoggerContext: [name:" .. self.name .. "]" .. "[folder:" .. self.folder .. "]" .. "[timestarted:" .. self.timestarted .. "]" .. "[logger:" .. #self.logger .. "]"
 end
 
---- This is where all the LoggerContexts are stored.
--- LoggerContexts may include some Loggers which may also include Appender, Level objects and so on.
--- @local
--- @table Instances
-local Instances = Instances or {}
-
 --- Get all the LoggerContexts.
 -- @return table instances
 function Log4g.Core.LoggerContext.GetAll()
@@ -84,22 +78,23 @@ end
 
 --- Register a LoggerContext.
 -- If the LoggerContext with the same name already exists, an error will be thrown without halt.
+-- @param collection Where to put the LoggerContext, must be a table
 -- @param name The name of the LoggerContext
 -- @return object loggercontext
-function Log4g.Core.LoggerContext.RegisterLoggerContext(name)
+function Log4g.Core.LoggerContext.RegisterLoggerContext(collection, name)
     hook.Run("Log4g_PreLoggerContextRegistration", name)
 
-    if not HasKey(Instances, name) then
+    if not HasKey(collection, name) then
         local loggercontext = LoggerContext:New(name)
-        Instances[name] = loggercontext
-        Instances[name]:Start()
+        collection[name] = loggercontext
+        collection[name]:Start()
         file.CreateDir("log4g/server/loggercontext/" .. name .. "/loggerconfig")
         hook.Run("Log4g_PostLoggerContextRegistration", name)
 
-        return Instances[name]
+        return collection[name]
     else
         hook.Run("Log4g_OnLoggerContextRegistrationFailure")
 
-        return Instances[name]
+        return collection[name]
     end
 end
