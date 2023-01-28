@@ -1,6 +1,7 @@
 --- The anchor point for the Log4g logging system.
 -- @script LogManager
 Log4g.API.LogManager = Log4g.API.LogManager or {}
+local HasKey = Log4g.Util.HasKey
 local GetAllLoggerContexts = Log4g.API.LoggerContextFactory.GetContextAll
 
 --- Detects if a Logger with the specified name exists.
