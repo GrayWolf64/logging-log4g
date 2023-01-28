@@ -15,7 +15,6 @@ function LoggerContext:Initialize(name)
     self.name = name
     self.folder = "log4g/server/loggercontext/" .. name
     self.timestarted = os.time()
-    self.logger = {}
     SetState(self, INITIALIZED)
 end
 
@@ -42,12 +41,6 @@ function LoggerContext:Terminate()
     SetState(self, STOPPED)
     self = nil
     hook.Run("Log4g_PostLoggerContextTermination")
-end
-
---- Get all the Loggers of the LoggerContext.
--- @return tbl loggers
-function LoggerContext:GetLoggers()
-    return self.logger
 end
 
 --- Get the name of the LoggerContext.
