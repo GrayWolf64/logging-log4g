@@ -13,6 +13,7 @@ local LoggerContextSaveFile = "log4g/server/saverestore_loggercontext.json"
 local UnstartedLoggerConfigSaveFile = "log4g/server/saverestore_loggerconfig_unstarted.json"
 local StartedLoggerConfigSaveFile = "log4g/server/saverestore_loggerconfig_started.json"
 local CustomLevelSaveFile = "log4g/server/saverestore_customlevel.json"
+local GetAllLoggers = Log4g.Core.Logger.GetAll
 
 --- Save all the LoggerContexts' names into a JSON file.
 -- @lfunction SaveLoggerContext
@@ -50,19 +51,15 @@ end
 --- Save all the built LoggerConfigs' names and associated LoggerContexts' names into a JSON file.
 -- @lfunction SaveBuiltLoggerConfig
 local function SaveBuiltLoggerConfig()
-    local LoggerContexts = GetAllLoggerContexts()
-    if table.IsEmpty(LoggerContexts) then return end
+    local Loggers = GetAllLoggers()
+    if table.IsEmpty(Loggers) then return end
     local result = {}
 
-    for k, v in pairs(LoggerContexts) do
-        if table.IsEmpty(v.logger) then return end
-
-        for i, _ in pairs(v.logger) do
-            table.insert(result, {
-                name = i,
-                loggercontext = k
-            })
-        end
+    for k, v in pairs(Loggers) do
+        table.insert(result, {
+            name = k,
+            loggercontext = v.loggercontext
+        })
     end
 
     file.Write(StartedLoggerConfigSaveFile, util.TableToJSON(result, true))
