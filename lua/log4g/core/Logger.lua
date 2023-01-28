@@ -6,7 +6,6 @@ local SetState = Log4g.Core.LifeCycle.SetState
 local INITIALIZING, INITIALIZED = Log4g.Core.LifeCycle.State.INITIALIZING, Log4g.Core.LifeCycle.State.INITIALIZED
 local STARTING, STARTED = Log4g.Core.LifeCycle.State.STARTING, Log4g.Core.LifeCycle.State.STARTED
 local STOPPING, STOPPED = Log4g.Core.LifeCycle.State.STOPPING, Log4g.Core.LifeCycle.State.STOPPED
-local GetAllLoggerContexts = Log4g.API.LoggerContextFactory.GetContextAll
 local HasKey = Log4g.Util.HasKey
 
 function Logger:Initialize(tbl)
@@ -35,7 +34,7 @@ function Logger:Terminate()
     file.Delete(self.loggerconfig.file)
     hook.Remove(self.loggerconfig.eventname, self.loggerconfig.uid)
     SetState(self, STOPPED)
-    GetAllLoggerContexts()[self.loggerconfig.loggercontext].logger[self.name] = nil
+    self = nil
 end
 
 --- Get the Logger name.
