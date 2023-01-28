@@ -16,17 +16,17 @@ function PatternLayout:Initialize(name, func)
     Layout.Initialize(self, name, func)
 end
 
-local Instances = {
+local INSTANCES = {
     PatternLayout = PatternLayout:New("PatternLayout", include("log4g/core/layout/PatternLayout.lua"))
 }
 
 function Log4g.Core.Layout.GetLayoutAll()
-    return Instances
+    return INSTANCES
 end
 
 function Log4g.Core.Layout.GetLayout(name)
-    if HasKey(Instances, name) then
-        return Instances[name]
+    if HasKey(INSTANCES, name) then
+        return INSTANCES[name]
     else
         return nil
     end

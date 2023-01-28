@@ -60,13 +60,13 @@ end
 
 --- All the LoggerConfigs will be stored here.
 -- @local
--- @table Instances
-local Instances = Instances or {}
+-- @table INSTANCES
+local INSTANCES = INSTANCES or {}
 
 --- Get all the LoggerConfigs in the LoggerConfigs table.
 -- @return table instances
 function Log4g.Core.Config.LoggerConfig.GetAll()
-    return Instances
+    return INSTANCES
 end
 
 --- Start the default building procedure for the LoggerConfig.
@@ -101,7 +101,7 @@ end
 function Log4g.Core.Config.LoggerConfig.RegisterLoggerConfig(tbl)
     hook.Run("Log4g_PreLoggerConfigRegistration", tbl.name)
 
-    if not HasKey(Instances, tbl.name) then
+    if not HasKey(INSTANCES, tbl.name) then
         local strlevel = tbl.level
         local strlayout = tbl.layout
         local strappender = tbl.appender
@@ -109,18 +109,18 @@ function Log4g.Core.Config.LoggerConfig.RegisterLoggerConfig(tbl)
         tbl.layout = GetLayout(strlayout)
         tbl.appender = GetAppender(strappender)
         local loggerconfig = LoggerConfig:New(tbl)
-        Instances[tbl.name] = loggerconfig
+        INSTANCES[tbl.name] = loggerconfig
         tbl.level = strlevel
         tbl.layout = strlayout
         tbl.appender = strappender
         file.Write(loggerconfig.file, util.TableToJSON(tbl, true))
         hook.Run("Log4g_PostLoggerConfigRegistration")
 
-        return Instances[tbl.name]
+        return INSTANCES[tbl.name]
     else
         hook.Run("Log4g_OnLoggerConfigRegistrationFailure")
 
-        return Instances[tbl.name]
+        return INSTANCES[tbl.name]
     end
 end
 
@@ -128,10 +128,10 @@ end
 -- If the LoggerConfig table is empty, nil will be the return value.
 -- @return tbl filepaths
 function Log4g.Core.Config.LoggerConfig.GetFiles()
-    if not table.IsEmpty(Instances) then
+    if not table.IsEmpty(INSTANCES) then
         local tbl = {}
 
-        for _, v in pairs(Instances) do
+        for _, v in pairs(INSTANCES) do
             if not IsStarted(v) then
                 table.insert(tbl, v.file)
             end
