@@ -1,3 +1,7 @@
+do
+    return
+end
+
 --- SaveRestore system for the Logging environment.
 -- @script EnvSaveRestore
 -- @license Apache License 2.0
