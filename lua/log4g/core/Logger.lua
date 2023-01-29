@@ -8,15 +8,15 @@ local STARTING, STARTED = Log4g.Core.LifeCycle.State.STARTING, Log4g.Core.LifeCy
 local STOPPING, STOPPED = Log4g.Core.LifeCycle.State.STOPPING, Log4g.Core.LifeCycle.State.STOPPED
 local HasKey = Log4g.Util.HasKey
 
-function Logger:Initialize(tbl)
+function Logger:Initialize(name)
     SetState(self, INITIALIZING)
-    self.name = tbl.name
-    self.loggerconfig = tbl
+    self.name = name
     SetState(self, INITIALIZED)
 end
 
-function Logger:Start()
+function Logger:Start(loggerconfig)
     SetState(self, STARTING)
+    self.loggerconfig = loggerconfig
 
     hook.Add(self.loggerconfig.eventname, self.loggerconfig.uid, function()
         Msg(self.loggerconfig.layout.func(self.loggerconfig.logmsg))
@@ -66,19 +66,19 @@ end
 -- If the Logger with the same name already exists, `Log4g_OnLoggerRegistrationFailure` will be called.
 -- @param loggerconfig The Loggerconfig
 -- @return object logger
-function Log4g.Core.Logger.Register(loggerconfig)
-    if not istable(loggerconfig) or table.IsEmpty(loggerconfig) then return end
-    hook.Run("Log4g_PreLoggerRegistration", loggerconfig.name)
+function Log4g.Core.Logger.Register(name, loggerconfig)
+    if not isstring(name) or not istable(loggerconfig) or table.IsEmpty(loggerconfig) then return end
+    hook.Run("Log4g_PreLoggerRegistration", name)
 
-    if not HasKey(INSTANCES, loggerconfig.name) then
-        local logger = Logger:New(loggerconfig):Start()
-        INSTANCES[loggerconfig.name] = logger
-        hook.Run("Log4g_PostLoggerRegistration", loggerconfig.name)
+    if not HasKey(INSTANCES, name) then
+        local logger = Logger:New(name):Start(loggerconfig)
+        INSTANCES[name] = logger
+        hook.Run("Log4g_PostLoggerRegistration", name)
 
         return logger
     else
-        hook.Run("Log4g_OnLoggerRegistrationFailure", loggerconfig.name)
+        hook.Run("Log4g_OnLoggerRegistrationFailure", name)
 
-        return INSTANCES[loggerconfig.name]
+        return INSTANCES[name]
     end
 end
