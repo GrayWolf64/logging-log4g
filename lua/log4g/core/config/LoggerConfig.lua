@@ -11,12 +11,12 @@ local IsStarted = Log4g.Core.LifeCycle.IsStarted
 local INITIALIZING, INITIALIZED = Log4g.Core.LifeCycle.State.INITIALIZING, Log4g.Core.LifeCycle.State.INITIALIZED
 -- local STARTING, STARTED = Log4g.Core.LifeCycle.State.STARTING, Log4g.Core.LifeCycle.State.STARTED
 local STOPPING, STOPPED = Log4g.Core.LifeCycle.State.STOPPING, Log4g.Core.LifeCycle.State.STOPPED
+
 -- local AddLoggerLookupItem = Log4g.Core.Logger.Lookup.AddItem
 -- local GetLogger = Log4g.Core.Logger.Register
-local GetLevel = Log4g.Level.GetLevel
-local GetLayout = Log4g.Core.Layout.GetLayout
-local GetAppender = Log4g.Core.Appender.GetAppender
-
+-- local GetLevel = Log4g.Level.GetLevel
+-- local GetLayout = Log4g.Core.Layout.GetLayout
+-- local GetAppender = Log4g.Core.Appender.GetAppender
 function LoggerConfig:Initialize(tbl)
     SetState(self, INITIALIZING)
     self.name = tbl.name
@@ -86,17 +86,8 @@ function Log4g.Core.Config.LoggerConfig.RegisterLoggerConfig(tbl)
     hook.Run("Log4g_PreLoggerConfigRegistration", tbl.name)
 
     if not HasKey(INSTANCES, tbl.name) then
-        local strlevel = tbl.level
-        local strlayout = tbl.layout
-        local strappender = tbl.appender
-        tbl.level = GetLevel(strlevel)
-        tbl.layout = GetLayout(strlayout)
-        tbl.appender = GetAppender(strappender)
         local loggerconfig = LoggerConfig:New(tbl)
         INSTANCES[tbl.name] = loggerconfig
-        tbl.level = strlevel
-        tbl.layout = strlayout
-        tbl.appender = strappender
         file.Write(loggerconfig.file, util.TableToJSON(tbl, true))
         hook.Run("Log4g_PostLoggerConfigRegistration")
 
