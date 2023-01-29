@@ -9,10 +9,10 @@ local LoggerConfig = Class("LoggerConfig")
 local SetState = Log4g.Core.LifeCycle.SetState
 local IsStarted = Log4g.Core.LifeCycle.IsStarted
 local INITIALIZING, INITIALIZED = Log4g.Core.LifeCycle.State.INITIALIZING, Log4g.Core.LifeCycle.State.INITIALIZED
-local STARTING, STARTED = Log4g.Core.LifeCycle.State.STARTING, Log4g.Core.LifeCycle.State.STARTED
+-- local STARTING, STARTED = Log4g.Core.LifeCycle.State.STARTING, Log4g.Core.LifeCycle.State.STARTED
 local STOPPING, STOPPED = Log4g.Core.LifeCycle.State.STOPPING, Log4g.Core.LifeCycle.State.STOPPED
-local AddLoggerLookupItem = Log4g.Core.Logger.Lookup.AddItem
-local GetLogger = Log4g.Core.Logger.Register
+-- local AddLoggerLookupItem = Log4g.Core.Logger.Lookup.AddItem
+-- local GetLogger = Log4g.Core.Logger.Register
 local GetLevel = Log4g.Level.GetLevel
 local GetLayout = Log4g.Core.Layout.GetLayout
 local GetAppender = Log4g.Core.Appender.GetAppender
@@ -68,27 +68,12 @@ function Log4g.Core.Config.LoggerConfig.GetAll()
     return INSTANCES
 end
 
---- Start the default building procedure for the LoggerConfig.
--- It will first set the LoggerConfig's LifeCycle to STARTING.
--- Then a Logger based on the LoggerConfig will be registered.
--- At last the registered Logger's LoggerConfig's state will be set to STARTED, and the procedure has completed.
--- If the LoggerConfig is already started, it will simply return end.
--- `Log4g_PreLoggerConfigBuild` will be called first after the check.
--- `Log4g_PostLoggerConfigBuild` will be called after the build.
-function LoggerConfig:BuildDefault()
-    if IsStarted(self) then return end
-    hook.Run("Log4g_PreLoggerConfigBuild", self.name)
-    SetState(self, STARTING)
-    local logger = GetLogger(self)
-    AddLoggerLookupItem(self.name, self.loggercontext, self.file)
+--- Get the LoggerConfig with the right name.
+-- @return object loggerconfig
+function Log4g.Core.Config.LoggerConfig.Get(name)
+    if not HasKey(INSTANCES, name) then return end
 
-    function logger.loggerconfig:BuildDefault()
-        return
-    end
-
-    self:Remove()
-    SetState(logger.loggerconfig, STARTED)
-    hook.Run("Log4g_PostLoggerConfigBuild")
+    return INSTANCES[name]
 end
 
 --- Register a LoggerConfig.
@@ -141,3 +126,26 @@ function Log4g.Core.Config.LoggerConfig.GetFiles()
         return nil
     end
 end
+--[[
+--- Start the default building procedure for the LoggerConfig.
+-- It will first set the LoggerConfig's LifeCycle to STARTING.
+-- Then a Logger based on the LoggerConfig will be registered.
+-- At last the registered Logger's LoggerConfig's state will be set to STARTED, and the procedure has completed.
+-- If the LoggerConfig is already started, it will simply return end.
+-- `Log4g_PreLoggerConfigBuild` will be called first after the check.
+-- `Log4g_PostLoggerConfigBuild` will be called after the build.
+function LoggerConfig:BuildDefault()
+    if IsStarted(self) then return end
+    hook.Run("Log4g_PreLoggerConfigBuild", self.name)
+    SetState(self, STARTING)
+    local logger = GetLogger(self)
+    AddLoggerLookupItem(self.name, self.loggercontext, self.file)
+
+    function logger.loggerconfig:BuildDefault()
+        return
+    end
+
+    self:Remove()
+    SetState(logger.loggerconfig, STARTED)
+    hook.Run("Log4g_PostLoggerConfigBuild")
+end--]]

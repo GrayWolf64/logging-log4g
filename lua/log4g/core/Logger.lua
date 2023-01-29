@@ -36,6 +36,14 @@ function Logger:GetName()
     return self.name
 end
 
+--- Get the LoggerConfig name of the Logger.
+-- @return string loggerconfig
+function Logger:GetLoggerConfig()
+    if not HasKey(self, "loggerconfig") then return end
+
+    return self.loggerconfig
+end
+
 --- This is where all the Loggers are stored.
 -- @local
 -- @table INSTANCES
