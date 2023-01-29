@@ -18,10 +18,3 @@ end
 function Log4g.API.LoggerContextFactory.HasContext(name)
     return HasKey(GetAllLoggerContexts(), name)
 end
-
---- Get all the LoggerContexts.
--- This is identical to Log4g.Core.LoggerContext.GetAll().
--- @return table instances
-function Log4g.API.LoggerContextFactory.GetContextAll()
-    return GetAllLoggerContexts()
-end
