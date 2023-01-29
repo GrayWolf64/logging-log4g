@@ -26,7 +26,6 @@ end
 --- Terminate the Logger.
 function Logger:Terminate()
     SetState(self, STOPPING)
-    file.Delete(self.loggerconfig.file)
     SetState(self, STOPPED)
     self = nil
 end
@@ -35,12 +34,6 @@ end
 -- @return string name
 function Logger:GetName()
     return self.name
-end
-
---- Get the Level associated with the Logger.
--- @return object level
-function Logger:GetLevel()
-    return self.loggerconfig.level
 end
 
 --- This is where all the Loggers are stored.
