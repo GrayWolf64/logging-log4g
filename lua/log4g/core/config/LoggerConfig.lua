@@ -28,7 +28,6 @@ function LoggerConfig:Initialize(tbl)
     self.layout = tbl.layout
     self.file = "log4g/server/loggercontext/" .. tbl.loggercontext .. "/loggerconfig/" .. tbl.name .. ".json"
     self.logmsg = tbl.logmsg
-    self.callback = tbl.callback
     SetState(self, INITIALIZED)
 end
 

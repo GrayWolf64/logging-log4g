@@ -47,7 +47,7 @@ end)
 net.Receive("Log4g_CLReq_CFG_LoggerConfig_ColumnText", function(len, ply)
     net.Start("Log4g_CLRcv_CFG_LoggerConfig_ColumnText")
 
-    net.WriteTable({"name", "eventname", "uid", "loggercontext", "level", "appender", "layout", "logmsg", "callback"})
+    net.WriteTable({"name", "eventname", "uid", "loggercontext", "level", "appender", "layout", "logmsg"})
 
     net.Send(ply)
 end)

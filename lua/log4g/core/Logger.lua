@@ -14,15 +14,10 @@ function Logger:Initialize(name)
     SetState(self, INITIALIZED)
 end
 
+--- Start the Logger with a LoggerConfig.
 function Logger:Start(loggerconfig)
     SetState(self, STARTING)
-    self.loggerconfig = loggerconfig
-
-    hook.Add(self.loggerconfig.eventname, self.loggerconfig.uid, function()
-        Msg(self.loggerconfig.layout.func(self.loggerconfig.logmsg))
-        CompileString(self.loggerconfig.callback)()
-    end)
-
+    self.loggerconfig = loggerconfig.name
     SetState(self, STARTED)
 
     return self
@@ -32,7 +27,6 @@ end
 function Logger:Terminate()
     SetState(self, STOPPING)
     file.Delete(self.loggerconfig.file)
-    hook.Remove(self.loggerconfig.eventname, self.loggerconfig.uid)
     SetState(self, STOPPED)
     self = nil
 end
