@@ -4,12 +4,12 @@ local Class                          = include("log4g/core/impl/MiddleClass.lua"
 local LoggerContext                  = Class("LoggerContext")
 local HasKey                         = Log4g.Util.HasKey
 local DeleteFolderRecursive          = Log4g.Util.DeleteFolderRecursive
+local AddContextLookupContextItem    = Log4g.Core.LoggerContext.Lookup.AddContext
+local RemoveContextLookupContextItem = Log4g.Core.LoggerContext.Lookup.RemoveContext
 local SetState                       = Log4g.Core.LifeCycle.SetState
 local INITIALIZING,                   INITIALIZED = Log4g.Core.LifeCycle.State.INITIALIZING, Log4g.Core.LifeCycle.State.INITIALIZED
 local STARTING,                       STARTED     = Log4g.Core.LifeCycle.State.STARTING,     Log4g.Core.LifeCycle.State.STARTED
 local STOPPING,                       STOPPED     = Log4g.Core.LifeCycle.State.STOPPING,     Log4g.Core.LifeCycle.State.STOPPED
-local AddContextLookupContextItem    = Log4g.Core.LoggerContext.Lookup.AddContext
-local RemoveContextLookupContextItem = Log4g.Core.LoggerContext.Lookup.RemoveContext
 
 function LoggerContext:Initialize(name)
     SetState(self, INITIALIZING)
@@ -42,8 +42,8 @@ function LoggerContext:Terminate()
     end
 
     SetState(self, STOPPED)
-    self = nil
     hook.Run("Log4g_PostLoggerContextTermination")
+    self = nil
 end
 
 --- Get the name of the LoggerContext.
