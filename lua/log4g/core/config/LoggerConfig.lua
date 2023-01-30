@@ -9,7 +9,6 @@ local LoggerConfig = Class("LoggerConfig")
 local SetState = Log4g.Core.LifeCycle.SetState
 local IsStarted = Log4g.Core.LifeCycle.IsStarted
 local INITIALIZING, INITIALIZED = Log4g.Core.LifeCycle.State.INITIALIZING, Log4g.Core.LifeCycle.State.INITIALIZED
--- local STARTING, STARTED = Log4g.Core.LifeCycle.State.STARTING, Log4g.Core.LifeCycle.State.STARTED
 local STOPPING, STOPPED = Log4g.Core.LifeCycle.State.STOPPING, Log4g.Core.LifeCycle.State.STOPPED
 
 -- local AddLoggerLookupItem = Log4g.Core.Logger.Lookup.AddItem
