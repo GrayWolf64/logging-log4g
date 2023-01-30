@@ -15,11 +15,11 @@ local HasKey = Log4g.Util.HasKey
 -- @field STOPPED Has stopped.
 Log4g.Core.LifeCycle.State = {
     INITIALIZING = function() return "INITIALIZING" end,
-    INITIALIZED = function() return "INITIALIZED" end,
-    STARTING = function() return "STARTING" end,
-    STARTED = function() return "STARTED" end,
-    STOPPING = function() return "STOPPING" end,
-    STOPPED = function() return "STOPPED" end
+    INITIALIZED  = function() return "INITIALIZED" end,
+    STARTING     = function() return "STARTING" end,
+    STARTED      = function() return "STARTED" end,
+    STOPPING     = function() return "STOPPING" end,
+    STOPPED      = function() return "STOPPED" end
 }
 
 --- Set the LifeCycle state for an object.

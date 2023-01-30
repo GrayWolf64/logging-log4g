@@ -5,9 +5,9 @@
 -- @script LoggerContextLookup
 -- @license Apache License 2.0
 -- @copyright GrayWolf64
-Log4g.Core.LoggerContext.Lookup = Log4g.Core.LoggerContext.Lookup or {}
-local HasKey = Log4g.Util.HasKey
-local File = "log4g/server/loggercontext/lookup_loggercontext.json"
+      Log4g.Core.LoggerContext.Lookup = Log4g.Core.LoggerContext.Lookup or {}
+local HasKey                          = Log4g.Util.HasKey
+local File                            = "log4g/server/loggercontext/lookup_loggercontext.json"
 
 --- Add a string item to LoggerContext Lookup whether it's the name of a LoggerContext or LoggerConfig.
 -- If the LoggerContext Lookup file doesn't exist, a new file will be created and data will be written into.

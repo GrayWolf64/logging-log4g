@@ -1,27 +1,27 @@
 --- The LoggerConfig.
 -- @classmod LoggerConfig
-Log4g.Core.Config = Log4g.Core.Config or {}
-Log4g.Core.Config.Builder = Log4g.Core.Config.Builder or {}
-Log4g.Core.Config.LoggerConfig = Log4g.Core.Config.LoggerConfig or {}
-local HasKey = Log4g.Util.HasKey
-local Class = include("log4g/core/impl/MiddleClass.lua")
-local LoggerConfig = Class("LoggerConfig")
-local SetState = Log4g.Core.LifeCycle.SetState
-local IsStarted = Log4g.Core.LifeCycle.IsStarted
-local INITIALIZING, INITIALIZED = Log4g.Core.LifeCycle.State.INITIALIZING, Log4g.Core.LifeCycle.State.INITIALIZED
-local STOPPING, STOPPED = Log4g.Core.LifeCycle.State.STOPPING, Log4g.Core.LifeCycle.State.STOPPED
+      Log4g.Core.Config              = Log4g.Core.Config or {}
+      Log4g.Core.Config.Builder      = Log4g.Core.Config.Builder or {}
+      Log4g.Core.Config.LoggerConfig = Log4g.Core.Config.LoggerConfig or {}
+local HasKey                         = Log4g.Util.HasKey
+local Class                          = include("log4g/core/impl/MiddleClass.lua")
+local LoggerConfig                   = Class("LoggerConfig")
+local SetState                       = Log4g.Core.LifeCycle.SetState
+local IsStarted                      = Log4g.Core.LifeCycle.IsStarted
+local INITIALIZING,                   INITIALIZED = Log4g.Core.LifeCycle.State.INITIALIZING, Log4g.Core.LifeCycle.State.INITIALIZED
+local STOPPING,                       STOPPED     = Log4g.Core.LifeCycle.State.STOPPING,     Log4g.Core.LifeCycle.State.STOPPED
 
 function LoggerConfig:Initialize(tbl)
     SetState(self, INITIALIZING)
-    self.name = tbl.name
-    self.eventname = tbl.eventname
-    self.uid = tbl.uid
+    self.name          = tbl.name
+    self.eventname     = tbl.eventname
+    self.uid           = tbl.uid
     self.loggercontext = tbl.loggercontext
-    self.level = tbl.level
-    self.appender = tbl.appender
-    self.layout = tbl.layout
-    self.file = "log4g/server/loggercontext/" .. tbl.loggercontext .. "/loggerconfig/" .. tbl.name .. ".json"
-    self.logmsg = tbl.logmsg
+    self.level         = tbl.level
+    self.appender      = tbl.appender
+    self.layout        = tbl.layout
+    self.file          = "log4g/server/loggercontext/" .. tbl.loggercontext .. "/loggerconfig/" .. tbl.name .. ".json"
+    self.logmsg        = tbl.logmsg
     SetState(self, INITIALIZED)
 end
 

@@ -3,8 +3,8 @@
 -- @script LoggerLookup
 -- @license Apache License 2.0
 -- @copyright GrayWolf64
-Log4g.Core.Logger.Lookup = Log4g.Core.Logger.Lookup or {}
-local File = "log4g/server/loggercontext/lookup_logger.json"
+      Log4g.Core.Logger.Lookup = Log4g.Core.Logger.Lookup or {}
+local File                     = "log4g/server/loggercontext/lookup_logger.json"
 
 --- Add a table item to Logger Lookup whose key is Logger name and its content are the associated names of LoggerContext and file paths of LoggerConfig.
 -- If the Lookup doesn't exist, it will create one and write into it.

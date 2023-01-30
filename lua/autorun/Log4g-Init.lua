@@ -12,9 +12,9 @@ if SERVER then
     -- @field Level
     -- @field Util
     -- @field _VERSION
-    Log4g = Log4g or {}
-    Log4g.Core = Log4g.Core or {}
-    Log4g.Level = Log4g.Level or {}
+    Log4g             = Log4g or {}
+    Log4g.Core        = Log4g.Core or {}
+    Log4g.Level       = Log4g.Level or {}
     Log4g.Core.Logger = Log4g.Core.Logger or {}
     file.CreateDir("log4g/server/loggercontext")
     include("log4g/core/Version.lua")

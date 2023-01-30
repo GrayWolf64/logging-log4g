@@ -1,9 +1,9 @@
 --- The Appender.
 -- @classmod Appender
-Log4g.Core.Appender = Log4g.Core.Appender or {}
-local HasKey = Log4g.Util.HasKey
-local Class = include("log4g/core/impl/MiddleClass.lua")
-local Appender = Class("Appender")
+      Log4g.Core.Appender = Log4g.Core.Appender or {}
+local HasKey              = Log4g.Util.HasKey
+local Class               = include("log4g/core/impl/MiddleClass.lua")
+local Appender            = Class("Appender")
 
 function Appender:Initialize(name, func)
     self.name = name

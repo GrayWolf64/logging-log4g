@@ -1,9 +1,9 @@
 --- A factory that creates LoggerContext objects.
 -- @script LoggerContextFactory
-Log4g.API.LoggerContextFactory = Log4g.API.LoggerContextFactory or {}
-local HasKey = Log4g.Util.HasKey
-local RegisterLoggerContext = Log4g.Core.LoggerContext.Register
-local GetAllLoggerContexts = Log4g.Core.LoggerContext.GetAll
+      Log4g.API.LoggerContextFactory = Log4g.API.LoggerContextFactory or {}
+local HasKey                         = Log4g.Util.HasKey
+local RegisterLoggerContext          = Log4g.Core.LoggerContext.Register
+local GetAllLoggerContexts           = Log4g.Core.LoggerContext.GetAll
 
 --- Create a LoggerContext.
 -- @param name The name of the LoggerContext

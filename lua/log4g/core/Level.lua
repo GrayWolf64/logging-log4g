@@ -71,14 +71,14 @@ end
 -- @field FATAL A severe error that will prevent the game from continuing.
 -- @field OFF No events will be logged.
 local StandardLevel = {
-    ALL = Level:New("ALL", math.huge),
+    ALL   = Level:New("ALL", math.huge),
     TRACE = Level:New("TRACE", 600),
     DEBUG = Level:New("DEBUG", 500),
-    INFO = Level:New("INFO", 400),
-    WARN = Level:New("WARN", 300),
+    INFO  = Level:New("INFO", 400),
+    WARN  = Level:New("WARN", 300),
     ERROR = Level:New("ERROR", 200),
     FATAL = Level:New("FATAL", 100),
-    OFF = Level:New("OFF", 0)
+    OFF   = Level:New("OFF", 0)
 }
 
 --- Get the Standard Levels as a table.
