@@ -3,17 +3,17 @@
 -- @license Apache License 2.0
 -- @copyright GrayWolf64
 local CreateLoggerContext = Log4g.API.LoggerContextFactory.GetContext
+local GetAllLoggerContexts = Log4g.API.LoggerContextFactory.GetContextAll
 local RegisterLoggerConfig = Log4g.Core.Config.LoggerConfig.RegisterLoggerConfig
 local GetAllLoggerConfigs = Log4g.Core.Config.LoggerConfig.GetAll
 local IsStarted = Log4g.Core.LifeCycle.IsStarted
 local GetCustomLevel = Log4g.Level.GetCustomLevel
 local RegisterCustomLevel = Log4g.Level.RegisterCustomLevel
-local GetAllLoggerContexts = Log4g.API.LoggerContextFactory.GetContextAll
+local GetAllLoggers = Log4g.Core.Logger.GetAll
 local LoggerContextSaveFile = "log4g/server/saverestore_loggercontext.json"
 local UnstartedLoggerConfigSaveFile = "log4g/server/saverestore_loggerconfig_unstarted.json"
 local StartedLoggerConfigSaveFile = "log4g/server/saverestore_loggerconfig_started.json"
 local CustomLevelSaveFile = "log4g/server/saverestore_customlevel.json"
-local GetAllLoggers = Log4g.Core.Logger.GetAll
 
 --- Save all the LoggerContexts' names into a JSON file.
 -- @lfunction SaveLoggerContext
