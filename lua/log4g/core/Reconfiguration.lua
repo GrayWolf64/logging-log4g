@@ -3,7 +3,7 @@ do
 end
 
 --- SaveRestore system for the Logging environment.
--- @script EnvSaveRestore
+-- @script Reconfiguration
 -- @license Apache License 2.0
 -- @copyright GrayWolf64
 local CreateLoggerContext = Log4g.API.LoggerContextFactory.GetContext

@@ -41,7 +41,7 @@ if SERVER then
         AddCSLuaFile(MMC)
     end
 
-    include("log4g/core/EnvSaveRestore.lua")
+    include("log4g/core/Reconfiguration.lua")
 elseif CLIENT then
     if file.Exists(MMC, "lcl") then
         include(MMC)
