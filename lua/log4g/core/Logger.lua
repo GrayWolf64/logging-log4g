@@ -63,7 +63,6 @@ end
 -- @return object logger
 function Log4g.Core.Logger.Register(name, loggerconfig)
     if not isstring(name) or not istable(loggerconfig) or table.IsEmpty(loggerconfig) then return end
-    hook.Run("Log4g_PreLoggerRegistration", name)
 
     if not HasKey(INSTANCES, name) then
         local logger = Logger:New(name):Start(loggerconfig)

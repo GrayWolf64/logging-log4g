@@ -38,8 +38,6 @@ end
 -- If file is successfully deleted and the LoggerConfig's file is set to nil, `Log4g_PostLoggerConfigFileDeletion` will be called.
 -- @return object self
 function LoggerConfig:RemoveFile()
-    hook.Run("Log4g_PreLoggerConfigFileDeletion", self.name)
-
     if file.Exists(self.file, "DATA") then
         file.Delete(self.file)
         self.file = nil
@@ -77,8 +75,6 @@ end
 -- @param tbl The table containing data that a LoggerConfig needs
 -- @return object loggerconfig
 function Log4g.Core.Config.LoggerConfig.RegisterLoggerConfig(tbl)
-    hook.Run("Log4g_PreLoggerConfigRegistration", tbl.name)
-
     if not HasKey(INSTANCES, tbl.name) then
         local loggerconfig = LoggerConfig:New(tbl)
         INSTANCES[tbl.name] = loggerconfig

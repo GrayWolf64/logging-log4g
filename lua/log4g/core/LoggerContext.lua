@@ -31,7 +31,6 @@ end
 
 --- Terminate the LoggerContext.
 function LoggerContext:Terminate()
-    hook.Run("Log4g_PreLoggerContextTermination", self)
     SetState(self, STOPPING)
 
     if file.Exists(self.folder, "DATA") then
@@ -68,8 +67,6 @@ end
 -- @param name The name of the LoggerContext
 -- @return object loggercontext
 function Log4g.Core.LoggerContext.Register(name)
-    hook.Run("Log4g_PreLoggerContextRegistration", name)
-
     if not HasKey(INSTANCES, name) then
         local loggercontext = LoggerContext:New(name)
         INSTANCES[name] = loggercontext:Start()
