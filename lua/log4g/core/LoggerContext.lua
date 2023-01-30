@@ -19,6 +19,24 @@ function LoggerContext:Initialize(name)
     SetState(self, INITIALIZED)
 end
 
+--- Get the name of the LoggerContext.
+-- @return string name
+function LoggerContext:GetName()
+    return self.name
+end
+
+--- Get the folder of the LoggerContext.
+-- @return string folder
+function LoggerContext:GetFolder()
+    return self.folder
+end
+
+--- Get when the LoggerContext was started in UNIX time.
+-- @return string timestarted
+function LoggerContext:TimeStarted()
+    return self.timestarted
+end
+
 function LoggerContext:Start()
     SetState(self, STARTING)
     SetState(self, STARTED)
@@ -27,16 +45,17 @@ function LoggerContext:Start()
 end
 
 function LoggerContext:__tostring()
-    return "LoggerContext: [name:" .. self.name .. "]" .. "[folder:" .. self.folder .. "]" .. "[timestarted:" .. self.timestarted .. "]" .. "[logger:" .. #self.logger .. "]"
+    return "LoggerContext: [name:" .. self:GetName() .. "]" .. "[folder:" .. self:GetFolder() .. "]" .. "[timestarted:" .. self:TimeStarted() .. "]"
 end
 
 --- Terminate the LoggerContext.
 function LoggerContext:Terminate()
     SetState(self, STOPPING)
-    RemoveContextLookupContextItem(self.name)
+    RemoveContextLookupContextItem(self:GetName())
+    local folder = self:GetFolder()
 
-    if file.Exists(self.folder, "DATA") then
-        DeleteFolderRecursive(self.folder, "DATA")
+    if file.Exists(folder, "DATA") then
+        DeleteFolderRecursive(folder, "DATA")
     else
         hook.Run("Log4g_OnLoggerContextFolderDeletionFailure", self)
     end
@@ -44,12 +63,6 @@ function LoggerContext:Terminate()
     SetState(self, STOPPED)
     hook.Run("Log4g_PostLoggerContextTermination")
     self = nil
-end
-
---- Get the name of the LoggerContext.
--- @return string name
-function LoggerContext:GetName()
-    return self.name
 end
 
 --- This is where all the LoggerContexts are stored.
