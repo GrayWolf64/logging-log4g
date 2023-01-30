@@ -1,13 +1,11 @@
 --- The LoggerContext Lookup.
--- LoggerContext Lookups contain LoggerContext names and associated LoggerConfig (not started) names in the form of a table.
--- If a LoggerConfig has started (been built and applied to a Logger), it will be removed from LoggerContext Lookup.
+-- This type of LoggerContext Lookups contains LoggerContext names and associated LoggerConfig names in the form of a table.
 -- This is currently used for populating client's LoggerConfig DTree.
 -- @script LoggerContextLookup
 -- @license Apache License 2.0
 -- @copyright GrayWolf64
-      Log4g.Core.LoggerContext.Lookup = Log4g.Core.LoggerContext.Lookup or {}
-local HasKey                          = Log4g.Util.HasKey
-local File                            = "log4g/server/loggercontext/lookup_loggercontext.json"
+local HasKey = Log4g.Util.HasKey
+local File   = "log4g/server/loggercontext/lookup_loggercontext.json"
 
 --- Add a string item to LoggerContext Lookup whether it's the name of a LoggerContext or LoggerConfig.
 -- If the LoggerContext Lookup file doesn't exist, a new file will be created and data will be written into.
