@@ -1,4 +1,4 @@
-concommand.Add("Log4g_CoreTest_LoggerContext", function()
+concommand.Add("Log4g_CoreTest_CreateLoggerContext", function()
     Log4g.Core.LoggerContext.Register("context_test_a")
     Log4g.Core.LoggerContext.Register("context_test_b")
     Log4g.Core.LoggerContext.Register("context_test_c")

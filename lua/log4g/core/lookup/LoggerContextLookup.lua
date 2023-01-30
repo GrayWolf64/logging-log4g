@@ -5,9 +5,23 @@
 -- @license Apache License 2.0
 -- @copyright GrayWolf64
 local HasKey = Log4g.Util.HasKey
-local File   = "log4g/server/loggercontext/lookup_loggercontext.json"
+local File = "log4g/server/loggercontext/lookup_loggercontext.json"
 
---- Add a string item to LoggerContext Lookup whether it's the name of a LoggerContext or LoggerConfig.
+--- Add a LoggerContext item to LoggerContext Lookup.
+-- @param name The name of the LoggerContext
+function Log4g.Core.LoggerContext.Lookup.AddContext(name)
+    if not file.Exists(File, "DATA") then
+        file.Write(File, util.TableToJSON({
+            [name] = {}
+        }, true))
+    else
+        local tbl = util.JSONToTable(file.Read(File, "DATA"))
+        tbl[name] = {}
+        file.Write(File, util.TableToJSON(tbl, true))
+    end
+end
+
+--- Add a string item to LoggerContext Lookup using the names of a LoggerContext and LoggerConfig.
 -- If the LoggerContext Lookup file doesn't exist, a new file will be created and data will be written into.
 -- If the file exists, new data will be written into while keeping the previous data.
 -- @param contextname The LoggerContext name to write
@@ -34,7 +48,7 @@ end
 --- Remove a LoggerContext name item from the LoggerContext Lookup.
 -- The child LoggerConfig names will be removed at the same time.
 -- @param name The name of the LoggerContext to find and remove from the Lookup table
-function Log4g.Core.LoggerContext.Lookup.RemoveLoggerContext(name)
+function Log4g.Core.LoggerContext.Lookup.RemoveContext(name)
     local tbl = util.JSONToTable(file.Read(File, "DATA"))
 
     for k, _ in pairs(tbl) do

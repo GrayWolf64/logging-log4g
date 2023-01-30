@@ -6,7 +6,6 @@ local AddNetworkStrsViaTbl                  = Log4g.Util.AddNetworkStrsViaTbl
 local CreateLoggerContext                   = Log4g.API.LoggerContextFactory.GetContext
 local RegisterLoggerConfig                  = Log4g.Core.Config.LoggerConfig.RegisterLoggerConfig
 local RegisterCustomLevel                   = Log4g.Level.RegisterCustomLevel
-local AddLoggerContextLookupItem            = Log4g.Core.LoggerContext.Lookup.AddItem
 local RemoveLoggerContextLookup             = Log4g.Core.LoggerContext.Lookup.RemoveLoggerContext
 local RemoveLoggerContextLookupLoggerConfig = Log4g.Core.LoggerContext.Lookup.RemoveLoggerConfig
 local WriteDataSimple                       = Log4g.Util.WriteDataSimple
@@ -55,10 +54,9 @@ end)
 net.Receive("Log4g_CLUpload_LoggerConfig_JSON", function(len, ply)
     if not IdentChk(ply) then return end
     local tbl = util.JSONToTable(util.Decompress(net.ReadData(net.ReadUInt(16))))
-    local contextname, configname = tbl.loggercontext, tbl.name
+    local contextname = tbl.loggercontext
     CreateLoggerContext(contextname)
     RegisterLoggerConfig(tbl)
-    AddLoggerContextLookupItem(contextname, configname)
 end)
 
 net.Receive("Log4g_CLReq_LoggerConfigs", function(len, ply)
