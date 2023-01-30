@@ -11,11 +11,6 @@ local IsStarted = Log4g.Core.LifeCycle.IsStarted
 local INITIALIZING, INITIALIZED = Log4g.Core.LifeCycle.State.INITIALIZING, Log4g.Core.LifeCycle.State.INITIALIZED
 local STOPPING, STOPPED = Log4g.Core.LifeCycle.State.STOPPING, Log4g.Core.LifeCycle.State.STOPPED
 
--- local AddLoggerLookupItem = Log4g.Core.Logger.Lookup.AddItem
--- local GetLogger = Log4g.Core.Logger.Register
--- local GetLevel = Log4g.Level.GetLevel
--- local GetLayout = Log4g.Core.Layout.GetLayout
--- local GetAppender = Log4g.Core.Appender.GetAppender
 function LoggerConfig:Initialize(tbl)
     SetState(self, INITIALIZING)
     self.name = tbl.name
