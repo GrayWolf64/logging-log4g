@@ -3,7 +3,7 @@
 -- @license Apache License 2.0
 -- @copyright GrayWolf64
 local CreateLoggerContext = Log4g.API.LoggerContextFactory.GetContext
-local GetAllLoggerContexts = Log4g.API.LoggerContextFactory.GetContextAll
+local GetAllLoggerContexts = Log4g.Core.LoggerContext.GetAll
 local RegisterLoggerConfig = Log4g.Core.Config.LoggerConfig.RegisterLoggerConfig
 local GetAllLoggerConfigs = Log4g.Core.Config.LoggerConfig.GetAll
 local IsStarted = Log4g.Core.LifeCycle.IsStarted
