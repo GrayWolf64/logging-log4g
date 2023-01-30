@@ -2,6 +2,7 @@
 -- @script Log4g-Init
 local API = "log4g/api/API-Init.lua"
 local MMC = "log4g/mmc-gui/MMC-Init.lua"
+local CoreTest = "log4g/core-test/Core-Test-Init.lua"
 file.CreateDir("log4g")
 
 if SERVER then
@@ -40,6 +41,11 @@ if SERVER then
     if file.Exists(MMC, "lsv") then
         include(MMC)
         AddCSLuaFile(MMC)
+    end
+
+    if file.Exists(CoreTest, "lsv") then
+        include(CoreTest)
+        AddCSLuaFile(CoreTest)
     end
 elseif CLIENT then
     if file.Exists(MMC, "lcl") then

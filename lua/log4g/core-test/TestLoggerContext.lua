@@ -1,0 +1,6 @@
+concommand.Add("Log4g_CoreTest_LoggerContext", function()
+    Log4g.Core.LoggerContext.Register("context_test_a")
+    Log4g.Core.LoggerContext.Register("context_test_b")
+    Log4g.Core.LoggerContext.Register("context_test_c")
+    PrintTable(Log4g.Core.LoggerContext.GetAll())
+end)
