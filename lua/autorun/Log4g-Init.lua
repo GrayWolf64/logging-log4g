@@ -20,8 +20,8 @@ if SERVER then
     include("log4g/core/Version.lua")
     include("log4g/core/Util.lua")
     include("log4g/core/LifeCycle.lua")
-    include("log4g/core/LoggerContext.lua")
     include("log4g/core/Level.lua")
+    include("log4g/core/LoggerContext.lua")
 
     if file.Exists(API, "lsv") then
         include(API)
