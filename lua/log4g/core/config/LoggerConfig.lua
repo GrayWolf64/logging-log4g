@@ -26,9 +26,18 @@ function LoggerConfig:Initialize(tbl)
     SetState(self, INITIALIZED)
 end
 
+function LoggerConfig:GetName()
+    return self.name
+end
+
 function LoggerConfig:GetContext()
     return self.loggercontext
 end
+
+--- All the LoggerConfigs will be stored here.
+-- @local
+-- @table INSTANCES
+local INSTANCES = INSTANCES or {}
 
 --- Remove the LoggerConfig.
 function LoggerConfig:Remove()
@@ -44,13 +53,8 @@ function LoggerConfig:Remove()
     end
 
     SetState(self, STOPPED)
-    self = nil
+    INSTANCES[self:GetName()] = nil
 end
-
---- All the LoggerConfigs will be stored here.
--- @local
--- @table INSTANCES
-local INSTANCES = INSTANCES or {}
 
 --- Get all the LoggerConfigs in the LoggerConfigs table.
 -- @return table instances
