@@ -1,4 +1,4 @@
---- Reconfiguration(SaveRestore) system for the Logging environment.
+--- Reconfiguration (SaveRestore) system for the Logging environment.
 -- @script Reconfiguration
 -- @license Apache License 2.0
 -- @copyright GrayWolf64
