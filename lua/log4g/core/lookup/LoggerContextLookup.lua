@@ -4,12 +4,13 @@
 -- @script LoggerContextLookup
 -- @license Apache License 2.0
 -- @copyright GrayWolf64
-local HasKey = Log4g.Util.HasKey
-local File   = "log4g/server/loggercontext/lookup_loggercontext.json"
+local HasKey              = Log4g.Util.HasKey
+local File                = "log4g/server/loggercontext/lookup_loggercontext.json"
+local LoggerContextLookup = Log4g.Core.LoggerContext.Lookup
 
 --- Add a LoggerContext item to LoggerContext Lookup.
 -- @param name The name of the LoggerContext
-function Log4g.Core.LoggerContext.Lookup.AddContext(name)
+function LoggerContextLookup.AddContext(name)
     if not file.Exists(File, "DATA") then
         file.Write(File, util.TableToJSON({
             [name] = {}
@@ -26,7 +27,7 @@ end
 -- If the file exists, new data will be written into while keeping the previous data.
 -- @param context The LoggerContext name to put the LoggerConfig in
 -- @param config The LoggerConfig name to write
-function Log4g.Core.LoggerContext.Lookup.AddConfig(context, config)
+function LoggerContextLookup.AddConfig(context, config)
     if not file.Exists(File, "DATA") then
         file.Write(File, util.TableToJSON({
             [context] = {config}
@@ -48,7 +49,7 @@ end
 --- Remove a LoggerContext name item from the LoggerContext Lookup.
 -- The child LoggerConfig names will be removed at the same time.
 -- @param name The name of the LoggerContext to find and remove from the Lookup table
-function Log4g.Core.LoggerContext.Lookup.RemoveContext(name)
+function LoggerContextLookup.RemoveContext(name)
     local tbl = util.JSONToTable(file.Read(File, "DATA"))
 
     for k, _ in pairs(tbl) do
@@ -63,7 +64,7 @@ end
 --- Remove a LoggerConfig name item from the LoggerContext Lookup.
 -- @param context The name of the LoggerContext that the LoggerConfig is in
 -- @param config The name of the LoggerConfig to find and remove from the Lookup table
-function Log4g.Core.LoggerContext.Lookup.RemoveConfig(context, config)
+function LoggerContextLookup.RemoveConfig(context, config)
     local tbl = util.JSONToTable(file.Read(File, "DATA"))
 
     for k, v in pairs(tbl) do

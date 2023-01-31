@@ -1,15 +1,15 @@
 --- The LoggerContext.
 -- @classmod LoggerContext
-local Class                          = include("log4g/core/impl/MiddleClass.lua")
-local LoggerContext                  = Class("LoggerContext")
-local HasKey                         = Log4g.Util.HasKey
-local DeleteFolderRecursive          = Log4g.Util.DeleteFolderRecursive
-local AddContextLookupContextItem    = Log4g.Core.LoggerContext.Lookup.AddContext
-local RemoveContextLookupContextItem = Log4g.Core.LoggerContext.Lookup.RemoveContext
-local SetState                       = Log4g.Core.LifeCycle.SetState
-local INITIALIZING,                   INITIALIZED = Log4g.Core.LifeCycle.State.INITIALIZING, Log4g.Core.LifeCycle.State.INITIALIZED
-local STARTING,                       STARTED     = Log4g.Core.LifeCycle.State.STARTING,     Log4g.Core.LifeCycle.State.STARTED
-local STOPPING,                       STOPPED     = Log4g.Core.LifeCycle.State.STOPPING,     Log4g.Core.LifeCycle.State.STOPPED
+local Class                      = include("log4g/core/impl/MiddleClass.lua")
+local LoggerContext              = Class("LoggerContext")
+local HasKey                     = Log4g.Util.HasKey
+local DeleteFolderRecursive      = Log4g.Util.DeleteFolderRecursive
+local AddContextLookupContext    = Log4g.Core.LoggerContext.Lookup.AddContext
+local RemoveContextLookupContext = Log4g.Core.LoggerContext.Lookup.RemoveContext
+local SetState                   = Log4g.Core.LifeCycle.SetState
+local INITIALIZING,               INITIALIZED = Log4g.Core.LifeCycle.State.INITIALIZING, Log4g.Core.LifeCycle.State.INITIALIZED
+local STARTING,                   STARTED     = Log4g.Core.LifeCycle.State.STARTING,     Log4g.Core.LifeCycle.State.STARTED
+local STOPPING,                   STOPPED     = Log4g.Core.LifeCycle.State.STOPPING,     Log4g.Core.LifeCycle.State.STOPPED
 
 function LoggerContext:Initialize(name)
     SetState(self, INITIALIZING)
@@ -51,7 +51,7 @@ end
 --- Terminate the LoggerContext.
 function LoggerContext:Terminate()
     SetState(self, STOPPING)
-    RemoveContextLookupContextItem(self:GetName())
+    RemoveContextLookupContext(self:GetName())
     local folder = self:GetFolder()
 
     if file.Exists(folder, "DATA") then
@@ -85,7 +85,7 @@ function Log4g.Core.LoggerContext.Register(name)
     if not HasKey(INSTANCES, name) then
         local loggercontext = LoggerContext:New(name)
         INSTANCES[name] = loggercontext:Start()
-        AddContextLookupContextItem(name)
+        AddContextLookupContext(name)
         file.CreateDir("log4g/server/loggercontext/" .. name .. "/loggerconfig")
         hook.Run("Log4g_PostLoggerContextRegistration", name)
 
