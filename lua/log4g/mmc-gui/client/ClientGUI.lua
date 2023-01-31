@@ -253,13 +253,13 @@ concommand.Add("Log4g_MMC", function()
         local SubA = Menu:AddSubMenu("Build (SV)")
 
         SubA:AddOption("Default", function()
-            NetStrMsgSpecial(num, ListView, "Log4g_CLReq_LoggerConfig_BuildDefault", "loggercontext", "name")
+            NetStrMsgSpecial(num, ListView, "Log4g_CLReq_LoggerConfig_BuildDefault", "name")
         end)
 
         Menu:AddSpacer()
 
         Menu:AddOption("Remove", function()
-            NetStrMsgSpecial(num, ListView, "Log4g_CLReq_LoggerConfig_Remove", "loggercontext", "name")
+            NetStrMsgSpecial(num, ListView, "Log4g_CLReq_LoggerConfig_Remove", "name")
         end):SetIcon("icon16/cross.png")
 
         Menu:Open()
