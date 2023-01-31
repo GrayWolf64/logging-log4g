@@ -12,7 +12,7 @@ local RegisterCustomLevel           = Log4g.Level.RegisterCustomLevel
 local UnstartedLoggerConfigSaveFile = "log4g/server/saverestore_loggerconfig_unstarted.json"
 local CustomLevelSaveFile           = "log4g/server/saverestore_customlevel.json"
 
---- Save all the LoggerContexts' names into a JSON file.
+--- Save all the LoggerContexts' names into JSON and store it in SQL.
 -- @lfunction SaveLoggerContext
 local function SaveLoggerContext()
     local LoggerContexts = GetAllLoggerContexts()
