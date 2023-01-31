@@ -10,7 +10,6 @@ local WriteDataSimple         = Log4g.Util.WriteDataSimple
 local GetLoggerConfigFiles    = Log4g.Core.Config.LoggerConfig.GetFiles
 local GetLoggerConfig         = Log4g.Core.Config.LoggerConfig.Get
 local GetLoggerContext        = Log4g.Core.LoggerContext.Get
-local LoggerConfigLookupFile = "log4g/server/loggercontext/lookup_loggerconfig.json"
 
 local function IdentChk(ply)
     if not IsValid(ply) then return end
@@ -85,9 +84,9 @@ end)
 net.Receive("Log4g_CLReq_LoggerConfig_Lookup", function(len, ply)
     net.Start("Log4g_CLRcv_LoggerConfig_Lookup")
 
-    if file.Exists(LoggerConfigLookupFile, "DATA") then
+    if sql.QueryRow("SELECT * FROM Log4g_Lookup WHERE Name = 'LoggerConfig';") then
         net.WriteBool(true)
-        WriteDataSimple(file.Read(LoggerConfigLookupFile, "DATA"), 16)
+        WriteDataSimple(sql.QueryValue("SELECT Content FROM Log4g_Lookup WHERE Name = 'LoggerConfig';"), 16)
     else
         net.WriteBool(false)
     end
