@@ -2,20 +2,19 @@
 -- @script LoggerConfigLookup
 -- @license Apache License 2.0
 -- @copyright GrayWolf64
-local File               = "log4g/server/loggercontext/lookup_loggerconfig.json"
 local LoggerConfigLookup = Log4g.Core.Config.LoggerConfig.Lookup
 
 --- Add a LoggerConfig item to LoggerConfig Lookup.
 -- @param name The name of the LoggerConfig
 function LoggerConfigLookup.AddConfig(name)
-    if not file.Exists(File, "DATA") then
-        file.Write(File, util.TableToJSON({
+    if not sql.QueryRow("SELECT * FROM Log4g_Lookup WHERE Name = 'LoggerConfig';") then
+        sql.Query("INSERT INTO Log4g_Lookup (Name, Content) VALUES('LoggerConfig', " .. sql.SQLStr(util.TableToJSON({
             [name] = {}
-        }, true))
+        }, true)) .. ")")
     else
-        local tbl = util.JSONToTable(file.Read(File, "DATA"))
+        local tbl = sql.QueryRow("SELECT Content FROM Log4g_Lookup WHERE Name = 'LoggerConfig';")
         tbl[name] = {}
-        file.Write(File, util.TableToJSON(tbl, true))
+        sql.Query("UPDATE Log4g_Lookup SET Content = " .. sql.SQLStr(util.TableToJSON(tbl, true)) .. " WHERE Name = 'LoggerConfig';")
     end
 end
 
