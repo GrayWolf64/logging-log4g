@@ -50,7 +50,6 @@ if SERVER then
 
     if file.Exists(CoreTest, "lsv") then
         include(CoreTest)
-        AddCSLuaFile(CoreTest)
     end
 elseif CLIENT then
     if file.Exists(MMC, "lcl") then
