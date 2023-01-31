@@ -9,7 +9,6 @@ local GetAllLoggerConfigs           = Log4g.Core.Config.LoggerConfig.GetAll
 local IsStarted                     = Log4g.Core.LifeCycle.IsStarted
 local GetCustomLevel                = Log4g.Level.GetCustomLevel
 local RegisterCustomLevel           = Log4g.Level.RegisterCustomLevel
-local LoggerContextSaveFile         = "log4g/server/saverestore_loggercontext.json"
 local UnstartedLoggerConfigSaveFile = "log4g/server/saverestore_loggerconfig_unstarted.json"
 local CustomLevelSaveFile           = "log4g/server/saverestore_customlevel.json"
 
@@ -24,7 +23,7 @@ local function SaveLoggerContext()
         table.insert(result, k)
     end
 
-    file.Write(LoggerContextSaveFile, util.TableToJSON(result, true))
+    sql.Query("INSERT INTO Log4g_Reconfig (Name, Content) VALUES('LoggerContext', " .. sql.SQLStr(util.TableToJSON(result, true)) .. ")")
 end
 
 --- Save all the Unstarted LoggerConfigs' names and associated LoggerContexts' names into a JSON file.
@@ -75,14 +74,14 @@ hook.Add("ShutDown", "Log4g_SaveLogEnvironment", Save)
 -- Their timestarted will be the time when they were restored.
 -- @lfunction RestoreLoggerContext
 local function RestoreLoggerContext()
-    if not file.Exists(LoggerContextSaveFile, "DATA") then return end
-    local tbl = util.JSONToTable(file.Read(LoggerContextSaveFile, "DATA"))
+    if not sql.QueryRow("SELECT * FROM Log4g_Reconfig WHERE Name = 'LoggerContext';") then return end
+    local tbl = util.JSONToTable(sql.QueryValue("SELECT Content FROM Log4g_Reconfig WHERE Name = 'LoggerContext';"))
 
     for _, v in pairs(tbl) do
         CreateLoggerContext(v)
     end
 
-    file.Delete(LoggerContextSaveFile)
+    sql.Query("DELETE FROM Log4g_Reconfig WHERE Name = 'LoggerContext';")
 end
 
 --- Re-register all the previously unstarted LoggerConfigs.
