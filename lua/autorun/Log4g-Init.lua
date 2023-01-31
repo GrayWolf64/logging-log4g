@@ -23,6 +23,7 @@ if SERVER then
     Log4g.Core.LoggerContext.Lookup       = Log4g.Core.LoggerContext.Lookup or {}
     Log4g.Level                           = Log4g.Level or {}
     Log4g.Core.Logger                     = Log4g.Core.Logger or {}
+    Log4g.Core.Logger.Lookup              = Log4g.Core.Logger.Lookup or {}
     file.CreateDir("log4g/server/loggercontext")
     include("log4g/core/Version.lua")
     include("log4g/core/Util.lua")
