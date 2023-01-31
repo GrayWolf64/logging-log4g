@@ -75,6 +75,14 @@ function Log4g.Core.LoggerContext.GetAll()
     return INSTANCES
 end
 
+--- Get the LoggerContext with the right name.
+-- @return object loggercontext
+function Log4g.Core.LoggerContext.Get(name)
+    if not HasKey(INSTANCES, name) then return end
+
+    return INSTANCES[name]
+end
+
 --- Register a LoggerContext.
 -- This is used for APIs.
 -- If the LoggerContext with the same name already exists, `Log4g_OnLoggerContextRegistrationFailure` will be called.

@@ -9,7 +9,7 @@ local RegisterCustomLevel     = Log4g.Level.RegisterCustomLevel
 local WriteDataSimple         = Log4g.Util.WriteDataSimple
 local GetLoggerConfigFiles    = Log4g.Core.Config.LoggerConfig.GetFiles
 local GetLoggerConfig         = Log4g.Core.Config.LoggerConfig.Get
-local GetAllLoggerContexts    = Log4g.Core.LoggerContext.GetAll
+local GetLoggerContext        = Log4g.Core.LoggerContext.Get
 local LoggerContextLookupFile = "log4g/server/loggercontext/lookup_loggercontext.json"
 
 local function IdentChk(ply)
@@ -97,15 +97,7 @@ end)
 
 net.Receive("Log4g_CLReq_LoggerContext_Remove", function(len, ply)
     if not IdentChk(ply) then return end
-    local contextname = net.ReadString()
-    GetAllLoggerContexts()[contextname]:Terminate()
-    local LoggerConfigs = GetAllLoggerConfigs()
-
-    for k, v in pairs(LoggerConfigs) do
-        if v.loggercontext == contextname then
-            LoggerConfigs[k] = nil
-        end
-    end
+    GetLoggerContext(net.ReadString()):Terminate()
 end)
 
 net.Receive("Log4g_CLUpload_NewLevel", function(len, ply)
