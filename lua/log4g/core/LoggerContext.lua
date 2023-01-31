@@ -49,6 +49,12 @@ function LoggerContext:__tostring()
     return "LoggerContext: [name:" .. self:GetName() .. "]" .. "[folder:" .. self:GetFolder() .. "]" .. "[timestarted:" .. self:TimeStarted() .. "]"
 end
 
+--- This is where all the LoggerContexts are stored.
+-- LoggerContexts may include some Loggers which may also include Appender, Level objects and so on.
+-- @local
+-- @table INSTANCES
+local INSTANCES = INSTANCES or {}
+
 --- Terminate the LoggerContext.
 function LoggerContext:Terminate()
     SetState(self, STOPPING)
@@ -64,14 +70,8 @@ function LoggerContext:Terminate()
 
     SetState(self, STOPPED)
     hook.Run("Log4g_PostLoggerContextTermination")
-    self = nil
+    INSTANCES[self:GetName()] = nil
 end
-
---- This is where all the LoggerContexts are stored.
--- LoggerContexts may include some Loggers which may also include Appender, Level objects and so on.
--- @local
--- @table INSTANCES
-local INSTANCES = INSTANCES or {}
 
 function Log4g.Core.LoggerContext.GetAll()
     return INSTANCES
