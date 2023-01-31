@@ -1,16 +1,14 @@
 --- The LoggerConfig.
 -- @classmod LoggerConfig
-      Log4g.Core.Config              = Log4g.Core.Config or {}
-      Log4g.Core.Config.Builder      = Log4g.Core.Config.Builder or {}
-      Log4g.Core.Config.LoggerConfig = Log4g.Core.Config.LoggerConfig or {}
-local HasKey                         = Log4g.Util.HasKey
-local Class                          = include("log4g/core/impl/MiddleClass.lua")
-local LoggerConfig                   = Class("LoggerConfig")
-local RemoveContextLookupConfig      = Log4g.Core.LoggerContext.Lookup.RemoveConfig
-local SetState                       = Log4g.Core.LifeCycle.SetState
-local IsStarted                      = Log4g.Core.LifeCycle.IsStarted
-local INITIALIZING,                   INITIALIZED = Log4g.Core.LifeCycle.State.INITIALIZING, Log4g.Core.LifeCycle.State.INITIALIZED
-local STOPPING,                       STOPPED     = Log4g.Core.LifeCycle.State.STOPPING,     Log4g.Core.LifeCycle.State.STOPPED
+local HasKey                    = Log4g.Util.HasKey
+local Class                     = include("log4g/core/impl/MiddleClass.lua")
+local LoggerConfig              = Class("LoggerConfig")
+local RemoveContextLookupConfig = Log4g.Core.LoggerContext.Lookup.RemoveConfig
+local AddConfigLookupConfig     = Log4g.Core.Config.LoggerConfig.Lookup.AddConfig
+local SetState                  = Log4g.Core.LifeCycle.SetState
+local IsStarted                 = Log4g.Core.LifeCycle.IsStarted
+local INITIALIZING,              INITIALIZED = Log4g.Core.LifeCycle.State.INITIALIZING, Log4g.Core.LifeCycle.State.INITIALIZED
+local STOPPING,                  STOPPED     = Log4g.Core.LifeCycle.State.STOPPING,     Log4g.Core.LifeCycle.State.STOPPED
 
 function LoggerConfig:Initialize(tbl)
     SetState(self, INITIALIZING)
@@ -90,6 +88,7 @@ function Log4g.Core.Config.LoggerConfig.RegisterLoggerConfig(tbl)
     if not HasKey(INSTANCES, tbl.name) then
         local loggerconfig = LoggerConfig:New(tbl)
         INSTANCES[tbl.name] = loggerconfig
+        AddConfigLookupConfig(tbl.name)
         file.Write(loggerconfig.file, util.TableToJSON(tbl, true))
         hook.Run("Log4g_PostLoggerConfigRegistration")
 

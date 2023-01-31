@@ -1,6 +1,5 @@
 --- The LoggerContext Lookup.
 -- This type of LoggerContext Lookups contains LoggerContext names and associated LoggerConfig names in the form of a table.
--- This is currently used for populating client's LoggerConfig DTree.
 -- @script LoggerContextLookup
 -- @license Apache License 2.0
 -- @copyright GrayWolf64

@@ -13,12 +13,16 @@ if SERVER then
     -- @field Level
     -- @field Util
     -- @field _VERSION
-    Log4g                           = Log4g or {}
-    Log4g.Core                      = Log4g.Core or {}
-    Log4g.Core.LoggerContext        = Log4g.Core.LoggerContext or {}
-    Log4g.Core.LoggerContext.Lookup = Log4g.Core.LoggerContext.Lookup or {}
-    Log4g.Level                     = Log4g.Level or {}
-    Log4g.Core.Logger               = Log4g.Core.Logger or {}
+    Log4g                                 = Log4g or {}
+    Log4g.Core                            = Log4g.Core or {}
+    Log4g.Core.Config                     = Log4g.Core.Config or {}
+    Log4g.Core.Config.Builder             = Log4g.Core.Config.Builder or {}
+    Log4g.Core.Config.LoggerConfig        = Log4g.Core.Config.LoggerConfig or {}
+    Log4g.Core.Config.LoggerConfig.Lookup = Log4g.Core.Config.LoggerConfig.Lookup or {}
+    Log4g.Core.LoggerContext              = Log4g.Core.LoggerContext or {}
+    Log4g.Core.LoggerContext.Lookup       = Log4g.Core.LoggerContext.Lookup or {}
+    Log4g.Level                           = Log4g.Level or {}
+    Log4g.Core.Logger                     = Log4g.Core.Logger or {}
     file.CreateDir("log4g/server/loggercontext")
     include("log4g/core/Version.lua")
     include("log4g/core/Util.lua")
@@ -27,6 +31,7 @@ if SERVER then
     include("log4g/core/Layout.lua")
     include("log4g/core/Appender.lua")
     include("log4g/core/lookup/LoggerContextLookup.lua")
+    include("log4g/core/lookup/LoggerConfigLookup.lua")
     include("log4g/core/config/LoggerConfig.lua")
     include("log4g/core/LoggerContext.lua")
     include("log4g/core/Logger.lua")

@@ -315,19 +315,14 @@ concommand.Add("Log4g_MMC", function()
 
     PanelTimedFunc(Tree, UpdateInterval, function() end, function()
         Tree:Clear()
-        SendEmptyMsgToSV("Log4g_CLReq_LoggerContext_Lookup")
+        SendEmptyMsgToSV("Log4g_CLReq_LoggerConfig_Lookup")
 
-        net.Receive("Log4g_CLRcv_LoggerContext_Lookup", function()
+        net.Receive("Log4g_CLRcv_LoggerConfig_Lookup", function()
             if not net.ReadBool() then return end
             local Tbl = util.JSONToTable(util.Decompress(net.ReadData(net.ReadUInt(16))))
 
-            for k, v in pairs(Tbl) do
-                local Node = Tree:AddNode(k, "icon16/folder.png")
-                Node:SetExpanded(true, true)
-
-                for _, j in pairs(v) do
-                    Node:AddNode(j, "icon16/brick.png")
-                end
+            for k, _ in pairs(Tbl) do
+                Tree:AddNode(k, "icon16/brick.png")
             end
         end)
     end)
