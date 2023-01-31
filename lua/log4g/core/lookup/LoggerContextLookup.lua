@@ -5,7 +5,7 @@
 -- @license Apache License 2.0
 -- @copyright GrayWolf64
 local HasKey = Log4g.Util.HasKey
-local File = "log4g/server/loggercontext/lookup_loggercontext.json"
+local File   = "log4g/server/loggercontext/lookup_loggercontext.json"
 
 --- Add a LoggerContext item to LoggerContext Lookup.
 -- @param name The name of the LoggerContext
