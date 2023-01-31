@@ -10,7 +10,6 @@ local IsStarted                     = Log4g.Core.LifeCycle.IsStarted
 local GetCustomLevel                = Log4g.Level.GetCustomLevel
 local RegisterCustomLevel           = Log4g.Level.RegisterCustomLevel
 local UnstartedLoggerConfigSaveFile = "log4g/server/saverestore_loggerconfig_unstarted.json"
-local CustomLevelSaveFile           = "log4g/server/saverestore_customlevel.json"
 
 --- Save all the LoggerContexts' names into JSON and store it in SQL.
 -- @lfunction SaveLoggerContext
@@ -59,7 +58,7 @@ local function SaveCustomLevel()
         })
     end
 
-    file.Write(CustomLevelSaveFile, util.TableToJSON(result, true))
+    sql.Query("INSERT INTO Log4g_Reconfig (Name, Content) VALUES('CustomLevel', " .. sql.SQLStr(util.TableToJSON(result, true)) .. ")")
 end
 
 local function Save()
@@ -102,14 +101,14 @@ end
 --- Restore all the previously saved Custom Levels.
 -- @lfunction RestoreCustomLevel
 local function RestoreCustomLevel()
-    if not file.Exists(CustomLevelSaveFile, "DATA") then return end
-    local tbl = util.JSONToTable(file.Read(CustomLevelSaveFile, "DATA"))
+    if not sql.QueryRow("SELECT * FROM Log4g_Reconfig WHERE Name = 'CustomLevel';") then return end
+    local tbl = util.JSONToTable(sql.QueryValue("SELECT Content FROM Log4g_Reconfig WHERE Name = 'CustomLevel';"))
 
     for _, v in pairs(tbl) do
         RegisterCustomLevel(v.name, v.int)
     end
 
-    file.Delete(CustomLevelSaveFile)
+    sql.Query("DELETE FROM Log4g_Reconfig WHERE Name = 'CustomLevel';")
 end
 
 local function Restore()
