@@ -12,7 +12,7 @@ function LoggerConfigLookup.AddConfig(name)
             [name] = {}
         }, true)) .. ")")
     else
-        local tbl = sql.QueryRow("SELECT Content FROM Log4g_Lookup WHERE Name = 'LoggerConfig';")
+        local tbl = util.JSONToTable(sql.QueryValue("SELECT Content FROM Log4g_Lookup WHERE Name = 'LoggerConfig';"))
         tbl[name] = {}
         sql.Query("UPDATE Log4g_Lookup SET Content = " .. sql.SQLStr(util.TableToJSON(tbl, true)) .. " WHERE Name = 'LoggerConfig';")
     end
@@ -21,8 +21,8 @@ end
 --- Remove the LoggerConfig item from LoggerConfig Lookup.
 -- @param name The name of the LoggerConfig
 function LoggerConfigLookup.RemoveConfig(name)
-    if not file.Exists(File, "DATA") then return end
-    local tbl = util.JSONToTable(file.Read(File, "DATA"))
+    if not sql.QueryRow("SELECT * FROM Log4g_Lookup WHERE Name = 'LoggerConfig';") then return end
+    local tbl = util.JSONToTable(sql.QueryValue("SELECT Content FROM Log4g_Lookup WHERE Name = 'LoggerConfig';"))
 
     for k, _ in pairs(tbl) do
         if k == name then
@@ -30,5 +30,5 @@ function LoggerConfigLookup.RemoveConfig(name)
         end
     end
 
-    file.Write(File, util.TableToJSON(tbl))
+    sql.Query("UPDATE Log4g_Lookup SET Content = " .. sql.SQLStr(util.TableToJSON(tbl, true)) .. " WHERE Name = 'LoggerConfig';")
 end
