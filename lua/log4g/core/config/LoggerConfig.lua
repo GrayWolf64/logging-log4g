@@ -6,6 +6,7 @@
 local HasKey                         = Log4g.Util.HasKey
 local Class                          = include("log4g/core/impl/MiddleClass.lua")
 local LoggerConfig                   = Class("LoggerConfig")
+local RemoveContextLookupConfig      = Log4g.Core.LoggerContext.Lookup.RemoveConfig
 local SetState                       = Log4g.Core.LifeCycle.SetState
 local IsStarted                      = Log4g.Core.LifeCycle.IsStarted
 local INITIALIZING,                   INITIALIZED = Log4g.Core.LifeCycle.State.INITIALIZING, Log4g.Core.LifeCycle.State.INITIALIZED
@@ -25,9 +26,14 @@ function LoggerConfig:Initialize(tbl)
     SetState(self, INITIALIZED)
 end
 
+function LoggerConfig:GetContext()
+    return self.loggercontext
+end
+
 --- Remove the LoggerConfig.
 function LoggerConfig:Remove()
     SetState(self, STOPPING)
+    RemoveContextLookupConfig(self:GetContext(), self:GetName())
 
     if file.Exists(self.file, "DATA") then
         file.Delete(self.file)
@@ -50,6 +56,16 @@ local INSTANCES = INSTANCES or {}
 -- @return table instances
 function Log4g.Core.Config.LoggerConfig.GetAll()
     return INSTANCES
+end
+
+function Log4g.Core.Config.LoggerConfig.RemoveByContext(name)
+    if table.IsEmpty(INSTANCES) then return end
+
+    for k, v in pairs(INSTANCES) do
+        if v:GetContext() == name then
+            INSTANCES[k]:Remove()
+        end
+    end
 end
 
 --- Get the LoggerConfig with the right name.
