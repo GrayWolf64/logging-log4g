@@ -49,6 +49,7 @@ end
 -- The child LoggerConfig names will be removed at the same time.
 -- @param name The name of the LoggerContext to find and remove from the Lookup table
 function LoggerContextLookup.RemoveContext(name)
+    if not file.Exists(File, "DATA") then return end
     local tbl = util.JSONToTable(file.Read(File, "DATA"))
 
     for k, _ in pairs(tbl) do
@@ -64,6 +65,7 @@ end
 -- @param context The name of the LoggerContext that the LoggerConfig is in
 -- @param config The name of the LoggerConfig to find and remove from the Lookup table
 function LoggerContextLookup.RemoveConfig(context, config)
+    if not file.Exists(File, "DATA") then return end
     local tbl = util.JSONToTable(file.Read(File, "DATA"))
 
     for k, v in pairs(tbl) do
