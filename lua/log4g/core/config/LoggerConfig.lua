@@ -28,16 +28,7 @@ end
 --- Remove the LoggerConfig.
 function LoggerConfig:Remove()
     SetState(self, STOPPING)
-    SetState(self, STOPPED)
-    self = nil
-end
 
---- Remove the LoggerConfig JSON from local storge.
--- `Log4g_PreLoggerConfigFileDeletion` will be called first.
--- This will check if the file exists. When not, `Log4g_OnLoggerConfigFileDeletionFailure` will be called.
--- If file is successfully deleted and the LoggerConfig's file is set to nil, `Log4g_PostLoggerConfigFileDeletion` will be called.
--- @return object self
-function LoggerConfig:RemoveFile()
     if file.Exists(self.file, "DATA") then
         file.Delete(self.file)
         self.file = nil
@@ -46,7 +37,8 @@ function LoggerConfig:RemoveFile()
         hook.Run("Log4g_OnLoggerConfigFileDeletionFailure")
     end
 
-    return self
+    SetState(self, STOPPED)
+    self = nil
 end
 
 --- All the LoggerConfigs will be stored here.
