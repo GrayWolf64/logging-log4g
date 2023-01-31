@@ -1,4 +1,5 @@
 --- The LoggerConfig Lookup.
+-- Now it stores all the LoggerConfigs' names in a table which is converted to JSON then stored in SQL.
 -- @script LoggerConfigLookup
 -- @license Apache License 2.0
 -- @copyright GrayWolf64
