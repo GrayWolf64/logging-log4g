@@ -305,8 +305,8 @@ concommand.Add("Log4g_MMC", function()
 
 	local SheetPanelBA = vgui.Create("DPanel", SheetB)
 	SheetB:AddSheet("LoggerContext", SheetPanelBA)
-    local ListViewC = vgui.Create("DListView", SheetPanelBA)
-    ListViewC:Dock(FILL)
+	local ListViewC = vgui.Create("DListView", SheetPanelBA)
+	ListViewC:Dock(FILL)
 
 	local SubB = MenuB:AddSubMenu("View")
 	SubB:SetDeleteSelf(false)
@@ -417,16 +417,13 @@ concommand.Add("Log4g_MMC", function()
 		Text:Dock(FILL)
 		Text:InsertColorChange(192, 192, 192, 255)
 
-		AppendRichTextViaTbl(
-			Text,
-			{
-				"Log4g is an open-source addon for Garry's Mod.\n",
-				"\n",
-				"GitHub Page: https://github.com/GrayWolf64/gmod-logging-log4g\n",
-				"\n",
-				"Documentation can be seen on GitHub Page as well.\n",
-			}
-		)
+		AppendRichTextViaTbl(Text, {
+			"Log4g is an open-source addon for Garry's Mod.\n",
+			"\n",
+			"GitHub Page: https://github.com/GrayWolf64/gmod-logging-log4g\n",
+			"\n",
+			"Documentation can be seen on GitHub Page as well.\n",
+		})
 	end):SetIcon("icon16/information.png")
 
 	local SheetPanelC = vgui.Create("DPanel", SheetA)
