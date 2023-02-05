@@ -293,13 +293,11 @@ concommand.Add("Log4g_MMC", function()
 		SendEmptyMsgToSV("Log4g_CLReq_LoggerConfigs")
 
 		net.Receive("Log4g_CLRcv_LoggerConfigs", function()
-			if not net.ReadBool() then
-				return
-			end
-
-			for _, v in ipairs(util.JSONToTable(util.Decompress(net.ReadData(net.ReadUInt(16))))) do
-				local Line = ListView:AddLine()
-				SetProperLineText(v, Line, ListView)
+			if net.ReadBool() then
+				for _, v in ipairs(util.JSONToTable(util.Decompress(net.ReadData(net.ReadUInt(16))))) do
+					local Line = ListView:AddLine()
+					SetProperLineText(v, Line, ListView)
+				end
 			end
 		end)
 	end)
@@ -316,12 +314,10 @@ concommand.Add("Log4g_MMC", function()
 		SendEmptyMsgToSV("Log4g_CLReq_LoggerContext_Lookup")
 
 		net.Receive("Log4g_CLRcv_LoggerContext_Lookup", function()
-			if not net.ReadBool() then
-				return
-			end
-
-			for k, _ in pairs(util.JSONToTable(util.Decompress(net.ReadData(net.ReadUInt(16))))) do
-				ListViewC:AddLine(k)
+			if net.ReadBool() then
+				for k, _ in pairs(util.JSONToTable(util.Decompress(net.ReadData(net.ReadUInt(16))))) do
+					ListViewC:AddLine(k)
+				end
 			end
 		end)
 	end)
@@ -369,12 +365,10 @@ concommand.Add("Log4g_MMC", function()
 		SendEmptyMsgToSV("Log4g_CLReq_LoggerConfig_Lookup")
 
 		net.Receive("Log4g_CLRcv_LoggerConfig_Lookup", function()
-			if not net.ReadBool() then
-				return
-			end
-
-			for k, _ in pairs(util.JSONToTable(util.Decompress(net.ReadData(net.ReadUInt(16))))) do
-				Tree:AddNode(k, "icon16/brick.png")
+			if net.ReadBool() then
+				for k, _ in pairs(util.JSONToTable(util.Decompress(net.ReadData(net.ReadUInt(16))))) do
+					Tree:AddNode(k, "icon16/brick.png")
+				end
 			end
 		end)
 	end)
@@ -521,18 +515,16 @@ concommand.Add("Log4g_MMC", function()
 		SendEmptyMsgToSV("Log4g_CLReq_Logger_Lookup")
 
 		net.Receive("Log4g_CLRcv_Logger_Lookup", function()
-			if not net.ReadBool() then
-				return
-			end
+			if net.ReadBool() then
+				for k, v in pairs(util.JSONToTable(util.Decompress(net.ReadData(net.ReadUInt(16))))) do
+					local Line = ListViewB:AddLine()
 
-			for k, v in pairs(util.JSONToTable(util.Decompress(net.ReadData(net.ReadUInt(16))))) do
-				local Line = ListViewB:AddLine()
-
-				SetProperLineText({
-					name = k,
-					loggercontext = v.loggercontext,
-					configfile = v.configfile,
-				}, Line, ListViewB)
+					SetProperLineText({
+						name = k,
+						loggercontext = v.loggercontext,
+						configfile = v.configfile,
+					}, Line, ListViewB)
+				end
 			end
 		end)
 	end)
