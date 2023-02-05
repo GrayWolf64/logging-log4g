@@ -4,7 +4,6 @@
 -- @license Apache License 2.0
 -- @copyright GrayWolf64
 local HasKey = Log4g.Util.HasKey
-local File = "log4g/server/loggercontext/lookup_loggercontext.json"
 local LoggerContextLookup = Log4g.Core.LoggerContext.Lookup
 
 local function UpdateLookupContent(tbl)
@@ -29,6 +28,24 @@ function LoggerContextLookup.AddContext(name)
 	end
 end
 
+--- Remove a LoggerContext name item from the LoggerContext Lookup.
+-- The child LoggerConfig names will be removed at the same time.
+-- @param name The name of the LoggerContext to find and remove from the Lookup table
+function LoggerContextLookup.RemoveContext(name)
+	if not sql.QueryRow("SELECT * FROM Log4g_Lookup WHERE Name = 'LoggerContext';") then
+		return
+	end
+	local tbl = util.JSONToTable(sql.QueryValue("SELECT Content FROM Log4g_Lookup WHERE Name = 'LoggerContext';"))
+
+	for k, _ in pairs(tbl) do
+		if k == name then
+			tbl[k] = nil
+		end
+	end
+
+	UpdateLookupContent(tbl)
+end
+
 --- Add a LoggerConfig name item to LoggerContext Lookup depending on its LoggerContext name.
 -- If the LoggerContext Lookup file doesn't exist, a new file will be created and data will be written into.
 -- If the file exists, new data will be written into while keeping the previous data.
@@ -51,24 +68,6 @@ function LoggerContextLookup.AddConfig(context, config)
 
 		UpdateLookupContent(tbl)
 	end
-end
-
---- Remove a LoggerContext name item from the LoggerContext Lookup.
--- The child LoggerConfig names will be removed at the same time.
--- @param name The name of the LoggerContext to find and remove from the Lookup table
-function LoggerContextLookup.RemoveContext(name)
-	if not sql.QueryRow("SELECT * FROM Log4g_Lookup WHERE Name = 'LoggerContext';") then
-		return
-	end
-	local tbl = util.JSONToTable(sql.QueryValue("SELECT Content FROM Log4g_Lookup WHERE Name = 'LoggerContext';"))
-
-	for k, _ in pairs(tbl) do
-		if k == name then
-			tbl[k] = nil
-		end
-	end
-
-	UpdateLookupContent(tbl)
 end
 
 --- Remove a LoggerConfig name item from the LoggerContext Lookup.
