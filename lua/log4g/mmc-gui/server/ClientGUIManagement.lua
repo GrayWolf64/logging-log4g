@@ -10,7 +10,7 @@ AddNetworkStrsViaTbl({
 	[3] = "Log4g_CLReq_Logger_Remove",
 })
 
-net.Receive("Log4g_CLReq_Logger_Lookup", function(len, ply)
+net.Receive("Log4g_CLReq_Logger_Lookup", function(_, ply)
 	net.Start("Log4g_CLRcv_Logger_Lookup")
 
 	if file.Exists(LoggerLookupFile, "DATA") then
@@ -23,7 +23,7 @@ net.Receive("Log4g_CLReq_Logger_Lookup", function(len, ply)
 	net.Send(ply)
 end)
 
-net.Receive("Log4g_CLReq_Logger_Remove", function(len, ply)
+net.Receive("Log4g_CLReq_Logger_Remove", function(_, ply)
 	local ContextName, LoggerName = net.ReadString(), net.ReadString()
 	GetAllLoggerContexts()[ContextName].logger[LoggerName]:Terminate()
 	RemoveLoggerLookupLogger(ContextName, LoggerName)

@@ -307,6 +307,20 @@ concommand.Add("Log4g_MMC", function()
 	for _, v in pairs({ "name" }) do
 		ListViewC:AddColumn(v)
 	end
+	PanelTimedFunc(ListViewC, UpdateInterval, function() end, function()
+		ListViewC:Clear()
+		SendEmptyMsgToSV("Log4g_CLReq_LoggerContext_Lookup")
+
+		net.Receive("Log4g_CLRcv_LoggerContext_Lookup", function()
+			if not net.ReadBool() then
+				return
+			end
+
+			for k, _ in pairs(util.JSONToTable(util.Decompress(net.ReadData(net.ReadUInt(16))))) do
+				ListViewC:AddLine(k)
+			end
+		end)
+	end)
 
 	local SubB = MenuB:AddSubMenu("View")
 	SubB:SetDeleteSelf(false)
@@ -354,9 +368,8 @@ concommand.Add("Log4g_MMC", function()
 			if not net.ReadBool() then
 				return
 			end
-			local Tbl = util.JSONToTable(util.Decompress(net.ReadData(net.ReadUInt(16))))
 
-			for k, _ in pairs(Tbl) do
+			for k, _ in pairs(util.JSONToTable(util.Decompress(net.ReadData(net.ReadUInt(16))))) do
 				Tree:AddNode(k, "icon16/brick.png")
 			end
 		end)

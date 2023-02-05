@@ -5,7 +5,7 @@ AddNetworkStrsViaTbl({
 	[2] = "Log4g_CLRcv_SVSummaryData",
 })
 
-net.Receive("Log4g_CLReq_SVSummaryData", function(len, ply)
+net.Receive("Log4g_CLReq_SVSummaryData", function(_, ply)
 	net.Start("Log4g_CLRcv_SVSummaryData")
 	net.WriteFloat(collectgarbage("count"))
 	net.WriteUInt(ents.GetCount(), 14)

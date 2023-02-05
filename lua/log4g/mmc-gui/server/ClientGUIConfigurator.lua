@@ -34,15 +34,17 @@ AddNetworkStrsViaTbl({
 	[9] = "Log4g_CLReq_ChkConnected",
 	[10] = "Log4g_CLRcv_ChkConnected",
 	[11] = "Log4g_CLReq_LoggerConfig_BuildDefault",
+	[12] = "Log4g_CLReq_LoggerContext_Lookup",
+	[13] = "Log4g_CLRcv_LoggerContext_Lookup",
 })
 
-net.Receive("Log4g_CLReq_ChkConnected", function(len, ply)
+net.Receive("Log4g_CLReq_ChkConnected", function(_, ply)
 	net.Start("Log4g_CLRcv_ChkConnected")
 	net.WriteBool(IsValid(ply) == ply:IsConnected() == true)
 	net.Send(ply)
 end)
 
-net.Receive("Log4g_CLUpload_LoggerConfig_JSON", function(len, ply)
+net.Receive("Log4g_CLUpload_LoggerConfig_JSON", function(_, ply)
 	if not IdentChk(ply) then
 		return
 	end
@@ -52,7 +54,7 @@ net.Receive("Log4g_CLUpload_LoggerConfig_JSON", function(len, ply)
 	RegisterLoggerConfig(tbl)
 end)
 
-net.Receive("Log4g_CLReq_LoggerConfigs", function(len, ply)
+net.Receive("Log4g_CLReq_LoggerConfigs", function(_, ply)
 	local tbl = GetLoggerConfigFiles()
 	net.Start("Log4g_CLRcv_LoggerConfigs")
 
@@ -72,14 +74,14 @@ net.Receive("Log4g_CLReq_LoggerConfigs", function(len, ply)
 	net.Send(ply)
 end)
 
-net.Receive("Log4g_CLReq_LoggerConfig_Remove", function(len, ply)
+net.Receive("Log4g_CLReq_LoggerConfig_Remove", function(_, ply)
 	if not IdentChk(ply) then
 		return
 	end
 	GetLoggerConfig(net.ReadString()):Remove()
 end)
 
-net.Receive("Log4g_CLReq_LoggerConfig_Lookup", function(len, ply)
+net.Receive("Log4g_CLReq_LoggerConfig_Lookup", function(_, ply)
 	net.Start("Log4g_CLRcv_LoggerConfig_Lookup")
 
 	if sql.QueryRow("SELECT * FROM Log4g_Lookup WHERE Name = 'LoggerConfig';") then
@@ -92,21 +94,34 @@ net.Receive("Log4g_CLReq_LoggerConfig_Lookup", function(len, ply)
 	net.Send(ply)
 end)
 
-net.Receive("Log4g_CLReq_LoggerContext_Remove", function(len, ply)
+net.Receive("Log4g_CLReq_LoggerContext_Lookup", function(_, ply)
+	net.Start("Log4g_CLRcv_LoggerContext_Lookup")
+
+	if sql.QueryRow("SELECT * FROM Log4g_Lookup WHERE Name = 'LoggerContext';") then
+		net.WriteBool(true)
+		WriteDataSimple(sql.QueryValue("SELECT Content FROM Log4g_Lookup WHERE Name = 'LoggerContext';"), 16)
+	else
+		net.WriteBool(false)
+	end
+
+	net.Send(ply)
+end)
+
+net.Receive("Log4g_CLReq_LoggerContext_Remove", function(_, ply)
 	if not IdentChk(ply) then
 		return
 	end
 	GetLoggerContext(net.ReadString()):Terminate()
 end)
 
-net.Receive("Log4g_CLUpload_NewLevel", function(len, ply)
+net.Receive("Log4g_CLUpload_NewLevel", function(_, ply)
 	if not IdentChk(ply) then
 		return
 	end
 	RegisterCustomLevel(net.ReadString(), net.ReadUInt(16))
 end)
 
-net.Receive("Log4g_CLReq_LoggerConfig_BuildDefault", function(len, ply)
+net.Receive("Log4g_CLReq_LoggerConfig_BuildDefault", function(_, ply)
 	if not IdentChk(ply) then
 		return
 	end
