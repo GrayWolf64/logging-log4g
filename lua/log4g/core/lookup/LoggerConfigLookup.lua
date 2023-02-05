@@ -5,6 +5,14 @@
 -- @copyright GrayWolf64
 local LoggerConfigLookup = Log4g.Core.Config.LoggerConfig.Lookup
 
+local function UpdateLookup(tbl)
+	sql.Query(
+		"UPDATE Log4g_Lookup SET Content = "
+			.. sql.SQLStr(util.TableToJSON(tbl, true))
+			.. " WHERE Name = 'LoggerConfig';"
+	)
+end
+
 --- Add a LoggerConfig item to LoggerConfig Lookup.
 -- @param name The name of the LoggerConfig
 function LoggerConfigLookup.AddConfig(name)
@@ -15,11 +23,7 @@ function LoggerConfigLookup.AddConfig(name)
 	else
 		local tbl = util.JSONToTable(sql.QueryValue("SELECT Content FROM Log4g_Lookup WHERE Name = 'LoggerConfig';"))
 		tbl[name] = {}
-		sql.Query(
-			"UPDATE Log4g_Lookup SET Content = "
-				.. sql.SQLStr(util.TableToJSON(tbl, true))
-				.. " WHERE Name = 'LoggerConfig';"
-		)
+		UpdateLookup(tbl)
 	end
 end
 
@@ -37,9 +41,5 @@ function LoggerConfigLookup.RemoveConfig(name)
 		end
 	end
 
-	sql.Query(
-		"UPDATE Log4g_Lookup SET Content = "
-			.. sql.SQLStr(util.TableToJSON(tbl, true))
-			.. " WHERE Name = 'LoggerConfig';"
-	)
+	UpdateLookup(tbl)
 end
