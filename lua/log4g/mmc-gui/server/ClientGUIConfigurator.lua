@@ -7,7 +7,6 @@ local CreateLoggerContext = Log4g.API.LoggerContextFactory.GetContext
 local RegisterLoggerConfig = Log4g.Core.Config.LoggerConfig.RegisterLoggerConfig
 local RegisterCustomLevel = Log4g.Level.RegisterCustomLevel
 local WriteDataSimple = Log4g.Util.WriteDataSimple
-local GetLoggerConfigFiles = Log4g.Core.Config.LoggerConfig.GetFiles
 local GetLoggerConfig = Log4g.Core.Config.LoggerConfig.Get
 local GetLoggerContext = Log4g.Core.LoggerContext.Get
 
@@ -54,7 +53,7 @@ net.Receive("Log4g_CLUpload_LoggerConfig_JSON", function(_, ply)
 end)
 
 net.Receive("Log4g_CLReq_LoggerConfigs", function(_, ply)
-	local tbl = GetLoggerConfigFiles()
+	local tbl = sql.Query("SELECT * FROM Log4g_LoggerConfig")
 	net.Start("Log4g_CLRcv_LoggerConfigs")
 
 	if istable(tbl) and not table.IsEmpty(tbl) then
@@ -62,7 +61,7 @@ net.Receive("Log4g_CLReq_LoggerConfigs", function(_, ply)
 		local data = {}
 
 		for _, v in ipairs(tbl) do
-			table.Add(data, { util.JSONToTable(file.Read(v, "DATA")) })
+			table.Add(data, { util.JSONToTable(v.Content) })
 		end
 
 		WriteDataSimple(util.TableToJSON(data, true), 16)
