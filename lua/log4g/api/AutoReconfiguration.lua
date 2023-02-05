@@ -2,6 +2,7 @@
 -- @script AutoReconfiguration
 -- @license Apache License 2.0
 -- @copyright GrayWolf64
+local sql = sql
 local CreateLoggerContext = Log4g.API.LoggerContextFactory.GetContext
 local GetAllLoggerContexts = Log4g.Core.LoggerContext.GetAll
 local RegisterLoggerConfig = Log4g.Core.Config.LoggerConfig.RegisterLoggerConfig

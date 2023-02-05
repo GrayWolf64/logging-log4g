@@ -3,6 +3,7 @@
 -- @script LoggerContextLookup
 -- @license Apache License 2.0
 -- @copyright GrayWolf64
+local sql = sql
 local HasKey = Log4g.Util.HasKey
 local LoggerContextLookup = Log4g.Core.LoggerContext.Lookup
 

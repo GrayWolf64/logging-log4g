@@ -3,6 +3,7 @@
 -- @script LoggerConfigLookup
 -- @license Apache License 2.0
 -- @copyright GrayWolf64
+local sql = sql
 local LoggerConfigLookup = Log4g.Core.Config.LoggerConfig.Lookup
 
 local function UpdateLookup(tbl)
