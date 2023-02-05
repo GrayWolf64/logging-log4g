@@ -18,6 +18,10 @@ local function CreateDFrame(a, b, title, icon, parent)
 	return dframe
 end
 
+--- Append RichText to a panel using a ordered string table.
+-- If a blank line is needed, just have an element which is "\n".
+-- @param panel The panel to append RichText to
+-- @param tbl The table containing the content string in numerical order
 local function AppendRichTextViaTbl(panel, tbl)
 	for _, v in ipairs(tbl) do
 		panel:AppendText(v)
