@@ -8,7 +8,7 @@ local GetAllLoggerContexts = Log4g.Core.LoggerContext.GetAll
 --- Create a LoggerContext.
 -- @param name The name of the LoggerContext
 function Log4g.API.LoggerContextFactory.GetContext(name)
-    RegisterLoggerContext(name)
+	RegisterLoggerContext(name)
 end
 
 --- Check if a LoggerContext with the given name exists.
@@ -16,5 +16,5 @@ end
 -- @param name The name of the LoggerContext
 -- @return bool hascontext
 function Log4g.API.LoggerContextFactory.HasContext(name)
-    return HasKey(GetAllLoggerContexts(), name)
+	return HasKey(GetAllLoggerContexts(), name)
 end

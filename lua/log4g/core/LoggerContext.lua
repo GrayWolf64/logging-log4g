@@ -13,40 +13,48 @@ local STARTING, STARTED = Log4g.Core.LifeCycle.State.STARTING, Log4g.Core.LifeCy
 local STOPPING, STOPPED = Log4g.Core.LifeCycle.State.STOPPING, Log4g.Core.LifeCycle.State.STOPPED
 
 function LoggerContext:Initialize(name)
-    SetState(self, INITIALIZING)
-    self.name = name
-    self.folder = "log4g/server/loggercontext/" .. name
-    self.timestarted = os.time()
-    SetState(self, INITIALIZED)
+	SetState(self, INITIALIZING)
+	self.name = name
+	self.folder = "log4g/server/loggercontext/" .. name
+	self.timestarted = os.time()
+	SetState(self, INITIALIZED)
 end
 
 --- Get the name of the LoggerContext.
 -- @return string name
 function LoggerContext:GetName()
-    return self.name
+	return self.name
 end
 
 --- Get the folder of the LoggerContext.
 -- @return string folder
 function LoggerContext:GetFolder()
-    return self.folder
+	return self.folder
 end
 
 --- Get when the LoggerContext was started in UNIX time.
 -- @return string timestarted
 function LoggerContext:TimeStarted()
-    return self.timestarted
+	return self.timestarted
 end
 
 function LoggerContext:Start()
-    SetState(self, STARTING)
-    SetState(self, STARTED)
+	SetState(self, STARTING)
+	SetState(self, STARTED)
 
-    return self
+	return self
 end
 
 function LoggerContext:__tostring()
-    return "LoggerContext: [name:" .. self:GetName() .. "]" .. "[folder:" .. self:GetFolder() .. "]" .. "[timestarted:" .. self:TimeStarted() .. "]"
+	return "LoggerContext: [name:"
+		.. self:GetName()
+		.. "]"
+		.. "[folder:"
+		.. self:GetFolder()
+		.. "]"
+		.. "[timestarted:"
+		.. self:TimeStarted()
+		.. "]"
 end
 
 --- This is where all the LoggerContexts are stored.
@@ -57,32 +65,34 @@ local INSTANCES = INSTANCES or {}
 
 --- Terminate the LoggerContext.
 function LoggerContext:Terminate()
-    SetState(self, STOPPING)
-    RemoveContextLookupContext(self:GetName())
-    RemoveLoggerConfigByContext(self:GetName())
-    local folder = self:GetFolder()
+	SetState(self, STOPPING)
+	RemoveContextLookupContext(self:GetName())
+	RemoveLoggerConfigByContext(self:GetName())
+	local folder = self:GetFolder()
 
-    if file.Exists(folder, "DATA") then
-        DeleteFolderRecursive(folder, "DATA")
-    else
-        hook.Run("Log4g_OnLoggerContextFolderDeletionFailure", self)
-    end
+	if file.Exists(folder, "DATA") then
+		DeleteFolderRecursive(folder, "DATA")
+	else
+		hook.Run("Log4g_OnLoggerContextFolderDeletionFailure", self)
+	end
 
-    SetState(self, STOPPED)
-    hook.Run("Log4g_PostLoggerContextTermination")
-    INSTANCES[self:GetName()] = nil
+	SetState(self, STOPPED)
+	hook.Run("Log4g_PostLoggerContextTermination")
+	INSTANCES[self:GetName()] = nil
 end
 
 function Log4g.Core.LoggerContext.GetAll()
-    return INSTANCES
+	return INSTANCES
 end
 
 --- Get the LoggerContext with the right name.
 -- @return object loggercontext
 function Log4g.Core.LoggerContext.Get(name)
-    if not HasKey(INSTANCES, name) then return end
+	if not HasKey(INSTANCES, name) then
+		return
+	end
 
-    return INSTANCES[name]
+	return INSTANCES[name]
 end
 
 --- Register a LoggerContext.
@@ -92,17 +102,17 @@ end
 -- @param name The name of the LoggerContext
 -- @return object loggercontext
 function Log4g.Core.LoggerContext.Register(name)
-    if not HasKey(INSTANCES, name) then
-        local loggercontext = LoggerContext:New(name)
-        INSTANCES[name] = loggercontext:Start()
-        AddContextLookupContext(name)
-        file.CreateDir("log4g/server/loggercontext/" .. name .. "/loggerconfig")
-        hook.Run("Log4g_PostLoggerContextRegistration", name)
+	if not HasKey(INSTANCES, name) then
+		local loggercontext = LoggerContext:New(name)
+		INSTANCES[name] = loggercontext:Start()
+		AddContextLookupContext(name)
+		file.CreateDir("log4g/server/loggercontext/" .. name .. "/loggerconfig")
+		hook.Run("Log4g_PostLoggerContextRegistration", name)
 
-        return INSTANCES[name]
-    else
-        hook.Run("Log4g_OnLoggerContextRegistrationFailure")
+		return INSTANCES[name]
+	else
+		hook.Run("Log4g_OnLoggerContextRegistrationFailure")
 
-        return INSTANCES[name]
-    end
+		return INSTANCES[name]
+	end
 end

@@ -14,57 +14,71 @@ local UnstartedLoggerConfigSaveFile = "log4g/server/saverestore_loggerconfig_uns
 --- Save all the LoggerContexts' names into JSON and store it in SQL.
 -- @lfunction SaveLoggerContext
 local function SaveLoggerContext()
-    local LoggerContexts = GetAllLoggerContexts()
-    if table.IsEmpty(LoggerContexts) then return end
-    local result = {}
+	local LoggerContexts = GetAllLoggerContexts()
+	if table.IsEmpty(LoggerContexts) then
+		return
+	end
+	local result = {}
 
-    for k, _ in pairs(LoggerContexts) do
-        table.insert(result, k)
-    end
+	for k, _ in pairs(LoggerContexts) do
+		table.insert(result, k)
+	end
 
-    sql.Query("INSERT INTO Log4g_Reconfig (Name, Content) VALUES('LoggerContext', " .. sql.SQLStr(util.TableToJSON(result, true)) .. ")")
+	sql.Query(
+		"INSERT INTO Log4g_Reconfig (Name, Content) VALUES('LoggerContext', "
+			.. sql.SQLStr(util.TableToJSON(result, true))
+			.. ")"
+	)
 end
 
 --- Save all the Unstarted LoggerConfigs' names and associated LoggerContexts' names into a JSON file.
 -- @lfunction SaveUnstartedLoggerConfig
 local function SaveUnstartedLoggerConfig()
-    local configs = GetAllLoggerConfigs()
-    if table.IsEmpty(configs) then return end
-    local result = {}
+	local configs = GetAllLoggerConfigs()
+	if table.IsEmpty(configs) then
+		return
+	end
+	local result = {}
 
-    for k, v in pairs(configs) do
-        if not IsStarted(v) then
-            table.insert(result, {
-                name = k,
-                loggercontext = v.loggercontext,
-            })
-        end
-    end
+	for k, v in pairs(configs) do
+		if not IsStarted(v) then
+			table.insert(result, {
+				name = k,
+				loggercontext = v.loggercontext,
+			})
+		end
+	end
 
-    file.Write(UnstartedLoggerConfigSaveFile, util.TableToJSON(result, true))
+	file.Write(UnstartedLoggerConfigSaveFile, util.TableToJSON(result, true))
 end
 
 --- Save all the previously registered Custom Levels.
 -- @lfunction SaveCustomLevel
 local function SaveCustomLevel()
-    local customlevel = GetCustomLevel()
-    if table.IsEmpty(customlevel) then return end
-    local result = {}
+	local customlevel = GetCustomLevel()
+	if table.IsEmpty(customlevel) then
+		return
+	end
+	local result = {}
 
-    for k, v in pairs(customlevel) do
-        table.insert(result, {
-            name = k,
-            int = v.int,
-        })
-    end
+	for k, v in pairs(customlevel) do
+		table.insert(result, {
+			name = k,
+			int = v.int,
+		})
+	end
 
-    sql.Query("INSERT INTO Log4g_Reconfig (Name, Content) VALUES('CustomLevel', " .. sql.SQLStr(util.TableToJSON(result, true)) .. ")")
+	sql.Query(
+		"INSERT INTO Log4g_Reconfig (Name, Content) VALUES('CustomLevel', "
+			.. sql.SQLStr(util.TableToJSON(result, true))
+			.. ")"
+	)
 end
 
 local function Save()
-    SaveLoggerContext()
-    SaveUnstartedLoggerConfig()
-    SaveCustomLevel()
+	SaveLoggerContext()
+	SaveUnstartedLoggerConfig()
+	SaveCustomLevel()
 end
 
 hook.Add("ShutDown", "Log4g_SaveLogEnvironment", Save)
@@ -73,48 +87,56 @@ hook.Add("ShutDown", "Log4g_SaveLogEnvironment", Save)
 -- Their timestarted will be the time when they were restored.
 -- @lfunction RestoreLoggerContext
 local function RestoreLoggerContext()
-    if not sql.QueryRow("SELECT * FROM Log4g_Reconfig WHERE Name = 'LoggerContext';") then return end
-    local tbl = util.JSONToTable(sql.QueryValue("SELECT Content FROM Log4g_Reconfig WHERE Name = 'LoggerContext';"))
+	if not sql.QueryRow("SELECT * FROM Log4g_Reconfig WHERE Name = 'LoggerContext';") then
+		return
+	end
+	local tbl = util.JSONToTable(sql.QueryValue("SELECT Content FROM Log4g_Reconfig WHERE Name = 'LoggerContext';"))
 
-    for _, v in pairs(tbl) do
-        CreateLoggerContext(v)
-    end
+	for _, v in pairs(tbl) do
+		CreateLoggerContext(v)
+	end
 
-    sql.Query("DELETE FROM Log4g_Reconfig WHERE Name = 'LoggerContext';")
+	sql.Query("DELETE FROM Log4g_Reconfig WHERE Name = 'LoggerContext';")
 end
 
 --- Re-register all the previously unstarted LoggerConfigs.
 -- @lfunction RestoreUnstartedLoggerConfig
 local function RestoreUnstartedLoggerConfig()
-    if not file.Exists(UnstartedLoggerConfigSaveFile, "DATA") then return end
-    local tbl = util.JSONToTable(file.Read(UnstartedLoggerConfigSaveFile, "DATA"))
+	if not file.Exists(UnstartedLoggerConfigSaveFile, "DATA") then
+		return
+	end
+	local tbl = util.JSONToTable(file.Read(UnstartedLoggerConfigSaveFile, "DATA"))
 
-    for _, v in pairs(tbl) do
-        local save = "log4g/server/loggercontext/" .. v.loggercontext .. "/loggerconfig/" .. v.name .. ".json"
-        if not file.Exists(save, "DATA") then return end
-        RegisterLoggerConfig(util.JSONToTable(file.Read(save, "DATA")))
-    end
+	for _, v in pairs(tbl) do
+		local save = "log4g/server/loggercontext/" .. v.loggercontext .. "/loggerconfig/" .. v.name .. ".json"
+		if not file.Exists(save, "DATA") then
+			return
+		end
+		RegisterLoggerConfig(util.JSONToTable(file.Read(save, "DATA")))
+	end
 
-    file.Delete(UnstartedLoggerConfigSaveFile)
+	file.Delete(UnstartedLoggerConfigSaveFile)
 end
 
 --- Restore all the previously saved Custom Levels.
 -- @lfunction RestoreCustomLevel
 local function RestoreCustomLevel()
-    if not sql.QueryRow("SELECT * FROM Log4g_Reconfig WHERE Name = 'CustomLevel';") then return end
-    local tbl = util.JSONToTable(sql.QueryValue("SELECT Content FROM Log4g_Reconfig WHERE Name = 'CustomLevel';"))
+	if not sql.QueryRow("SELECT * FROM Log4g_Reconfig WHERE Name = 'CustomLevel';") then
+		return
+	end
+	local tbl = util.JSONToTable(sql.QueryValue("SELECT Content FROM Log4g_Reconfig WHERE Name = 'CustomLevel';"))
 
-    for _, v in pairs(tbl) do
-        RegisterCustomLevel(v.name, v.int)
-    end
+	for _, v in pairs(tbl) do
+		RegisterCustomLevel(v.name, v.int)
+	end
 
-    sql.Query("DELETE FROM Log4g_Reconfig WHERE Name = 'CustomLevel';")
+	sql.Query("DELETE FROM Log4g_Reconfig WHERE Name = 'CustomLevel';")
 end
 
 local function Restore()
-    RestoreLoggerContext()
-    RestoreUnstartedLoggerConfig()
-    RestoreCustomLevel()
+	RestoreLoggerContext()
+	RestoreUnstartedLoggerConfig()
+	RestoreCustomLevel()
 end
 
 hook.Add("PostGamemodeLoaded", "Log4g_RestoreLogEnvironment", Restore)

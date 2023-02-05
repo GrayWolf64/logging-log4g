@@ -11,54 +11,65 @@ local File = "log4g/server/loggercontext/lookup_logger.json"
 -- @param contextname The name of the LoggerContext to write
 -- @param configfile The string filepath of the Logger's associated LoggerConfig to write
 function Log4g.Core.Logger.Lookup.AddItem(loggername, contextname, configfile)
-    if not file.Exists(File, "DATA") then
-        file.Write(File, util.TableToJSON({
-            [loggername] = {
-                loggercontext = contextname,
-                configfile = configfile,
-            },
-        }, true))
-    else
-        local tbl = util.JSONToTable(file.Read(File, "DATA"))
+	if not file.Exists(File, "DATA") then
+		file.Write(
+			File,
+			util.TableToJSON({
+				[loggername] = {
+					loggercontext = contextname,
+					configfile = configfile,
+				},
+			}, true)
+		)
+	else
+		local tbl = util.JSONToTable(file.Read(File, "DATA"))
 
-        tbl[loggername] = {
-            loggercontext = contextname,
-            configfile = configfile,
-        }
+		tbl[loggername] = {
+			loggercontext = contextname,
+			configfile = configfile,
+		}
 
-        file.Write(File, util.TableToJSON(tbl, true))
-    end
+		file.Write(File, util.TableToJSON(tbl, true))
+	end
 end
 
 --- Remove any Logger items whose LoggerContext's name is the given contextname.
 -- @param contextname The LoggerContext's name
 function Log4g.Core.Logger.Lookup.RemoveLoggerViaContext(contextname)
-    if not file.Exists(File, "DATA") then return end
-    local tbl = util.JSONToTable(file.Read(File, "DATA"))
-    if table.IsEmpty(tbl) then return end
+	if not file.Exists(File, "DATA") then
+		return
+	end
+	local tbl = util.JSONToTable(file.Read(File, "DATA"))
+	if table.IsEmpty(tbl) then
+		return
+	end
 
-    for k, v in pairs(tbl) do
-        if v.loggercontext == contextname then
-            tbl[k] = nil
-        end
-    end
+	for k, v in pairs(tbl) do
+		if v.loggercontext == contextname then
+			tbl[k] = nil
+		end
+	end
 
-    file.Write(File, util.TableToJSON(tbl, true))
+	file.Write(File, util.TableToJSON(tbl, true))
 end
 
 --- Remove a Logger item from LoggerLookup.
 -- @param contextname The LoggerContext's name
 -- @param loggername The Logger's name
 function Log4g.Core.Logger.Lookup.RemoveLogger(contextname, loggername)
-    if not file.Exists(File, "DATA") then return end
-    local tbl = util.JSONToTable(file.Read(File, "DATA"))
-    if table.IsEmpty(tbl) then return end
+	if not file.Exists(File, "DATA") then
+		return
+	end
+	local tbl = util.JSONToTable(file.Read(File, "DATA"))
+	if table.IsEmpty(tbl) then
+		return
+	end
 
-    for k, v in pairs(tbl) do
-        if k == loggername and v.loggercontext == contextname then
-            tbl[k] = nil
-        end
-    end
+	for k, v in pairs(tbl) do
+		if k == loggername and v.loggercontext == contextname then
+			tbl[k] = nil
+		end
+	end
 
-    file.Write(File, util.TableToJSON(tbl, true))
+	file.Write(File, util.TableToJSON(tbl, true))
 end

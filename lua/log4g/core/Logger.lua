@@ -9,39 +9,41 @@ local STOPPING, STOPPED = Log4g.Core.LifeCycle.State.STOPPING, Log4g.Core.LifeCy
 local HasKey = Log4g.Util.HasKey
 
 function Logger:Initialize(name)
-    SetState(self, INITIALIZING)
-    self.name = name
-    SetState(self, INITIALIZED)
+	SetState(self, INITIALIZING)
+	self.name = name
+	SetState(self, INITIALIZED)
 end
 
 --- Start the Logger with a LoggerConfig.
 function Logger:Start(loggerconfig)
-    SetState(self, STARTING)
-    self.loggerconfig = loggerconfig.name
-    SetState(self, STARTED)
+	SetState(self, STARTING)
+	self.loggerconfig = loggerconfig.name
+	SetState(self, STARTED)
 
-    return self
+	return self
 end
 
 --- Terminate the Logger.
 function Logger:Terminate()
-    SetState(self, STOPPING)
-    SetState(self, STOPPED)
-    self = nil
+	SetState(self, STOPPING)
+	SetState(self, STOPPED)
+	self = nil
 end
 
 --- Get the Logger name.
 -- @return string name
 function Logger:GetName()
-    return self.name
+	return self.name
 end
 
 --- Get the LoggerConfig name of the Logger.
 -- @return string loggerconfig
 function Logger:GetLoggerConfig()
-    if not HasKey(self, "loggerconfig") then return end
+	if not HasKey(self, "loggerconfig") then
+		return
+	end
 
-    return self.loggerconfig
+	return self.loggerconfig
 end
 
 --- This is where all the Loggers are stored.
@@ -52,7 +54,7 @@ local INSTANCES = INSTANCES or {}
 --- Get all the Loggers.
 -- @return table instances
 function Log4g.Core.Logger.GetAll()
-    return INSTANCES
+	return INSTANCES
 end
 
 --- Create a Logger.
@@ -62,17 +64,19 @@ end
 -- @param loggerconfig The Loggerconfig
 -- @return object logger
 function Log4g.Core.Logger.Register(name, loggerconfig)
-    if not isstring(name) or not istable(loggerconfig) or table.IsEmpty(loggerconfig) then return end
+	if not isstring(name) or not istable(loggerconfig) or table.IsEmpty(loggerconfig) then
+		return
+	end
 
-    if not HasKey(INSTANCES, name) then
-        local logger = Logger:New(name):Start(loggerconfig)
-        INSTANCES[name] = logger
-        hook.Run("Log4g_PostLoggerRegistration", name)
+	if not HasKey(INSTANCES, name) then
+		local logger = Logger:New(name):Start(loggerconfig)
+		INSTANCES[name] = logger
+		hook.Run("Log4g_PostLoggerRegistration", name)
 
-        return logger
-    else
-        hook.Run("Log4g_OnLoggerRegistrationFailure", name)
+		return logger
+	else
+		hook.Run("Log4g_OnLoggerRegistrationFailure", name)
 
-        return INSTANCES[name]
-    end
+		return INSTANCES[name]
+	end
 end
