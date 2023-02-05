@@ -106,7 +106,6 @@ function Log4g.Core.LoggerContext.Register(name)
 		local loggercontext = LoggerContext:New(name)
 		INSTANCES[name] = loggercontext:Start()
 		AddContextLookupContext(name)
-		file.CreateDir("log4g/server/loggercontext/" .. name .. "/loggerconfig")
 		hook.Run("Log4g_PostLoggerContextRegistration", name)
 
 		return INSTANCES[name]
