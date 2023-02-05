@@ -10,7 +10,6 @@ local GetAllLoggerConfigs = Log4g.Core.Config.LoggerConfig.GetAll
 local IsStarted = Log4g.Core.LifeCycle.IsStarted
 local GetCustomLevel = Log4g.Level.GetCustomLevel
 local RegisterCustomLevel = Log4g.Level.RegisterCustomLevel
-local UnstartedLoggerConfigSaveFile = "log4g/server/saverestore_loggerconfig_unstarted.json"
 
 --- Save all the LoggerContexts' names into JSON and store it in SQL.
 -- @lfunction SaveLoggerContext
@@ -32,9 +31,9 @@ local function SaveLoggerContext()
 	)
 end
 
---- Save all the Unstarted LoggerConfigs' names and associated LoggerContexts' names into a JSON file.
--- @lfunction SaveUnstartedLoggerConfig
-local function SaveUnstartedLoggerConfig()
+--- Save all the LoggerConfigs' names and associated LoggerContexts' names into a JSON file.
+-- @lfunction SaveLoggerConfig
+local function SaveLoggerConfig()
 	local configs = GetAllLoggerConfigs()
 	if table.IsEmpty(configs) then
 		return
@@ -50,7 +49,11 @@ local function SaveUnstartedLoggerConfig()
 		end
 	end
 
-	file.Write(UnstartedLoggerConfigSaveFile, util.TableToJSON(result, true))
+	sql.Query(
+		"INSERT INTO Log4g_AutoReconfig (Name, Content) VALUES('LoggerConfig', "
+			.. sql.SQLStr(util.TableToJSON(result, true))
+			.. ")"
+	)
 end
 
 --- Save all the previously registered Custom Levels.
@@ -78,7 +81,7 @@ end
 
 local function Save()
 	SaveLoggerContext()
-	SaveUnstartedLoggerConfig()
+	SaveLoggerConfig()
 	SaveCustomLevel()
 end
 
@@ -100,23 +103,23 @@ local function RestoreLoggerContext()
 	sql.Query("DELETE FROM Log4g_AutoReconfig WHERE Name = 'LoggerContext';")
 end
 
---- Re-register all the previously unstarted LoggerConfigs.
--- @lfunction RestoreUnstartedLoggerConfig
-local function RestoreUnstartedLoggerConfig()
-	if not file.Exists(UnstartedLoggerConfigSaveFile, "DATA") then
+--- Re-register all the LoggerConfigs.
+-- @lfunction RestoreLoggerConfig
+local function RestoreLoggerConfig()
+	if not sql.QueryRow("SELECT * FROM Log4g_AutoReconfig WHERE Name = 'LoggerConfig';") then
 		return
 	end
-	local tbl = util.JSONToTable(file.Read(UnstartedLoggerConfigSaveFile, "DATA"))
+	local tbl = util.JSONToTable(sql.QueryValue("SELECT Content FROM Log4g_AutoReconfig WHERE Name = 'LoggerConfig';"))
 
 	for _, v in pairs(tbl) do
-		local save = "log4g/server/loggercontext/" .. v.loggercontext .. "/loggerconfig/" .. v.name .. ".json"
-		if not file.Exists(save, "DATA") then
+		local config = sql.QueryValue("SELECT Content FROM Log4g_LoggerConfig WHERE Name = '" .. v.name .. "';")
+		if not config then
 			return
 		end
-		RegisterLoggerConfig(util.JSONToTable(file.Read(save, "DATA")))
+		RegisterLoggerConfig(util.JSONToTable(config))
 	end
 
-	file.Delete(UnstartedLoggerConfigSaveFile)
+	sql.Query("DELETE FROM Log4g_AutoReconfig WHERE Name = 'LoggerConfig';")
 end
 
 --- Restore all the previously saved Custom Levels.
@@ -136,7 +139,7 @@ end
 
 local function Restore()
 	RestoreLoggerContext()
-	RestoreUnstartedLoggerConfig()
+	RestoreLoggerConfig()
 	RestoreCustomLevel()
 end
 

@@ -82,11 +82,9 @@ end
 --- Get the LoggerConfig with the right name.
 -- @return object loggerconfig
 function Log4g.Core.Config.LoggerConfig.Get(name)
-	if not HasKey(INSTANCES, name) then
-		return
+	if HasKey(INSTANCES, name) then
+		return INSTANCES[name]
 	end
-
-	return INSTANCES[name]
 end
 
 --- Register a LoggerConfig.

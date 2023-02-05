@@ -76,6 +76,7 @@ net.Receive("Log4g_CLReq_LoggerConfig_Remove", function(_, ply)
 	if not IdentChk(ply) then
 		return
 	end
+
 	GetLoggerConfig(net.ReadString()):Remove()
 end)
 
