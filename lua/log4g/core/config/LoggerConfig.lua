@@ -11,6 +11,9 @@ local IsStarted = Log4g.Core.LifeCycle.IsStarted
 local INITIALIZING, INITIALIZED = Log4g.Core.LifeCycle.State.INITIALIZING, Log4g.Core.LifeCycle.State.INITIALIZED
 local STOPPING, STOPPED = Log4g.Core.LifeCycle.State.STOPPING, Log4g.Core.LifeCycle.State.STOPPED
 
+--- Initialize the LoggerConfig object.
+-- This is meant to be used internally.
+-- @param tbl The table containing the necessary data to make a LoggerConfig
 function LoggerConfig:Initialize(tbl)
 	SetState(self, INITIALIZING)
 	self.name = tbl.name
@@ -25,10 +28,12 @@ function LoggerConfig:Initialize(tbl)
 	SetState(self, INITIALIZED)
 end
 
+--- Get the name of the LoggerConfig, same to `loggerconfig.name`.
 function LoggerConfig:GetName()
 	return self.name
 end
 
+--- Get the LoggerContext name of the LoggerConfig.
 function LoggerConfig:GetContext()
 	return self.loggercontext
 end
@@ -62,6 +67,8 @@ function Log4g.Core.Config.LoggerConfig.GetAll()
 	return INSTANCES
 end
 
+--- Remove all the LoggerConfig instances with the provided LoggerContext name.
+-- @param name The name of the LoggerContext
 function Log4g.Core.Config.LoggerConfig.RemoveByContext(name)
 	if table.IsEmpty(INSTANCES) then
 		return
@@ -107,7 +114,7 @@ function Log4g.Core.Config.LoggerConfig.RegisterLoggerConfig(tbl)
 end
 
 --- Get all the file paths of the all the LoggerConfigs in the form of a string table.
--- If the LoggerConfig table is empty, nil will be the return value.
+-- If the LoggerConfig table is empty, nil will be returned.
 -- @return tbl filepaths
 function Log4g.Core.Config.LoggerConfig.GetFiles()
 	if not table.IsEmpty(INSTANCES) then
