@@ -10,17 +10,18 @@ local LoggerContextLookup = Log4g.Core.LoggerContext.Lookup
 --- Add a LoggerContext item to LoggerContext Lookup.
 -- @param name The name of the LoggerContext
 function LoggerContextLookup.AddContext(name)
-	if not file.Exists(File, "DATA") then
-		file.Write(
-			File,
-			util.TableToJSON({
-				[name] = {},
-			}, true)
-		)
+	if not sql.QueryRow("SELECT * FROM Log4g_Lookup WHERE Name = 'LoggerContext';") then
+		sql.Query("INSERT INTO Log4g_Lookup (Name, Content) VALUES('LoggerContext', " .. sql.SQLStr(util.TableToJSON({
+			[name] = {},
+		}, true)) .. ")")
 	else
-		local tbl = util.JSONToTable(file.Read(File, "DATA"))
+		local tbl = util.JSONToTable(sql.QueryValue("SELECT Content FROM Log4g_Lookup WHERE Name = 'LoggerContext';"))
 		tbl[name] = {}
-		file.Write(File, util.TableToJSON(tbl, true))
+		sql.Query(
+			"UPDATE Log4g_Lookup SET Content = "
+				.. sql.SQLStr(util.TableToJSON(tbl, true))
+				.. " WHERE Name = 'LoggerContext';"
+		)
 	end
 end
 
@@ -30,15 +31,12 @@ end
 -- @param context The LoggerContext name to put the LoggerConfig in
 -- @param config The LoggerConfig name to write
 function LoggerContextLookup.AddConfig(context, config)
-	if not file.Exists(File, "DATA") then
-		file.Write(
-			File,
-			util.TableToJSON({
-				[context] = { config },
-			}, true)
-		)
+	if not sql.QueryRow("SELECT * FROM Log4g_Lookup WHERE Name = 'LoggerContext';") then
+		sql.Query("INSERT INTO Log4g_Lookup (Name, Content) VALUES('LoggerContext', " .. sql.SQLStr(util.TableToJSON({
+			[context] = { config },
+		}, true)) .. ")")
 	else
-		local tbl = util.JSONToTable(file.Read(File, "DATA"))
+		local tbl = util.JSONToTable(sql.QueryValue("SELECT Content FROM Log4g_Lookup WHERE Name = 'LoggerContext';"))
 		local bool, key = HasKey(tbl, context)
 
 		if bool then
@@ -47,7 +45,11 @@ function LoggerContextLookup.AddConfig(context, config)
 			tbl[context] = { config }
 		end
 
-		file.Write(File, util.TableToJSON(tbl, true))
+		sql.Query(
+			"UPDATE Log4g_Lookup SET Content = "
+				.. sql.SQLStr(util.TableToJSON(tbl, true))
+				.. " WHERE Name = 'LoggerContext';"
+		)
 	end
 end
 
@@ -55,10 +57,10 @@ end
 -- The child LoggerConfig names will be removed at the same time.
 -- @param name The name of the LoggerContext to find and remove from the Lookup table
 function LoggerContextLookup.RemoveContext(name)
-	if not file.Exists(File, "DATA") then
+	if not sql.QueryRow("SELECT * FROM Log4g_Lookup WHERE Name = 'LoggerContext';") then
 		return
 	end
-	local tbl = util.JSONToTable(file.Read(File, "DATA"))
+	local tbl = util.JSONToTable(sql.QueryValue("SELECT Content FROM Log4g_Lookup WHERE Name = 'LoggerContext';"))
 
 	for k, _ in pairs(tbl) do
 		if k == name then
@@ -66,17 +68,21 @@ function LoggerContextLookup.RemoveContext(name)
 		end
 	end
 
-	file.Write(File, util.TableToJSON(tbl))
+	sql.Query(
+		"UPDATE Log4g_Lookup SET Content = "
+			.. sql.SQLStr(util.TableToJSON(tbl, true))
+			.. " WHERE Name = 'LoggerContext';"
+	)
 end
 
 --- Remove a LoggerConfig name item from the LoggerContext Lookup.
 -- @param context The name of the LoggerContext that the LoggerConfig is in
 -- @param config The name of the LoggerConfig to find and remove from the Lookup table
 function LoggerContextLookup.RemoveConfig(context, config)
-	if not file.Exists(File, "DATA") then
+	if not sql.QueryRow("SELECT * FROM Log4g_Lookup WHERE Name = 'LoggerContext';") then
 		return
 	end
-	local tbl = util.JSONToTable(file.Read(File, "DATA"))
+	local tbl = util.JSONToTable(sql.QueryValue("SELECT Content FROM Log4g_Lookup WHERE Name = 'LoggerContext';"))
 
 	for k, v in pairs(tbl) do
 		if k == context then
@@ -88,5 +94,9 @@ function LoggerContextLookup.RemoveConfig(context, config)
 		end
 	end
 
-	file.Write(File, util.TableToJSON(tbl))
+	sql.Query(
+		"UPDATE Log4g_Lookup SET Content = "
+			.. sql.SQLStr(util.TableToJSON(tbl, true))
+			.. " WHERE Name = 'LoggerContext';"
+	)
 end
