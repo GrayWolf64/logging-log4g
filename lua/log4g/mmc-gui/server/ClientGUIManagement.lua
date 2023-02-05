@@ -13,9 +13,9 @@ AddNetworkStrsViaTbl({
 net.Receive("Log4g_CLReq_Logger_Lookup", function(_, ply)
 	net.Start("Log4g_CLRcv_Logger_Lookup")
 
-	if file.Exists(LoggerLookupFile, "DATA") then
+	if sql.QueryRow("SELECT * FROM Log4g_Lookup WHERE Name = 'Logger';") then
 		net.WriteBool(true)
-		WriteDataSimple(file.Read(LoggerLookupFile, "DATA"), 16)
+		WriteDataSimple(sql.QueryValue("SELECT Content FROM Log4g_Lookup WHERE Name = 'Logger';"), 16)
 	else
 		net.WriteBool(false)
 	end
