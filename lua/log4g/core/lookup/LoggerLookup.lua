@@ -3,7 +3,6 @@
 -- @script LoggerLookup
 -- @license Apache License 2.0
 -- @copyright GrayWolf64
-local File = "log4g/server/loggercontext/lookup_logger.json"
 local LoggerLookup = Log4g.Core.Logger.Lookup
 
 local function UpdateLookup(tbl)
