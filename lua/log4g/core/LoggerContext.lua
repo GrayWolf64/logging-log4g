@@ -88,11 +88,9 @@ end
 --- Get the LoggerContext with the right name.
 -- @return object loggercontext
 function Log4g.Core.LoggerContext.Get(name)
-	if not HasKey(INSTANCES, name) then
-		return
+	if HasKey(INSTANCES, name) then
+		return INSTANCES[name]
 	end
-
-	return INSTANCES[name]
 end
 
 --- Register a LoggerContext.
