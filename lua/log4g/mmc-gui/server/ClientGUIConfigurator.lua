@@ -33,9 +33,8 @@ AddNetworkStrsViaTbl({
 	[8] = "Log4g_CLReq_LoggerContext_Remove",
 	[9] = "Log4g_CLReq_ChkConnected",
 	[10] = "Log4g_CLRcv_ChkConnected",
-	[11] = "Log4g_CLReq_LoggerConfig_BuildDefault",
-	[12] = "Log4g_CLReq_LoggerContext_Lookup",
-	[13] = "Log4g_CLRcv_LoggerContext_Lookup",
+	[11] = "Log4g_CLReq_LoggerContext_Lookup",
+	[12] = "Log4g_CLRcv_LoggerContext_Lookup",
 })
 
 net.Receive("Log4g_CLReq_ChkConnected", function(_, ply)
@@ -119,11 +118,4 @@ net.Receive("Log4g_CLUpload_NewLevel", function(_, ply)
 		return
 	end
 	RegisterCustomLevel(net.ReadString(), net.ReadUInt(16))
-end)
-
-net.Receive("Log4g_CLReq_LoggerConfig_BuildDefault", function(_, ply)
-	if not IdentChk(ply) then
-		return
-	end
-	GetAllLoggerConfigs(net.ReadString()):BuildDefault()
 end)
