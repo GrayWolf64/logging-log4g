@@ -23,7 +23,6 @@ function LoggerConfig:Initialize(tbl)
 	self.level = tbl.level
 	self.appender = tbl.appender
 	self.layout = tbl.layout
-	self.file = "log4g/server/loggercontext/" .. tbl.loggercontext .. "/loggerconfig/" .. tbl.name .. ".json"
 	self.logmsg = tbl.logmsg
 	SetState(self, INITIALIZED)
 end
@@ -46,19 +45,18 @@ local INSTANCES = INSTANCES or {}
 --- Remove the LoggerConfig.
 function LoggerConfig:Remove()
 	SetState(self, STOPPING)
-	RemoveContextLookupConfig(self:GetContext(), self:GetName())
-	RemoveConfigLookupConfig(self:GetName())
+	RemoveContextLookupConfig(self:GetContext(), self.name)
+	RemoveConfigLookupConfig(self.name)
 
-	if file.Exists(self.file, "DATA") then
-		file.Delete(self.file)
-		self.file = nil
+	if sql.QueryRow("SELECT * FROM Log4g_LoggerConfig WHERE Name = '" .. self.name .. "';") then
+		sql.Query("DELETE FROM Log4g_LoggerConfig WHERE Name = '" .. self.name .. "';")
 		hook.Run("Log4g_PostLoggerConfigFileDeletion")
 	else
 		hook.Run("Log4g_OnLoggerConfigFileDeletionFailure")
 	end
 
 	SetState(self, STOPPED)
-	INSTANCES[self:GetName()] = nil
+	INSTANCES[self.name] = nil
 end
 
 --- Get all the LoggerConfigs in the LoggerConfigs table.
@@ -102,7 +100,13 @@ function Log4g.Core.Config.LoggerConfig.RegisterLoggerConfig(tbl)
 		local loggerconfig = LoggerConfig:New(tbl)
 		INSTANCES[tbl.name] = loggerconfig
 		AddConfigLookupConfig(tbl.name)
-		file.Write(loggerconfig.file, util.TableToJSON(tbl, true))
+		sql.Query(
+			"INSERT INTO Log4g_LoggerConfig (Name, Content) VALUES('"
+				.. tbl.name
+				.. "', "
+				.. sql.SQLStr(util.TableToJSON(tbl, true))
+				.. ")"
+		)
 		hook.Run("Log4g_PostLoggerConfigRegistration")
 
 		return INSTANCES[tbl.name]
@@ -110,24 +114,5 @@ function Log4g.Core.Config.LoggerConfig.RegisterLoggerConfig(tbl)
 		hook.Run("Log4g_OnLoggerConfigRegistrationFailure")
 
 		return INSTANCES[tbl.name]
-	end
-end
-
---- Get all the file paths of the all the LoggerConfigs in the form of a string table.
--- If the LoggerConfig table is empty, nil will be returned.
--- @return tbl filepaths
-function Log4g.Core.Config.LoggerConfig.GetFiles()
-	if not table.IsEmpty(INSTANCES) then
-		local tbl = {}
-
-		for _, v in pairs(INSTANCES) do
-			if not IsStarted(v) then
-				table.insert(tbl, v.file)
-			end
-		end
-
-		return tbl
-	else
-		return nil
 	end
 end
