@@ -27,24 +27,14 @@ AddNetworkStrsViaTbl({
     [6] = "Log4g_CLReq_LoggerConfig_Lookup",
     [7] = "Log4g_CLRcv_LoggerConfig_Lookup",
     [8] = "Log4g_CLReq_LoggerContext_Remove",
-    [9] = "Log4g_CLReq_CFG_LoggerConfig_ColumnText",
-    [10] = "Log4g_CLRcv_CFG_LoggerConfig_ColumnText",
-    [11] = "Log4g_CLReq_ChkConnected",
-    [12] = "Log4g_CLRcv_ChkConnected",
-    [13] = "Log4g_CLReq_LoggerConfig_BuildDefault",
+    [9] = "Log4g_CLReq_ChkConnected",
+    [10] = "Log4g_CLRcv_ChkConnected",
+    [11] = "Log4g_CLReq_LoggerConfig_BuildDefault",
 })
 
 net.Receive("Log4g_CLReq_ChkConnected", function(len, ply)
     net.Start("Log4g_CLRcv_ChkConnected")
     net.WriteBool(IsValid(ply) == ply:IsConnected() == true)
-    net.Send(ply)
-end)
-
-net.Receive("Log4g_CLReq_CFG_LoggerConfig_ColumnText", function(len, ply)
-    net.Start("Log4g_CLRcv_CFG_LoggerConfig_ColumnText")
-
-    net.WriteTable({"name", "eventname", "uid", "loggercontext", "level", "appender", "layout", "logmsg"})
-
     net.Send(ply)
 end)
 

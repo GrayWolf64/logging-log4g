@@ -200,13 +200,10 @@ concommand.Add("Log4g_MMC", function()
 	Tree:Dock(RIGHT)
 	Tree:SetWide(144)
 	Tree:DockMargin(0, 0, 0, 0)
-	SendEmptyMsgToSV("Log4g_CLReq_CFG_LoggerConfig_ColumnText")
 
-	net.Receive("Log4g_CLRcv_CFG_LoggerConfig_ColumnText", function()
-		for _, v in pairs(net.ReadTable()) do
-			ListView:AddColumn(v)
-		end
-	end)
+	for _, v in pairs("name", "eventname", "uid", "loggercontext", "level", "appender", "layout", "logmsg") do
+		ListView:AddColumn(v)
+	end
 
 	--- Get a line's content text at specific columns.
 	-- There's not an official way to do this, so GetChild can be used here.
@@ -484,13 +481,10 @@ concommand.Add("Log4g_MMC", function()
 	local SheetPanelE = vgui.Create("DPanel", SheetA)
 	SheetA:AddSheet("LOGGER", SheetPanelE, "icon16/brick.png")
 	local ListViewB = CreateDListView(SheetPanelE, FILL, 0, 0, 0, 0, 18, 18.5)
-	SendEmptyMsgToSV("Log4g_CLReq_Logger_ColumnText")
 
-	net.Receive("Log4g_CLRcv_Logger_ColumnText", function()
-		for _, v in pairs(net.ReadTable()) do
-			ListViewB:AddColumn(v)
-		end
-	end)
+	for _, v in pairs({ "name", "loggercontext", "configfile" }) do
+		ListViewB:AddColumn(v)
+	end
 
 	function ListViewB:OnRowRightClick(num)
 		local Menu = DermaMenu()
