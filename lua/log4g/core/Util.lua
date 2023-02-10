@@ -53,3 +53,7 @@ end
 Log4g.Util.SQLUpdateValue = function(tbl, name, str)
 	sql.Query("UPDATE " .. tbl .. " SET Content = " .. sql.SQLStr(str) .. " WHERE Name = '" .. name .. "';")
 end
+
+Log4g.Util.SQLInsert = function(tbl, name, str)
+	sql.Query("INSERT INTO " .. tbl .. " (Name, Content) VALUES('" .. name .. "', " .. sql.SQLStr(str) .. ")")
+end

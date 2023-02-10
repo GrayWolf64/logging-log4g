@@ -3,20 +3,24 @@
 -- @script LoggerContextLookup
 -- @license Apache License 2.0
 -- @copyright GrayWolf64
-local sql = sql
 local HasKey = Log4g.Util.HasKey
 local SQLQueryNamedRow = Log4g.Util.SQLQueryNamedRow
 local SQLQueryValue = Log4g.Util.SQLQueryValue
-local LoggerContextLookup = Log4g.Core.LoggerContext.Lookup
+local SQLInsert = Log4g.Util.SQLInsert
 local UpdateLookup = Log4g.Util.SQLUpdateValue
+local LoggerContextLookup = Log4g.Core.LoggerContext.Lookup
 
 --- Add a LoggerContext item to LoggerContext Lookup.
 -- @param name The name of the LoggerContext
 function LoggerContextLookup.AddContext(name)
 	if not SQLQueryNamedRow("Log4g_Lookup", "LoggerContext") then
-		sql.Query("INSERT INTO Log4g_Lookup (Name, Content) VALUES('LoggerContext', " .. sql.SQLStr(util.TableToJSON({
-			[name] = {},
-		}, true)) .. ")")
+		SQLInsert(
+			"Log4g_Lookup",
+			"LoggerContext",
+			util.TableToJSON({
+				[name] = {},
+			}, true)
+		)
 	else
 		local tbl = util.JSONToTable(SQLQueryValue("Log4g_Lookup", "LoggerContext"))
 		tbl[name] = {}
@@ -49,9 +53,13 @@ end
 -- @param config The LoggerConfig name to write
 function LoggerContextLookup.AddConfig(context, config)
 	if not SQLQueryNamedRow("Log4g_Lookup", "LoggerContext") then
-		sql.Query("INSERT INTO Log4g_Lookup (Name, Content) VALUES('LoggerContext', " .. sql.SQLStr(util.TableToJSON({
-			[context] = { config },
-		}, true)) .. ")")
+		SQLInsert(
+			"Log4g_Lookup",
+			"LoggerContext",
+			util.TableToJSON({
+				[context] = { config },
+			}, true)
+		)
 	else
 		local tbl = util.JSONToTable(SQLQueryValue("Log4g_Lookup", "LoggerContext"))
 		local bool, key = HasKey(tbl, context)
