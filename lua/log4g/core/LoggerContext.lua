@@ -47,7 +47,7 @@ end
 
 function LoggerContext:__tostring()
 	return "LoggerContext: [name:"
-		.. self:GetName()
+		.. self.name
 		.. "]"
 		.. "[folder:"
 		.. self:GetFolder()
@@ -66,8 +66,8 @@ local INSTANCES = INSTANCES or {}
 --- Terminate the LoggerContext.
 function LoggerContext:Terminate()
 	SetState(self, STOPPING)
-	RemoveContextLookupContext(self:GetName())
-	RemoveLoggerConfigByContext(self:GetName())
+	RemoveContextLookupContext(self.name)
+	RemoveLoggerConfigByContext(self.name)
 	local folder = self:GetFolder()
 
 	if file.Exists(folder, "DATA") then
@@ -78,7 +78,7 @@ function LoggerContext:Terminate()
 
 	SetState(self, STOPPED)
 	hook.Run("Log4g_PostLoggerContextTermination")
-	INSTANCES[self:GetName()] = nil
+	INSTANCES[self.name] = nil
 end
 
 function Log4g.Core.LoggerContext.GetAll()
