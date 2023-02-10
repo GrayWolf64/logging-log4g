@@ -310,10 +310,10 @@ concommand.Add("Log4g_MMC", function()
 		ListViewC:AddColumn(v)
 	end
 	PanelTimedFunc(ListViewC, UpdateInterval, function() end, function()
-		ListViewC:Clear()
 		SendEmptyMsgToSV("Log4g_CLReq_LoggerContext_Lookup")
 
 		net.Receive("Log4g_CLRcv_LoggerContext_Lookup", function()
+			ListViewC:Clear()
 			if net.ReadBool() then
 				for k, _ in pairs(util.JSONToTable(util.Decompress(net.ReadData(net.ReadUInt(16))))) do
 					ListViewC:AddLine(k)
@@ -361,10 +361,10 @@ concommand.Add("Log4g_MMC", function()
 	end
 
 	PanelTimedFunc(Tree, UpdateInterval, function() end, function()
-		Tree:Clear()
 		SendEmptyMsgToSV("Log4g_CLReq_LoggerConfig_Lookup")
 
 		net.Receive("Log4g_CLRcv_LoggerConfig_Lookup", function()
+			Tree:Clear()
 			if net.ReadBool() then
 				for k, _ in pairs(util.JSONToTable(util.Decompress(net.ReadData(net.ReadUInt(16))))) do
 					Tree:AddNode(k, "icon16/brick.png")

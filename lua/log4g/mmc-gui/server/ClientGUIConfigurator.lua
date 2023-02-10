@@ -21,6 +21,14 @@ local function IdentChk(ply)
 	return false
 end
 
+local function SQLQueryNamedRow(tbl, name)
+	return sql.QueryRow("SELECT * FROM " .. tbl .. " WHERE Name = '" .. name .. "';")
+end
+
+local function SQLQueryValue(tbl, name)
+	return sql.QueryValue("SELECT Content FROM " .. tbl .. " WHERE Name = '" .. name .. "';")
+end
+
 AddNetworkStrsViaTbl({
 	[1] = "Log4g_CLUpload_LoggerConfig_JSON",
 	[2] = "Log4g_CLUpload_NewLevel",
@@ -90,9 +98,9 @@ end)
 net.Receive("Log4g_CLReq_LoggerConfig_Lookup", function(_, ply)
 	net.Start("Log4g_CLRcv_LoggerConfig_Lookup")
 
-	if sql.QueryRow("SELECT * FROM Log4g_Lookup WHERE Name = 'LoggerConfig';") then
+	if SQLQueryNamedRow("Log4g_Lookup", "LoggerConfig") then
 		net.WriteBool(true)
-		WriteDataSimple(sql.QueryValue("SELECT Content FROM Log4g_Lookup WHERE Name = 'LoggerConfig';"), 16)
+		WriteDataSimple(SQLQueryValue("Log4g_Lookup", "LoggerConfig"), 16)
 	else
 		net.WriteBool(false)
 	end
@@ -103,9 +111,9 @@ end)
 net.Receive("Log4g_CLReq_LoggerContext_Lookup", function(_, ply)
 	net.Start("Log4g_CLRcv_LoggerContext_Lookup")
 
-	if sql.QueryRow("SELECT * FROM Log4g_Lookup WHERE Name = 'LoggerContext';") then
+	if SQLQueryNamedRow("Log4g_Lookup", "LoggerContext") then
 		net.WriteBool(true)
-		WriteDataSimple(sql.QueryValue("SELECT Content FROM Log4g_Lookup WHERE Name = 'LoggerContext';"), 16)
+		WriteDataSimple(SQLQueryValue("Log4g_Lookup", "LoggerContext"), 16)
 	else
 		net.WriteBool(false)
 	end
