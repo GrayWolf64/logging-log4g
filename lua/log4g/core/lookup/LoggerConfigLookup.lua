@@ -4,6 +4,8 @@
 -- @license Apache License 2.0
 -- @copyright GrayWolf64
 local sql = sql
+local SQLQueryNamedRow = Log4g.Util.SQLQueryNamedRow
+local SQLQueryValue = Log4g.Util.SQLQueryValue
 local LoggerConfigLookup = Log4g.Core.Config.LoggerConfig.Lookup
 
 local function UpdateLookup(tbl)
@@ -17,12 +19,12 @@ end
 --- Add a LoggerConfig item to LoggerConfig Lookup.
 -- @param name The name of the LoggerConfig
 function LoggerConfigLookup.AddConfig(name)
-	if not sql.QueryRow("SELECT * FROM Log4g_Lookup WHERE Name = 'LoggerConfig';") then
+	if not SQLQueryNamedRow("Log4g_Lookup", "LoggerConfig") then
 		sql.Query("INSERT INTO Log4g_Lookup (Name, Content) VALUES('LoggerConfig', " .. sql.SQLStr(util.TableToJSON({
 			[name] = {},
 		}, true)) .. ")")
 	else
-		local tbl = util.JSONToTable(sql.QueryValue("SELECT Content FROM Log4g_Lookup WHERE Name = 'LoggerConfig';"))
+		local tbl = util.JSONToTable(SQLQueryValue("Log4g_Lookup", "LoggerConfig"))
 		tbl[name] = {}
 		UpdateLookup(tbl)
 	end
@@ -31,10 +33,10 @@ end
 --- Remove the LoggerConfig item from LoggerConfig Lookup.
 -- @param name The name of the LoggerConfig
 function LoggerConfigLookup.RemoveConfig(name)
-	if not sql.QueryRow("SELECT * FROM Log4g_Lookup WHERE Name = 'LoggerConfig';") then
+	if not SQLQueryNamedRow("Log4g_Lookup", "LoggerConfig") then
 		return
 	end
-	local tbl = util.JSONToTable(sql.QueryValue("SELECT Content FROM Log4g_Lookup WHERE Name = 'LoggerConfig';"))
+	local tbl = util.JSONToTable(SQLQueryValue("Log4g_Lookup", "LoggerConfig"))
 
 	for k, _ in pairs(tbl) do
 		if k == name then
