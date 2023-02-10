@@ -49,3 +49,7 @@ end
 Log4g.Util.SQLQueryValue = function(tbl, name)
 	return sql.QueryValue("SELECT Content FROM " .. tbl .. " WHERE Name = '" .. name .. "';")
 end
+
+Log4g.Util.SQLUpdateValue = function(tbl, name, str)
+	sql.Query("UPDATE " .. tbl .. " SET Content = " .. sql.SQLStr(str) .. " WHERE Name = '" .. name .. "';")
+end

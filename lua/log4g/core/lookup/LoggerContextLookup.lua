@@ -8,14 +8,7 @@ local HasKey = Log4g.Util.HasKey
 local SQLQueryNamedRow = Log4g.Util.SQLQueryNamedRow
 local SQLQueryValue = Log4g.Util.SQLQueryValue
 local LoggerContextLookup = Log4g.Core.LoggerContext.Lookup
-
-local function UpdateLookup(tbl)
-	sql.Query(
-		"UPDATE Log4g_Lookup SET Content = "
-			.. sql.SQLStr(util.TableToJSON(tbl, true))
-			.. " WHERE Name = 'LoggerContext';"
-	)
-end
+local UpdateLookup = Log4g.Util.SQLUpdateValue
 
 --- Add a LoggerContext item to LoggerContext Lookup.
 -- @param name The name of the LoggerContext
@@ -27,7 +20,7 @@ function LoggerContextLookup.AddContext(name)
 	else
 		local tbl = util.JSONToTable(SQLQueryValue("Log4g_Lookup", "LoggerContext"))
 		tbl[name] = {}
-		UpdateLookup(tbl)
+		UpdateLookup("Log4g_Lookup", "LoggerContext", util.TableToJSON(tbl))
 	end
 end
 
@@ -46,7 +39,7 @@ function LoggerContextLookup.RemoveContext(name)
 		end
 	end
 
-	UpdateLookup(tbl)
+	UpdateLookup("Log4g_Lookup", "LoggerContext", util.TableToJSON(tbl))
 end
 
 --- Add a LoggerConfig name item to LoggerContext Lookup depending on its LoggerContext name.
@@ -69,7 +62,7 @@ function LoggerContextLookup.AddConfig(context, config)
 			tbl[context] = { config }
 		end
 
-		UpdateLookup(tbl)
+		UpdateLookup("Log4g_Lookup", "LoggerContext", util.TableToJSON(tbl))
 	end
 end
 
@@ -92,5 +85,5 @@ function LoggerContextLookup.RemoveConfig(context, config)
 		end
 	end
 
-	UpdateLookup(tbl)
+	UpdateLookup("Log4g_Lookup", "LoggerContext", util.TableToJSON(tbl))
 end
