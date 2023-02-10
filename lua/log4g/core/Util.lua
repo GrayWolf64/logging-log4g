@@ -41,3 +41,11 @@ Log4g.Util.WriteDataSimple = function(content, bits)
 	net.WriteUInt(len, bits)
 	net.WriteData(bindata, len)
 end
+
+Log4g.Util.SQLQueryNamedRow = function(tbl, name)
+	return sql.QueryRow("SELECT * FROM " .. tbl .. " WHERE Name = '" .. name .. "';")
+end
+
+Log4g.Util.SQLQueryValue = function(tbl, name)
+	return sql.QueryValue("SELECT Content FROM " .. tbl .. " WHERE Name = '" .. name .. "';")
+end

@@ -9,6 +9,8 @@ local RegisterCustomLevel = Log4g.Level.RegisterCustomLevel
 local WriteDataSimple = Log4g.Util.WriteDataSimple
 local GetLoggerConfig = Log4g.Core.Config.LoggerConfig.Get
 local GetLoggerContext = Log4g.Core.LoggerContext.Get
+local SQLQueryNamedRow = Log4g.Util.SQLQueryNamedRow
+local SQLQueryValue = Log4g.Util.SQLQueryValue
 
 local function IdentChk(ply)
 	if not IsValid(ply) then
@@ -19,14 +21,6 @@ local function IdentChk(ply)
 	end
 
 	return false
-end
-
-local function SQLQueryNamedRow(tbl, name)
-	return sql.QueryRow("SELECT * FROM " .. tbl .. " WHERE Name = '" .. name .. "';")
-end
-
-local function SQLQueryValue(tbl, name)
-	return sql.QueryValue("SELECT Content FROM " .. tbl .. " WHERE Name = '" .. name .. "';")
 end
 
 AddNetworkStrsViaTbl({
