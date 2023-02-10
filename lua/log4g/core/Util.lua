@@ -57,3 +57,7 @@ end
 Log4g.Util.SQLInsert = function(tbl, name, str)
 	sql.Query("INSERT INTO " .. tbl .. " (Name, Content) VALUES('" .. name .. "', " .. sql.SQLStr(str) .. ")")
 end
+
+Log4g.Util.SQLDeleteRow = function(tbl, name)
+	sql.Query("DELETE FROM " .. tbl .. " WHERE Name = '" .. name .. "';")
+end

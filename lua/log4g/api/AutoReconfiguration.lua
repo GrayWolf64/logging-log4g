@@ -2,7 +2,6 @@
 -- @script AutoReconfiguration
 -- @license Apache License 2.0
 -- @copyright GrayWolf64
-local sql = sql
 local CreateLoggerContext = Log4g.API.LoggerContextFactory.GetContext
 local GetAllLoggerContexts = Log4g.Core.LoggerContext.GetAll
 local RegisterLoggerConfig = Log4g.Core.Config.LoggerConfig.RegisterLoggerConfig
@@ -10,6 +9,10 @@ local GetAllLoggerConfigs = Log4g.Core.Config.LoggerConfig.GetAll
 local IsStarted = Log4g.Core.LifeCycle.IsStarted
 local GetCustomLevel = Log4g.Level.GetCustomLevel
 local RegisterCustomLevel = Log4g.Level.RegisterCustomLevel
+local SQLInsert = Log4g.Util.SQLInsert
+local SQLQueryNamedRow = Log4g.Util.SQLQueryNamedRow
+local SQLQueryValue = Log4g.Util.SQLQueryValue
+local SQLDeleteRow = Log4g.Util.SQLDeleteRow
 
 --- Save all the LoggerContexts' names into JSON and store it in SQL.
 -- @lfunction SaveLoggerContext
@@ -23,12 +26,7 @@ local function SaveLoggerContext()
 	for k, _ in pairs(LoggerContexts) do
 		table.insert(result, k)
 	end
-
-	sql.Query(
-		"INSERT INTO Log4g_AutoReconfig (Name, Content) VALUES('LoggerContext', "
-			.. sql.SQLStr(util.TableToJSON(result, true))
-			.. ")"
-	)
+	SQLInsert("Log4g_AutoReconfig", "LoggerContext", util.TableToJSON(result, true))
 end
 
 --- Save all the LoggerConfigs' names and associated LoggerContexts' names into a JSON file.
@@ -49,11 +47,7 @@ local function SaveLoggerConfig()
 		end
 	end
 
-	sql.Query(
-		"INSERT INTO Log4g_AutoReconfig (Name, Content) VALUES('LoggerConfig', "
-			.. sql.SQLStr(util.TableToJSON(result, true))
-			.. ")"
-	)
+	SQLInsert("Log4g_AutoReconfig", "LoggerConfig", util.TableToJSON(result, true))
 end
 
 --- Save all the previously registered Custom Levels.
@@ -71,12 +65,7 @@ local function SaveCustomLevel()
 			int = v.int,
 		})
 	end
-
-	sql.Query(
-		"INSERT INTO Log4g_AutoReconfig (Name, Content) VALUES('CustomLevel', "
-			.. sql.SQLStr(util.TableToJSON(result, true))
-			.. ")"
-	)
+	SQLInsert("Log4g_AutoReconfig", "CustomLevel", util.TableToJSON(result, true))
 end
 
 local function Save()
@@ -91,50 +80,48 @@ hook.Add("ShutDown", "Log4g_SaveLogEnvironment", Save)
 -- Their timestarted will be the time when they were restored.
 -- @lfunction RestoreLoggerContext
 local function RestoreLoggerContext()
-	if not sql.QueryRow("SELECT * FROM Log4g_AutoReconfig WHERE Name = 'LoggerContext';") then
+	if not SQLQueryNamedRow("Log4g_AutoReconfig", "LoggerContext") then
 		return
 	end
-	local tbl = util.JSONToTable(sql.QueryValue("SELECT Content FROM Log4g_AutoReconfig WHERE Name = 'LoggerContext';"))
+	local tbl = util.JSONToTable(SQLQueryValue("Log4g_AutoReconfig", "LoggerContext"))
 
 	for _, v in pairs(tbl) do
 		CreateLoggerContext(v)
 	end
 
-	sql.Query("DELETE FROM Log4g_AutoReconfig WHERE Name = 'LoggerContext';")
+	SQLDeleteRow("Log4g_AutoReconfig", "LoggerContext")
 end
 
 --- Re-register all the LoggerConfigs.
 -- @lfunction RestoreLoggerConfig
 local function RestoreLoggerConfig()
-	if not sql.QueryRow("SELECT * FROM Log4g_AutoReconfig WHERE Name = 'LoggerConfig';") then
+	if not SQLQueryNamedRow("Log4g_AutoReconfig", "LoggerConfig") then
 		return
 	end
-	local tbl = util.JSONToTable(sql.QueryValue("SELECT Content FROM Log4g_AutoReconfig WHERE Name = 'LoggerConfig';"))
+	local tbl = util.JSONToTable(SQLQueryValue("Log4g_AutoReconfig", "LoggerConfig"))
 
 	for _, v in pairs(tbl) do
-		local config = sql.QueryValue("SELECT Content FROM Log4g_LoggerConfig WHERE Name = '" .. v.name .. "';")
+		local config = SQLQueryValue("Log4g_LoggerConfig", v.name)
 		if not config then
 			return
 		end
 		RegisterLoggerConfig(util.JSONToTable(config))
 	end
-
-	sql.Query("DELETE FROM Log4g_AutoReconfig WHERE Name = 'LoggerConfig';")
+	SQLDeleteRow("Log4g_AutoReconfig", "LoggerConfig")
 end
 
 --- Restore all the previously saved Custom Levels.
 -- @lfunction RestoreCustomLevel
 local function RestoreCustomLevel()
-	if not sql.QueryRow("SELECT * FROM Log4g_AutoReconfig WHERE Name = 'CustomLevel';") then
+	if not SQLQueryNamedRow("Log4g_AutoReconfig", "CustomLevel") then
 		return
 	end
-	local tbl = util.JSONToTable(sql.QueryValue("SELECT Content FROM Log4g_AutoReconfig WHERE Name = 'CustomLevel';"))
+	local tbl = util.JSONToTable(SQLQueryValue("Log4g_AutoReconfig", "CustomLevel"))
 
 	for _, v in pairs(tbl) do
 		RegisterCustomLevel(v.name, v.int)
 	end
-
-	sql.Query("DELETE FROM Log4g_AutoReconfig WHERE Name = 'CustomLevel';")
+	SQLDeleteRow("Log4g_AutoReconfig", "CustomLevel")
 end
 
 local function Restore()
