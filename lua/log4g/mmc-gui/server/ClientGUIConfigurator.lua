@@ -59,19 +59,19 @@ net.Receive("Log4g_CLReq_LoggerConfigs", function(_, ply)
 	net.Start("Log4g_CLRcv_LoggerConfigs")
 
 	if istable(tbl) and not table.IsEmpty(tbl) then
-		if ConfigData == tbl then
+		if not table.IsEmpty(ConfigData) and ConfigData == tbl then
 			net.WriteBool(false)
-			return
-		end
-		ConfigData = tbl
-		net.WriteBool(true)
-		local data = {}
+		else
+			table.CopyFromTo(tbl, ConfigData)
 
-		for _, v in ipairs(tbl) do
-			table.Add(data, { util.JSONToTable(v.Content) })
-		end
+			local data = {}
 
-		WriteDataSimple(util.TableToJSON(data, true), 16)
+			for _, v in ipairs(tbl) do
+				table.Add(data, { util.JSONToTable(v.Content) })
+			end
+			net.WriteBool(true)
+			WriteDataSimple(util.TableToJSON(data, true), 16)
+		end
 	else
 		net.WriteBool(false)
 	end
