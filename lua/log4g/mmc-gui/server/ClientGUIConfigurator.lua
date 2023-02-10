@@ -52,11 +52,18 @@ net.Receive("Log4g_CLUpload_LoggerConfig_JSON", function(_, ply)
 	RegisterLoggerConfig(tbl)
 end)
 
+local ConfigData = {}
 net.Receive("Log4g_CLReq_LoggerConfigs", function(_, ply)
 	local tbl = sql.Query("SELECT * FROM Log4g_LoggerConfig")
+
 	net.Start("Log4g_CLRcv_LoggerConfigs")
 
 	if istable(tbl) and not table.IsEmpty(tbl) then
+		if ConfigData == tbl then
+			net.WriteBool(false)
+			return
+		end
+		ConfigData = tbl
 		net.WriteBool(true)
 		local data = {}
 
