@@ -289,11 +289,11 @@ concommand.Add("Log4g_MMC", function()
 	end
 
 	PanelTimedFunc(ListView, UpdateInterval, function() end, function()
-		ListView:Clear()
 		SendEmptyMsgToSV("Log4g_CLReq_LoggerConfigs")
 
 		net.Receive("Log4g_CLRcv_LoggerConfigs", function()
 			if net.ReadBool() then
+				ListView:Clear()
 				for _, v in ipairs(util.JSONToTable(util.Decompress(net.ReadData(net.ReadUInt(16))))) do
 					local Line = ListView:AddLine()
 					SetProperLineText(v, Line, ListView)
