@@ -10,7 +10,7 @@ local sql = sql
 -- @return bool ifhaskey
 -- @return keyfound
 Log4g.Util.HasKey = function(tbl, key)
-	if tbl == nil then
+	if table.IsEmpty(tbl) then
 		return false
 	end
 
