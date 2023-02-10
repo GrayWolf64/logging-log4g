@@ -45,13 +45,12 @@ net.Receive("Log4g_CLReq_ChkConnected", function(_, ply)
 end)
 
 net.Receive("Log4g_CLUpload_LoggerConfig_JSON", function(_, ply)
-	if not IdentChk(ply) then
-		return
+	if IdentChk(ply) then
+		local tbl = util.JSONToTable(util.Decompress(net.ReadData(net.ReadUInt(16))))
+		local contextname = tbl.loggercontext
+		CreateLoggerContext(contextname)
+		RegisterLoggerConfig(tbl)
 	end
-	local tbl = util.JSONToTable(util.Decompress(net.ReadData(net.ReadUInt(16))))
-	local contextname = tbl.loggercontext
-	CreateLoggerContext(contextname)
-	RegisterLoggerConfig(tbl)
 end)
 
 local ConfigData = {}
@@ -82,11 +81,9 @@ net.Receive("Log4g_CLReq_LoggerConfigs", function(_, ply)
 end)
 
 net.Receive("Log4g_CLReq_LoggerConfig_Remove", function(_, ply)
-	if not IdentChk(ply) then
-		return
+	if IdentChk(ply) then
+		GetLoggerConfig(net.ReadString()):Remove()
 	end
-
-	GetLoggerConfig(net.ReadString()):Remove()
 end)
 
 net.Receive("Log4g_CLReq_LoggerConfig_Lookup", function(_, ply)
@@ -116,15 +113,13 @@ net.Receive("Log4g_CLReq_LoggerContext_Lookup", function(_, ply)
 end)
 
 net.Receive("Log4g_CLReq_LoggerContext_Remove", function(_, ply)
-	if not IdentChk(ply) then
-		return
+	if IdentChk(ply) then
+		GetLoggerContext(net.ReadString()):Terminate()
 	end
-	GetLoggerContext(net.ReadString()):Terminate()
 end)
 
 net.Receive("Log4g_CLUpload_NewLevel", function(_, ply)
-	if not IdentChk(ply) then
-		return
+	if IdentChk(ply) then
+		RegisterCustomLevel(net.ReadString(), net.ReadUInt(16))
 	end
-	RegisterCustomLevel(net.ReadString(), net.ReadUInt(16))
 end)
