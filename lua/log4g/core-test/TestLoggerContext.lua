@@ -1,13 +1,11 @@
 concommand.Add("Log4g_CoreTest_CreateLoggerContext", function()
-	Log4g.Core.LoggerContext.Register("context_test_a")
-	Log4g.Core.LoggerContext.Register("context_test_b")
-	Log4g.Core.LoggerContext.Register("context_test_c")
+	Log4g.Core.LoggerContext.Register("TestContextA")
+	Log4g.Core.LoggerContext.Register("TestContextB")
 end)
 
 concommand.Add("Log4g_CoreTest_RemoveLoggerContext", function()
-	Log4g.Core.LoggerContext.Get("context_test_a"):Terminate()
-	Log4g.Core.LoggerContext.Get("context_test_b"):Terminate()
-	Log4g.Core.LoggerContext.Get("context_test_c"):Terminate()
+	Log4g.Core.LoggerContext.Get("TestContextA"):Terminate()
+	Log4g.Core.LoggerContext.Get("TestContextB"):Terminate()
 end)
 
 concommand.Add("Log4g_CoreTest_ShowAllLoggerContext", function()
