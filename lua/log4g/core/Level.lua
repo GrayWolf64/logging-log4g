@@ -59,9 +59,23 @@ function Log4g.Level.GetCustomLevel()
     return CustomLevel
 end
 
---- Standard Logging Levels as a table for use internally.
+--- Standard Int Levels.
 -- @local
--- @table StandardLevel
+-- @table StdIntLevel
+local StdIntLevel = {
+    ALL = math.huge,
+    TRACE = 600,
+    DEBUG = 500,
+    INFO = 400,
+    WARN = 300,
+    ERROR = 200,
+    FATAL = 100,
+    OFF = 0,
+}
+
+--- Standard Logging Levels as a table.
+-- @local
+-- @table StdLevel
 -- @field ALL All events should be logged.
 -- @field TRACE A fine-grained debug message, typically capturing the flow through the game.
 -- @field DEBUG A general debugging event.
@@ -70,36 +84,27 @@ end
 -- @field ERROR An error in game, possibly recoverable.
 -- @field FATAL A severe error that will prevent the game from continuing.
 -- @field OFF No events will be logged.
-local StandardLevel = {
-    ALL = Level:New("ALL", math.huge),
-    TRACE = Level:New("TRACE", 600),
-    DEBUG = Level:New("DEBUG", 500),
-    INFO = Level:New("INFO", 400),
-    WARN = Level:New("WARN", 300),
-    ERROR = Level:New("ERROR", 200),
-    FATAL = Level:New("FATAL", 100),
-    OFF = Level:New("OFF", 0),
+local StdLevel = {
+    ALL = Level:New("ALL", StdIntLevel.ALL),
+    TRACE = Level:New("TRACE", StdIntLevel.TRACE),
+    DEBUG = Level:New("DEBUG", StdIntLevel.DEBUG),
+    INFO = Level:New("INFO", StdIntLevel.INFO),
+    WARN = Level:New("WARN", StdIntLevel.WARN),
+    ERROR = Level:New("ERROR", StdIntLevel.ERROR),
+    FATAL = Level:New("FATAL", StdIntLevel.FATAL),
+    OFF = Level:New("OFF", StdIntLevel.OFF),
 }
 
 --- Get the Standard Levels as a table.
--- @return table standardlevel
-function Log4g.Level.GetStandardLevel()
-    return StandardLevel
+-- @return table StdLevel
+function Log4g.Level.GetStdLevel()
+    return StdLevel
 end
 
 --- Get the Standard IntLevels as a table.
 -- @return table standardintlevel
 function Log4g.Level.GetStandardIntLevel()
-    return {
-        ALL = math.huge,
-        TRACE = 600,
-        DEBUG = 500,
-        INFO = 400,
-        WARN = 300,
-        ERROR = 200,
-        FATAL = 100,
-        OFF = 0,
-    }
+    return StdIntLevel
 end
 
 --- Get the Level.
@@ -107,8 +112,8 @@ end
 -- @param name The Level's name
 -- @return object level
 function Log4g.Level.GetLevel(name)
-    if HasKey(StandardLevel, name) then
-        return StandardLevel[name]
+    if HasKey(StdLevel, name) then
+        return StdLevel[name]
     elseif HasKey(CustomLevel, name) then
         return CustomLevel[name]
     else
@@ -122,7 +127,7 @@ end
 -- @param int The Level's intlevel
 -- @return object level
 function Log4g.Level.RegisterCustomLevel(name, int)
-    if #name == 0 or int < 0 or HasKey(StandardLevel, name) then return end
+    if #name == 0 or int < 0 or HasKey(StdLevel, name) then return end
 
     if not HasKey(CustomLevel, name) then
         local level = Level:New(name, int)
