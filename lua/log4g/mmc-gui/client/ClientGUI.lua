@@ -57,7 +57,6 @@ concommand.Add("Log4g_MMC", function()
 	local MenuA = MenuBar:AddMenu("New")
 	local MenuB = MenuBar:AddMenu("Options")
 	MenuB:AddOption("General", function() end):SetIcon("icon16/wrench.png")
-	local MenuC = MenuBar:AddMenu("Help")
 	local SheetA = CreateDPropertySheet(Frame, FILL, 0, 1, 0, 0, 4)
 	local SheetPanelA = vgui.Create("DPanel", SheetA)
 	SheetPanelA.Paint = nil
@@ -185,24 +184,6 @@ concommand.Add("Log4g_MMC", function()
 		end
 	end):SetIcon("icon16/chart_bar.png")
 
-	MenuC:AddOption("About", function()
-		local Window = CreateDFrame(300, 125, "About", "icon16/information.png", Frame)
-		Window:SetDrawOnTop(true)
-		local Text = vgui.Create("RichText", Window)
-		Text:Dock(FILL)
-		Text:InsertColorChange(192, 192, 192, 255)
-
-		for _, v in ipairs({
-			"Log4g is an open-source addon for Garry's Mod.\n",
-			"\n",
-			"GitHub Page: https://github.com/GrayWolf64/gmod-logging-log4g\n",
-			"\n",
-			"Documentation can be seen on GitHub Page as well.\n",
-		}) do
-			Text:AppendText(v)
-		end
-	end):SetIcon("icon16/information.png")
-
 	local SheetPanelC = vgui.Create("DPanel", SheetA)
 	SheetA:AddSheet("Overview (SV)", SheetPanelC, "icon16/page.png")
 	local SheetPanelD = vgui.Create("DPanel", SheetA)
@@ -278,7 +259,6 @@ concommand.Add("Log4g_MMC", function()
 
 					SetProperLineText({
 						name = k,
-						loggercontext = v.loggercontext,
 					}, Line, ListViewB)
 				end
 			end
