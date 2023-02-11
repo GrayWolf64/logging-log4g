@@ -36,6 +36,38 @@ function Logger:GetLoggerConfig()
     return GetLoggerConfig(self.name)
 end
 
+--- Set the Log Level for the Logger.
+-- @param level The Level object.
+function Logger:SetLevel(level)
+    self.level = function()
+        return level
+    end
+end
+
+function Logger:ALL()
+end
+
+function Logger:TRACE()
+end
+
+function Logger:DEBUG()
+end
+
+function Logger:INFO()
+end
+
+function Logger:WARN()
+end
+
+function Logger:ERROR()
+end
+
+function Logger:FATAL()
+end
+
+function Logger:OFF()
+end
+
 --- This is where all the Loggers are stored.
 -- @local
 -- @table INSTANCES
