@@ -313,8 +313,7 @@ concommand.Add("Log4g_MMC", function()
 		local Menu = DermaMenu()
 
 		Menu:AddOption("Terminate", function()
-			net.Start("Log4g_CLReq_LoggerContext_Terminate")
-			net.SendToServer()
+			NetStrMsgSpecial(num, ListViewC, "Log4g_CLReq_LoggerContext_Terminate", "name")
 		end):SetIcon("icon16/cross.png")
 
 		Menu:Open()

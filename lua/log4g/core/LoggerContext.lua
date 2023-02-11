@@ -78,8 +78,7 @@ end
 -- @return object loggercontext
 function Log4g.Core.LoggerContext.Register(name)
 	if not HasKey(INSTANCES, name) then
-		local loggercontext = LoggerContext:New(name)
-		INSTANCES[name] = loggercontext:Start()
+		INSTANCES[name] = LoggerContext:New(name):Start()
 		AddContextLookupContext(name)
 		hook.Run("Log4g_PostLoggerContextRegistration", name)
 
