@@ -2,22 +2,11 @@
 -- @script ClientGUI
 -- @license Apache License 2.0
 -- @copyright GrayWolf64
-local function CreateDFrame(a, b, title, icon, parent)
-	local dframe = vgui.Create("DFrame")
-	dframe:MakePopup()
-	dframe:SetSize(a, b)
-	dframe:Center()
-	dframe:SetScreenLock(true)
-	dframe:SetTitle(title)
-	dframe:SetIcon(icon)
-
-	if IsValid(parent) then
-		dframe:SetParent(parent)
-	end
-
-	return dframe
-end
-
+local ClientGUIDerma = include("log4g/mmc-gui/client/ClientGUIDerma.lua")
+local CreateDFrame = ClientGUIDerma.CreateDFrame
+local CreateDButton = ClientGUIDerma.CreateDButton
+local CreateDListView = ClientGUIDerma.CreateDListView
+local CreateDPropertySheet = ClientGUIDerma.CreateDPropertySheet
 --- Append RichText to a panel using a ordered string table.
 -- If a blank line is needed, just have an element which is "\n".
 -- @param panel The panel to append RichText to
@@ -26,36 +15,6 @@ local function AppendRichTextViaTbl(panel, tbl)
 	for _, v in ipairs(tbl) do
 		panel:AppendText(v)
 	end
-end
-
-local function CreateDButton(parent, docktype, x, y, z, w, a, b, text)
-	local dbutton = vgui.Create("DButton", parent)
-	dbutton:Dock(docktype)
-	dbutton:DockMargin(x, y, z, w)
-	dbutton:SetSize(a, b)
-	dbutton:SetText(text)
-
-	return dbutton
-end
-
-local function CreateDListView(parent, docktype, x, y, z, w, ha, hb)
-	local dlistview = vgui.Create("DListView", parent)
-	dlistview:SetMultiSelect(false)
-	dlistview:Dock(docktype)
-	dlistview:DockMargin(x, y, z, w)
-	dlistview:SetHeaderHeight(ha)
-	dlistview:SetDataHeight(hb)
-
-	return dlistview
-end
-
-local function CreateDPropertySheet(parent, docktype, x, y, z, w, padding)
-	local dpropertysheet = vgui.Create("DPropertySheet", parent)
-	dpropertysheet:Dock(docktype)
-	dpropertysheet:DockMargin(x, y, z, w)
-	dpropertysheet:SetPadding(padding)
-
-	return dpropertysheet
 end
 
 --- Create a new row in a DProp.
