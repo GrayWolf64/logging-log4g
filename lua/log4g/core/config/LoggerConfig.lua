@@ -91,9 +91,7 @@ function Log4g.Core.Config.LoggerConfig.RegisterLoggerConfig(name)
         INSTANCES[name] = loggerconfig
         AddConfigLookupConfig(name)
 
-        SQLInsert("Log4g_LoggerConfig", name, util.TableToJSON({
-            name = name
-        }, true))
+        SQLInsert("Log4g_LoggerConfig", name, util.TableToJSON({name}, true))
 
         hook.Run("Log4g_PostLoggerConfigRegistration")
 

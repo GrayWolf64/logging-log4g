@@ -99,6 +99,10 @@ function Logger:Terminate()
     INSTANCES[self.name] = nil
 end
 
+function Log4g.Core.Logger.Get()
+    if HasKey(INSTANCES, name) then return INSTANCES[name] end
+end
+
 --- Get all the Loggers.
 -- @return table instances
 function Log4g.Core.Logger.GetAll()
