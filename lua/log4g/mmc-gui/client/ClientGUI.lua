@@ -9,11 +9,6 @@ local CreateDPropRow, GetRowControl = ClientGUIDerma.CreateDPropRow, ClientGUIDe
 local GetRowControlValue, PanelTimedFunc = ClientGUIDerma.GetRowControlValue, ClientGUIDerma.PanelTimedFunc
 local GetColumnSpecialText, SetProperLineText = ClientGUIDerma.GetColumnSpecialText, ClientGUIDerma.SetProperLineText
 
-local function SendEmptyMsgToSV(start)
-	net.Start(start)
-	net.SendToServer()
-end
-
 CreateClientConVar("Log4g_CL_GUI_UpdateInterval", 5, true, false, nil, 2, 10)
 local Frame = nil
 
@@ -40,12 +35,17 @@ concommand.Add("Log4g_MMC", function()
 	Icon:Dock(RIGHT)
 	Icon:DockMargin(4, 4, 4, 4)
 
+	local function SendEmptyMsgToSV(start)
+		net.Start(start)
+		net.SendToServer()
+	end
+
 	PanelTimedFunc(Icon, UpdateInterval, function() end, function()
 		Icon:SetImage("icon16/disconnect.png")
 		SendEmptyMsgToSV("Log4g_CLReq_ChkConnected")
 
 		net.Receive("Log4g_CLRcv_ChkConnected", function()
-			if net.ReadBool() ~= true then
+			if not net.ReadBool() then
 				return
 			end
 			Icon:SetImage("icon16/connect.png")
