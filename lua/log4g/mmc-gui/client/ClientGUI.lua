@@ -286,32 +286,27 @@ concommand.Add("Log4g_MMC", function()
 	local SummarySheet = vgui.Create("DProperties", SheetPanelD)
 	SummarySheet:Dock(FILL)
 
-	--- Create a row with a Generic RowControl which users can't type into.
+	--- Create a row with a Generic RowControl which users can't type into inside SummarySheet.
 	-- @lfunction CreateSpecialRow
-	-- @param dprop The DProperties to create the row in
 	-- @param category The category to put the row into
 	-- @param name The label of the row
 	-- @return row created row
-	local function CreateSpecialRow(dprop, category, name)
-		local row = dprop:CreateRow(category, name)
-		row:Setup("Generic")
-		GetRowControl(row):SetEditable(false)
-
-		return row
+	local function CreateSpecialRow(category, name)
+		local control = GetRowControl(CreateDPropRow(SummarySheet, category, name, "Generic"))
+		control:SetEditable(false)
+		return control
 	end
 
-	local RowA, RowB =
-		CreateSpecialRow(SummarySheet, "Client", "OS Date"),
-		CreateSpecialRow(SummarySheet, "Server", "Estimated Tickrate")
-	local RowC, RowD =
-		CreateSpecialRow(SummarySheet, "Server", "Floored Lua Dynamic RAM Usage (kB)"),
-		CreateSpecialRow(SummarySheet, "Server", "Entity Count")
-	local RowE, RowF =
-		CreateSpecialRow(SummarySheet, "Server", "Networked Entity (EDICT) Count"),
-		CreateSpecialRow(SummarySheet, "Server", "Net Receiver Count")
-	local RowG, RowH =
-		CreateSpecialRow(SummarySheet, "Server", "Lua Registry Table Element Count"),
-		CreateSpecialRow(SummarySheet, "Server", "Constraint Count")
+	local RowA, RowB, RowC, RowD =
+		CreateSpecialRow("Client", "OS Date"),
+		CreateSpecialRow("Server", "Estimated Tickrate"),
+		CreateSpecialRow("Server", "Floored Lua Dynamic RAM Usage (kB)"),
+		CreateSpecialRow("Server", "Entity Count")
+	local RowE, RowF, RowG, RowH =
+		CreateSpecialRow("Server", "Networked Entity (EDICT) Count"),
+		CreateSpecialRow("Server", "Net Receiver Count"),
+		CreateSpecialRow("Server", "Lua Registry Table Element Count"),
+		CreateSpecialRow("Server", "Constraint Count")
 
 	local function UpdateSummary()
 		SendEmptyMsgToSV("Log4g_CLReq_SVSummaryData")
