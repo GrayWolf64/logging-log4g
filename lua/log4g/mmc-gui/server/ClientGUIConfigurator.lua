@@ -27,14 +27,13 @@ AddNetworkStrsViaTbl({
 	[1] = "Log4g_CLUpload_NewLevel",
 	[2] = "Log4g_CLReq_LoggerConfigs",
 	[3] = "Log4g_CLRcv_LoggerConfigs",
-	[4] = "Log4g_CLReq_LoggerConfig_Remove",
-	[5] = "Log4g_CLReq_LoggerConfig_Lookup",
-	[6] = "Log4g_CLRcv_LoggerConfig_Lookup",
-	[7] = "Log4g_CLReq_LoggerContext_Terminate",
-	[8] = "Log4g_CLReq_ChkConnected",
-	[9] = "Log4g_CLRcv_ChkConnected",
-	[10] = "Log4g_CLReq_LoggerContext_Lookup",
-	[11] = "Log4g_CLRcv_LoggerContext_Lookup",
+	[4] = "Log4g_CLReq_LoggerConfig_Lookup",
+	[5] = "Log4g_CLRcv_LoggerConfig_Lookup",
+	[6] = "Log4g_CLReq_LoggerContext_Terminate",
+	[7] = "Log4g_CLReq_ChkConnected",
+	[8] = "Log4g_CLRcv_ChkConnected",
+	[9] = "Log4g_CLReq_LoggerContext_Lookup",
+	[10] = "Log4g_CLRcv_LoggerContext_Lookup",
 })
 
 net.Receive("Log4g_CLReq_ChkConnected", function(_, ply)
@@ -68,12 +67,6 @@ net.Receive("Log4g_CLReq_LoggerConfigs", function(_, ply)
 	end
 
 	net.Send(ply)
-end)
-
-net.Receive("Log4g_CLReq_LoggerConfig_Remove", function(_, ply)
-	if IdentChk(ply) then
-		GetLoggerConfig(net.ReadString()):Remove()
-	end
 end)
 
 net.Receive("Log4g_CLReq_LoggerConfig_Lookup", function(_, ply)

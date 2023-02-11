@@ -111,23 +111,6 @@ concommand.Add("Log4g_MMC", function()
 		net.SendToServer()
 	end
 
-	function ListView:OnRowRightClick(num)
-		local Menu = DermaMenu()
-		local SubA = Menu:AddSubMenu("Build")
-
-		SubA:AddOption("Default", function()
-			NetStrMsgSpecial(num, ListView, "Log4g_CLReq_LoggerConfig_BuildDefault", "name")
-		end)
-
-		Menu:AddSpacer()
-
-		Menu:AddOption("Remove", function()
-			NetStrMsgSpecial(num, ListView, "Log4g_CLReq_LoggerConfig_Remove", "name")
-		end):SetIcon("icon16/cross.png")
-
-		Menu:Open()
-	end
-
 	PanelTimedFunc(ListView, UpdateInterval, function() end, function()
 		SendEmptyMsgToSV("Log4g_CLReq_LoggerConfigs")
 
