@@ -29,25 +29,6 @@ local function SaveLoggerContext()
     SQLInsert("Log4g_AutoReconfig", "LoggerContext", util.TableToJSON(result, true))
 end
 
---- Save all the LoggerConfigs' names and associated LoggerContexts' names into a JSON file.
--- @lfunction SaveLoggerConfig
-local function SaveLoggerConfig()
-    local configs = GetAllLoggerConfigs()
-    if table.IsEmpty(configs) then return end
-    local result = {}
-
-    for k, v in pairs(configs) do
-        if not IsStarted(v) then
-            table.insert(result, {
-                name = k,
-                loggercontext = v.loggercontext,
-            })
-        end
-    end
-
-    SQLInsert("Log4g_AutoReconfig", "LoggerConfig", util.TableToJSON(result, true))
-end
-
 --- Save all the previously registered Custom Levels.
 -- @lfunction SaveCustomLevel
 local function SaveCustomLevel()
@@ -67,7 +48,6 @@ end
 
 local function Save()
     SaveLoggerContext()
-    SaveLoggerConfig()
     SaveCustomLevel()
 end
 
@@ -87,21 +67,6 @@ local function RestoreLoggerContext()
     SQLDeleteRow("Log4g_AutoReconfig", "LoggerContext")
 end
 
---- Re-register all the LoggerConfigs.
--- @lfunction RestoreLoggerConfig
-local function RestoreLoggerConfig()
-    if not SQLQueryRow("Log4g_AutoReconfig", "LoggerConfig") then return end
-    local tbl = util.JSONToTable(SQLQueryValue("Log4g_AutoReconfig", "LoggerConfig"))
-
-    for _, v in pairs(tbl) do
-        local config = SQLQueryValue("Log4g_LoggerConfig", v.name)
-        if not config then return end
-        RegisterLoggerConfig(util.JSONToTable(config))
-    end
-
-    SQLDeleteRow("Log4g_AutoReconfig", "LoggerConfig")
-end
-
 --- Restore all the previously saved Custom Levels.
 -- @lfunction RestoreCustomLevel
 local function RestoreCustomLevel()
@@ -117,7 +82,6 @@ end
 
 local function Restore()
     RestoreLoggerContext()
-    RestoreLoggerConfig()
     RestoreCustomLevel()
 end
 
