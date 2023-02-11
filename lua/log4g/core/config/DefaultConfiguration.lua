@@ -1,4 +1,8 @@
+local GetLevel = Log4g.Level.GetLevel
+local GetAppender = Log4g.Core.Appender.GetAppender
+
 Log4g.Core.Config.DefaultConfiguration = {
-    DEFAULT_NAME = "Default",
-    DEFAULT_LEVEL = "ERROR",
+    NAME = "Default",
+    LEVEL = GetLevel("ALL"),
+    APPENDER = GetAppender("ConsoleAppender")
 }
