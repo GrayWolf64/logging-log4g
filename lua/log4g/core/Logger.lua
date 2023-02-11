@@ -61,16 +61,10 @@ end
 -- `Log4g_PreLoggerRegistration` will be called before the registration.
 -- `Log4g_PostLoggerRegistration` will be called after the registration succeeds.
 -- If the Logger with the same name already exists, `Log4g_OnLoggerRegistrationFailure` will be called.
--- @param loggerconfig The Loggerconfig
 -- @return object logger
-function Log4g.Core.Logger.Register(name, loggerconfig)
-	if not isstring(name) or not istable(loggerconfig) or table.IsEmpty(loggerconfig) then
-		return
-	end
-
+function Log4g.Core.Logger.Register(name)
 	if not HasKey(INSTANCES, name) then
-		local logger = Logger:New(name):Start(loggerconfig)
-		INSTANCES[name] = logger
+		INSTANCES[name] = Logger:New(name)
 		hook.Run("Log4g_PostLoggerRegistration", name)
 
 		return logger
