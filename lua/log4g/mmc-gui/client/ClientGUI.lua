@@ -7,7 +7,7 @@ local CreateDFrame, CreateDButton = ClientGUIDerma.CreateDFrame, ClientGUIDerma.
 local CreateDListView, CreateDPropertySheet = ClientGUIDerma.CreateDListView, ClientGUIDerma.CreateDPropertySheet
 local CreateDPropRow, GetRowControl = ClientGUIDerma.CreateDPropRow, ClientGUIDerma.GetRowControl
 local GetRowControlValue, PanelTimedFunc = ClientGUIDerma.GetRowControlValue, ClientGUIDerma.PanelTimedFunc
-
+local GetColumnSpecialText, SetProperLineText = ClientGUIDerma.GetColumnSpecialText, ClientGUIDerma.SetProperLineText
 local function GetGameInfo()
 	return "Server: " .. game.GetIPAddress() .. " " .. "SinglePlayer: " .. tostring(game.SinglePlayer())
 end
@@ -99,49 +99,6 @@ concommand.Add("Log4g_MMC", function()
 
 	for _, v in pairs({ "name", "loggercontext", "level", "appender", "layout", "logmsg" }) do
 		ListView:AddColumn(v)
-	end
-
-	--- Get a line's content text at specific columns.
-	-- There's not an official way to do this, so GetChild can be used here.
-	-- @lfunction GetColumnSpecialText
-	-- @param num The number of the line
-	-- @param listview The DListView containing the line
-	-- @param ... The texts of the specific column headers
-	-- @return tbl results
-	local function GetColumnSpecialText(num, listview, ...)
-		local line = listview:GetLine(num)
-		if not IsValid(line) then
-			return
-		end
-
-		local tbl, args = {}, { ... }
-
-		for m, n in ipairs(listview.Columns) do
-			local text = n:GetChild(0):GetText()
-			local str = line:GetColumnText(m)
-
-			for _, v in pairs(args) do
-				if v == text then
-					tbl[text] = str
-				end
-			end
-		end
-
-		return tbl
-	end
-
-	--- Set a DListView's line's text correctly using the given table with string keys and string values.
-	-- @lfunction SetProperLineText
-	-- @param tbl The table containing the needed text values, and its keys must be the same with the column texts
-	-- @param line The line to set the texts in
-	local function SetProperLineText(tbl, line, listview)
-		for i, j in pairs(tbl) do
-			for m, n in ipairs(listview.Columns) do
-				if i == n:GetChild(0):GetText() then
-					line:SetColumnText(m, j)
-				end
-			end
-		end
 	end
 
 	--- Start a special net msg for ListView's line behaviour after being clicked on.
