@@ -24,33 +24,23 @@ local function IdentChk(ply)
 end
 
 AddNetworkStrsViaTbl({
-	[1] = "Log4g_CLUpload_LoggerConfig_JSON",
-	[2] = "Log4g_CLUpload_NewLevel",
-	[3] = "Log4g_CLReq_LoggerConfigs",
-	[4] = "Log4g_CLRcv_LoggerConfigs",
-	[5] = "Log4g_CLReq_LoggerConfig_Remove",
-	[6] = "Log4g_CLReq_LoggerConfig_Lookup",
-	[7] = "Log4g_CLRcv_LoggerConfig_Lookup",
-	[8] = "Log4g_CLReq_LoggerContext_Terminate",
-	[9] = "Log4g_CLReq_ChkConnected",
-	[10] = "Log4g_CLRcv_ChkConnected",
-	[11] = "Log4g_CLReq_LoggerContext_Lookup",
-	[12] = "Log4g_CLRcv_LoggerContext_Lookup",
+	[1] = "Log4g_CLUpload_NewLevel",
+	[2] = "Log4g_CLReq_LoggerConfigs",
+	[3] = "Log4g_CLRcv_LoggerConfigs",
+	[4] = "Log4g_CLReq_LoggerConfig_Remove",
+	[5] = "Log4g_CLReq_LoggerConfig_Lookup",
+	[6] = "Log4g_CLRcv_LoggerConfig_Lookup",
+	[7] = "Log4g_CLReq_LoggerContext_Terminate",
+	[8] = "Log4g_CLReq_ChkConnected",
+	[9] = "Log4g_CLRcv_ChkConnected",
+	[10] = "Log4g_CLReq_LoggerContext_Lookup",
+	[11] = "Log4g_CLRcv_LoggerContext_Lookup",
 })
 
 net.Receive("Log4g_CLReq_ChkConnected", function(_, ply)
 	net.Start("Log4g_CLRcv_ChkConnected")
 	net.WriteBool(IsValid(ply) == ply:IsConnected() == true)
 	net.Send(ply)
-end)
-
-net.Receive("Log4g_CLUpload_LoggerConfig_JSON", function(_, ply)
-	if IdentChk(ply) then
-		local tbl = util.JSONToTable(util.Decompress(net.ReadData(net.ReadUInt(16))))
-		local contextname = tbl.loggercontext
-		CreateLoggerContext(contextname)
-		RegisterLoggerConfig(tbl)
-	end
 end)
 
 local ConfigData = {}

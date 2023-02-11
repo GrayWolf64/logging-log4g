@@ -207,28 +207,6 @@ concommand.Add("Log4g_MMC", function()
 	local SubMenuB = MenuA:AddSubMenu("Configuration")
 	SubMenuB:SetDeleteSelf(false)
 
-	SubMenuB:AddOption("LoggerConfig JSON Wizard", function()
-		local Window = CreateDFrame(400, 300, "New LoggerConfig", "icon16/application_lightning.png", Frame)
-		local Entry = vgui.Create("DTextEntry", Window)
-		Entry:SetMultiline(true)
-		Entry:Dock(FILL)
-		local ButtonA = CreateDButton(Window, BOTTOM, 150, 0, 150, 0, 100, 50, "Submit")
-
-		ButtonA.DoClick = function()
-			local Content = Entry:GetValue()
-			if #Content == 0 or not isstring(Content) then
-				return
-			end
-			net.Start("Log4g_CLUpload_LoggerConfig_JSON")
-			local Data = util.Compress(Content)
-			local Len = #Data
-			net.WriteUInt(Len, 16)
-			net.WriteData(Data, Len)
-			net.SendToServer()
-			Window:Close()
-		end
-	end):SetIcon("icon16/cog_add.png")
-
 	SubMenuB:AddOption("Level", function()
 		local Window = CreateDFrame(300, 150, "New Level", "icon16/application.png", Frame)
 		Window:SetDrawOnTop(true)
