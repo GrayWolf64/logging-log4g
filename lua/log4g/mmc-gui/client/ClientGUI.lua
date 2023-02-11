@@ -54,7 +54,6 @@ concommand.Add("Log4g_MMC", function()
 
     Icon:SetKeepAspect(true)
     Icon:SetSize(16, 16)
-    local MenuA = MenuBar:AddMenu("New")
     local MenuB = MenuBar:AddMenu("Options")
     MenuB:AddOption("General", function() end):SetIcon("icon16/wrench.png")
     local SheetA = CreateDPropertySheet(Frame, FILL, 0, 1, 0, 0, 4)
