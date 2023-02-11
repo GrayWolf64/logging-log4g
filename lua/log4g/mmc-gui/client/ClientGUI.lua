@@ -213,7 +213,7 @@ concommand.Add("Log4g_MMC", function()
 		local DProp = vgui.Create("DProperties", Window)
 		DProp:Dock(FILL)
 		local RowA, RowB =
-			DPropNewRow(DProp, "Self", "Name", "Generic"), DPropNewRow(DProp, "Self", "IntLevel", "Generic")
+			CreateDPropRow(DProp, "Self", "Name", "Generic"), CreateDPropRow(DProp, "Self", "IntLevel", "Generic")
 		local ButtonB = CreateDButton(Window, BOTTOM, 100, 0, 100, 0, 100, 50, "Submit")
 
 		ButtonB.DoClick = function()
