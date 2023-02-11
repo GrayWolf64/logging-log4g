@@ -162,8 +162,8 @@ concommand.Add("Log4g_MMC", function()
 	end
 
 	Frame = CreateDFrame(
-		860,
-		500,
+		770,
+		440,
 		"Log4g Monitoring & Management Console" .. " - " .. GetGameInfo(),
 		"icon16/application.png",
 		nil
@@ -199,10 +199,10 @@ concommand.Add("Log4g_MMC", function()
 	local SheetPanelB = vgui.Create("DPanel", SheetB)
 	SheetB:AddSheet("LoggerConfig", SheetPanelB)
 	local ListView = CreateDListView(SheetPanelB, LEFT, 0, 0, 0, 0, 18, 18.5)
-	ListView:SetWide(688)
+	ListView:SetWide(600)
 	local Tree = vgui.Create("DTree", SheetPanelB)
 	Tree:Dock(RIGHT)
-	Tree:SetWide(144)
+	Tree:SetWide(140)
 	Tree:DockMargin(0, 0, 0, 0)
 
 	for _, v in pairs({ "name", "loggercontext", "level", "appender", "layout", "logmsg" }) do
