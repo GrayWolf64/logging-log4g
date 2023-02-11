@@ -1,5 +1,5 @@
 local function ConsoleAppender(args)
-	Msg(args)
+    Msg(args)
 end
 
 return ConsoleAppender

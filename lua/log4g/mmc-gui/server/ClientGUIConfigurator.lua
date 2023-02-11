@@ -13,96 +13,92 @@ local SQLQueryNamedRow = Log4g.Util.SQLQueryNamedRow
 local SQLQueryValue = Log4g.Util.SQLQueryValue
 
 local function IdentChk(ply)
-	if not IsValid(ply) then
-		return
-	end
-	if ply:IsAdmin() then
-		return true
-	end
+    if not IsValid(ply) then return end
+    if ply:IsAdmin() then return true end
 
-	return false
+    return false
 end
 
 AddNetworkStrsViaTbl({
-	[1] = "Log4g_CLUpload_NewLevel",
-	[2] = "Log4g_CLReq_LoggerConfigs",
-	[3] = "Log4g_CLRcv_LoggerConfigs",
-	[4] = "Log4g_CLReq_LoggerConfig_Lookup",
-	[5] = "Log4g_CLRcv_LoggerConfig_Lookup",
-	[6] = "Log4g_CLReq_LoggerContext_Terminate",
-	[7] = "Log4g_CLReq_ChkConnected",
-	[8] = "Log4g_CLRcv_ChkConnected",
-	[9] = "Log4g_CLReq_LoggerContext_Lookup",
-	[10] = "Log4g_CLRcv_LoggerContext_Lookup",
+    [1] = "Log4g_CLUpload_NewLevel",
+    [2] = "Log4g_CLReq_LoggerConfigs",
+    [3] = "Log4g_CLRcv_LoggerConfigs",
+    [4] = "Log4g_CLReq_LoggerConfig_Lookup",
+    [5] = "Log4g_CLRcv_LoggerConfig_Lookup",
+    [6] = "Log4g_CLReq_LoggerContext_Terminate",
+    [7] = "Log4g_CLReq_ChkConnected",
+    [8] = "Log4g_CLRcv_ChkConnected",
+    [9] = "Log4g_CLReq_LoggerContext_Lookup",
+    [10] = "Log4g_CLRcv_LoggerContext_Lookup",
 })
 
 net.Receive("Log4g_CLReq_ChkConnected", function(_, ply)
-	net.Start("Log4g_CLRcv_ChkConnected")
-	net.WriteBool(IsValid(ply) == ply:IsConnected() == true)
-	net.Send(ply)
+    net.Start("Log4g_CLRcv_ChkConnected")
+    net.WriteBool(IsValid(ply) == ply:IsConnected() == true)
+    net.Send(ply)
 end)
 
 local ConfigData = {}
+
 net.Receive("Log4g_CLReq_LoggerConfigs", function(_, ply)
-	local tbl = sql.Query("SELECT * FROM Log4g_LoggerConfig")
+    local tbl = sql.Query("SELECT * FROM Log4g_LoggerConfig")
+    net.Start("Log4g_CLRcv_LoggerConfigs")
 
-	net.Start("Log4g_CLRcv_LoggerConfigs")
+    if istable(tbl) and not table.IsEmpty(tbl) then
+        if not table.IsEmpty(ConfigData) and ConfigData == tbl then
+            net.WriteBool(false)
+        else
+            table.CopyFromTo(tbl, ConfigData)
+            local data = {}
 
-	if istable(tbl) and not table.IsEmpty(tbl) then
-		if not table.IsEmpty(ConfigData) and ConfigData == tbl then
-			net.WriteBool(false)
-		else
-			table.CopyFromTo(tbl, ConfigData)
+            for _, v in ipairs(tbl) do
+                table.Add(data, {util.JSONToTable(v.Content)})
+            end
 
-			local data = {}
+            net.WriteBool(true)
+            WriteDataSimple(util.TableToJSON(data, true), 16)
+        end
+    else
+        net.WriteBool(false)
+    end
 
-			for _, v in ipairs(tbl) do
-				table.Add(data, { util.JSONToTable(v.Content) })
-			end
-			net.WriteBool(true)
-			WriteDataSimple(util.TableToJSON(data, true), 16)
-		end
-	else
-		net.WriteBool(false)
-	end
-
-	net.Send(ply)
+    net.Send(ply)
 end)
 
 net.Receive("Log4g_CLReq_LoggerConfig_Lookup", function(_, ply)
-	net.Start("Log4g_CLRcv_LoggerConfig_Lookup")
+    net.Start("Log4g_CLRcv_LoggerConfig_Lookup")
 
-	if SQLQueryNamedRow("Log4g_Lookup", "LoggerConfig") then
-		net.WriteBool(true)
-		WriteDataSimple(SQLQueryValue("Log4g_Lookup", "LoggerConfig"), 16)
-	else
-		net.WriteBool(false)
-	end
+    if SQLQueryNamedRow("Log4g_Lookup", "LoggerConfig") then
+        net.WriteBool(true)
+        WriteDataSimple(SQLQueryValue("Log4g_Lookup", "LoggerConfig"), 16)
+    else
+        net.WriteBool(false)
+    end
 
-	net.Send(ply)
+    net.Send(ply)
 end)
 
 net.Receive("Log4g_CLReq_LoggerContext_Lookup", function(_, ply)
-	net.Start("Log4g_CLRcv_LoggerContext_Lookup")
+    net.Start("Log4g_CLRcv_LoggerContext_Lookup")
 
-	if SQLQueryNamedRow("Log4g_Lookup", "LoggerContext") then
-		net.WriteBool(true)
-		WriteDataSimple(SQLQueryValue("Log4g_Lookup", "LoggerContext"), 16)
-	else
-		net.WriteBool(false)
-	end
+    if SQLQueryNamedRow("Log4g_Lookup", "LoggerContext") then
+        net.WriteBool(true)
+        WriteDataSimple(SQLQueryValue("Log4g_Lookup", "LoggerContext"), 16)
+    else
+        net.WriteBool(false)
+    end
 
-	net.Send(ply)
+    net.Send(ply)
 end)
 
 net.Receive("Log4g_CLReq_LoggerContext_Terminate", function(_, ply)
-	if IdentChk(ply) then
-		GetLoggerContext(net.ReadString()):Terminate()
-	end
+    if IdentChk(ply) then
+        GetLoggerContext(net.ReadString()):Terminate()
+    end
 end)
 
 net.Receive("Log4g_CLUpload_NewLevel", function(_, ply)
-	if IdentChk(ply) then
-		RegisterCustomLevel(net.ReadString(), net.ReadUInt(16))
-	end
+    if IdentChk(ply) then
+        RegisterCustomLevel(net.ReadString(), net.ReadUInt(16))
+    end
 end)

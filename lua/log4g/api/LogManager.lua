@@ -8,13 +8,11 @@ local GetAllLoggers = Log4g.Core.Logger.GetAll
 -- @param name The name of the Logger
 -- @return bool haslogger
 function Log4g.API.LogManager.Exists(name)
-	if HasKey(GetAllLoggers(), name) then
-		return true
-	end
+    if HasKey(GetAllLoggers(), name) then return true end
 
-	return false
+    return false
 end
 
 function Log4g.API.LogManager.GetLogger(name)
-	Log4g.Core.Logger.Register(name)
+    Log4g.Core.Logger.Register(name)
 end

@@ -12,34 +12,28 @@ local LoggerConfigLookup = Log4g.Core.Config.LoggerConfig.Lookup
 --- Add a LoggerConfig item to LoggerConfig Lookup.
 -- @param name The name of the LoggerConfig
 function LoggerConfigLookup.AddConfig(name)
-	if not SQLQueryNamedRow("Log4g_Lookup", "LoggerConfig") then
-		SQLInsert(
-			"Log4g_Lookup",
-			"LoggerConfig",
-			util.TableToJSON({
-				[name] = {},
-			}, true)
-		)
-	else
-		local tbl = util.JSONToTable(SQLQueryValue("Log4g_Lookup", "LoggerConfig"))
-		tbl[name] = {}
-		UpdateLookup("Log4g_Lookup", "LoggerConfig", util.TableToJSON(tbl))
-	end
+    if not SQLQueryNamedRow("Log4g_Lookup", "LoggerConfig") then
+        SQLInsert("Log4g_Lookup", "LoggerConfig", util.TableToJSON({
+            [name] = {},
+        }, true))
+    else
+        local tbl = util.JSONToTable(SQLQueryValue("Log4g_Lookup", "LoggerConfig"))
+        tbl[name] = {}
+        UpdateLookup("Log4g_Lookup", "LoggerConfig", util.TableToJSON(tbl))
+    end
 end
 
 --- Remove the LoggerConfig item from LoggerConfig Lookup.
 -- @param name The name of the LoggerConfig
 function LoggerConfigLookup.RemoveConfig(name)
-	if not SQLQueryNamedRow("Log4g_Lookup", "LoggerConfig") then
-		return
-	end
-	local tbl = util.JSONToTable(SQLQueryValue("Log4g_Lookup", "LoggerConfig"))
+    if not SQLQueryNamedRow("Log4g_Lookup", "LoggerConfig") then return end
+    local tbl = util.JSONToTable(SQLQueryValue("Log4g_Lookup", "LoggerConfig"))
 
-	for k, _ in pairs(tbl) do
-		if k == name then
-			tbl[k] = nil
-		end
-	end
+    for k, _ in pairs(tbl) do
+        if k == name then
+            tbl[k] = nil
+        end
+    end
 
-	UpdateLookup("Log4g_Lookup", "LoggerConfig", util.TableToJSON(tbl))
+    UpdateLookup("Log4g_Lookup", "LoggerConfig", util.TableToJSON(tbl))
 end

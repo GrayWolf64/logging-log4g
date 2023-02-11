@@ -11,24 +11,24 @@ local IsStarted = Log4g.Core.LifeCycle.IsStarted
 local INITIALIZING, INITIALIZED = Log4g.Core.LifeCycle.State.INITIALIZING, Log4g.Core.LifeCycle.State.INITIALIZED
 local STOPPING, STOPPED = Log4g.Core.LifeCycle.State.STOPPING, Log4g.Core.LifeCycle.State.STOPPED
 local SQLInsert = Log4g.Util.SQLInsert
+
 --- Initialize the LoggerConfig object.
 -- This is meant to be used internally.
 -- @param tbl The table containing the necessary data to make a LoggerConfig
 function LoggerConfig:Initialize(name)
-	SetState(self, INITIALIZING)
-	self.name = name
-
-	SetState(self, INITIALIZED)
+    SetState(self, INITIALIZING)
+    self.name = name
+    SetState(self, INITIALIZED)
 end
 
 --- Get the name of the LoggerConfig, same to `loggerconfig.name`.
 function LoggerConfig:GetName()
-	return self.name
+    return self.name
 end
 
 --- Get the LoggerContext name of the LoggerConfig.
 function LoggerConfig:GetContext()
-	return self.loggercontext
+    return self.loggercontext
 end
 
 --- All the LoggerConfigs will be stored here.
@@ -38,47 +38,43 @@ local INSTANCES = INSTANCES or {}
 
 --- Remove the LoggerConfig.
 function LoggerConfig:Remove()
-	SetState(self, STOPPING)
-	RemoveContextLookupConfig(self:GetContext(), self.name)
-	RemoveConfigLookupConfig(self.name)
+    SetState(self, STOPPING)
+    RemoveContextLookupConfig(self:GetContext(), self.name)
+    RemoveConfigLookupConfig(self.name)
 
-	if sql.QueryRow("SELECT * FROM Log4g_LoggerConfig WHERE Name = '" .. self.name .. "';") then
-		sql.Query("DELETE FROM Log4g_LoggerConfig WHERE Name = '" .. self.name .. "';")
-		hook.Run("Log4g_PostLoggerConfigFileDeletion")
-	else
-		hook.Run("Log4g_OnLoggerConfigFileDeletionFailure")
-	end
+    if sql.QueryRow("SELECT * FROM Log4g_LoggerConfig WHERE Name = '" .. self.name .. "';") then
+        sql.Query("DELETE FROM Log4g_LoggerConfig WHERE Name = '" .. self.name .. "';")
+        hook.Run("Log4g_PostLoggerConfigFileDeletion")
+    else
+        hook.Run("Log4g_OnLoggerConfigFileDeletionFailure")
+    end
 
-	SetState(self, STOPPED)
-	INSTANCES[self.name] = nil
+    SetState(self, STOPPED)
+    INSTANCES[self.name] = nil
 end
 
 --- Get all the LoggerConfigs in the LoggerConfigs table.
 -- @return table instances
 function Log4g.Core.Config.LoggerConfig.GetAll()
-	return INSTANCES
+    return INSTANCES
 end
 
 --- Remove all the LoggerConfig instances with the provided LoggerContext name.
 -- @param name The name of the LoggerContext
 function Log4g.Core.Config.LoggerConfig.RemoveByContext(name)
-	if table.IsEmpty(INSTANCES) then
-		return
-	end
+    if table.IsEmpty(INSTANCES) then return end
 
-	for k, v in pairs(INSTANCES) do
-		if v:GetContext() == name then
-			INSTANCES[k]:Remove()
-		end
-	end
+    for k, v in pairs(INSTANCES) do
+        if v:GetContext() == name then
+            INSTANCES[k]:Remove()
+        end
+    end
 end
 
 --- Get the LoggerConfig with the right name.
 -- @return object loggerconfig
 function Log4g.Core.Config.LoggerConfig.Get(name)
-	if HasKey(INSTANCES, name) then
-		return INSTANCES[name]
-	end
+    if HasKey(INSTANCES, name) then return INSTANCES[name] end
 end
 
 --- Register a LoggerConfig.
@@ -88,18 +84,21 @@ end
 -- @param name The name for the LoggerConfig
 -- @return object loggerconfig
 function Log4g.Core.Config.LoggerConfig.RegisterLoggerConfig(name)
-	if not HasKey(INSTANCES, name) then
-		local loggerconfig = LoggerConfig:New(name)
-		INSTANCES[name] = loggerconfig
-		AddConfigLookupConfig(name)
-		SQLInsert("Log4g_LoggerConfig", name, util.TableToJSON({ name = name }, true))
+    if not HasKey(INSTANCES, name) then
+        local loggerconfig = LoggerConfig:New(name)
+        INSTANCES[name] = loggerconfig
+        AddConfigLookupConfig(name)
 
-		hook.Run("Log4g_PostLoggerConfigRegistration")
+        SQLInsert("Log4g_LoggerConfig", name, util.TableToJSON({
+            name = name
+        }, true))
 
-		return INSTANCES[name]
-	else
-		hook.Run("Log4g_OnLoggerConfigRegistrationFailure")
+        hook.Run("Log4g_PostLoggerConfigRegistration")
 
-		return INSTANCES[name]
-	end
+        return INSTANCES[name]
+    else
+        hook.Run("Log4g_OnLoggerConfigRegistrationFailure")
+
+        return INSTANCES[name]
+    end
 end

@@ -9,30 +9,31 @@ local STOPPING, STOPPED = Log4g.Core.LifeCycle.State.STOPPING, Log4g.Core.LifeCy
 local HasKey = Log4g.Util.HasKey
 local RegisterLoggerConfig = Log4g.Core.Config.LoggerConfig.RegisterLoggerConfig
 local GetLoggerConfig = Log4g.Core.Config.LoggerConfig.Get
+
 function Logger:Initialize(name)
-	SetState(self, INITIALIZING)
-	self.name = name
-	SetState(self, INITIALIZED)
+    SetState(self, INITIALIZING)
+    self.name = name
+    SetState(self, INITIALIZED)
 end
 
 --- Start the Logger.
 function Logger:Start(loggerconfig)
-	SetState(self, STARTING)
-	SetState(self, STARTED)
+    SetState(self, STARTING)
+    SetState(self, STARTED)
 
-	return self
+    return self
 end
 
 --- Get the Logger name.
 -- @return string name
 function Logger:GetName()
-	return self.name
+    return self.name
 end
 
 --- Get the LoggerConfig name of the Logger.
 -- @return string loggerconfig
 function Logger:GetLoggerConfig()
-	return GetLoggerConfig(self.name)
+    return GetLoggerConfig(self.name)
 end
 
 --- This is where all the Loggers are stored.
@@ -42,15 +43,15 @@ local INSTANCES = INSTANCES or {}
 
 --- Terminate the Logger.
 function Logger:Terminate()
-	SetState(self, STOPPING)
-	SetState(self, STOPPED)
-	INSTANCES[self.name] = nil
+    SetState(self, STOPPING)
+    SetState(self, STOPPED)
+    INSTANCES[self.name] = nil
 end
 
 --- Get all the Loggers.
 -- @return table instances
 function Log4g.Core.Logger.GetAll()
-	return INSTANCES
+    return INSTANCES
 end
 
 --- Create a Logger.
@@ -59,15 +60,15 @@ end
 -- If the Logger with the same name already exists, `Log4g_OnLoggerRegistrationFailure` will be called.
 -- @return object logger
 function Log4g.Core.Logger.Register(name)
-	if not HasKey(INSTANCES, name) then
-		INSTANCES[name] = Logger:New(name)
-		RegisterLoggerConfig(name)
-		hook.Run("Log4g_PostLoggerRegistration", name)
+    if not HasKey(INSTANCES, name) then
+        INSTANCES[name] = Logger:New(name)
+        RegisterLoggerConfig(name)
+        hook.Run("Log4g_PostLoggerRegistration", name)
 
-		return logger
-	else
-		hook.Run("Log4g_OnLoggerRegistrationFailure", name)
+        return logger
+    else
+        hook.Run("Log4g_OnLoggerRegistrationFailure", name)
 
-		return INSTANCES[name]
-	end
+        return INSTANCES[name]
+    end
 end
