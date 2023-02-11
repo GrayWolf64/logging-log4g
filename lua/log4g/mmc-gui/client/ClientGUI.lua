@@ -273,7 +273,7 @@ concommand.Add("Log4g_MMC", function()
 
 	function ListView:OnRowRightClick(num)
 		local Menu = DermaMenu()
-		local SubA = Menu:AddSubMenu("Build (SV)")
+		local SubA = Menu:AddSubMenu("Build")
 
 		SubA:AddOption("Default", function()
 			NetStrMsgSpecial(num, ListView, "Log4g_CLReq_LoggerConfig_BuildDefault", "name")
@@ -511,10 +511,10 @@ concommand.Add("Log4g_MMC", function()
 	end
 
 	PanelTimedFunc(ListViewB, UpdateInterval, function() end, function()
-		ListViewB:Clear()
 		SendEmptyMsgToSV("Log4g_CLReq_Logger_Lookup")
 
 		net.Receive("Log4g_CLRcv_Logger_Lookup", function()
+			ListViewB:Clear()
 			if net.ReadBool() then
 				for k, v in pairs(util.JSONToTable(util.Decompress(net.ReadData(net.ReadUInt(16))))) do
 					local Line = ListViewB:AddLine()
