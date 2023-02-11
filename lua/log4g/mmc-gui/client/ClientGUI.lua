@@ -88,7 +88,7 @@ concommand.Add("Log4g_MMC", function()
 	Tree:SetWide(140)
 	Tree:DockMargin(0, 0, 0, 0)
 
-	for _, v in pairs({ "name", "loggercontext", "level", "appender", "layout", "logmsg" }) do
+	for _, v in pairs({ "name", "loggercontext", "level", "appender", "layout" }) do
 		ListView:AddColumn(v)
 	end
 
