@@ -3,7 +3,6 @@
 local Class = include("log4g/core/impl/MiddleClass.lua")
 local LoggerContext = Class("LoggerContext")
 local HasKey = Log4g.Util.HasKey
-local DeleteFolderRecursive = Log4g.Util.DeleteFolderRecursive
 local AddContextLookupContext = Log4g.Core.LoggerContext.Lookup.AddContext
 local RemoveContextLookupContext = Log4g.Core.LoggerContext.Lookup.RemoveContext
 local RemoveLoggerConfigByContext = Log4g.Core.Config.LoggerConfig.RemoveByContext
@@ -15,7 +14,6 @@ local STOPPING, STOPPED = Log4g.Core.LifeCycle.State.STOPPING, Log4g.Core.LifeCy
 function LoggerContext:Initialize(name)
 	SetState(self, INITIALIZING)
 	self.name = name
-	self.folder = "log4g/server/loggercontext/" .. name
 	self.timestarted = os.time()
 	SetState(self, INITIALIZED)
 end
@@ -24,12 +22,6 @@ end
 -- @return string name
 function LoggerContext:GetName()
 	return self.name
-end
-
---- Get the folder of the LoggerContext.
--- @return string folder
-function LoggerContext:GetFolder()
-	return self.folder
 end
 
 --- Get when the LoggerContext was started in UNIX time.
@@ -46,15 +38,7 @@ function LoggerContext:Start()
 end
 
 function LoggerContext:__tostring()
-	return "LoggerContext: [name:"
-		.. self.name
-		.. "]"
-		.. "[folder:"
-		.. self:GetFolder()
-		.. "]"
-		.. "[timestarted:"
-		.. self:TimeStarted()
-		.. "]"
+	return "LoggerContext: [name:" .. self.name .. "]" .. "[timestarted:" .. self:TimeStarted() .. "]"
 end
 
 --- This is where all the LoggerContexts are stored.
@@ -68,13 +52,6 @@ function LoggerContext:Terminate()
 	SetState(self, STOPPING)
 	RemoveContextLookupContext(self.name)
 	RemoveLoggerConfigByContext(self.name)
-	local folder = self:GetFolder()
-
-	if file.Exists(folder, "DATA") then
-		DeleteFolderRecursive(folder, "DATA")
-	else
-		hook.Run("Log4g_OnLoggerContextFolderDeletionFailure", self)
-	end
 
 	SetState(self, STOPPED)
 	hook.Run("Log4g_PostLoggerContextTermination")
