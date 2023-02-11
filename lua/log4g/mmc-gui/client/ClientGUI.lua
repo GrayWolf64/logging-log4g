@@ -9,22 +9,6 @@ local CreateDPropRow, GetRowControl = ClientGUIDerma.CreateDPropRow, ClientGUIDe
 local GetRowControlValue, PanelTimedFunc = ClientGUIDerma.GetRowControlValue, ClientGUIDerma.PanelTimedFunc
 local GetColumnSpecialText, SetProperLineText = ClientGUIDerma.GetColumnSpecialText, ClientGUIDerma.SetProperLineText
 
---- Check if a string has numbers.
--- @lfunction HasNumber
--- @param str The string to check
--- @return bool ifhasnumber
-local function HasNumber(str)
-	if string.find(str, "%d") then
-		return true
-	end
-
-	return false
-end
-
---- Send an empty message to the server.
--- This is used as a signal message to tell the server to send another message to client.
--- @lfunction SendEmptyMsgToSV
--- @param start The net msg to start
 local function SendEmptyMsgToSV(start)
 	net.Start(start)
 	net.SendToServer()
@@ -202,7 +186,7 @@ concommand.Add("Log4g_MMC", function()
 		ButtonB.DoClick = function()
 			local InputName = GetRowControlValue(RowA)
 			local InputInt = GetRowControlValue(RowB)
-			if HasNumber(InputName) or #InputName == 0 or #InputInt == 0 then
+			if #InputName == 0 or #InputInt == 0 then
 				return
 			end
 			net.Start("Log4g_CLUpload_NewLevel")
