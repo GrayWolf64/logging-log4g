@@ -99,7 +99,7 @@ function Logger:Terminate()
     INSTANCES[self.name] = nil
 end
 
-function Log4g.Core.Logger.Get()
+function Log4g.Core.Logger.Get(name)
     if HasKey(INSTANCES, name) then return INSTANCES[name] end
 end
 
