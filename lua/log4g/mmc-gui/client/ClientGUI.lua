@@ -287,10 +287,6 @@ concommand.Add("Log4g_MMC", function()
 	SummarySheet:Dock(FILL)
 
 	--- Create a row with a Generic RowControl which users can't type into inside SummarySheet.
-	-- @lfunction CreateSpecialRow
-	-- @param category The category to put the row into
-	-- @param name The label of the row
-	-- @return row created row
 	local function CreateSpecialRow(category, name)
 		local control = GetRowControl(CreateDPropRow(SummarySheet, category, name, "Generic"))
 		control:SetEditable(false)
