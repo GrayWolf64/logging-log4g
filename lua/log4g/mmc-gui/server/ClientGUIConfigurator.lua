@@ -31,7 +31,7 @@ AddNetworkStrsViaTbl({
 	[5] = "Log4g_CLReq_LoggerConfig_Remove",
 	[6] = "Log4g_CLReq_LoggerConfig_Lookup",
 	[7] = "Log4g_CLRcv_LoggerConfig_Lookup",
-	[8] = "Log4g_CLReq_LoggerContext_Remove",
+	[8] = "Log4g_CLReq_LoggerContext_Terminate",
 	[9] = "Log4g_CLReq_ChkConnected",
 	[10] = "Log4g_CLRcv_ChkConnected",
 	[11] = "Log4g_CLReq_LoggerContext_Lookup",
@@ -112,7 +112,7 @@ net.Receive("Log4g_CLReq_LoggerContext_Lookup", function(_, ply)
 	net.Send(ply)
 end)
 
-net.Receive("Log4g_CLReq_LoggerContext_Remove", function(_, ply)
+net.Receive("Log4g_CLReq_LoggerContext_Terminate", function(_, ply)
 	if IdentChk(ply) then
 		GetLoggerContext(net.ReadString()):Terminate()
 	end

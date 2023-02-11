@@ -309,6 +309,16 @@ concommand.Add("Log4g_MMC", function()
 	for _, v in pairs({ "name" }) do
 		ListViewC:AddColumn(v)
 	end
+	function ListViewC:OnRowRightClick(num)
+		local Menu = DermaMenu()
+
+		Menu:AddOption("Terminate", function()
+			net.Start("Log4g_CLReq_LoggerContext_Terminate")
+			net.SendToServer()
+		end):SetIcon("icon16/cross.png")
+
+		Menu:Open()
+	end
 	PanelTimedFunc(ListViewC, UpdateInterval, function() end, function()
 		SendEmptyMsgToSV("Log4g_CLReq_LoggerContext_Lookup")
 
@@ -341,24 +351,6 @@ concommand.Add("Log4g_MMC", function()
 		Slider:SetConVar("Log4g_CL_GUI_ElementUpdateInterval")
 		Window:SetDrawOnTop(true)
 	end):SetIcon("icon16/clock_edit.png")
-
-	function Tree:DoRightClick(node)
-		if node:GetIcon() ~= "icon16/folder.png" then
-			return
-		end
-		local Menu = DermaMenu()
-
-		Menu:AddOption("Remove", function()
-			if not IsValid(node) then
-				return
-			end
-			net.Start("Log4g_CLReq_LoggerContext_Remove")
-			net.WriteString(node:GetText())
-			net.SendToServer()
-		end):SetIcon("icon16/cross.png")
-
-		Menu:Open()
-	end
 
 	PanelTimedFunc(Tree, UpdateInterval, function() end, function()
 		SendEmptyMsgToSV("Log4g_CLReq_LoggerConfig_Lookup")
