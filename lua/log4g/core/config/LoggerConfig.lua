@@ -16,7 +16,7 @@ local SQLInsert = Log4g.Util.SQLInsert
 -- @param tbl The table containing the necessary data to make a LoggerConfig
 function LoggerConfig:Initialize(name)
 	SetState(self, INITIALIZING)
-	self.name = tbl.name
+	self.name = name
 
 	SetState(self, INITIALIZED)
 end

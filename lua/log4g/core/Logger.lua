@@ -8,16 +8,16 @@ local STARTING, STARTED = Log4g.Core.LifeCycle.State.STARTING, Log4g.Core.LifeCy
 local STOPPING, STOPPED = Log4g.Core.LifeCycle.State.STOPPING, Log4g.Core.LifeCycle.State.STOPPED
 local HasKey = Log4g.Util.HasKey
 local RegisterLoggerConfig = Log4g.Core.Config.LoggerConfig.RegisterLoggerConfig
+local GetLoggerConfig = Log4g.Core.Config.LoggerConfig.Get
 function Logger:Initialize(name)
 	SetState(self, INITIALIZING)
 	self.name = name
 	SetState(self, INITIALIZED)
 end
 
---- Start the Logger with a LoggerConfig.
+--- Start the Logger.
 function Logger:Start(loggerconfig)
 	SetState(self, STARTING)
-	self.loggerconfig = loggerconfig.name
 	SetState(self, STARTED)
 
 	return self
@@ -39,11 +39,7 @@ end
 --- Get the LoggerConfig name of the Logger.
 -- @return string loggerconfig
 function Logger:GetLoggerConfig()
-	if not HasKey(self, "loggerconfig") then
-		return
-	end
-
-	return self.loggerconfig
+	return GetLoggerConfig(self.name)
 end
 
 --- This is where all the Loggers are stored.
