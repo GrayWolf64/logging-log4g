@@ -46,43 +46,43 @@ function Logger:SetLevel(level)
 end
 
 function Logger:ALL(arg)
-    if self.level():IntLevel() == math.huge then
+    if self.level().int == math.huge then
         Msg(arg)
     end
 end
 
 function Logger:TRACE(arg)
-    if self.level():IntLevel() >= GetStandardIntLevel().TRACE then
+    if self.level().int >= GetStandardIntLevel().TRACE then
         Msg(arg)
     end
 end
 
 function Logger:DEBUG(arg)
-    if self.level():IntLevel() >= GetStandardIntLevel().DEBUG then
+    if self.level().int >= GetStandardIntLevel().DEBUG then
         Msg(arg)
     end
 end
 
 function Logger:INFO(arg)
-    if self.level():IntLevel() == GetStandardIntLevel().INFO then
+    if self.level().int == GetStandardIntLevel().INFO then
         Msg(arg)
     end
 end
 
 function Logger:WARN(arg)
-    if self.level():IntLevel() == GetStandardIntLevel().WARN then
+    if self.level().int == GetStandardIntLevel().WARN then
         Msg(arg)
     end
 end
 
 function Logger:ERROR(arg)
-    if self.level():IntLevel() == GetStandardIntLevel().ERROR then
+    if self.level().int == GetStandardIntLevel().ERROR then
         Msg(arg)
     end
 end
 
 function Logger:FATAL(arg)
-    if self.level():IntLevel() == GetStandardIntLevel().FATAL then
+    if self.level().int == GetStandardIntLevel().FATAL then
         Msg(arg)
     end
 end
