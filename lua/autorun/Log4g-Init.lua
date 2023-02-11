@@ -27,7 +27,6 @@ if SERVER then
 	sql.Query("CREATE TABLE IF NOT EXISTS Log4g_Lookup(Name TEXT NOT NULL UNIQUE, Content TEXT NOT NULL UNIQUE)")
 	sql.Query("CREATE TABLE IF NOT EXISTS Log4g_AutoReconfig(Name TEXT NOT NULL UNIQUE, Content TEXT NOT NULL UNIQUE)")
 	sql.Query("CREATE TABLE IF NOT EXISTS Log4g_LoggerConfig(Name TEXT NOT NULL UNIQUE, Content TEXT NOT NULL UNIQUE)")
-	file.CreateDir("log4g/server/loggercontext")
 	include("log4g/core/Version.lua")
 	include("log4g/core/Util.lua")
 	include("log4g/core/LifeCycle.lua")
