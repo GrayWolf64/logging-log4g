@@ -8,9 +8,6 @@ local CreateDListView, CreateDPropertySheet = ClientGUIDerma.CreateDListView, Cl
 local CreateDPropRow, GetRowControl = ClientGUIDerma.CreateDPropRow, ClientGUIDerma.GetRowControl
 local GetRowControlValue, PanelTimedFunc = ClientGUIDerma.GetRowControlValue, ClientGUIDerma.PanelTimedFunc
 local GetColumnSpecialText, SetProperLineText = ClientGUIDerma.GetColumnSpecialText, ClientGUIDerma.SetProperLineText
-local function GetGameInfo()
-	return "Server: " .. game.GetIPAddress() .. " " .. "SinglePlayer: " .. tostring(game.SinglePlayer())
-end
 
 --- Check if a string has numbers.
 -- @lfunction HasNumber
@@ -37,12 +34,14 @@ CreateClientConVar("Log4g_CL_GUI_UpdateInterval", 5, true, false, nil, 2, 10)
 local Frame = nil
 
 concommand.Add("Log4g_MMC", function()
-	local UpdateInterval = GetConVar("Log4g_CL_GUI_UpdateInterval"):GetInt()
-
 	if IsValid(Frame) then
 		Frame:Remove()
 
 		return
+	end
+	local UpdateInterval = GetConVar("Log4g_CL_GUI_UpdateInterval"):GetInt()
+	local function GetGameInfo()
+		return "Server: " .. game.GetIPAddress() .. " " .. "SinglePlayer: " .. tostring(game.SinglePlayer())
 	end
 
 	Frame = CreateDFrame(
