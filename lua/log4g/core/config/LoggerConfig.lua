@@ -10,18 +10,14 @@ local SetState = Log4g.Core.LifeCycle.SetState
 local IsStarted = Log4g.Core.LifeCycle.IsStarted
 local INITIALIZING, INITIALIZED = Log4g.Core.LifeCycle.State.INITIALIZING, Log4g.Core.LifeCycle.State.INITIALIZED
 local STOPPING, STOPPED = Log4g.Core.LifeCycle.State.STOPPING, Log4g.Core.LifeCycle.State.STOPPED
-
+local SQLInsert = Log4g.Util.SQLInsert
 --- Initialize the LoggerConfig object.
 -- This is meant to be used internally.
 -- @param tbl The table containing the necessary data to make a LoggerConfig
-function LoggerConfig:Initialize(tbl)
+function LoggerConfig:Initialize(name)
 	SetState(self, INITIALIZING)
 	self.name = tbl.name
-	self.loggercontext = tbl.loggercontext
-	self.level = tbl.level
-	self.appender = tbl.appender
-	self.layout = tbl.layout
-	self.logmsg = tbl.logmsg
+
 	SetState(self, INITIALIZED)
 end
 
@@ -89,26 +85,21 @@ end
 -- `Log4g_PreLoggerConfigRegistration` will be called before registering.
 -- `Log4g_PostLoggerConfigRegistration` will be called afer registration succeeds.
 -- `Log4g_OnLoggerConfigRegistrationFailure` will be called when registration fails(the LoggerConfig with the same name already exists).
--- @param tbl The table containing data that a LoggerConfig needs
+-- @param name The name for the LoggerConfig
 -- @return object loggerconfig
-function Log4g.Core.Config.LoggerConfig.RegisterLoggerConfig(tbl)
-	if not HasKey(INSTANCES, tbl.name) then
-		local loggerconfig = LoggerConfig:New(tbl)
-		INSTANCES[tbl.name] = loggerconfig
-		AddConfigLookupConfig(tbl.name)
-		sql.Query(
-			"INSERT INTO Log4g_LoggerConfig (Name, Content) VALUES('"
-				.. tbl.name
-				.. "', "
-				.. sql.SQLStr(util.TableToJSON(tbl, true))
-				.. ")"
-		)
+function Log4g.Core.Config.LoggerConfig.RegisterLoggerConfig(name)
+	if not HasKey(INSTANCES, name) then
+		local loggerconfig = LoggerConfig:New(name)
+		INSTANCES[name] = loggerconfig
+		AddConfigLookupConfig(name)
+		SQLInsert("Log4g_LoggerConfig", name, util.TableToJSON({ name = name }, true))
+
 		hook.Run("Log4g_PostLoggerConfigRegistration")
 
-		return INSTANCES[tbl.name]
+		return INSTANCES[name]
 	else
 		hook.Run("Log4g_OnLoggerConfigRegistrationFailure")
 
-		return INSTANCES[tbl.name]
+		return INSTANCES[name]
 	end
 end
