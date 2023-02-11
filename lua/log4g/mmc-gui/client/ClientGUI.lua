@@ -33,19 +33,11 @@ local function SendEmptyMsgToSV(start)
 	net.SendToServer()
 end
 
-CreateClientConVar(
-	"Log4g_CL_GUI_ElementUpdateInterval",
-	5,
-	true,
-	false,
-	"Client GUI elements will be updated every given seconds (between 2 and 10).",
-	2,
-	10
-)
+CreateClientConVar("Log4g_CL_GUI_UpdateInterval", 5, true, false, nil, 2, 10)
 local Frame = nil
 
 concommand.Add("Log4g_MMC", function()
-	local UpdateInterval = GetConVar("Log4g_CL_GUI_ElementUpdateInterval"):GetInt()
+	local UpdateInterval = GetConVar("Log4g_CL_GUI_UpdateInterval"):GetInt()
 
 	if IsValid(Frame) then
 		Frame:Remove()
@@ -196,7 +188,7 @@ concommand.Add("Log4g_MMC", function()
 		Slider:SetMin(2)
 		Slider:SetMax(10)
 		Slider:SetDecimals(0)
-		Slider:SetConVar("Log4g_CL_GUI_ElementUpdateInterval")
+		Slider:SetConVar("Log4g_CL_GUI_UpdateInterval")
 		Window:SetDrawOnTop(true)
 	end):SetIcon("icon16/clock_edit.png")
 
