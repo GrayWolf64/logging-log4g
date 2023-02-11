@@ -146,18 +146,6 @@ concommand.Add("Log4g_MMC", function()
 		Tree:Clear()
 	end):SetIcon("icon16/application_form_delete.png")
 
-	SubB:AddOption("Update Frequency", function()
-		local Window = CreateDFrame(300, 75, "Change...", "icon16/application.png", Frame)
-		local Slider = vgui.Create("DNumSlider", Window)
-		Slider:Dock(FILL)
-		Slider:SetText("GUI Update Frequency")
-		Slider:SetMin(2)
-		Slider:SetMax(10)
-		Slider:SetDecimals(0)
-		Slider:SetConVar("Log4g_CL_GUI_UpdateInterval")
-		Window:SetDrawOnTop(true)
-	end):SetIcon("icon16/clock_edit.png")
-
 	PanelTimedFunc(Tree, UpdateInterval, function() end, function()
 		SendEmptyMsgToSV("Log4g_CLReq_LoggerConfig_Lookup")
 
@@ -290,7 +278,7 @@ concommand.Add("Log4g_MMC", function()
 
 					SetProperLineText({
 						name = k,
-						loggercontext = v.loggercontext
+						loggercontext = v.loggercontext,
 					}, Line, ListViewB)
 				end
 			end
