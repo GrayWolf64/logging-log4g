@@ -17,8 +17,6 @@ local STOPPING, STOPPED = Log4g.Core.LifeCycle.State.STOPPING, Log4g.Core.LifeCy
 function LoggerConfig:Initialize(tbl)
 	SetState(self, INITIALIZING)
 	self.name = tbl.name
-	self.eventname = tbl.eventname
-	self.uid = tbl.uid
 	self.loggercontext = tbl.loggercontext
 	self.level = tbl.level
 	self.appender = tbl.appender
