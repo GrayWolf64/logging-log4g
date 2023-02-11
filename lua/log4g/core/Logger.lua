@@ -23,13 +23,6 @@ function Logger:Start(loggerconfig)
 	return self
 end
 
---- Terminate the Logger.
-function Logger:Terminate()
-	SetState(self, STOPPING)
-	SetState(self, STOPPED)
-	self = nil
-end
-
 --- Get the Logger name.
 -- @return string name
 function Logger:GetName()
@@ -46,6 +39,13 @@ end
 -- @local
 -- @table INSTANCES
 local INSTANCES = INSTANCES or {}
+
+--- Terminate the Logger.
+function Logger:Terminate()
+	SetState(self, STOPPING)
+	SetState(self, STOPPED)
+	INSTANCES[self.name] = nil
+end
 
 --- Get all the Loggers.
 -- @return table instances
