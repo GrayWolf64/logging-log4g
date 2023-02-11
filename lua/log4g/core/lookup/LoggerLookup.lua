@@ -14,13 +14,11 @@ end
 -- If the Lookup doesn't exist, it will create one and write into it.
 -- @param loggername The name of the Logger to write
 -- @param contextname The name of the LoggerContext to write
--- @param configfile The string filepath of the Logger's associated LoggerConfig to write
-function LoggerLookup.AddItem(loggername, contextname, configfile)
+function LoggerLookup.AddItem(loggername, contextname)
     if not sql.QueryRow("SELECT * FROM Log4g_Lookup WHERE Name = 'Logger';") then
         sql.Query("INSERT INTO Log4g_Lookup (Name, Content) VALUES('Logger', " .. sql.SQLStr(util.TableToJSON({
             [loggername] = {
                 loggercontext = contextname,
-                configfile = configfile,
             },
         }, true)) .. ")")
     else
@@ -28,7 +26,6 @@ function LoggerLookup.AddItem(loggername, contextname, configfile)
 
         tbl[loggername] = {
             loggercontext = contextname,
-            configfile = configfile,
         }
 
         UpdateLookup(tbl)

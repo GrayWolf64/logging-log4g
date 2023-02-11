@@ -281,7 +281,7 @@ concommand.Add("Log4g_MMC", function()
 	SheetA:AddSheet("LOGGER", SheetPanelE, "icon16/brick.png")
 	local ListViewB = CreateDListView(SheetPanelE, FILL, 0, 0, 0, 0, 18, 18.5)
 
-	for _, v in pairs({ "name", "loggercontext", "configfile" }) do
+	for _, v in pairs({ "name", "loggercontext" }) do
 		ListViewB:AddColumn(v)
 	end
 
@@ -306,8 +306,7 @@ concommand.Add("Log4g_MMC", function()
 
 					SetProperLineText({
 						name = k,
-						loggercontext = v.loggercontext,
-						configfile = v.configfile,
+						loggercontext = v.loggercontext
 					}, Line, ListViewB)
 				end
 			end
