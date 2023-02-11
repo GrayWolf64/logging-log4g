@@ -1,0 +1,1 @@
+Log4g.Core.Config.DefaultConfiguration = Log4g.Core.Config.DefaultConfiguration or {}
