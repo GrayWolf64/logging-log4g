@@ -3,57 +3,10 @@
 -- @license Apache License 2.0
 -- @copyright GrayWolf64
 local ClientGUIDerma = include("log4g/mmc-gui/client/ClientGUIDerma.lua")
-local CreateDFrame = ClientGUIDerma.CreateDFrame
-local CreateDButton = ClientGUIDerma.CreateDButton
-local CreateDListView = ClientGUIDerma.CreateDListView
-local CreateDPropertySheet = ClientGUIDerma.CreateDPropertySheet
---- Append RichText to a panel using a ordered string table.
--- If a blank line is needed, just have an element which is "\n".
--- @param panel The panel to append RichText to
--- @param tbl The table containing the content string in numerical order
-local function AppendRichTextViaTbl(panel, tbl)
-	for _, v in ipairs(tbl) do
-		panel:AppendText(v)
-	end
-end
-
---- Create a new row in a DProp.
--- @lfunction DPropNewRow
--- @param panel The DProp
--- @param category The category to put the row into
--- @param name The label of the row
--- @param prop The name of RowControl to add
--- @return row created row
-local function DPropNewRow(panel, category, name, prop)
-	local row = panel:CreateRow(category, name)
-	row:Setup(prop)
-
-	return row
-end
-
---- Get a row's RowControl.
--- Because the official way to obtain a RowControl doesn't exist, we have to go this way.
--- @lfunction GetRowControl
--- @param row The row to get the RowControl from
--- @return row obtained row
-local function GetRowControl(row)
-	return row:GetChild(1):GetChild(0):GetChild(0)
-end
-
---- Get a RowControl's value (edited by user) whether it's a DTextEntry or a DComboBox.
--- @lfunction GetRowControlValue
--- @param row The row in the DProp Panel
--- @return string value obtained
-local function GetRowControlValue(row)
-	local pnl = GetRowControl(row)
-	local class = pnl:GetName()
-
-	if class == "DTextEntry" then
-		return pnl:GetValue()
-	elseif class == "DComboBox" then
-		return pnl:GetSelected()
-	end
-end
+local CreateDFrame, CreateDButton = ClientGUIDerma.CreateDFrame, ClientGUIDerma.CreateDButton
+local CreateDListView, CreateDPropertySheet = ClientGUIDerma.CreateDListView, ClientGUIDerma.CreateDPropertySheet
+local CreateDPropRow, GetRowControl = ClientGUIDerma.CreateDPropRow, ClientGUIDerma.GetRowControl
+local GetRowControlValue, PanelTimedFunc = ClientGUIDerma.GetRowControlValue, ClientGUIDerma.PanelTimedFunc
 
 local function GetGameInfo()
 	return "Server: " .. game.GetIPAddress() .. " " .. "SinglePlayer: " .. tostring(game.SinglePlayer())
@@ -69,26 +22,6 @@ local function HasNumber(str)
 	end
 
 	return false
-end
-
---- In a Panel's Think, run a function and run another function but timed.
--- @lfunction PanelTimedFunc
--- @param panel The Panel which has a Think function to override
--- @param interval The function will run every given seconds
--- @param funca The first function
--- @param funcb The second function
-local function PanelTimedFunc(panel, interval, funca, funcb)
-	local prevtime = os.time()
-
-	function panel:Think()
-		funca()
-		local prestime = os.time()
-		if prevtime + interval > prestime then
-			return
-		end
-		funcb()
-		prevtime = prevtime + interval
-	end
 end
 
 --- Send an empty message to the server.
@@ -378,13 +311,15 @@ concommand.Add("Log4g_MMC", function()
 		Text:Dock(FILL)
 		Text:InsertColorChange(192, 192, 192, 255)
 
-		AppendRichTextViaTbl(Text, {
+		for _, v in ipairs({
 			"Log4g is an open-source addon for Garry's Mod.\n",
 			"\n",
 			"GitHub Page: https://github.com/GrayWolf64/gmod-logging-log4g\n",
 			"\n",
 			"Documentation can be seen on GitHub Page as well.\n",
-		})
+		}) do
+			Text:AppendText(v)
+		end
 	end):SetIcon("icon16/information.png")
 
 	local SheetPanelC = vgui.Create("DPanel", SheetA)
