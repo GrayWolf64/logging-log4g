@@ -11,7 +11,7 @@ local IsStarted = Log4g.Core.LifeCycle.IsStarted
 local GetCustomLevel = Log4g.Level.GetCustomLevel
 local RegisterCustomLevel = Log4g.Level.RegisterCustomLevel
 local SQLInsert = Log4g.Util.SQLInsert
-local SQLQueryNamedRow = Log4g.Util.SQLQueryNamedRow
+local SQLQueryRow = Log4g.Util.SQLQueryRow
 local SQLQueryValue = Log4g.Util.SQLQueryValue
 local SQLDeleteRow = Log4g.Util.SQLDeleteRow
 
@@ -77,7 +77,7 @@ hook.Add("ShutDown", "Log4g_SaveLogEnvironment", Save)
 -- Their timestarted will be the time when they were restored.
 -- @lfunction RestoreLoggerContext
 local function RestoreLoggerContext()
-    if not SQLQueryNamedRow("Log4g_AutoReconfig", "LoggerContext") then return end
+    if not SQLQueryRow("Log4g_AutoReconfig", "LoggerContext") then return end
     local tbl = util.JSONToTable(SQLQueryValue("Log4g_AutoReconfig", "LoggerContext"))
 
     for _, v in pairs(tbl) do
@@ -90,7 +90,7 @@ end
 --- Re-register all the LoggerConfigs.
 -- @lfunction RestoreLoggerConfig
 local function RestoreLoggerConfig()
-    if not SQLQueryNamedRow("Log4g_AutoReconfig", "LoggerConfig") then return end
+    if not SQLQueryRow("Log4g_AutoReconfig", "LoggerConfig") then return end
     local tbl = util.JSONToTable(SQLQueryValue("Log4g_AutoReconfig", "LoggerConfig"))
 
     for _, v in pairs(tbl) do
@@ -105,7 +105,7 @@ end
 --- Restore all the previously saved Custom Levels.
 -- @lfunction RestoreCustomLevel
 local function RestoreCustomLevel()
-    if not SQLQueryNamedRow("Log4g_AutoReconfig", "CustomLevel") then return end
+    if not SQLQueryRow("Log4g_AutoReconfig", "CustomLevel") then return end
     local tbl = util.JSONToTable(SQLQueryValue("Log4g_AutoReconfig", "CustomLevel"))
 
     for _, v in pairs(tbl) do

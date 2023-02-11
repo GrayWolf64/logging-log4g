@@ -11,6 +11,8 @@ local IsStarted = Log4g.Core.LifeCycle.IsStarted
 local INITIALIZING, INITIALIZED = Log4g.Core.LifeCycle.State.INITIALIZING, Log4g.Core.LifeCycle.State.INITIALIZED
 local STOPPING, STOPPED = Log4g.Core.LifeCycle.State.STOPPING, Log4g.Core.LifeCycle.State.STOPPED
 local SQLInsert = Log4g.Util.SQLInsert
+local SQLQueryRow = Log4g.Util.SQLQueryRow
+local SQLDeleteRow = Log4g.Util.SQLDeleteRow
 
 --- Initialize the LoggerConfig object.
 -- This is meant to be used internally.
@@ -42,8 +44,8 @@ function LoggerConfig:Remove()
     RemoveContextLookupConfig(self:GetContext(), self.name)
     RemoveConfigLookupConfig(self.name)
 
-    if sql.QueryRow("SELECT * FROM Log4g_LoggerConfig WHERE Name = '" .. self.name .. "';") then
-        sql.Query("DELETE FROM Log4g_LoggerConfig WHERE Name = '" .. self.name .. "';")
+    if SQLQueryRow("Log4g_LoggerConfig", self.name) then
+        SQLDeleteRow("Log4g_LoggerConfig", self.name)
         hook.Run("Log4g_PostLoggerConfigFileDeletion")
     else
         hook.Run("Log4g_OnLoggerConfigFileDeletionFailure")

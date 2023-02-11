@@ -9,7 +9,7 @@ local RegisterCustomLevel = Log4g.Level.RegisterCustomLevel
 local WriteDataSimple = Log4g.Util.WriteDataSimple
 local GetLoggerConfig = Log4g.Core.Config.LoggerConfig.Get
 local GetLoggerContext = Log4g.Core.LoggerContext.Get
-local SQLQueryNamedRow = Log4g.Util.SQLQueryNamedRow
+local SQLQueryRow = Log4g.Util.SQLQueryRow
 local SQLQueryValue = Log4g.Util.SQLQueryValue
 
 local function IdentChk(ply)
@@ -68,7 +68,7 @@ end)
 net.Receive("Log4g_CLReq_LoggerConfig_Lookup", function(_, ply)
     net.Start("Log4g_CLRcv_LoggerConfig_Lookup")
 
-    if SQLQueryNamedRow("Log4g_Lookup", "LoggerConfig") then
+    if SQLQueryRow("Log4g_Lookup", "LoggerConfig") then
         net.WriteBool(true)
         WriteDataSimple(SQLQueryValue("Log4g_Lookup", "LoggerConfig"), 16)
     else
@@ -81,7 +81,7 @@ end)
 net.Receive("Log4g_CLReq_LoggerContext_Lookup", function(_, ply)
     net.Start("Log4g_CLRcv_LoggerContext_Lookup")
 
-    if SQLQueryNamedRow("Log4g_Lookup", "LoggerContext") then
+    if SQLQueryRow("Log4g_Lookup", "LoggerContext") then
         net.WriteBool(true)
         WriteDataSimple(SQLQueryValue("Log4g_Lookup", "LoggerContext"), 16)
     else

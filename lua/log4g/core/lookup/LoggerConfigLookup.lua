@@ -3,7 +3,7 @@
 -- @script LoggerConfigLookup
 -- @license Apache License 2.0
 -- @copyright GrayWolf64
-local SQLQueryNamedRow = Log4g.Util.SQLQueryNamedRow
+local SQLQueryRow = Log4g.Util.SQLQueryRow
 local SQLQueryValue = Log4g.Util.SQLQueryValue
 local UpdateLookup = Log4g.Util.SQLUpdateValue
 local SQLInsert = Log4g.Util.SQLInsert
@@ -12,7 +12,7 @@ local LoggerConfigLookup = Log4g.Core.Config.LoggerConfig.Lookup
 --- Add a LoggerConfig item to LoggerConfig Lookup.
 -- @param name The name of the LoggerConfig
 function LoggerConfigLookup.AddConfig(name)
-    if not SQLQueryNamedRow("Log4g_Lookup", "LoggerConfig") then
+    if not SQLQueryRow("Log4g_Lookup", "LoggerConfig") then
         SQLInsert("Log4g_Lookup", "LoggerConfig", util.TableToJSON({
             [name] = {},
         }, true))
@@ -26,7 +26,7 @@ end
 --- Remove the LoggerConfig item from LoggerConfig Lookup.
 -- @param name The name of the LoggerConfig
 function LoggerConfigLookup.RemoveConfig(name)
-    if not SQLQueryNamedRow("Log4g_Lookup", "LoggerConfig") then return end
+    if not SQLQueryRow("Log4g_Lookup", "LoggerConfig") then return end
     local tbl = util.JSONToTable(SQLQueryValue("Log4g_Lookup", "LoggerConfig"))
 
     for k, _ in pairs(tbl) do

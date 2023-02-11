@@ -4,7 +4,7 @@
 -- @license Apache License 2.0
 -- @copyright GrayWolf64
 local HasKey = Log4g.Util.HasKey
-local SQLQueryNamedRow = Log4g.Util.SQLQueryNamedRow
+local SQLQueryRow = Log4g.Util.SQLQueryRow
 local SQLQueryValue = Log4g.Util.SQLQueryValue
 local SQLInsert = Log4g.Util.SQLInsert
 local UpdateLookup = Log4g.Util.SQLUpdateValue
@@ -13,7 +13,7 @@ local LoggerContextLookup = Log4g.Core.LoggerContext.Lookup
 --- Add a LoggerContext item to LoggerContext Lookup.
 -- @param name The name of the LoggerContext
 function LoggerContextLookup.AddContext(name)
-    if not SQLQueryNamedRow("Log4g_Lookup", "LoggerContext") then
+    if not SQLQueryRow("Log4g_Lookup", "LoggerContext") then
         SQLInsert("Log4g_Lookup", "LoggerContext", util.TableToJSON({
             [name] = {},
         }, true))
@@ -28,7 +28,7 @@ end
 -- The child LoggerConfig names will be removed at the same time.
 -- @param name The name of the LoggerContext to find and remove from the Lookup table
 function LoggerContextLookup.RemoveContext(name)
-    if not SQLQueryNamedRow("Log4g_Lookup", "LoggerContext") then return end
+    if not SQLQueryRow("Log4g_Lookup", "LoggerContext") then return end
     local tbl = util.JSONToTable(SQLQueryValue("Log4g_Lookup", "LoggerContext"))
 
     for k, _ in pairs(tbl) do
@@ -46,7 +46,7 @@ end
 -- @param context The LoggerContext name to put the LoggerConfig in
 -- @param config The LoggerConfig name to write
 function LoggerContextLookup.AddConfig(context, config)
-    if not SQLQueryNamedRow("Log4g_Lookup", "LoggerContext") then
+    if not SQLQueryRow("Log4g_Lookup", "LoggerContext") then
         SQLInsert("Log4g_Lookup", "LoggerContext", util.TableToJSON({
             [context] = {config},
         }, true))
@@ -68,7 +68,7 @@ end
 -- @param context The name of the LoggerContext that the LoggerConfig is in
 -- @param config The name of the LoggerConfig to find and remove from the Lookup table
 function LoggerContextLookup.RemoveConfig(context, config)
-    if not SQLQueryNamedRow("Log4g_Lookup", "LoggerContext") then return end
+    if not SQLQueryRow("Log4g_Lookup", "LoggerContext") then return end
     local tbl = util.JSONToTable(SQLQueryValue("Log4g_Lookup", "LoggerContext"))
 
     for k, v in pairs(tbl) do
