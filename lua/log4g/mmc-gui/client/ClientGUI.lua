@@ -3,10 +3,10 @@
 -- @license Apache License 2.0
 -- @copyright GrayWolf64
 local ClientGUIDerma = include("log4g/mmc-gui/client/ClientGUIDerma.lua")
-local CreateDFrame, CreateDButton = ClientGUIDerma.CreateDFrame, ClientGUIDerma.CreateDButton
+local CreateDFrame = ClientGUIDerma.CreateDFrame
 local CreateDListView, CreateDPropertySheet = ClientGUIDerma.CreateDListView, ClientGUIDerma.CreateDPropertySheet
 local CreateDPropRow, GetRowControl = ClientGUIDerma.CreateDPropRow, ClientGUIDerma.GetRowControl
-local GetRowControlValue, PanelTimedFunc = ClientGUIDerma.GetRowControlValue, ClientGUIDerma.PanelTimedFunc
+local PanelTimedFunc = ClientGUIDerma.PanelTimedFunc
 local GetColumnSpecialText, SetProperLineText = ClientGUIDerma.GetColumnSpecialText, ClientGUIDerma.SetProperLineText
 
 CreateClientConVar("Log4g_CL_GUI_UpdateInterval", 5, true, false, nil, 2, 10)
@@ -157,32 +157,6 @@ concommand.Add("Log4g_MMC", function()
             end
         end)
     end)
-
-    local SubMenuB = MenuA:AddSubMenu("Configuration")
-    SubMenuB:SetDeleteSelf(false)
-
-    SubMenuB:AddOption("Level", function()
-        local Window = CreateDFrame(300, 150, "New Level", "icon16/application.png", Frame)
-        Window:SetDrawOnTop(true)
-        local DProp = vgui.Create("DProperties", Window)
-        DProp:Dock(FILL)
-        local RowA, RowB =
-            CreateDPropRow(DProp, "Self", "Name", "Generic"), CreateDPropRow(DProp, "Self", "IntLevel", "Generic")
-        local ButtonB = CreateDButton(Window, BOTTOM, 100, 0, 100, 0, 100, 50, "Submit")
-
-        ButtonB.DoClick = function()
-            local InputName = GetRowControlValue(RowA)
-            local InputInt = GetRowControlValue(RowB)
-            if #InputName == 0 or #InputInt == 0 then
-                return
-            end
-            net.Start("Log4g_CLUpload_NewLevel")
-            net.WriteString(InputName)
-            net.WriteUInt(tonumber(InputInt), 16)
-            net.SendToServer()
-            Window:Close()
-        end
-    end):SetIcon("icon16/chart_bar.png")
 
     local SheetPanelC = vgui.Create("DPanel", SheetA)
     SheetA:AddSheet("Overview (SV)", SheetPanelC, "icon16/page.png")
