@@ -87,6 +87,21 @@ function Log4g.Level.GetStandardLevel()
     return StandardLevel
 end
 
+--- Get the Standard IntLevels as a table.
+-- @return table standardintlevel
+function Log4g.Level.GetStandardIntLevel()
+    return {
+        ALL = math.huge,
+        TRACE = 600,
+        DEBUG = 500,
+        INFO = 400,
+        WARN = 300,
+        ERROR = 200,
+        FATAL = 100,
+        OFF = 0,
+    }
+end
+
 --- Get the Level.
 -- Return the Level associated with the name or nil if the Level cannot be found.
 -- @param name The Level's name

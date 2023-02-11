@@ -9,6 +9,7 @@ local STOPPING, STOPPED = Log4g.Core.LifeCycle.State.STOPPING, Log4g.Core.LifeCy
 local HasKey = Log4g.Util.HasKey
 local RegisterLoggerConfig = Log4g.Core.Config.LoggerConfig.RegisterLoggerConfig
 local GetLoggerConfig = Log4g.Core.Config.LoggerConfig.Get
+local GetStandardIntLevel = Log4g.Level.GetStandardIntLevel
 
 function Logger:Initialize(name)
     SetState(self, INITIALIZING)
@@ -44,28 +45,46 @@ function Logger:SetLevel(level)
     end
 end
 
-function Logger:ALL()
+function Logger:ALL(arg)
+    if self.level():IntLevel() == math.huge then
+        Msg(arg)
+    end
 end
 
-function Logger:TRACE()
+function Logger:TRACE(arg)
+    if self.level():IntLevel() >= GetStandardIntLevel().TRACE then
+        Msg(arg)
+    end
 end
 
-function Logger:DEBUG()
+function Logger:DEBUG(arg)
+    if self.level():IntLevel() >= GetStandardIntLevel().DEBUG then
+        Msg(arg)
+    end
 end
 
-function Logger:INFO()
+function Logger:INFO(arg)
+    if self.level():IntLevel() == GetStandardIntLevel().INFO then
+        Msg(arg)
+    end
 end
 
-function Logger:WARN()
+function Logger:WARN(arg)
+    if self.level():IntLevel() == GetStandardIntLevel().WARN then
+        Msg(arg)
+    end
 end
 
-function Logger:ERROR()
+function Logger:ERROR(arg)
+    if self.level():IntLevel() == GetStandardIntLevel().ERROR then
+        Msg(arg)
+    end
 end
 
-function Logger:FATAL()
-end
-
-function Logger:OFF()
+function Logger:FATAL(arg)
+    if self.level():IntLevel() == GetStandardIntLevel().FATAL then
+        Msg(arg)
+    end
 end
 
 --- This is where all the Loggers are stored.
