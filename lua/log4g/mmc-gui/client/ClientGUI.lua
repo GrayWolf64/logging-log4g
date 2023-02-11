@@ -136,14 +136,6 @@ concommand.Add("Log4g_MMC", function()
         end)
     end)
 
-    local SubB = MenuB:AddSubMenu("View")
-    SubB:SetDeleteSelf(false)
-
-    SubB:AddOption("Clear", function()
-        ListView:Clear()
-        Tree:Clear()
-    end):SetIcon("icon16/application_form_delete.png")
-
     PanelTimedFunc(Tree, UpdateInterval, function() end, function()
         SendEmptyMsgToSV("Log4g_CLReq_LoggerConfig_Lookup")
 
