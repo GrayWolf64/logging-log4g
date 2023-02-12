@@ -12,7 +12,6 @@ local STOPPING, STOPPED = Log4g.Core.LifeCycle.State.STOPPING, Log4g.Core.LifeCy
 function LoggerContext:Initialize(name)
     SetState(self, INITIALIZING)
     self.name = name
-    self.timestarted = os.time()
     SetState(self, INITIALIZED)
 end
 
@@ -20,12 +19,6 @@ end
 -- @return string name
 function LoggerContext:GetName()
     return self.name
-end
-
---- Get when the LoggerContext was started in UNIX time.
--- @return string timestarted
-function LoggerContext:TimeStarted()
-    return self.timestarted
 end
 
 function LoggerContext:Start()
@@ -36,7 +29,7 @@ function LoggerContext:Start()
 end
 
 function LoggerContext:__tostring()
-    return "LoggerContext: [name:" .. self.name .. "]" .. "[timestarted:" .. self:TimeStarted() .. "]"
+    return "LoggerContext: [name:" .. self.name .. "]"
 end
 
 --- This is where all the LoggerContexts are stored.
