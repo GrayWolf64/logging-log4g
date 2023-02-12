@@ -29,7 +29,7 @@ end
 
 --- Get the current FQSN according to the function provided.
 -- @lfunction Log4g.Util.GetCurrentFQSN
--- @param func The function where GetCurrentFQSN is called inside
+-- @param func The name of the function where GetCurrentFQSN is called
 -- @return string fqsn
 function Log4g.Util.GetCurrentFQSN(func)
     return string.StripExtension(debug.getinfo(func).source:gsub("%/", "."):gsub("%@", ""))
