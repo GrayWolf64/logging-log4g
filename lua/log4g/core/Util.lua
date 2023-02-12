@@ -33,5 +33,5 @@ end
 -- @param func The name of the function where GetCurrentFQSN is called
 -- @return string fqsn
 function Log4g.Util.GetCurrentFQSN(func)
-    return string.StripExtension(debug.getinfo(func).source:gsub("%/", "."):gsub("%@", ""))
+    return string.StripExtension(debug.getinfo(func, "S").source:gsub("%/", "."):gsub("%@", ""))
 end
