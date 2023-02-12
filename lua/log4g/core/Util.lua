@@ -9,7 +9,7 @@ Log4g.Util = Log4g.Util or {}
 -- @param key The key to find in the table
 -- @return bool ifhaskey
 -- @return keyfound
-Log4g.Util.HasKey = function(tbl, key)
+function Log4g.Util.HasKey(tbl, key)
     if table.IsEmpty(tbl) then return false end
 
     for k, _ in pairs(tbl) do
@@ -21,8 +21,16 @@ end
 
 --- Add all the string keys in a table to network string table.
 -- @param tbl The table of network strings to add
-Log4g.Util.AddNetworkStrsViaTbl = function(tbl)
+function Log4g.Util.AddNetworkStrsViaTbl(tbl)
     for _, v in pairs(tbl) do
         util.AddNetworkString(v)
     end
+end
+
+--- Get the current FQSN according to the function provided.
+-- @lfunction Log4g.Util.GetCurrentFQSN
+-- @param func The function where GetCurrentFQSN is called inside
+-- @return string fqsn
+function Log4g.Util.GetCurrentFQSN(func)
+    return string.StripExtension(debug.getinfo(func).source:gsub("%/", "."):gsub("%@", ""))
 end
