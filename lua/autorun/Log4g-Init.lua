@@ -31,12 +31,9 @@ if SERVER then
     include("log4g/core/Level.lua")
     include("log4g/core/Layout.lua")
     include("log4g/core/Appender.lua")
-    include("log4g/core/lookup/LoggerContextLookup.lua")
-    include("log4g/core/lookup/LoggerConfigLookup.lua")
     include("log4g/core/config/LoggerConfig.lua")
     include("log4g/core/LoggerContext.lua")
     include("log4g/core/Logger.lua")
-    include("log4g/core/lookup/LoggerLookup.lua")
 
     if file.Exists(API, "lsv") then
         include(API)

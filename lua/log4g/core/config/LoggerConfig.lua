@@ -3,9 +3,6 @@
 local HasKey = Log4g.Util.HasKey
 local Class = include("log4g/core/impl/MiddleClass.lua")
 local LoggerConfig = Class("LoggerConfig")
-local RemoveContextLookupConfig = Log4g.Core.LoggerContext.Lookup.RemoveConfig
-local AddConfigLookupConfig = Log4g.Core.Config.LoggerConfig.Lookup.AddConfig
-local RemoveConfigLookupConfig = Log4g.Core.Config.LoggerConfig.Lookup.RemoveConfig
 local SetState = Log4g.Core.LifeCycle.SetState
 local INITIALIZING, INITIALIZED = Log4g.Core.LifeCycle.State.INITIALIZING, Log4g.Core.LifeCycle.State.INITIALIZED
 local STOPPING, STOPPED = Log4g.Core.LifeCycle.State.STOPPING, Log4g.Core.LifeCycle.State.STOPPED
@@ -40,8 +37,6 @@ local INSTANCES = INSTANCES or {}
 --- Remove the LoggerConfig.
 function LoggerConfig:Remove()
     SetState(self, STOPPING)
-    RemoveContextLookupConfig(self:GetContext(), self.name)
-    RemoveConfigLookupConfig(self.name)
 
     if SQLQueryRow("Log4g_LoggerConfig", self.name) then
         SQLDeleteRow("Log4g_LoggerConfig", self.name)
@@ -88,7 +83,6 @@ function Log4g.Core.Config.LoggerConfig.RegisterLoggerConfig(name)
     if not HasKey(INSTANCES, name) then
         local loggerconfig = LoggerConfig:New(name)
         INSTANCES[name] = loggerconfig
-        AddConfigLookupConfig(name)
 
         SQLInsert("Log4g_LoggerConfig", name, util.TableToJSON({name}, true))
 

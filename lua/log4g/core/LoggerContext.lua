@@ -3,8 +3,6 @@
 local Class = include("log4g/core/impl/MiddleClass.lua")
 local LoggerContext = Class("LoggerContext")
 local HasKey = Log4g.Util.HasKey
-local AddContextLookupContext = Log4g.Core.LoggerContext.Lookup.AddContext
-local RemoveContextLookupContext = Log4g.Core.LoggerContext.Lookup.RemoveContext
 local RemoveLoggerConfigByContext = Log4g.Core.Config.LoggerConfig.RemoveByContext
 local SetState = Log4g.Core.LifeCycle.SetState
 local INITIALIZING, INITIALIZED = Log4g.Core.LifeCycle.State.INITIALIZING, Log4g.Core.LifeCycle.State.INITIALIZED
@@ -50,7 +48,6 @@ local INSTANCES = INSTANCES or {}
 --- Terminate the LoggerContext.
 function LoggerContext:Terminate()
     SetState(self, STOPPING)
-    RemoveContextLookupContext(self.name)
     RemoveLoggerConfigByContext(self.name)
     SetState(self, STOPPED)
     hook.Run("Log4g_PostLoggerContextTermination")
@@ -75,7 +72,6 @@ end
 function Log4g.Core.LoggerContext.Register(name)
     if not HasKey(INSTANCES, name) then
         INSTANCES[name] = LoggerContext:New(name):Start()
-        AddContextLookupContext(name)
         hook.Run("Log4g_PostLoggerContextRegistration", name)
 
         return INSTANCES[name]
