@@ -7,7 +7,6 @@ local RemoveContextLookupConfig = Log4g.Core.LoggerContext.Lookup.RemoveConfig
 local AddConfigLookupConfig = Log4g.Core.Config.LoggerConfig.Lookup.AddConfig
 local RemoveConfigLookupConfig = Log4g.Core.Config.LoggerConfig.Lookup.RemoveConfig
 local SetState = Log4g.Core.LifeCycle.SetState
-local IsStarted = Log4g.Core.LifeCycle.IsStarted
 local INITIALIZING, INITIALIZED = Log4g.Core.LifeCycle.State.INITIALIZING, Log4g.Core.LifeCycle.State.INITIALIZED
 local STOPPING, STOPPED = Log4g.Core.LifeCycle.State.STOPPING, Log4g.Core.LifeCycle.State.STOPPED
 local SQLInsert = Log4g.Util.SQLInsert
