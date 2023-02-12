@@ -20,8 +20,6 @@ if SERVER then
     Log4g.Core.LoggerContext = Log4g.Core.LoggerContext or {}
     Log4g.Level = Log4g.Level or {}
     Log4g.Core.Logger = Log4g.Core.Logger or {}
-    sql.Query("CREATE TABLE IF NOT EXISTS Log4g_Lookup(Name TEXT NOT NULL UNIQUE, Content TEXT NOT NULL UNIQUE)")
-    sql.Query("CREATE TABLE IF NOT EXISTS Log4g_LoggerConfig(Name TEXT NOT NULL UNIQUE, Content TEXT NOT NULL UNIQUE)")
     include("log4g/core/Version.lua")
     include("log4g/core/Util.lua")
     include("log4g/core/LifeCycle.lua")
