@@ -3,40 +3,39 @@
 -- @script LoggerLookup
 -- @license Apache License 2.0
 -- @copyright GrayWolf64
-local sql = sql
 local LoggerLookup = Log4g.Core.Logger.Lookup
-
-local function UpdateLookup(tbl)
-    sql.Query("UPDATE Log4g_Lookup SET Content = " .. sql.SQLStr(util.TableToJSON(tbl, true)) .. " WHERE Name = 'Logger';")
-end
+local SQLQueryRow = Log4g.Util.SQLQueryRow
+local SQLQueryValue = Log4g.Util.SQLQueryValue
+local SQLInsert = Log4g.Util.SQLInsert
+local UpdateLookup = Log4g.Util.SQLUpdateValue
 
 --- Add a table item to Logger Lookup whose key is Logger name and its content are the associated names of LoggerContext and file paths of LoggerConfig.
 -- If the Lookup doesn't exist, it will create one and write into it.
 -- @param loggername The name of the Logger to write
 -- @param contextname The name of the LoggerContext to write
 function LoggerLookup.AddItem(loggername, contextname)
-    if not sql.QueryRow("SELECT * FROM Log4g_Lookup WHERE Name = 'Logger';") then
-        sql.Query("INSERT INTO Log4g_Lookup (Name, Content) VALUES('Logger', " .. sql.SQLStr(util.TableToJSON({
+    if not SQLQueryRow("Log4g_Lookup", "Logger") then
+        SQLInsert("Log4g_Lookup", "Logger", sql.SQLStr(util.TableToJSON({
             [loggername] = {
                 loggercontext = contextname,
             },
-        }, true)) .. ")")
+        }, true)))
     else
-        local tbl = util.JSONToTable(sql.QueryValue("SELECT Content FROM Log4g_Lookup WHERE Name = 'Logger';"))
+        local tbl = util.JSONToTable(SQLQueryValue("Log4g_Lookup", "Logger"))
 
         tbl[loggername] = {
             loggercontext = contextname,
         }
 
-        UpdateLookup(tbl)
+        UpdateLookup("Log4g_Lookup", "Logger", util.TableToJSON(tbl))
     end
 end
 
 --- Remove any Logger items whose LoggerContext's name is the given contextname.
 -- @param contextname The LoggerContext's name
 function LoggerLookup.RemoveLoggerViaContext(contextname)
-    if not sql.QueryRow("SELECT * FROM Log4g_Lookup WHERE Name = 'Logger';") then return end
-    local tbl = util.JSONToTable(sql.QueryValue("SELECT Content FROM Log4g_Lookup WHERE Name = 'Logger';"))
+    if not SQLQueryRow("Log4g_Lookup", "Logger") then return end
+    local tbl = util.JSONToTable(SQLQueryValue("Log4g_Lookup", "Logger"))
     if table.IsEmpty(tbl) then return end
 
     for k, v in pairs(tbl) do
@@ -45,15 +44,15 @@ function LoggerLookup.RemoveLoggerViaContext(contextname)
         end
     end
 
-    UpdateLookup(tbl)
+    UpdateLookup("Log4g_Lookup", "Logger", util.TableToJSON(tbl))
 end
 
 --- Remove a Logger item from LoggerLookup.
 -- @param contextname The LoggerContext's name
 -- @param loggername The Logger's name
 function LoggerLookup.RemoveLogger(contextname, loggername)
-    if not sql.QueryRow("SELECT * FROM Log4g_Lookup WHERE Name = 'Logger';") then return end
-    local tbl = util.JSONToTable(sql.QueryValue("SELECT Content FROM Log4g_Lookup WHERE Name = 'Logger';"))
+    if not SQLQueryRow("Log4g_Lookup", "Logger") then return end
+    local tbl = util.JSONToTable(SQLQueryValue("Log4g_Lookup", "Logger"))
     if table.IsEmpty(tbl) then return end
 
     for k, v in pairs(tbl) do
@@ -62,5 +61,5 @@ function LoggerLookup.RemoveLogger(contextname, loggername)
         end
     end
 
-    UpdateLookup(tbl)
+    UpdateLookup("Log4g_Lookup", "Logger", util.TableToJSON(tbl))
 end
