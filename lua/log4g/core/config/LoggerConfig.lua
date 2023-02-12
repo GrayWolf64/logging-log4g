@@ -6,9 +6,6 @@ local LoggerConfig = Class("LoggerConfig")
 local SetState = Log4g.Core.LifeCycle.SetState
 local INITIALIZING, INITIALIZED = Log4g.Core.LifeCycle.State.INITIALIZING, Log4g.Core.LifeCycle.State.INITIALIZED
 local STOPPING, STOPPED = Log4g.Core.LifeCycle.State.STOPPING, Log4g.Core.LifeCycle.State.STOPPED
-local SQLInsert = Log4g.Util.SQLInsert
-local SQLQueryRow = Log4g.Util.SQLQueryRow
-local SQLDeleteRow = Log4g.Util.SQLDeleteRow
 
 --- Initialize the LoggerConfig object.
 -- This is meant to be used internally.
@@ -37,14 +34,6 @@ local INSTANCES = INSTANCES or {}
 --- Remove the LoggerConfig.
 function LoggerConfig:Remove()
     SetState(self, STOPPING)
-
-    if SQLQueryRow("Log4g_LoggerConfig", self.name) then
-        SQLDeleteRow("Log4g_LoggerConfig", self.name)
-        hook.Run("Log4g_PostLoggerConfigFileDeletion")
-    else
-        hook.Run("Log4g_OnLoggerConfigFileDeletionFailure")
-    end
-
     SetState(self, STOPPED)
     INSTANCES[self.name] = nil
 end
@@ -83,9 +72,6 @@ function Log4g.Core.Config.LoggerConfig.RegisterLoggerConfig(name)
     if not HasKey(INSTANCES, name) then
         local loggerconfig = LoggerConfig:New(name)
         INSTANCES[name] = loggerconfig
-
-        SQLInsert("Log4g_LoggerConfig", name, util.TableToJSON({name}, true))
-
         hook.Run("Log4g_PostLoggerConfigRegistration")
 
         return INSTANCES[name]
