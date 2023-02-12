@@ -28,8 +28,8 @@ if SERVER then
     include("log4g/core/Level.lua")
     include("log4g/core/Layout.lua")
     include("log4g/core/Appender.lua")
-    include("log4g/core/config/LoggerConfig.lua")
     include("log4g/core/config/DefaultConfiguration.lua")
+    include("log4g/core/config/LoggerConfig.lua")
     include("log4g/core/LoggerContext.lua")
     include("log4g/core/Logger.lua")
 
