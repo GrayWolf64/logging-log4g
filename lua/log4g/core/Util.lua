@@ -30,7 +30,6 @@ function Log4g.Util.AddNetworkStrsViaTbl(tbl)
 end
 
 --- Get the current FQSN according to the function provided.
--- @lfunction Log4g.Util.GetCurrentFQSN
 -- @param func The name of the function where GetCurrentFQSN is called
 -- @return string fqsn
 function Log4g.Util.GetCurrentFQSN(func)
