@@ -1,9 +1,9 @@
 concommand.Add("Log4g_CoreTest_CreateLogger", function()
     local function CreateLogger()
         Log4g.API.LoggerContextFactory.GetContext(CreateLogger)
-        Log4g.API.LogManager.GetLogger("TestLoggerA")
-        Log4g.Core.Logger.Get("TestLoggerA"):SetLevel(Log4g.Level.GetStdLevel().INFO)
-        Log4g.Core.Logger.Get("TestLoggerA"):INFO("Test message from 'TestLoggerA'.\n")
+        Log4g.API.LogManager.GetLogger("TestLogger")
+        Log4g.Core.Logger.Get("TestLogger"):SetLevel(Log4g.Level.GetStdLevel().INFO)
+        Log4g.Core.Logger.Get("TestLogger"):INFO("Test message from 'TestLogger'.\n")
     end
 
     CreateLogger()
