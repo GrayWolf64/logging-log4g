@@ -64,25 +64,25 @@ function Logger:DEBUG(arg)
 end
 
 function Logger:INFO(arg)
-    if self.level().int == GetStandardIntLevel().INFO then
+    if self.level().int >= GetStandardIntLevel().INFO then
         Msg(arg)
     end
 end
 
 function Logger:WARN(arg)
-    if self.level().int == GetStandardIntLevel().WARN then
+    if self.level().int >= GetStandardIntLevel().WARN then
         Msg(arg)
     end
 end
 
 function Logger:ERROR(arg)
-    if self.level().int == GetStandardIntLevel().ERROR then
+    if self.level().int >= GetStandardIntLevel().ERROR then
         Msg(arg)
     end
 end
 
 function Logger:FATAL(arg)
-    if self.level().int == GetStandardIntLevel().FATAL then
+    if self.level().int >= GetStandardIntLevel().FATAL then
         Msg(arg)
     end
 end
