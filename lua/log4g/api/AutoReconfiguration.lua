@@ -5,7 +5,6 @@
 sql.Query("CREATE TABLE IF NOT EXISTS Log4g_AutoReconfig(Name TEXT NOT NULL UNIQUE, Content TEXT NOT NULL UNIQUE)")
 local CreateLoggerContext = Log4g.API.LoggerContextFactory.GetContext
 local GetAllLoggerContexts = Log4g.Core.LoggerContext.GetAll
-local IsStarted = Log4g.Core.LifeCycle.IsStarted
 local GetCustomLevel = Log4g.Level.GetCustomLevel
 local RegisterCustomLevel = Log4g.Level.RegisterCustomLevel
 local SQLInsert = Log4g.Util.SQLInsert
