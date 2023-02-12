@@ -4,7 +4,7 @@
 -- @copyright GrayWolf64
 local ClientGUIDerma = include("log4g/mmc-gui/client/ClientGUIDerma.lua")
 local CreateDFrame = ClientGUIDerma.CreateDFrame
-local CreateDListView, CreateDPropertySheet = ClientGUIDerma.CreateDListView, ClientGUIDerma.CreateDPropertySheet
+local CreateDPropertySheet = ClientGUIDerma.CreateDPropertySheet
 local CreateDPropRow, GetRowControl = ClientGUIDerma.CreateDPropRow, ClientGUIDerma.GetRowControl
 local PanelTimedFunc = ClientGUIDerma.PanelTimedFunc
 
@@ -99,10 +99,4 @@ concommand.Add("Log4g_MMC", function()
     UpdateSummary()
     local SheetPanelE = vgui.Create("DPanel", SheetA)
     SheetA:AddSheet("StatusLogger", SheetPanelE, "icon16/brick.png")
-    local ListViewB = CreateDListView(SheetPanelE, FILL, 0, 0, 0, 0, 18, 18.5)
-
-    for _, v in pairs({ "name", "loggercontext" }) do
-        ListViewB:AddColumn(v)
-    end
-
 end)
