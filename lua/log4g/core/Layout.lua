@@ -16,9 +16,7 @@ function PatternLayout:Initialize(name, func)
     Layout.Initialize(self, name, func)
 end
 
-local INSTANCES = {
-    PatternLayout = PatternLayout:New("PatternLayout", include("log4g/core/layout/PatternLayout.lua")),
-}
+local INSTANCES = {}
 
 function Log4g.Core.Layout.GetLayoutAll()
     return INSTANCES
