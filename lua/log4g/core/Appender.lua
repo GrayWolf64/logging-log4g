@@ -16,7 +16,7 @@ function ConsoleAppender:Initialize(name, func)
     Appender.Initialize(self, name, func)
 end
 
-local INSTANCES = {}
+local INSTANCES = INSTANCES or {}
 
 function Log4g.Core.Appender.GetAppender(name)
     if HasKey(INSTANCES, name) then
