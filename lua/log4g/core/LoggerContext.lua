@@ -21,11 +21,12 @@ function LoggerContext:GetName()
     return self.name
 end
 
-function LoggerContext:Start()
+--- Start the LoggerContext with a specific configuration.
+-- @param config configuration
+function LoggerContext:Start(config)
     SetState(self, STARTING)
+    self.configuration = config
     SetState(self, STARTED)
-
-    return self
 end
 
 function LoggerContext:__tostring()
@@ -64,7 +65,7 @@ end
 -- @return object loggercontext
 function Log4g.Core.LoggerContext.Register(name)
     if not HasKey(INSTANCES, name) then
-        INSTANCES[name] = LoggerContext:New(name):Start()
+        INSTANCES[name] = LoggerContext:New(name)
         hook.Run("Log4g_PostLoggerContextRegistration", name)
 
         return INSTANCES[name]
