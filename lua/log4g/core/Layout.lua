@@ -12,8 +12,8 @@ end
 
 local PatternLayout = Layout:subclass("PatternLayout")
 
-function PatternLayout:Initialize(name, func)
-    Layout.Initialize(self, name, func)
+function PatternLayout:Initialize(name)
+    Layout.Initialize(self, name, "log4g/core/layout/PatternLayout.lua")
 end
 
 local INSTANCES = INSTANCES or {}

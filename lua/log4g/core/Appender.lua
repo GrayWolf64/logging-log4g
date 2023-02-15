@@ -12,8 +12,8 @@ end
 
 local ConsoleAppender = Appender:subclass("ConsoleAppender")
 
-function ConsoleAppender:Initialize(name, func)
-    Appender.Initialize(self, name, func)
+function ConsoleAppender:Initialize(name)
+    Appender.Initialize(self, name, "log4g/core/appender/ConsoleAppender.lua")
 end
 
 local INSTANCES = INSTANCES or {}
