@@ -8,6 +8,7 @@ local SetState = Log4g.Core.LifeCycle.SetState
 local INITIALIZING, INITIALIZED = Log4g.Core.LifeCycle.State.INITIALIZING, Log4g.Core.LifeCycle.State.INITIALIZED
 local STARTING, STARTED = Log4g.Core.LifeCycle.State.STARTING, Log4g.Core.LifeCycle.State.STARTED
 local STOPPING, STOPPED = Log4g.Core.LifeCycle.State.STOPPING, Log4g.Core.LifeCycle.State.STOPPED
+local RegisterConfiguration = Log4g.Core.Config.Configuration.Register
 
 function LoggerContext:Initialize(name)
     SetState(self, INITIALIZING)
@@ -66,6 +67,7 @@ end
 function Log4g.Core.LoggerContext.Register(name)
     if not HasKey(INSTANCES, name) then
         INSTANCES[name] = LoggerContext:New(name)
+        INSTANCES[name].configuration = RegisterConfiguration()
         hook.Run("Log4g_PostLoggerContextRegistration", name)
 
         return INSTANCES[name]

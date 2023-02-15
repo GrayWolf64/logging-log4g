@@ -16,6 +16,7 @@ if SERVER then
     Log4g = Log4g or {}
     Log4g.Core = Log4g.Core or {}
     Log4g.Core.Config = Log4g.Core.Config or {}
+    Log4g.Core.Config.Configuration = Log4g.Core.Config.Configuration or {}
     Log4g.Core.Config.LoggerConfig = Log4g.Core.Config.LoggerConfig or {}
     Log4g.Core.LoggerContext = Log4g.Core.LoggerContext or {}
     Log4g.Level = Log4g.Level or {}
