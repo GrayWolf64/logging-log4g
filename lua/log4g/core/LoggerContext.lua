@@ -54,7 +54,6 @@ function LoggerContext:Terminate()
     PRIVATE[self] = nil
     RemoveLoggerConfigByContext(self.name)
     SetState(self, STOPPED)
-    hook.Run("Log4g_PostLoggerContextTermination")
     INSTANCES[self.name] = nil
 end
 
@@ -70,18 +69,14 @@ end
 
 --- Register a LoggerContext.
 -- This is used for APIs.
--- If the LoggerContext with the same name already exists, `Log4g_OnLoggerContextRegistrationFailure` will be called.
 -- @param name The name of the LoggerContext
 -- @return object loggercontext
 function Log4g.Core.LoggerContext.Register(name)
     if not HasKey(INSTANCES, name) then
         INSTANCES[name] = LoggerContext:New(name)
-        hook.Run("Log4g_PostLoggerContextRegistration", name)
 
         return INSTANCES[name]
     else
-        hook.Run("Log4g_OnLoggerContextRegistrationFailure")
-
         return INSTANCES[name]
     end
 end

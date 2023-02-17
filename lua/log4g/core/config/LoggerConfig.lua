@@ -63,21 +63,15 @@ function Log4g.Core.Config.LoggerConfig.Get(name)
 end
 
 --- Register a LoggerConfig.
--- `Log4g_PreLoggerConfigRegistration` will be called before registering.
--- `Log4g_PostLoggerConfigRegistration` will be called afer registration succeeds.
--- `Log4g_OnLoggerConfigRegistrationFailure` will be called when registration fails(the LoggerConfig with the same name already exists).
 -- @param name The name for the LoggerConfig
 -- @return object loggerconfig
 function Log4g.Core.Config.LoggerConfig.RegisterLoggerConfig(name)
     if not HasKey(INSTANCES, name) then
         local loggerconfig = LoggerConfig:New(name)
         INSTANCES[name] = loggerconfig
-        hook.Run("Log4g_PostLoggerConfigRegistration")
 
         return INSTANCES[name]
     else
-        hook.Run("Log4g_OnLoggerConfigRegistrationFailure")
-
         return INSTANCES[name]
     end
 end

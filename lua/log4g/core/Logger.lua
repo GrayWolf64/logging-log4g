@@ -110,20 +110,14 @@ function Log4g.Core.Logger.GetAll()
 end
 
 --- Create a Logger.
--- `Log4g_PreLoggerRegistration` will be called before the registration.
--- `Log4g_PostLoggerRegistration` will be called after the registration succeeds.
--- If the Logger with the same name already exists, `Log4g_OnLoggerRegistrationFailure` will be called.
 -- @return object logger
 function Log4g.Core.Logger.Register(name)
     if not HasKey(INSTANCES, name) then
         INSTANCES[name] = Logger:New(name)
         RegisterLoggerConfig(name)
-        hook.Run("Log4g_PostLoggerRegistration", name)
 
         return logger
     else
-        hook.Run("Log4g_OnLoggerRegistrationFailure", name)
-
         return INSTANCES[name]
     end
 end
