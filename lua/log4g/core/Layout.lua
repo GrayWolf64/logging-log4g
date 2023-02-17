@@ -1,7 +1,6 @@
 --- The Layout.
 -- @classmod Layout
 Log4g.Core.Layout = Log4g.Core.Layout or {}
-local HasKey = Log4g.Util.HasKey
 local Class = include("log4g/core/impl/MiddleClass.lua")
 local Layout = Class("Layout")
 
@@ -23,9 +22,5 @@ function Log4g.Core.Layout.GetLayoutAll()
 end
 
 function Log4g.Core.Layout.GetLayout(name)
-    if HasKey(INSTANCES, name) then
-        return INSTANCES[name]
-    else
-        return nil
-    end
+    if INSTANCES[name] then return INSTANCES[name] end
 end

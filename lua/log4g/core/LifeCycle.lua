@@ -3,7 +3,6 @@
 -- @license Apache License 2.0
 -- @copyright GrayWolf64
 Log4g.Core.LifeCycle = Log4g.Core.LifeCycle or {}
-local HasKey = Log4g.Util.HasKey
 
 --- LifeCycle states (status of a life cycle).
 -- @table Log4g.Core.LifeCycle.State
@@ -46,7 +45,7 @@ end
 -- @param tbl The object's private table
 -- @return function state
 function Log4g.Core.LifeCycle.GetState(tbl)
-    if not HasKey(tbl, "state") then return end
+    if not tbl["state"] then return end
 
     return tbl.state
 end
@@ -57,7 +56,7 @@ local STARTED = Log4g.Core.LifeCycle.State.STARTED
 -- @param tbl The object's private table
 -- @return bool isstarted
 function Log4g.Core.LifeCycle.IsStarted(tbl)
-    if not HasKey(tbl, "state") then return end
+    if not tbl["state"] then return end
     if tbl.state == STARTED then return true end
 
     return false

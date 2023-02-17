@@ -1,6 +1,5 @@
 --- The LoggerConfig.
 -- @classmod LoggerConfig
-local HasKey = Log4g.Util.HasKey
 local Class = include("log4g/core/impl/MiddleClass.lua")
 local LoggerConfig = Class("LoggerConfig")
 local SetState = Log4g.Core.LifeCycle.SetState
@@ -67,19 +66,15 @@ end
 --- Get the LoggerConfig with the right name.
 -- @return object loggerconfig
 function Log4g.Core.Config.LoggerConfig.Get(name)
-    if HasKey(INSTANCES, name) then return INSTANCES[name] end
+    if INSTANCES[name] then return INSTANCES[name] end
 end
 
 --- Register a LoggerConfig.
 -- @param name The name for the LoggerConfig
 -- @return object loggerconfig
 function Log4g.Core.Config.LoggerConfig.RegisterLoggerConfig(name)
-    if not HasKey(INSTANCES, name) then
-        local loggerconfig = LoggerConfig:New(name)
-        INSTANCES[name] = loggerconfig
+    if INSTANCES[name] then return INSTANCES[name] end
+    INSTANCES[name] = LoggerConfig:New(name)
 
-        return INSTANCES[name]
-    else
-        return INSTANCES[name]
-    end
+    return INSTANCES[name]
 end

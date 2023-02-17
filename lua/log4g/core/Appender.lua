@@ -1,7 +1,6 @@
 --- The Appender.
 -- @classmod Appender
 Log4g.Core.Appender = Log4g.Core.Appender or {}
-local HasKey = Log4g.Util.HasKey
 local Class = include("log4g/core/impl/MiddleClass.lua")
 local Appender = Class("Appender")
 
@@ -19,9 +18,5 @@ end
 local INSTANCES = INSTANCES or {}
 
 function Log4g.Core.Appender.GetAppender(name)
-    if HasKey(INSTANCES, name) then
-        return INSTANCES[name]
-    else
-        return nil
-    end
+    if INSTANCES[name] then return INSTANCES[name] end
 end

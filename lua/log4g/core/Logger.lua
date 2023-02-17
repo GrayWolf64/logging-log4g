@@ -6,7 +6,6 @@ local SetState = Log4g.Core.LifeCycle.SetState
 local INITIALIZING, INITIALIZED = Log4g.Core.LifeCycle.State.INITIALIZING, Log4g.Core.LifeCycle.State.INITIALIZED
 local STARTING, STARTED = Log4g.Core.LifeCycle.State.STARTING, Log4g.Core.LifeCycle.State.STARTED
 local STOPPING, STOPPED = Log4g.Core.LifeCycle.State.STOPPING, Log4g.Core.LifeCycle.State.STOPPED
-local HasKey = Log4g.Util.HasKey
 local RegisterLoggerConfig = Log4g.Core.Config.LoggerConfig.RegisterLoggerConfig
 local GetLoggerConfig = Log4g.Core.Config.LoggerConfig.Get
 local GetStandardIntLevel = Log4g.Level.GetStandardIntLevel
@@ -25,7 +24,11 @@ local PRIVATE = PRIVATE or setmetatable({}, {
 function Logger:Initialize(name)
     SetState(PRIVATE, INITIALIZING)
     self.name = name
-    PRIVATE[self] = {}
+
+    PRIVATE[self] = {
+        loggerconfig = RegisterLoggerConfig(name)
+    }
+
     SetState(PRIVATE, INITIALIZED)
 end
 
@@ -108,7 +111,7 @@ function Logger:Terminate()
 end
 
 function Log4g.Core.Logger.Get(name)
-    if HasKey(INSTANCES, name) then return INSTANCES[name] end
+    if INSTANCES[name] then return INSTANCES[name] end
 end
 
 --- Get all the Loggers.
@@ -120,12 +123,8 @@ end
 --- Create a Logger.
 -- @return object logger
 function Log4g.Core.Logger.Register(name)
-    if not HasKey(INSTANCES, name) then
-        INSTANCES[name] = Logger:New(name)
-        RegisterLoggerConfig(name)
+    if INSTANCES[name] then return INSTANCES[name] end
+    INSTANCES[name] = Logger:New(name)
 
-        return logger
-    else
-        return INSTANCES[name]
-    end
+    return INSTANCES[name]
 end

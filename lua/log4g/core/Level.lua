@@ -1,12 +1,11 @@
 --- The Level (Log Level).
 -- @classmod Level
-local HasKey = Log4g.Util.HasKey
-local Class  = include("log4g/core/impl/MiddleClass.lua")
-local Level  = Class("Level")
+local Class = include("log4g/core/impl/MiddleClass.lua")
+local Level = Class("Level")
 
 function Level:Initialize(name, int)
     self.name = name
-    self.int  = int
+    self.int = int
 end
 
 function Level:__tostring()
@@ -63,14 +62,14 @@ end
 -- @local
 -- @table StdIntLevel
 local StdIntLevel = {
-    ALL   = math.huge,
+    ALL = math.huge,
     TRACE = 600,
     DEBUG = 500,
-    INFO  = 400,
-    WARN  = 300,
+    INFO = 400,
+    WARN = 300,
     ERROR = 200,
     FATAL = 100,
-    OFF   = 0,
+    OFF = 0,
 }
 
 --- Standard Logging Levels as a table.
@@ -85,14 +84,14 @@ local StdIntLevel = {
 -- @field FATAL A severe error that will prevent the game from continuing.
 -- @field OFF No events will be logged.
 local StdLevel = {
-    ALL   = Level:New("ALL", StdIntLevel.ALL),
+    ALL = Level:New("ALL", StdIntLevel.ALL),
     TRACE = Level:New("TRACE", StdIntLevel.TRACE),
     DEBUG = Level:New("DEBUG", StdIntLevel.DEBUG),
-    INFO  = Level:New("INFO", StdIntLevel.INFO),
-    WARN  = Level:New("WARN", StdIntLevel.WARN),
+    INFO = Level:New("INFO", StdIntLevel.INFO),
+    WARN = Level:New("WARN", StdIntLevel.WARN),
     ERROR = Level:New("ERROR", StdIntLevel.ERROR),
     FATAL = Level:New("FATAL", StdIntLevel.FATAL),
-    OFF   = Level:New("OFF", StdIntLevel.OFF),
+    OFF = Level:New("OFF", StdIntLevel.OFF),
 }
 
 --- Get the Standard Levels as a table.
@@ -112,12 +111,10 @@ end
 -- @param name The Level's name
 -- @return object level
 function Log4g.Level.GetLevel(name)
-    if HasKey(StdLevel, name) then
+    if StdLevel[name] then
         return StdLevel[name]
-    elseif HasKey(CustomLevel, name) then
+    elseif CustomLevel[name] then
         return CustomLevel[name]
-    else
-        return nil
     end
 end
 
@@ -127,9 +124,9 @@ end
 -- @param int The Level's intlevel
 -- @return object level
 function Log4g.Level.RegisterCustomLevel(name, int)
-    if #name == 0 or int < 0 or HasKey(StdLevel, name) then return end
+    if #name == 0 or int < 0 or StdLevel[name] then return end
 
-    if not HasKey(CustomLevel, name) then
+    if not CustomLevel[name] then
         local level = Level:New(name, int)
         CustomLevel[name] = level
 
