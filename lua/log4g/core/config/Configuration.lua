@@ -2,10 +2,6 @@
 -- @classmod Configuration
 local Class = include("log4g/core/impl/MiddleClass.lua")
 local Configuration = Class("Configuration")
---- All the Configuration objects will be stored here in a ordered table.
--- @local
--- @table INSTANCES
-local INSTANCES = INSTANCES or {}
 
 --- A weak table which stores some private attributes of the Configuration object.
 -- @local
@@ -28,8 +24,5 @@ end
 
 --- Register a Configuration.
 function Log4g.Core.Config.Configuration.Register(name)
-    if INSTANCES[name] then return INSTANCES[name] end
-    INSTANCES[name] = Configuration:New(name)
-
-    return INSTANCES[name]
+    return Configuration:New(name)
 end
