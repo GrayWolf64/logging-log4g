@@ -35,8 +35,6 @@ if SERVER then
 
     if file.Exists(API, "lsv") then
         include(API)
-    else
-        return
     end
 
     if file.Exists(MMC, "lsv") then
