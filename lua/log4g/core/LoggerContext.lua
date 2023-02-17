@@ -7,7 +7,7 @@ local RemoveLoggerConfigByContext = Log4g.Core.Config.LoggerConfig.RemoveByConte
 local SetState = Log4g.Core.LifeCycle.SetState
 local INITIALIZING, INITIALIZED = Log4g.Core.LifeCycle.State.INITIALIZING, Log4g.Core.LifeCycle.State.INITIALIZED
 local STOPPING, STOPPED = Log4g.Core.LifeCycle.State.STOPPING, Log4g.Core.LifeCycle.State.STOPPED
-local RegisterConfiguration = Log4g.Core.Config.Configuration.Register
+local GetDefaultConfiguration = Log4g.Core.Config.GetDefaultConfiguration
 --- This is where all the LoggerContexts are stored.
 -- LoggerContexts may include some Loggers which may also include Appender, Level objects and so on.
 -- @local
@@ -24,11 +24,7 @@ local PRIVATE = PRIVATE or setmetatable({}, {
 function LoggerContext:Initialize(name)
     SetState(PRIVATE, INITIALIZING)
     self.name = name
-
-    PRIVATE[self] = {
-        configuration = RegisterConfiguration()
-    }
-
+    PRIVATE[self] = {}
     SetState(PRIVATE, INITIALIZED)
 end
 
@@ -36,6 +32,12 @@ end
 -- @return string name
 function LoggerContext:GetName()
     return self.name
+end
+
+--- Sets the Configuration to be used.
+-- @param configuration Configuration
+function LoggerContext:SetConfiguration(configuration)
+    PRIVATE[self].configuration = configuration
 end
 
 --- Returns the current Configuration of the LoggerContext.
@@ -82,6 +84,7 @@ end
 function Log4g.Core.LoggerContext.Register(name)
     if not HasKey(INSTANCES, name) then
         INSTANCES[name] = LoggerContext:New(name)
+        INSTANCES[name]:SetConfiguration(GetDefaultConfiguration())
 
         return INSTANCES[name]
     else
