@@ -51,8 +51,6 @@ concommand.Add("Log4g_MMC", function()
     local SheetPanelA = vgui.Create("DPanel", SheetA)
     SheetPanelA.Paint = nil
 
-    local SheetPanelC = vgui.Create("DPanel", SheetA)
-    SheetA:AddSheet("Overview", SheetPanelC, "icon16/page.png")
     local SheetPanelD = vgui.Create("DPanel", SheetA)
     SheetA:AddSheet("Summary", SheetPanelD, "icon16/table.png")
     local SummarySheet = vgui.Create("DProperties", SheetPanelD)
@@ -97,6 +95,4 @@ concommand.Add("Log4g_MMC", function()
     end)
 
     UpdateSummary()
-    local SheetPanelE = vgui.Create("DPanel", SheetA)
-    SheetA:AddSheet("StatusLogger", SheetPanelE, "icon16/brick.png")
 end)
