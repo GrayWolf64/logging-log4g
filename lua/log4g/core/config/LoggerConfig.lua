@@ -14,7 +14,7 @@ local INSTANCES = INSTANCES or {}
 --- A weak table which stores some private attributes of the LoggerConfig object.
 -- @local
 -- @table PRIVATE
-local PRIVATE = PRIVATE or  setmetatable({}, {
+local PRIVATE = PRIVATE or setmetatable({}, {
     __mode = "k"
 })
 
