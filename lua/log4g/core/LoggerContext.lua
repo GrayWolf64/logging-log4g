@@ -8,7 +8,6 @@ local INITIALIZING, INITIALIZED = Log4g.Core.LifeCycle.State.INITIALIZING, Log4g
 local STOPPING, STOPPED = Log4g.Core.LifeCycle.State.STOPPING, Log4g.Core.LifeCycle.State.STOPPED
 local GetDefaultConfiguration = Log4g.Core.Config.GetDefaultConfiguration
 --- This is where all the LoggerContexts are stored.
--- LoggerContexts may include some Loggers which may also include Appender, Level objects and so on.
 -- @local
 -- @table INSTANCES
 local INSTANCES = INSTANCES or {}
