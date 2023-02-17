@@ -17,7 +17,7 @@ local INSTANCES = INSTANCES or {}
 --- A weak table which stores some private attributes of the LoggerContext object.
 -- @local
 -- @table PRIVATE
-local PRIVATE = PRIVATE or  setmetatable({}, {
+local PRIVATE = PRIVATE or setmetatable({}, {
     __mode = "k"
 })
 
@@ -61,10 +61,18 @@ function Log4g.Core.LoggerContext.GetAll()
     return INSTANCES
 end
 
+local GetCurrentFQSN = Log4g.Util.GetCurrentFQSN
+
 --- Get the LoggerContext with the right name.
+-- @param T A string or a function
 -- @return object loggercontext
-function Log4g.Core.LoggerContext.Get(name)
-    if HasKey(INSTANCES, name) then return INSTANCES[name] end
+function Log4g.Core.LoggerContext.Get(T)
+    if isstring(T) then
+        if HasKey(INSTANCES, T) then return INSTANCES[T] end
+    elseif isfunction(T) then
+        local fqsn = GetCurrentFQSN(T)
+        if HasKey(INSTANCES, fqsn) then return INSTANCES[fqsn] end
+    end
 end
 
 --- Register a LoggerContext.
