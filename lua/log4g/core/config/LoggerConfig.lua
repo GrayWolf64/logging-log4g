@@ -32,11 +32,6 @@ function LoggerConfig:GetName()
     return self.name
 end
 
---- Get the LoggerContext name of the LoggerConfig.
-function LoggerConfig:GetContext()
-    return self.loggercontext
-end
-
 --- Remove the LoggerConfig.
 function LoggerConfig:Remove()
     SetState(PRIVATE, STOPPING)
