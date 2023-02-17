@@ -43,7 +43,6 @@ function Log4g.Core.LifeCycle.SetState(tbl, state)
 end
 
 --- Get the LifeCycle state that the object is at.
--- If the object doesn't have a state, an error will be returned.
 -- @param tbl The object's private table
 -- @return function state
 function Log4g.Core.LifeCycle.GetState(tbl)
@@ -55,7 +54,6 @@ end
 local STARTED = Log4g.Core.LifeCycle.State.STARTED
 
 --- Check whether the obeject's state is STARTED.
--- If the object doesn't have a state, an error will be returned.
 -- @param tbl The object's private table
 -- @return bool isstarted
 function Log4g.Core.LifeCycle.IsStarted(tbl)
