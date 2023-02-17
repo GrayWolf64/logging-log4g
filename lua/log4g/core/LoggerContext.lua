@@ -2,7 +2,6 @@
 -- @classmod LoggerContext
 local Class = include("log4g/core/impl/MiddleClass.lua")
 local LoggerContext = Class("LoggerContext")
-local HasKey = Log4g.Util.HasKey
 local RemoveLoggerConfigByContext = Log4g.Core.Config.LoggerConfig.RemoveByContext
 local SetState = Log4g.Core.LifeCycle.SetState
 local INITIALIZING, INITIALIZED = Log4g.Core.LifeCycle.State.INITIALIZING, Log4g.Core.LifeCycle.State.INITIALIZED
@@ -70,10 +69,10 @@ local GetCurrentFQSN = Log4g.Util.GetCurrentFQSN
 -- @return object loggercontext
 function Log4g.Core.LoggerContext.Get(T)
     if isstring(T) then
-        if HasKey(INSTANCES, T) then return INSTANCES[T] end
+        if INSTANCES[T] then return INSTANCES[T] end
     elseif isfunction(T) then
         local fqsn = GetCurrentFQSN(T)
-        if HasKey(INSTANCES, fqsn) then return INSTANCES[fqsn] end
+        if INSTANCES[fqsn] then return INSTANCES[fqsn] end
     end
 end
 
@@ -82,12 +81,9 @@ end
 -- @param name The name of the LoggerContext
 -- @return object loggercontext
 function Log4g.Core.LoggerContext.Register(name)
-    if not HasKey(INSTANCES, name) then
-        INSTANCES[name] = LoggerContext:New(name)
-        INSTANCES[name]:SetConfiguration(GetDefaultConfiguration())
+    if INSTANCES[name] then return INSTANCES[name] end
+    INSTANCES[name] = LoggerContext:New(name)
+    INSTANCES[name]:SetConfiguration(GetDefaultConfiguration())
 
-        return INSTANCES[name]
-    else
-        return INSTANCES[name]
-    end
+    return INSTANCES[name]
 end
