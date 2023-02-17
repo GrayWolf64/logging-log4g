@@ -10,17 +10,29 @@ local HasKey = Log4g.Util.HasKey
 local RegisterLoggerConfig = Log4g.Core.Config.LoggerConfig.RegisterLoggerConfig
 local GetLoggerConfig = Log4g.Core.Config.LoggerConfig.Get
 local GetStandardIntLevel = Log4g.Level.GetStandardIntLevel
+--- This is where all the Loggers are stored.
+-- @local
+-- @table INSTANCES
+local INSTANCES = INSTANCES or {}
+
+--- A weak table which stores some private attributes of the Logger object.
+-- @local
+-- @table PRIVATE
+local PRIVATE = PRIVATE or  setmetatable({}, {
+    __mode = "k"
+})
 
 function Logger:Initialize(name)
-    SetState(self, INITIALIZING)
+    SetState(PRIVATE, INITIALIZING)
     self.name = name
-    SetState(self, INITIALIZED)
+    PRIVATE[self] = {}
+    SetState(PRIVATE, INITIALIZED)
 end
 
 --- Start the Logger.
 function Logger:Start(loggerconfig)
-    SetState(self, STARTING)
-    SetState(self, STARTED)
+    SetState(PRIVATE, STARTING)
+    SetState(PRIVATE, STARTED)
 
     return self
 end
@@ -87,15 +99,11 @@ function Logger:FATAL(arg)
     end
 end
 
---- This is where all the Loggers are stored.
--- @local
--- @table INSTANCES
-local INSTANCES = INSTANCES or {}
-
 --- Terminate the Logger.
 function Logger:Terminate()
-    SetState(self, STOPPING)
-    SetState(self, STOPPED)
+    SetState(PRIVATE, STOPPING)
+    PRIVATE[self] = nil
+    SetState(PRIVATE, STOPPED)
     INSTANCES[self.name] = nil
 end
 

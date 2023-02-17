@@ -6,14 +6,26 @@ local LoggerConfig = Class("LoggerConfig")
 local SetState = Log4g.Core.LifeCycle.SetState
 local INITIALIZING, INITIALIZED = Log4g.Core.LifeCycle.State.INITIALIZING, Log4g.Core.LifeCycle.State.INITIALIZED
 local STOPPING, STOPPED = Log4g.Core.LifeCycle.State.STOPPING, Log4g.Core.LifeCycle.State.STOPPED
+--- All the LoggerConfigs will be stored here.
+-- @local
+-- @table INSTANCES
+local INSTANCES = INSTANCES or {}
+
+--- A weak table which stores some private attributes of the LoggerConfig object.
+-- @local
+-- @table PRIVATE
+local PRIVATE = PRIVATE or  setmetatable({}, {
+    __mode = "k"
+})
 
 --- Initialize the LoggerConfig object.
 -- This is meant to be used internally.
 -- @param tbl The table containing the necessary data to make a LoggerConfig
 function LoggerConfig:Initialize(name)
-    SetState(self, INITIALIZING)
+    SetState(PRIVATE, INITIALIZING)
     self.name = name
-    SetState(self, INITIALIZED)
+    PRIVATE[self] = {}
+    SetState(PRIVATE, INITIALIZED)
 end
 
 --- Get the name of the LoggerConfig, same to `loggerconfig.name`.
@@ -26,15 +38,11 @@ function LoggerConfig:GetContext()
     return self.loggercontext
 end
 
---- All the LoggerConfigs will be stored here.
--- @local
--- @table INSTANCES
-local INSTANCES = INSTANCES or {}
-
 --- Remove the LoggerConfig.
 function LoggerConfig:Remove()
-    SetState(self, STOPPING)
-    SetState(self, STOPPED)
+    SetState(PRIVATE, STOPPING)
+    PRIVATE[self] = nil
+    SetState(PRIVATE, STOPPED)
     INSTANCES[self.name] = nil
 end
 

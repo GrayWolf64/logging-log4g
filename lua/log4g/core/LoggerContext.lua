@@ -17,19 +17,19 @@ local INSTANCES = INSTANCES or {}
 --- A weak table which stores some private attributes of the LoggerContext object.
 -- @local
 -- @table PRIVATE
-local PRIVATE = setmetatable({}, {
+local PRIVATE = PRIVATE or  setmetatable({}, {
     __mode = "k"
 })
 
 function LoggerContext:Initialize(name)
-    SetState(self, INITIALIZING)
+    SetState(PRIVATE, INITIALIZING)
     self.name = name
 
     PRIVATE[self] = {
         configuration = RegisterConfiguration()
     }
 
-    SetState(self, INITIALIZED)
+    SetState(PRIVATE, INITIALIZED)
 end
 
 --- Get the name of the LoggerContext.
@@ -50,10 +50,10 @@ end
 
 --- Terminate the LoggerContext.
 function LoggerContext:Terminate()
-    SetState(self, STOPPING)
+    SetState(PRIVATE, STOPPING)
     PRIVATE[self] = nil
     RemoveLoggerConfigByContext(self.name)
-    SetState(self, STOPPED)
+    SetState(PRIVATE, STOPPED)
     INSTANCES[self.name] = nil
 end
 

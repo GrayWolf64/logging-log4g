@@ -35,44 +35,32 @@ Log4g.Core.LifeCycle.State = {
 }
 
 --- Set the LifeCycle state for an object.
--- @param obj The object to set state for
+-- @param tbl The object's private table
 -- @param state The state to set, must be a function that returns a string
-function Log4g.Core.LifeCycle.SetState(obj, state)
-    if not isfunction(state) then
-        error("SetState failed: state must be a function.\n")
-
-        return
-    end
-
-    obj.state = state
+function Log4g.Core.LifeCycle.SetState(tbl, state)
+    if not isfunction(state) then return end
+    tbl.state = state
 end
 
 --- Get the LifeCycle state that the object is at.
 -- If the object doesn't have a state, an error will be returned.
--- @param obj The object to get the state
+-- @param tbl The object's private table
 -- @return function state
-function Log4g.Core.LifeCycle.GetState(obj)
-    if not HasKey(obj, "state") then
-        error("GetState failed: The object doesn't have a state.\n")
+function Log4g.Core.LifeCycle.GetState(tbl)
+    if not HasKey(tbl, "state") then return end
 
-        return
-    end
-
-    return obj.state
+    return tbl.state
 end
+
+local STARTED = Log4g.Core.LifeCycle.State.STARTED
 
 --- Check whether the obeject's state is STARTED.
 -- If the object doesn't have a state, an error will be returned.
--- @param obj The object to check
+-- @param tbl The object's private table
 -- @return bool isstarted
-function Log4g.Core.LifeCycle.IsStarted(obj)
-    if not HasKey(obj, "state") then
-        error("Failed to check IsStarted: The object doesn't have a state.\n")
-
-        return
-    end
-
-    if obj.state == Log4g.Core.LifeCycle.State.STARTED then return true end
+function Log4g.Core.LifeCycle.IsStarted(tbl)
+    if not HasKey(tbl, "state") then return end
+    if tbl.state == STARTED then return true end
 
     return false
 end
