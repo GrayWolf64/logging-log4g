@@ -114,12 +114,12 @@ function Log4g.Level.GetLevel(name)
     end
 end
 
---- Register a Custom Level.
--- If the CustomLevel already exists, it's intlevel will be overrode.
+--- Retrieves an existing CustomLevel or creates one if it didn't previously exist.
+-- If the CustomLevel matching the provided name already exists, it's intlevel will be overrode.
 -- @param name The Level's name
 -- @param int The Level's intlevel
 -- @return object level
-function Log4g.Level.RegisterCustomLevel(name, int)
+function Log4g.Level.ForName(name, int)
     if #name == 0 or int < 0 or StdLevel[name] then return end
 
     if not CustomLevel[name] then
