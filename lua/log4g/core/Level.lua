@@ -83,16 +83,11 @@ local StdIntLevel = {
 -- @field ERROR An error in game, possibly recoverable.
 -- @field FATAL A severe error that will prevent the game from continuing.
 -- @field OFF No events will be logged.
-local StdLevel = {
-    ALL = Level:New("ALL", StdIntLevel.ALL),
-    TRACE = Level:New("TRACE", StdIntLevel.TRACE),
-    DEBUG = Level:New("DEBUG", StdIntLevel.DEBUG),
-    INFO = Level:New("INFO", StdIntLevel.INFO),
-    WARN = Level:New("WARN", StdIntLevel.WARN),
-    ERROR = Level:New("ERROR", StdIntLevel.ERROR),
-    FATAL = Level:New("FATAL", StdIntLevel.FATAL),
-    OFF = Level:New("OFF", StdIntLevel.OFF),
-}
+local StdLevel = {}
+
+for k, v in pairs(StdIntLevel) do
+    StdLevel[k] = Level:New(k, v)
+end
 
 --- Get the Standard Levels as a table.
 -- @return table StdLevel
