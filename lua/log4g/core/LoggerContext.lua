@@ -19,14 +19,11 @@ local PRIVATE = PRIVATE or setmetatable({}, {
 })
 
 function LoggerContext:Initialize(name)
-    SetState(PRIVATE, INITIALIZING)
+    PRIVATE[self] = {}
+    SetState(PRIVATE[self], INITIALIZING)
     self.name = name
-
-    PRIVATE[self] = {
-        logger = {}
-    }
-
-    SetState(PRIVATE, INITIALIZED)
+    PRIVATE[self].logger = {}
+    SetState(PRIVATE[self], INITIALIZED)
 end
 
 --- Get the name of the LoggerContext.
@@ -59,9 +56,9 @@ end
 
 --- Terminate the LoggerContext.
 function LoggerContext:Terminate()
-    SetState(PRIVATE, STOPPING)
+    SetState(PRIVATE[self], STOPPING)
+    SetState(PRIVATE[self], STOPPED)
     PRIVATE[self] = nil
-    SetState(PRIVATE, STOPPED)
     INSTANCES[self.name] = nil
 end
 

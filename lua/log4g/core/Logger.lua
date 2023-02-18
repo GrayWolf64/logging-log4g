@@ -16,21 +16,18 @@ local PRIVATE = PRIVATE or setmetatable({}, {
 })
 
 function Logger:Initialize(name, contextname)
-    SetState(PRIVATE, INITIALIZING)
+    PRIVATE[self] = {}
+    SetState(PRIVATE[self], INITIALIZING)
     self.name = name
-
-    PRIVATE[self] = {
-        contextname = contextname,
-        loggerconfig = RegisterLoggerConfig(name)
-    }
-
-    SetState(PRIVATE, INITIALIZED)
+    PRIVATE[self].contextname = contextname
+    PRIVATE[self].loggerconfig = RegisterLoggerConfig(name)
+    SetState(PRIVATE[self], INITIALIZED)
 end
 
 --- Start the Logger.
-function Logger:Start(loggerconfig)
-    SetState(PRIVATE, STARTING)
-    SetState(PRIVATE, STARTED)
+function Logger:Start()
+    SetState(PRIVATE[self], STARTING)
+    SetState(PRIVATE[self], STARTED)
 
     return self
 end
@@ -49,7 +46,7 @@ end
 
 --- Terminate the Logger.
 function Logger:Terminate()
-    SetState(PRIVATE, STOPPING)
+    SetState(PRIVATE[self], STOPPING)
+    SetState(PRIVATE[self], STOPPED)
     PRIVATE[self] = nil
-    SetState(PRIVATE, STOPPED)
 end

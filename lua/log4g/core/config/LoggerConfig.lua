@@ -18,14 +18,11 @@ local PRIVATE = PRIVATE or setmetatable({}, {
 -- @param name The name of the LoggerConfig
 -- @param level The Level object
 function LoggerConfig:Initialize(name, level)
-    SetState(PRIVATE, INITIALIZING)
+    PRIVATE[self] = {}
+    SetState(PRIVATE[self], INITIALIZING)
     self.name = name
-
-    PRIVATE[self] = {
-        level = level
-    }
-
-    SetState(PRIVATE, INITIALIZED)
+    PRIVATE[self].level = level
+    SetState(PRIVATE[self], INITIALIZED)
 end
 
 --- Get the name of the LoggerConfig, same as `loggerconfig.name`.
@@ -35,9 +32,9 @@ end
 
 --- Remove the LoggerConfig.
 function LoggerConfig:Remove()
-    SetState(PRIVATE, STOPPING)
+    SetState(PRIVATE[self], STOPPING)
+    SetState(PRIVATE[self], STOPPED)
     PRIVATE[self] = nil
-    SetState(PRIVATE, STOPPED)
 end
 
 --- Factory method to create a LoggerConfig.
