@@ -1,4 +1,5 @@
 --- The Level (Log Level).
+-- Levels used for identifying the severity of an event.
 -- @classmod Level
 local Class = include("log4g/core/impl/MiddleClass.lua")
 local Level = Class("Level")
@@ -29,7 +30,7 @@ function Level:IntLevel()
 end
 
 --- Calculate the Level's SHA256 Hash Code.
--- Convert the Level object to string then use util.SHA256().
+-- It's the same as converting the Level object to string then use util.SHA256().
 -- @return string hashcode
 function Level:HashCode()
     return util.SHA256(tostring(self))
@@ -114,7 +115,7 @@ function Log4g.Level.GetLevel(name)
 end
 
 --- Register a Custom Level.
--- If the Level already exists, it's intlevel will be overrode.
+-- If the CustomLevel already exists, it's intlevel will be overrode.
 -- @param name The Level's name
 -- @param int The Level's intlevel
 -- @return object level

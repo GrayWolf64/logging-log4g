@@ -28,7 +28,7 @@ function LoggerConfig:Initialize(name, level)
     SetState(PRIVATE, INITIALIZED)
 end
 
---- Get the name of the LoggerConfig, same to `loggerconfig.name`.
+--- Get the name of the LoggerConfig, same as `loggerconfig.name`.
 function LoggerConfig:GetName()
     return self.name
 end
