@@ -34,7 +34,7 @@ concommand.Add("Log4g_MMC", function()
         net.SendToServer()
     end
 
-    local function ConnectionIcon()
+    local function UpdateIcon()
         Icon:SetImage("icon16/disconnect.png")
         SendEmptyMsgToSV("Log4g_CLReq_ChkConnected")
 
@@ -44,7 +44,7 @@ concommand.Add("Log4g_MMC", function()
         end)
     end
 
-    PanelTimedFunc(Icon, UpdateInterval, nil, ConnectionIcon)
+    PanelTimedFunc(Icon, UpdateInterval, nil, UpdateIcon)
     Icon:SetKeepAspect(true)
     Icon:SetSize(16, 16)
     local SheetA = CreateDPropertySheet(Frame, FILL, 0, 1, 0, 0, 4)
@@ -86,5 +86,6 @@ concommand.Add("Log4g_MMC", function()
     end
 
     PanelTimedFunc(SummarySheet, UpdateInterval, UpdateTime, UpdateSummary)
+    UpdateIcon()
     UpdateSummary()
 end)
