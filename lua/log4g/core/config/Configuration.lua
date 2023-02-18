@@ -27,6 +27,14 @@ function Configuration:AddLogger(name, loggerconfig)
     PRIVATE[self].logger[name] = loggerconfig
 end
 
+function Configuration:GetLoggers()
+    return PRIVATE[self].logger
+end
+
+function Configuration:GetAppenders()
+    return PRIVATE[self].appender
+end
+
 --- Register a Configuration.
 function Log4g.Core.Config.Configuration.Register(name)
     return Configuration:New(name)
