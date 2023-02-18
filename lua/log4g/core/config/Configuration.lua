@@ -36,6 +36,8 @@ function Configuration:GetAppenders()
 end
 
 --- Register a Configuration.
+-- @param name The name of the Configuration
+-- @return object configuration
 function Log4g.Core.Config.Configuration.Register(name)
     return Configuration:New(name)
 end

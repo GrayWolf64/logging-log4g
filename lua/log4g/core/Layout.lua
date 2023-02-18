@@ -14,13 +14,3 @@ local PatternLayout = Layout:subclass("PatternLayout")
 function PatternLayout:Initialize(name)
     Layout.Initialize(self, name, "log4g/core/layout/PatternLayout.lua")
 end
-
-local INSTANCES = INSTANCES or {}
-
-function Log4g.Core.Layout.GetLayoutAll()
-    return INSTANCES
-end
-
-function Log4g.Core.Layout.GetLayout(name)
-    if INSTANCES[name] then return INSTANCES[name] end
-end
