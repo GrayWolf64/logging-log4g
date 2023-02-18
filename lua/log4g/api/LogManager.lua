@@ -5,9 +5,7 @@ Log4g.API.LogManager = Log4g.API.LogManager or {
 }
 
 local API = Log4g.API.LogManager
-local RootLoggerName = API.RootLoggerName
 local GetAllLoggers = Log4g.Core.Logger.GetAll
-local RegisterLogger = Log4g.Core.Logger.Register
 
 --- Detects if a Logger with the specified name exists.
 -- @param name The name of the Logger
@@ -17,9 +15,3 @@ function API.Exists(name)
 
     return false
 end
-
-function API.GetLogger(name)
-    Log4g.Core.Logger.Register(name)
-end
-
-RegisterLogger(RootLoggerName)

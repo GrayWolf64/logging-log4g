@@ -14,12 +14,17 @@ function Configuration:Initialize(name)
     self.name = name
 
     PRIVATE[self] = {
-        appender = {}
+        appender = {},
+        logger = {}
     }
 end
 
 function Configuration:AddAppender(appender)
     PRIVATE[self].appender[appender.name] = appender
+end
+
+function Configuration:AddLogger(name, loggerconfig)
+    PRIVATE[self].logger[name] = loggerconfig
 end
 
 --- Register a Configuration.

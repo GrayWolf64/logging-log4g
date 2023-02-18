@@ -119,12 +119,3 @@ end
 function Log4g.Core.Logger.GetAll()
     return INSTANCES
 end
-
---- Create a Logger.
--- @return object logger
-function Log4g.Core.Logger.Register(name)
-    if INSTANCES[name] then return INSTANCES[name] end
-    INSTANCES[name] = Logger:New(name)
-
-    return INSTANCES[name]
-end
