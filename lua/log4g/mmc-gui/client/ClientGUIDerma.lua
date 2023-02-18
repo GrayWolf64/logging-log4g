@@ -60,25 +60,26 @@ end
 --- In a Panel's Think, run a function and run another function but timed.
 -- @param panel The Panel which has a Think function to override
 -- @param interval The function will run every given seconds
--- @param funca The first function
--- @param funcb The second function
-function ClientGUIDerma.PanelTimedFunc(panel, interval, funca, funcb)
+-- @param a The first function, can be nil
+-- @param b The second function
+function ClientGUIDerma.PanelTimedFunc(panel, interval, a, b)
     local prevtime = os.time()
 
-    if funca and isfunction(funca) then
+    local function time()
+        local prestime = os.time()
+        if prevtime + interval > prestime then return end
+        b()
+        prevtime = prevtime + interval
+    end
+
+    if a and isfunction(a) then
         function panel:Think()
-            funca()
-            local prestime = os.time()
-            if prevtime + interval > prestime then return end
-            funcb()
-            prevtime = prevtime + interval
+            a()
+            time()
         end
     else
         function panel:Think()
-            local prestime = os.time()
-            if prevtime + interval > prestime then return end
-            funcb()
-            prevtime = prevtime + interval
+            time()
         end
     end
 end
