@@ -9,10 +9,6 @@ local STOPPING, STOPPED = Log4g.Core.LifeCycle.State.STOPPING, Log4g.Core.LifeCy
 local RegisterLoggerConfig = Log4g.Core.Config.LoggerConfig.RegisterLoggerConfig
 local GetLoggerConfig = Log4g.Core.Config.LoggerConfig.Get
 local GetStandardIntLevel = Log4g.Level.GetStandardIntLevel
---- This is where all the Loggers are stored.
--- @local
--- @table INSTANCES
-local INSTANCES = INSTANCES or {}
 
 --- A weak table which stores some private attributes of the Logger object.
 -- @local
@@ -107,15 +103,8 @@ function Logger:Terminate()
     SetState(PRIVATE, STOPPING)
     PRIVATE[self] = nil
     SetState(PRIVATE, STOPPED)
-    INSTANCES[self.name] = nil
 end
 
-function Log4g.Core.Logger.Get(name)
-    if INSTANCES[name] then return INSTANCES[name] end
-end
-
---- Get all the Loggers.
--- @return table instances
-function Log4g.Core.Logger.GetAll()
-    return INSTANCES
+function Log4g.Core.Logger.Create(context, name)
+    context:GetLoggers().name = Logger:New(name)
 end

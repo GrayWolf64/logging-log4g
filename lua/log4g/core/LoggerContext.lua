@@ -21,7 +21,11 @@ local PRIVATE = PRIVATE or setmetatable({}, {
 function LoggerContext:Initialize(name)
     SetState(PRIVATE, INITIALIZING)
     self.name = name
-    PRIVATE[self] = {}
+
+    PRIVATE[self] = {
+        logger = {}
+    }
+
     SetState(PRIVATE, INITIALIZED)
 end
 
@@ -29,6 +33,12 @@ end
 -- @return string name
 function LoggerContext:GetName()
     return self.name
+end
+
+--- Gets a table of the current loggers.
+-- @return table loggers
+function LoggerContext:GetLoggers()
+    return PRIVATE[self].logger
 end
 
 --- Sets the Configuration to be used.
