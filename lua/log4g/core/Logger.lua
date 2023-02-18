@@ -50,3 +50,7 @@ function Logger:Terminate()
     SetState(PRIVATE[self], STOPPED)
     PRIVATE[self] = nil
 end
+
+function Log4g.Core.Logger.Create(name, context, level)
+    Logger:New(name, context, level)
+end
