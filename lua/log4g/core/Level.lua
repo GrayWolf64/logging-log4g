@@ -31,6 +31,12 @@ function Level:IntLevel()
     return self.int
 end
 
+--- Get the Level's Color.
+-- @return object color
+function Level:GetColor()
+    return self.color
+end
+
 --- Calculate the Level's SHA256 Hash Code.
 -- It's the same as converting the Level object to string then use util.SHA256().
 -- @return string hashcode

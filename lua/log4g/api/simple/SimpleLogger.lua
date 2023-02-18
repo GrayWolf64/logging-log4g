@@ -8,7 +8,8 @@ function SimpleLogger:Initialize(name, context)
     self.contextname = context.name
 end
 
-function SimpleLogger:Log(level)
+function SimpleLogger:Log(level, ...)
+    Msg(level:GetColor(), ...)
 end
 
 function Log4g.API.Simple.SimpleLogger.Create(name, context)
