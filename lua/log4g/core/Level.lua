@@ -5,13 +5,14 @@ Log4g.Level = Log4g.Level or {}
 local Class = include("log4g/core/impl/MiddleClass.lua")
 local Level = Class("Level")
 
-function Level:Initialize(name, int)
+function Level:Initialize(name, int, color)
     self.name = name
     self.int = int
+    self.color = color
 end
 
 function Level:__tostring()
-    return "Level: [name:" .. self.name .. "]" .. "[int:" .. self.int .. "]"
+    return "Level: [name:" .. self.name .. "]" .. "[int:" .. self.int .. "]" .. "[color:" .. self.color .. "]"
 end
 
 function Level:__eq(lhs, rhs)
@@ -74,6 +75,20 @@ local StdIntLevel = {
     OFF = 0,
 }
 
+--- Standard Level Colors.
+-- @local
+-- @table StdLevelColor
+local StdLevelColor = {
+    ALL = color_white,
+    TRACE = Color(54, 54, 54),
+    DEBUG = Color(0, 255, 255),
+    INFO = Color(0, 255, 0),
+    WARN = Color(255, 255, 0),
+    ERROR = Color(255, 0, 0),
+    FATAL = Color(255, 48, 48),
+    OFF = color_white,
+}
+
 --- Standard Logging Levels as a table.
 -- @local
 -- @table StdLevel
@@ -88,7 +103,7 @@ local StdIntLevel = {
 local StdLevel = {}
 
 for k, v in pairs(StdIntLevel) do
-    StdLevel[k] = Level(k, v)
+    StdLevel[k] = Level(k, v, StdLevelColor[k])
 end
 
 --- Get the Standard Levels as a table.
