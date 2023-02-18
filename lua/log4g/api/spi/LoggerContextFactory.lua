@@ -6,6 +6,7 @@ local GetCurrentFQSN = Log4g.Util.GetCurrentFQSN
 
 --- Create a LoggerContext.
 -- @param T String name or a function to get FQSN
+-- @return loggercontext
 function Log4g.API.LoggerContextFactory.GetContext(T)
     if isstring(T) then
         return RegisterLoggerContext(T)

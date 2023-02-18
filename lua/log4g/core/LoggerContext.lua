@@ -4,6 +4,7 @@ local Class = include("log4g/core/impl/MiddleClass.lua")
 local LoggerContext = Class("LoggerContext")
 local SetState = Log4g.Core.LifeCycle.SetState
 local INITIALIZING, INITIALIZED = Log4g.Core.LifeCycle.State.INITIALIZING, Log4g.Core.LifeCycle.State.INITIALIZED
+local STARTING, STARTED = Log4g.Core.LifeCycle.State.STARTING, Log4g.Core.LifeCycle.State.STARTED
 local STOPPING, STOPPED = Log4g.Core.LifeCycle.State.STOPPING, Log4g.Core.LifeCycle.State.STOPPED
 local GetDefaultConfiguration = Log4g.Core.Config.GetDefaultConfiguration
 --- This is where all the LoggerContexts are stored.
@@ -24,6 +25,12 @@ function LoggerContext:Initialize(name)
     self.name = name
     PRIVATE[self].logger = {}
     SetState(PRIVATE[self], INITIALIZED)
+end
+
+--- Start the LoggerContext.
+function LoggerContext:Start()
+    SetState(PRIVATE[self], STARTING)
+    SetState(PRIVATE[self], STARTED)
 end
 
 --- Get the name of the LoggerContext.
@@ -60,6 +67,15 @@ function LoggerContext:Terminate()
     SetState(PRIVATE[self], STOPPED)
     PRIVATE[self] = nil
     INSTANCES[self.name] = nil
+end
+
+--- Determines if the specified Logger exists.
+-- @param The name of the Logger to check
+-- @return bool haslogger
+function LoggerContext:HasLogger(name)
+    if PRIVATE[self].logger[name] then return true end
+
+    return false
 end
 
 function Log4g.Core.LoggerContext.GetAll()
