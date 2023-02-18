@@ -42,7 +42,7 @@ end
 -- @param config The Configuration
 -- @return object loggerconfig
 function Log4g.Core.Config.LoggerConfig.Create(loggername, config, level)
-    local loggerconfig = LoggerConfig:New(name, level)
+    local loggerconfig = LoggerConfig(name, level)
     config:AddLogger(loggername, loggerconfig)
 
     return loggerconfig

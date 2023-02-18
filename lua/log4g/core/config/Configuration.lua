@@ -39,5 +39,5 @@ end
 -- @param name The name of the Configuration
 -- @return object configuration
 function Log4g.Core.Config.Configuration.Register(name)
-    return Configuration:New(name)
+    return Configuration(name)
 end

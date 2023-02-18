@@ -86,7 +86,7 @@ end
 -- @return object loggercontext
 function Log4g.Core.LoggerContext.Register(name)
     if INSTANCES[name] then return INSTANCES[name] end
-    INSTANCES[name] = LoggerContext:New(name)
+    INSTANCES[name] = LoggerContext(name)
     INSTANCES[name]:SetConfiguration(GetDefaultConfiguration())
 
     return INSTANCES[name]

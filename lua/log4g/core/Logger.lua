@@ -50,5 +50,5 @@ function Logger:Terminate()
 end
 
 function Log4g.Core.Logger.Create(name, context, level)
-    context:GetLoggers()[name] = Logger:New(name, context, level)
+    context:GetLoggers()[name] = Logger(name, context, level)
 end

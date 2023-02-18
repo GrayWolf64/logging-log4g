@@ -87,7 +87,7 @@ local StdIntLevel = {
 local StdLevel = {}
 
 for k, v in pairs(StdIntLevel) do
-    StdLevel[k] = Level:New(k, v)
+    StdLevel[k] = Level(k, v)
 end
 
 --- Get the Standard Levels as a table.
@@ -123,7 +123,7 @@ function Log4g.Level.ForName(name, int)
     if #name == 0 or int < 0 or StdLevel[name] then return end
 
     if not CustomLevel[name] then
-        local level = Level:New(name, int)
+        local level = Level(name, int)
         CustomLevel[name] = level
 
         return level
