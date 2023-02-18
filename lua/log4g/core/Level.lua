@@ -12,7 +12,7 @@ function Level:Initialize(name, int, color)
 end
 
 function Level:__tostring()
-    return "Level: [name:" .. self.name .. "]" .. "[int:" .. self.int .. "]" .. "[color:" .. self.color .. "]"
+    return "Level: [name:" .. self.name .. "]" .. "[int:" .. self.int .. "]" .. "[color:" .. tostring(self.color) .. "]"
 end
 
 function Level:__eq(lhs, rhs)
