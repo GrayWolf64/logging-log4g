@@ -11,6 +11,6 @@ end
 function SimpleLogger:Log(level)
 end
 
-function Log4g.Core.SimpleLogger.Create(name, context)
+function Log4g.API.Simple.SimpleLogger.Create(name, context)
     context.logger[name] = SimpleLogger(name, context)
 end
