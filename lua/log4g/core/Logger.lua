@@ -6,7 +6,7 @@ local SetState = Log4g.Core.LifeCycle.SetState
 local INITIALIZING, INITIALIZED = Log4g.Core.LifeCycle.State.INITIALIZING, Log4g.Core.LifeCycle.State.INITIALIZED
 local STARTING, STARTED = Log4g.Core.LifeCycle.State.STARTING, Log4g.Core.LifeCycle.State.STARTED
 local STOPPING, STOPPED = Log4g.Core.LifeCycle.State.STOPPING, Log4g.Core.LifeCycle.State.STOPPED
-local RegisterLoggerConfig = Log4g.Core.Config.LoggerConfig.RegisterLoggerConfig
+local CreateLoggerConfig = Log4g.Core.Config.LoggerConfig.Create
 
 --- A weak table which stores some private attributes of the Logger object.
 -- @local
@@ -15,12 +15,12 @@ local PRIVATE = PRIVATE or setmetatable({}, {
     __mode = "k"
 })
 
-function Logger:Initialize(name, contextname)
+function Logger:Initialize(name, context, level)
     PRIVATE[self] = {}
     SetState(PRIVATE[self], INITIALIZING)
     self.name = name
-    PRIVATE[self].contextname = contextname
-    PRIVATE[self].loggerconfig = RegisterLoggerConfig(name)
+    PRIVATE[self].contextname = context.name
+    PRIVATE[self].loggerconfig = CreateLoggerConfig(name, context:GetConfiguration(), level)
     SetState(PRIVATE[self], INITIALIZED)
 end
 

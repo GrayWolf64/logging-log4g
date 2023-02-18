@@ -41,7 +41,7 @@ end
 -- @param loggername The name for the Logger
 -- @param config The Configuration
 -- @return object loggerconfig
-function Log4g.Core.Config.LoggerConfig.CreateLogger(loggername, config, level)
+function Log4g.Core.Config.LoggerConfig.Create(loggername, config, level)
     local loggerconfig = LoggerConfig:New(name, level)
     config:AddLogger(loggername, loggerconfig)
 
