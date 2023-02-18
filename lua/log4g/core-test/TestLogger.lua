@@ -6,7 +6,3 @@ concommand.Add("Log4g_CoreTest_CreateLogger", function()
 
     CreateLogger()
 end)
-
-concommand.Add("Log4g_CoreTest_ShowAllLogger", function()
-    PrintTable(Log4g.Core.Logger.GetAll())
-end)
