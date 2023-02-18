@@ -1,5 +1,6 @@
 --- Initialization of Log4g on server and client.
 -- @script Log4g-Init
+local Core = "log4g/core/Core-Init.lua"
 local API = "log4g/api/API-Init.lua"
 local MMC = "log4g/mmc-gui/MMC-Init.lua"
 local CoreTest = "log4g/core-test/Core-Test-Init.lua"
@@ -14,24 +15,10 @@ if SERVER then
     -- @field Util
     -- @field _VERSION
     Log4g = Log4g or {}
-    Log4g.Core = Log4g.Core or {}
-    Log4g.Core.Config = Log4g.Core.Config or {}
-    Log4g.Core.Config.Configuration = Log4g.Core.Config.Configuration or {}
-    Log4g.Core.Config.LoggerConfig = Log4g.Core.Config.LoggerConfig or {}
-    Log4g.Core.LoggerContext = Log4g.Core.LoggerContext or {}
-    Log4g.Level = Log4g.Level or {}
-    Log4g.Core.Logger = Log4g.Core.Logger or {}
-    include("log4g/core/Version.lua")
-    include("log4g/core/Util.lua")
-    include("log4g/core/LifeCycle.lua")
-    include("log4g/core/Level.lua")
-    include("log4g/core/Layout.lua")
-    include("log4g/core/Appender.lua")
-    include("log4g/core/config/Configuration.lua")
-    include("log4g/core/config/DefaultConfiguration.lua")
-    include("log4g/core/config/LoggerConfig.lua")
-    include("log4g/core/LoggerContext.lua")
-    include("log4g/core/Logger.lua")
+
+    if file.Exists(Core, "lsv") then
+        include(Core)
+    end
 
     if file.Exists(API, "lsv") then
         include(API)

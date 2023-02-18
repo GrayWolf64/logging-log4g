@@ -1,6 +1,7 @@
 --- The Level (Log Level).
 -- Levels used for identifying the severity of an event.
 -- @classmod Level
+Log4g.Level = Log4g.Level or {}
 local Class = include("log4g/core/impl/MiddleClass.lua")
 local Level = Class("Level")
 
