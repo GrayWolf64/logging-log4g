@@ -28,8 +28,6 @@ end
 function Logger:Start()
     SetState(PRIVATE[self], STARTING)
     SetState(PRIVATE[self], STARTED)
-
-    return self
 end
 
 --- Get the Logger name.
@@ -52,5 +50,5 @@ function Logger:Terminate()
 end
 
 function Log4g.Core.Logger.Create(name, context, level)
-    Logger:New(name, context, level)
+    context:GetLoggers()[name] = Logger:New(name, context, level)
 end
