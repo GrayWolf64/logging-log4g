@@ -2,7 +2,6 @@
 -- @classmod LoggerContext
 local Class = include("log4g/core/impl/MiddleClass.lua")
 local LoggerContext = Class("LoggerContext")
-local RemoveLoggerConfigByContext = Log4g.Core.Config.LoggerConfig.RemoveByContext
 local SetState = Log4g.Core.LifeCycle.SetState
 local INITIALIZING, INITIALIZED = Log4g.Core.LifeCycle.State.INITIALIZING, Log4g.Core.LifeCycle.State.INITIALIZED
 local STOPPING, STOPPED = Log4g.Core.LifeCycle.State.STOPPING, Log4g.Core.LifeCycle.State.STOPPED
@@ -52,7 +51,6 @@ end
 function LoggerContext:Terminate()
     SetState(PRIVATE, STOPPING)
     PRIVATE[self] = nil
-    RemoveLoggerConfigByContext(self.name)
     SetState(PRIVATE, STOPPED)
     INSTANCES[self.name] = nil
 end
