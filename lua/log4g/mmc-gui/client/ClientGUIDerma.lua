@@ -65,12 +65,21 @@ end
 function ClientGUIDerma.PanelTimedFunc(panel, interval, funca, funcb)
     local prevtime = os.time()
 
-    function panel:Think()
-        funca()
-        local prestime = os.time()
-        if prevtime + interval > prestime then return end
-        funcb()
-        prevtime = prevtime + interval
+    if funca and isfunction(funca) then
+        function panel:Think()
+            funca()
+            local prestime = os.time()
+            if prevtime + interval > prestime then return end
+            funcb()
+            prevtime = prevtime + interval
+        end
+    else
+        function panel:Think()
+            local prestime = os.time()
+            if prevtime + interval > prestime then return end
+            funcb()
+            prevtime = prevtime + interval
+        end
     end
 end
 
