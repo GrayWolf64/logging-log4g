@@ -15,6 +15,7 @@ if SERVER then
     -- @field Util
     -- @field _VERSION
     Log4g = Log4g or {}
+    Log4g.SPACE = " "
 
     if file.Exists(Core, "lsv") then
         include(Core)
