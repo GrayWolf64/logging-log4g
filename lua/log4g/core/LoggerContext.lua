@@ -1,4 +1,5 @@
---- The LoggerContext.
+--- The LoggerContext, which is the anchor for the logging system.
+-- It maintains a list of all the loggers requested by applications and a reference to the Configuration.
 -- @classmod LoggerContext
 local Class = include("log4g/core/impl/MiddleClass.lua")
 local LoggerContext = Class("LoggerContext")
@@ -8,6 +9,7 @@ local STARTING, STARTED = Log4g.Core.LifeCycle.State.STARTING, Log4g.Core.LifeCy
 local STOPPING, STOPPED = Log4g.Core.LifeCycle.State.STOPPING, Log4g.Core.LifeCycle.State.STOPPED
 local GetDefaultConfiguration = Log4g.Core.Config.GetDefaultConfiguration
 --- This is where all the LoggerContexts are stored.
+-- This is done to prevent the rapid changes in logging system's global table from polluting it.
 -- @local
 -- @table INSTANCES
 local INSTANCES = INSTANCES or {}
