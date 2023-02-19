@@ -36,7 +36,7 @@ Simply clone this project and extract the project folder into your `garrysmod/ad
 Then you just have to make sure it loads before your addon, or you can use valid checks:
 
 ```lua
-if Log4g.Core.Logger and Log4g.Core.LoggerContext then
+if Log4g.Core.Logger and Log4g.Core.LoggerContext and Log4g.Level then
    --- Do some calculation here.
    local function Calculate()
       --- This will locate / create a proper LoggerContext for the file where this function is called.
@@ -54,6 +54,9 @@ if Log4g.Core.Logger and Log4g.Core.LoggerContext then
    end
 end
 ```
+
+so that you won't experience errors if your addon is loaded before the logging system.
+However, your addon won't successfully log any messages until the logging system is loaded.
 
 ## Documentation
 
