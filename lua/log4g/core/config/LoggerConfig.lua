@@ -18,17 +18,22 @@ local PRIVATE = PRIVATE or setmetatable({}, {
 -- This is meant to be used internally.
 -- @param name The name of the LoggerConfig
 -- @param level The Level object
-function LoggerConfig:Initialize(name, level)
+function LoggerConfig:Initialize(name)
     PRIVATE[self] = {}
     SetState(PRIVATE[self], INITIALIZING)
     self.name = name
-    PRIVATE[self].level = level
     SetState(PRIVATE[self], INITIALIZED)
 end
 
 --- Get the name of the LoggerConfig, same as `loggerconfig.name`.
 function LoggerConfig:GetName()
     return self.name
+end
+
+--- Sets the logging Level.
+-- @param level The Logging Level
+function LoggerConfig:SetLevel(level)
+    PRIVATE[self].level = level
 end
 
 --- Remove the LoggerConfig.
@@ -41,9 +46,11 @@ end
 --- Factory method to create a LoggerConfig.
 -- @param loggername The name for the Logger
 -- @param config The Configuration
+-- @param level The Logging Level
 -- @return object loggerconfig
 function Log4g.Core.Config.LoggerConfig.Create(loggername, config, level)
-    local loggerconfig = LoggerConfig(name, level)
+    local loggerconfig = LoggerConfig(name)
+    loggerconfig:SetLevel(level)
     config:AddLogger(loggername, loggerconfig)
 
     return loggerconfig
