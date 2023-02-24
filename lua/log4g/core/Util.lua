@@ -3,10 +3,11 @@
 -- @license Apache License 2.0
 -- @copyright GrayWolf64
 Log4g.Util = Log4g.Util or {}
+local Util = Log4g.Util
 
 --- Add all the string keys in a table to network string table.
 -- @param tbl The table of network strings to add
-function Log4g.Util.AddNetworkStrsViaTbl(tbl)
+function Util.AddNetworkStrsViaTbl(tbl)
     local AddNetworkString = util.AddNetworkString
 
     for _, v in pairs(tbl) do
@@ -19,6 +20,6 @@ end
 -- Something may go wrong if used on a C function.
 -- @param func The name of the function where GetCurrentFQSN is called
 -- @return string fqsn
-function Log4g.Util.GetCurrentFQSN(func)
+function Util.GetCurrentFQSN(func)
     return string.StripExtension(debug.getinfo(func, "S").source:gsub("%/", "."):gsub("%@", ""))
 end
