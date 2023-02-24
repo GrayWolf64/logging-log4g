@@ -16,7 +16,6 @@ end
 -- @param level The Level object
 -- @param ... args to output to console
 function SimpleLogger:Log(level, ...)
-    print(level:GetColor())
     MsgC(os.date("%Y-%m-%d %H-%M-%S"), SPACE, level:GetColor(), "[" .. level:Name() .. "]", SPACE, color_white, ...)
 end
 
