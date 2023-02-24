@@ -1,5 +1,6 @@
 --- Interface that must be implemented to create a Configuration.
 -- @classmod Configuration
+Log4g.Core.Config.Configuration = Log4g.Core.Config.Configuration or {}
 local Class = include("log4g/core/impl/MiddleClass.lua")
 local Configuration = Class("Configuration")
 

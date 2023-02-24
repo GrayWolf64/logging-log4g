@@ -1,5 +1,6 @@
 --- The Logger.
 -- @classmod Logger
+Log4g.Core.Logger = Log4g.Core.Logger or {}
 local Class = include("log4g/core/impl/MiddleClass.lua")
 local Logger = Class("Logger")
 local SetState = Log4g.Core.LifeCycle.SetState

@@ -1,6 +1,7 @@
 --- The LoggerContext, which is the anchor for the logging system.
 -- It maintains a list of all the loggers requested by applications and a reference to the Configuration.
 -- @classmod LoggerContext
+Log4g.Core.LoggerContext = Log4g.Core.LoggerContext or {}
 local Class = include("log4g/core/impl/MiddleClass.lua")
 local LoggerContext = Class("LoggerContext")
 local SetState = Log4g.Core.LifeCycle.SetState
