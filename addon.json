@@ -1,0 +1,10 @@
+{
+    "title": "Log4g - Log for Garry's Mod",
+    "type": "tool",
+    "tags": [],
+    "ignore": [
+        "*.md",
+        "*.txt",
+        "*.sample"
+    ]
+}
