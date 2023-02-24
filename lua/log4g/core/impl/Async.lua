@@ -1,1 +1,0 @@
-local THREADS = THREADS or {}
