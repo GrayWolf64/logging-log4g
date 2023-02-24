@@ -1,4 +1,5 @@
---- The LoggerContext, which is the anchor for the logging system.
+--- The LoggerContext, which is the anchor for the logging system,
+-- implementing Coroutines and Stacks.
 -- It maintains a list of all the loggers requested by applications and a reference to the Configuration.
 -- @classmod LoggerContext
 Log4g.Core.LoggerContext = Log4g.Core.LoggerContext or {}
@@ -9,6 +10,7 @@ local INITIALIZING, INITIALIZED = Log4g.Core.LifeCycle.State.INITIALIZING, Log4g
 local STARTING, STARTED = Log4g.Core.LifeCycle.State.STARTING, Log4g.Core.LifeCycle.State.STARTED
 local STOPPING, STOPPED = Log4g.Core.LifeCycle.State.STOPPING, Log4g.Core.LifeCycle.State.STOPPED
 local GetDefaultConfiguration = Log4g.Core.Config.GetDefaultConfiguration
+local THREADS = util.Stack()
 --- This is where LoggerContexts are stored.
 -- This is done to prevent the rapid changes in logging system's global table from polluting it.
 -- @local
@@ -107,13 +109,16 @@ function Log4g.Core.LoggerContext.Get(T)
 end
 
 --- Register a LoggerContext.
--- This is used for APIs.
 -- @param name The name of the LoggerContext
 -- @return object loggercontext
 function Log4g.Core.LoggerContext.Register(name)
-    if INSTANCES[name] then return INSTANCES[name] end
-    INSTANCES[name] = LoggerContext(name)
-    INSTANCES[name]:SetConfiguration(GetDefaultConfiguration())
+    THREADS:Push(coroutine.create(function()
+        if INSTANCES[name] then return INSTANCES[name] end
+        INSTANCES[name] = LoggerContext(name)
+        INSTANCES[name]:SetConfiguration(GetDefaultConfiguration())
 
-    return INSTANCES[name]
+        return INSTANCES[name]
+    end))
+
+    coroutine.resume(THREADS:Top())
 end
