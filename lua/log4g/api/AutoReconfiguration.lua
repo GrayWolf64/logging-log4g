@@ -1,4 +1,5 @@
 --- Automatic reconfiguration system for the Logging environment.
+-- This won't be implemented since we are doing Programmatic Configuration now.
 -- @script AutoReconfiguration
 -- @license Apache License 2.0
 -- @copyright GrayWolf64
