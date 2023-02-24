@@ -88,6 +88,12 @@ function LoggerContext:HasLogger(name)
     return false
 end
 
+--- Returns the LoggerContext class for subclassing on other files.
+-- @return object LoggerContext
+function Log4g.Core.LoggerContext.Class()
+    return LoggerContext
+end
+
 function Log4g.Core.LoggerContext.GetAll()
     return INSTANCES
 end
