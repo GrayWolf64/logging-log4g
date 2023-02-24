@@ -2,9 +2,9 @@
 -- It logs events that occur in the logging system.
 -- Subclassing SimpleLogger.
 -- @classmod StatusLogger
-local CLASS = Log4g.API.Simple.SimpleLogger.Class()
-local StatusLogger = CLASS:subclass("StatusLogger")
+local SimpleLogger = Log4g.API.Simple.SimpleLogger.Class()
+local StatusLogger = SimpleLogger:subclass("StatusLogger")
 
 function StatusLogger:Initialize(name, context)
-    CLASS:Initialize(self, name, context)
+    SimpleLogger:Initialize(self, name, context)
 end
