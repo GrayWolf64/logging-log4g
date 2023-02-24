@@ -14,18 +14,17 @@ function Configuration:Initialize(name)
     self.name = name
 
     PRIVATE[self] = {
-        context = {},
         appender = {},
         loggerconfig = {}
     }
 end
 
---- Sets the LoggerContext for the Configuration.
+--- Sets the LoggerContext name for the Configuration.
 -- This is meant to be used internally when creating a LoggerContext,
--- and associating the DefaultConfiguration with it.
--- @param ctx LoggerContext object
-function Configuration:SetContext(ctx)
-    PRIVATE[self].context[ctx.name] = ctx
+-- and associating the DefaultConfiguration with it, then the Configuration will have a string field of the LoggerContext's name.
+-- @param name ctxname
+function Configuration:SetContext(name)
+    PRIVATE[self].context = name
 end
 
 function Configuration:AddAppender(appender)
