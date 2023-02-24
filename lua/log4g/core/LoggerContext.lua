@@ -10,7 +10,6 @@ local INITIALIZING, INITIALIZED = Log4g.Core.LifeCycle.State.INITIALIZING, Log4g
 local STARTING, STARTED = Log4g.Core.LifeCycle.State.STARTING, Log4g.Core.LifeCycle.State.STARTED
 local STOPPING, STOPPED = Log4g.Core.LifeCycle.State.STOPPING, Log4g.Core.LifeCycle.State.STOPPED
 local GetDefaultConfiguration = Log4g.Core.Config.GetDefaultConfiguration
-local THREADS = util.Stack()
 --- This is where LoggerContexts are stored.
 -- This is done to prevent the rapid changes in logging system's global table from polluting it.
 -- @local
@@ -112,13 +111,9 @@ end
 -- @param name The name of the LoggerContext
 -- @return object loggercontext
 function Log4g.Core.LoggerContext.Register(name)
-    THREADS:Push(coroutine.create(function()
-        if INSTANCES[name] then return INSTANCES[name] end
-        INSTANCES[name] = LoggerContext(name)
-        INSTANCES[name]:SetConfiguration(GetDefaultConfiguration())
+    if INSTANCES[name] then return INSTANCES[name] end
+    INSTANCES[name] = LoggerContext(name)
+    INSTANCES[name]:SetConfiguration(GetDefaultConfiguration())
 
-        return INSTANCES[name]
-    end))
-
-    coroutine.resume(THREADS:Top())
+    return INSTANCES[name]
 end

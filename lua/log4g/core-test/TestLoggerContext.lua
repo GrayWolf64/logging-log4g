@@ -1,5 +1,10 @@
 local function CreateContext()
-    Log4g.API.LoggerContextFactory.GetContext(CreateContext)
+    local GetContext = Log4g.API.LoggerContextFactory.GetContext
+    GetContext(CreateContext)
+
+    for i = 1, 65536 do
+        GetContext(tostring(i))
+    end
 end
 
 concommand.Add("Log4g_CoreTest_CreateLoggerContext", function()
