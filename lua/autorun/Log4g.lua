@@ -3,7 +3,7 @@
 local Core = "log4g/core/Core.lua"
 local API = "log4g/api/API.lua"
 local MMC = "log4g/mmc-gui/MMC-Init.lua"
-local CoreTest = "log4g/CoreTest/CoreTest.lua"
+local CoreTest = "log4g/core-test/CoreTest.lua"
 file.CreateDir("log4g")
 
 if SERVER then
