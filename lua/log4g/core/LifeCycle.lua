@@ -14,24 +14,12 @@ Log4g.Core.LifeCycle = Log4g.Core.LifeCycle or {}
 -- @field STOPPING Stopping is in progress.
 -- @field STOPPED Has stopped.
 Log4g.Core.LifeCycle.State = {
-    INITIALIZING = function()
-        return "INITIALIZING"
-    end,
-    INITIALIZED = function()
-        return "INITIALIZED"
-    end,
-    STARTING = function()
-        return "STARTING"
-    end,
-    STARTED = function()
-        return "STARTED"
-    end,
-    STOPPING = function()
-        return "STOPPING"
-    end,
-    STOPPED = function()
-        return "STOPPED"
-    end,
+    INITIALIZING = function() return "INITIALIZING" end,
+    INITIALIZED = function() return "INITIALIZED" end,
+    STARTING = function() return "STARTING" end,
+    STARTED = function() return "STARTED" end,
+    STOPPING = function() return "STOPPING" end,
+    STOPPED = function() return "STOPPED" end,
 }
 
 --- Set the LifeCycle state for an object.

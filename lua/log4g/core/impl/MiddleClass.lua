@@ -85,9 +85,7 @@ local function _createClass(name, super)
         })
     else
         setmetatable(aClass.static, {
-            __index = function(_, k)
-                return rawget(dict, k)
-            end,
+            __index = function(_, k) return rawget(dict, k) end,
         })
     end
 
@@ -124,13 +122,9 @@ local function _includeMixin(aClass, mixin)
 end
 
 local DefaultMixin = {
-    __tostring = function(self)
-        return "instance of " .. tostring(self.class)
-    end,
+    __tostring = function(self) return "instance of " .. tostring(self.class) end,
     Initialize = function(self, ...) end,
-    isInstanceOf = function(self, aClass)
-        return type(aClass) == "table" and type(self) == "table" and (self.class == aClass or type(self.class) == "table" and type(self.class.isSubclassOf) == "function" and self.class:isSubclassOf(aClass))
-    end,
+    isInstanceOf = function(self, aClass) return type(aClass) == "table" and type(self) == "table" and (self.class == aClass or type(self.class) == "table" and type(self.class.isSubclassOf) == "function" and self.class:isSubclassOf(aClass)) end,
     static = {
         allocate = function(self)
             if not istable(self) then
@@ -164,19 +158,14 @@ local DefaultMixin = {
                 end
             end
 
-            subclass.Initialize = function(instance, ...)
-                return self.Initialize(instance, ...)
-            end
-
+            subclass.Initialize = function(instance, ...) return self.Initialize(instance, ...) end
             self.subclasses[subclass] = true
             self:subclassed(subclass)
 
             return subclass
         end,
         subclassed = function(self, other) end,
-        isSubclassOf = function(self, other)
-            return type(other) == "table" and type(self.super) == "table" and (self.super == other or self.super:isSubclassOf(other))
-        end,
+        isSubclassOf = function(self, other) return type(other) == "table" and type(self.super) == "table" and (self.super == other or self.super:isSubclassOf(other)) end,
         include = function(self, ...)
             if not istable(self) then
                 error()
@@ -202,9 +191,7 @@ function MiddleClass.class(name, super)
 end
 
 setmetatable(MiddleClass, {
-    __call = function(_, ...)
-        return MiddleClass.class(...)
-    end,
+    __call = function(_, ...) return MiddleClass.class(...) end,
 })
 
 return MiddleClass
