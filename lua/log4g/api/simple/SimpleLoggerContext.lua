@@ -26,10 +26,6 @@ function SimpleLoggerContext:HasLogger(name)
     return false
 end
 
-function Log4g.API.Simple.SimpleLoggerContext.GetAll()
-    return INSTANCES
-end
-
 --- Get the SimpleLoggerContext with the right name.
 -- @param name string name
 -- @return object SimpleLoggerContext
