@@ -56,6 +56,7 @@ end
 --- Sets the Configuration to be used.
 -- @param configuration Configuration
 function LoggerContext:SetConfiguration(configuration)
+    configuration:SetContext(self)
     PRIVATE[self].configuration = configuration
 end
 
