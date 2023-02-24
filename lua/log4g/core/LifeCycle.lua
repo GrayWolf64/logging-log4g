@@ -1,4 +1,5 @@
 --- The LifeCycle for objects.
+-- LifeCycles of objects are stored in their private tables.
 -- @script LifeCycle
 -- @license Apache License 2.0
 -- @copyright GrayWolf64
