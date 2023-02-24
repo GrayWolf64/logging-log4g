@@ -2,6 +2,7 @@
 -- This is the default logger that is used when no suitable logging implementation is available.
 -- Now it only supports outputing to console.
 -- @classmod SimpleLogger
+Log4g.API.Simple.SimpleLogger = Log4g.API.Simple.SimpleLogger or {}
 local Class = include("log4g/core/impl/MiddleClass.lua")
 local SimpleLogger = Class("SimpleLogger")
 local SPACE = Log4g.SPACE

@@ -1,5 +1,6 @@
 --- A simple LoggerContext implementation.
 -- @classmod SimpleLoggerContext
+Log4g.API.Simple.SimpleLoggerContext = Log4g.API.Simple.SimpleLoggerContext or {}
 local Class = include("log4g/core/impl/MiddleClass.lua")
 local SimpleLoggerContext = Class("SimpleLoggerContext")
 --- This is where all the SimpleLoggerContexts are stored.
