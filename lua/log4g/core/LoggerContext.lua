@@ -41,6 +41,12 @@ function LoggerContext:GetName()
     return self.name
 end
 
+--- Gets a Logger from the Context.
+-- @name The name of the Logger
+function LoggerContext:GetLogger(name)
+    if PRIVATE[self].logger[name] then return PRIVATE[self].logger[name] end
+end
+
 --- Gets a table of the current loggers.
 -- @return table loggers
 function LoggerContext:GetLoggers()
