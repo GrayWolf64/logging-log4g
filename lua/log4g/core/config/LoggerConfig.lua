@@ -3,9 +3,6 @@
 Log4g.Core.Config.LoggerConfig = Log4g.Core.Config.LoggerConfig or {}
 local Class = include("log4g/core/impl/MiddleClass.lua")
 local LoggerConfig = Class("LoggerConfig")
-local SetState = Log4g.Core.LifeCycle.SetState
-local INITIALIZING, INITIALIZED = Log4g.Core.LifeCycle.State.INITIALIZING, Log4g.Core.LifeCycle.State.INITIALIZED
-local STOPPING, STOPPED = Log4g.Core.LifeCycle.State.STOPPING, Log4g.Core.LifeCycle.State.STOPPED
 
 --- A weak table which stores some private attributes of the LoggerConfig object.
 -- @local
@@ -20,9 +17,7 @@ local PRIVATE = PRIVATE or setmetatable({}, {
 -- @param level The Level object
 function LoggerConfig:Initialize(name)
     PRIVATE[self] = {}
-    SetState(PRIVATE[self], INITIALIZING)
     self.name = name
-    SetState(PRIVATE[self], INITIALIZED)
 end
 
 --- Sets the logging Level.
@@ -33,8 +28,6 @@ end
 
 --- Remove the LoggerConfig.
 function LoggerConfig:Remove()
-    SetState(PRIVATE[self], STOPPING)
-    SetState(PRIVATE[self], STOPPED)
     PRIVATE[self] = nil
 end
 

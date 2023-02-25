@@ -1,19 +1,31 @@
---- The LifeCycle for objects.
--- LifeCycles of objects are stored in their private tables.
+--- In Log4j, the main interface for handling the life cycle context of an object is this one.
+-- An object first starts in the LifeCycle.State.INITIALIZED state by default to indicate the class has been loaded.
+-- From here, calling the start() method will change this state to LifeCycle.State.STARTING.
+-- After successfully being started, this state is changed to LifeCycle.State.STARTED.
+-- When the stop() is called, this goes into the LifeCycle.State.STOPPING state.
+-- After successfully being stopped, this goes into the LifeCycle.State.STOPPED state.
+-- In most circumstances, implementation classes should store their LifeCycle.State in a volatile field or inside an AtomicReference dependent on synchronization and concurrency requirements.
 -- @script LifeCycle
 -- @license Apache License 2.0
 -- @copyright GrayWolf64
 Log4g.Core.LifeCycle = Log4g.Core.LifeCycle or {}
+local Class = include("log4g/core/impl/MiddleClass.lua")
+local LifeCycle = Class("LifeCycle")
 
---- LifeCycle states (status of a life cycle).
--- @table Log4g.Core.LifeCycle.State
+local PRIVATE = PRIVATE or setmetatable({}, {
+    __mode = "k"
+})
+
+--- LifeCycle states.
+-- @table States
+-- @local
 -- @field INITIALIZING Object is in its initial state and not yet initialized.
 -- @field INITIALIZED Initialized but not yet started.
 -- @field STARTING In the process of starting.
 -- @field STARTED Has started.
 -- @field STOPPING Stopping is in progress.
 -- @field STOPPED Has stopped.
-Log4g.Core.LifeCycle.State = {
+local States = {
     INITIALIZING = function() return "INITIALIZING" end,
     INITIALIZED = function() return "INITIALIZED" end,
     STARTING = function() return "STARTING" end,
@@ -22,31 +34,31 @@ Log4g.Core.LifeCycle.State = {
     STOPPED = function() return "STOPPED" end,
 }
 
---- Set the LifeCycle state for an object.
--- @param tbl The object's private table
--- @param state The state to set, must be a function that returns a string
-function Log4g.Core.LifeCycle.SetState(tbl, state)
-    if not isfunction(state) then return end
-    tbl.state = state
+--- Sets the LifeCycle state.
+-- @param state A function in the `States` table which returns a string representing the state
+function LifeCycle:SetState(state)
+    if not isfunction(state) or not table.HasValue(States, state) then return end
+    PRIVATE[self] = state
 end
 
---- Get the LifeCycle state that the object is at.
--- @param tbl The object's private table
+function LifeCycle:Initialize()
+    self:SetState(States.INITIALIZED)
+end
+
+function LifeCycle:Start()
+    self:SetState(States.STARTED)
+end
+
+--- Gets the LifeCycle state.
 -- @return function state
-function Log4g.Core.LifeCycle.GetState(tbl)
-    if not tbl["state"] then return end
-
-    return tbl.state
+function LifeCycle:GetState()
+    return PRIVATE[self]
 end
 
-local STARTED = Log4g.Core.LifeCycle.State.STARTED
+function Log4g.Core.LifeCycle.GetAll()
+    return States
+end
 
---- Check whether the obeject's state is STARTED.
--- @param tbl The object's private table
--- @return bool isstarted
-function Log4g.Core.LifeCycle.IsStarted(tbl)
-    if not tbl["state"] then return end
-    if tbl.state == STARTED then return true end
-
-    return false
+function Log4g.Core.LifeCycle.Class()
+    return LifeCycle
 end

@@ -1,14 +1,10 @@
---- The LoggerContext, which is the anchor for the logging system,
--- implementing Coroutines and Stacks.
+--- The LoggerContext, which is the anchor for the logging system.
+-- Subclassing `LifeCycle`.
 -- It maintains a list of all the loggers requested by applications and a reference to the Configuration.
 -- @classmod LoggerContext
 Log4g.Core.LoggerContext = Log4g.Core.LoggerContext or {}
-local Class = include("log4g/core/impl/MiddleClass.lua")
-local LoggerContext = Class("LoggerContext")
-local SetState = Log4g.Core.LifeCycle.SetState
-local INITIALIZING, INITIALIZED = Log4g.Core.LifeCycle.State.INITIALIZING, Log4g.Core.LifeCycle.State.INITIALIZED
-local STARTING, STARTED = Log4g.Core.LifeCycle.State.STARTING, Log4g.Core.LifeCycle.State.STARTED
-local STOPPING, STOPPED = Log4g.Core.LifeCycle.State.STOPPING, Log4g.Core.LifeCycle.State.STOPPED
+local LifeCycle = Log4g.Core.LifeCycle.Class()
+local LoggerContext = LifeCycle:subclass("LoggerContext")
 local GetDefaultConfiguration = Log4g.Core.Config.GetDefaultConfiguration
 --- This is where LoggerContexts are stored.
 -- This is done to prevent the rapid changes in logging system's global table from polluting it.
@@ -24,17 +20,10 @@ local PRIVATE = PRIVATE or setmetatable({}, {
 })
 
 function LoggerContext:Initialize(name)
+    LifeCycle.Initialize(self)
     PRIVATE[self] = {}
-    SetState(PRIVATE[self], INITIALIZING)
     self.name = name
     PRIVATE[self].logger = {}
-    SetState(PRIVATE[self], INITIALIZED)
-end
-
---- Start the LoggerContext.
-function LoggerContext:Start()
-    SetState(PRIVATE[self], STARTING)
-    SetState(PRIVATE[self], STARTED)
 end
 
 --- Gets a Logger from the Context.
@@ -68,8 +57,6 @@ end
 
 --- Terminate the LoggerContext.
 function LoggerContext:Terminate()
-    SetState(PRIVATE[self], STOPPING)
-    SetState(PRIVATE[self], STOPPED)
     PRIVATE[self] = nil
     INSTANCES[self.name] = nil
 end
