@@ -16,7 +16,8 @@ function Configuration:Initialize(name)
 
     PRIVATE[self] = {
         appender = {},
-        lc = {}
+        lc = {},
+        start = SysTime()
     }
 end
 
@@ -43,6 +44,11 @@ end
 
 function Configuration:GetAppenders()
     return PRIVATE[self].appender
+end
+
+--- Gets how long since this Configuration initialized. 
+function Configuration:GetUpTime()
+    return SysTime() - PRIVATE[self].start
 end
 
 --- Register a Configuration.
