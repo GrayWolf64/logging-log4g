@@ -11,3 +11,4 @@ declined, etc.
 ### List of Possible Exploits
 
 * Net Library
+* Some Type & Valid Checks
