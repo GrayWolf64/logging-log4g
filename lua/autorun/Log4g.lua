@@ -1,5 +1,7 @@
 --- Initialization of Log4g on server and client.
--- @script Log4g-Init
+-- @script Log4g
+-- @license Apache License 2.0
+-- @copyright GrayWolf64
 local Core = "log4g/core/Core.lua"
 local API = "log4g/api/API.lua"
 local MMC = "log4g/mmc-gui/MMC.lua"
