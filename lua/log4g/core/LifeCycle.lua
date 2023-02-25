@@ -17,7 +17,7 @@ local PRIVATE = PRIVATE or setmetatable({}, {
 })
 
 --- LifeCycle states.
--- @table States
+-- @table State
 -- @local
 -- @field INITIALIZING Object is in its initial state and not yet initialized.
 -- @field INITIALIZED Initialized but not yet started.
@@ -25,7 +25,7 @@ local PRIVATE = PRIVATE or setmetatable({}, {
 -- @field STARTED Has started.
 -- @field STOPPING Stopping is in progress.
 -- @field STOPPED Has stopped.
-local States = {
+local State = {
     INITIALIZING = function() return "INITIALIZING" end,
     INITIALIZED = function() return "INITIALIZED" end,
     STARTING = function() return "STARTING" end,
@@ -35,18 +35,18 @@ local States = {
 }
 
 --- Sets the LifeCycle state.
--- @param state A function in the `States` table which returns a string representing the state
+-- @param state A function in the `State` table which returns a string representing the state
 function LifeCycle:SetState(state)
-    if not isfunction(state) or not table.HasValue(States, state) then return end
+    if not isfunction(state) or not table.HasValue(State, state) then return end
     PRIVATE[self] = state
 end
 
 function LifeCycle:Initialize()
-    self:SetState(States.INITIALIZED)
+    self:SetState(State.INITIALIZED)
 end
 
 function LifeCycle:Start()
-    self:SetState(States.STARTED)
+    self:SetState(State.STARTED)
 end
 
 --- Gets the LifeCycle state.
@@ -56,7 +56,7 @@ function LifeCycle:GetState()
 end
 
 function Log4g.Core.LifeCycle.GetAll()
-    return States
+    return State
 end
 
 function Log4g.Core.LifeCycle.Class()
