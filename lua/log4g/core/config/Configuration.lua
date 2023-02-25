@@ -5,6 +5,7 @@ local Class = include("log4g/core/impl/MiddleClass.lua")
 local Configuration = Class("Configuration")
 
 --- A weak table which stores some private attributes of the Configuration object.
+-- It keeps every Configuration's Appenders, LoggerConfig names, LoggerContext name and start time.
 -- @local
 -- @table PRIVATE
 local PRIVATE = PRIVATE or setmetatable({}, {
@@ -34,14 +35,19 @@ function Configuration:AddAppender(appender)
 end
 
 function Configuration:AddLogger(name, lc)
-    PRIVATE[self].lc[name] = lc
+    PRIVATE[self].lc[name] = lc.name
 end
 
---- Locates the appropriate LoggerConfig for a Logger name.
+--- Locates the appropriate LoggerConfig name for a Logger name.
+-- @param name The Logger name
+-- @return string lcname
 function Configuration:GetLoggerConfig(name)
     if PRIVATE[self].lc[name] then return PRIVATE[self].lc[name] end
 end
 
+--- Gets all the Appenders in the Configuration.
+-- Keys are the names of Appenders and values are the Appenders themselves.
+-- @return table appenders
 function Configuration:GetAppenders()
     return PRIVATE[self].appender
 end
