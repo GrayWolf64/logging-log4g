@@ -112,9 +112,12 @@ end
 --- Set a DListView's line's text correctly using the given table with string keys and string values.
 -- @param tbl The table containing the needed text values, and its keys must be the same with the column texts
 -- @param line The line to set the texts in
-function ClientGUIDerma.SetProperLineText(tbl, line, listview)
+-- @param panel The DListView
+function ClientGUIDerma.SetProperLineText(tbl, line, panel)
+    if panel:GetClassName() ~= "DListView" or table.IsEmpty(panel.Columns) then return end
+
     for i, j in pairs(tbl) do
-        for m, n in ipairs(listview.Columns) do
+        for m, n in ipairs(panel.Columns) do
             if i == n:GetChild(0):GetText() then
                 line:SetColumnText(m, j)
             end
