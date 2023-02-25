@@ -16,13 +16,13 @@ function Logger:Initialize(name, context, level)
     PRIVATE[self] = {}
     self.name = name
     PRIVATE[self].contextname = context.name
-    PRIVATE[self].loggerconfig = CreateLoggerConfig(name, context:GetConfiguration(), level)
+    PRIVATE[self].lc = CreateLoggerConfig(name, context:GetConfiguration(), level)
 end
 
 --- Get the LoggerConfig of the Logger.
 -- @return object loggerconfig
 function Logger:GetLoggerConfig()
-    return PRIVATE[self].loggerconfig
+    return PRIVATE[self].lc
 end
 
 --- Terminate the Logger.
