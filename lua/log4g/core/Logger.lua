@@ -31,12 +31,6 @@ function Logger:Start()
     SetState(PRIVATE[self], STARTED)
 end
 
---- Get the Logger name.
--- @return string name
-function Logger:GetName()
-    return self.name
-end
-
 --- Get the LoggerConfig of the Logger.
 -- @return object loggerconfig
 function Logger:GetLoggerConfig()

@@ -37,12 +37,6 @@ function LoggerContext:Start()
     SetState(PRIVATE[self], STARTED)
 end
 
---- Get the name of the LoggerContext.
--- @return string name
-function LoggerContext:GetName()
-    return self.name
-end
-
 --- Gets a Logger from the Context.
 -- @name The name of the Logger
 function LoggerContext:GetLogger(name)

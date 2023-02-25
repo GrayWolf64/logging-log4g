@@ -46,7 +46,8 @@ function Configuration:GetAppenders()
     return PRIVATE[self].appender
 end
 
---- Gets how long since this Configuration initialized. 
+--- Gets how long since this Configuration initialized.
+-- @return int uptime
 function Configuration:GetUpTime()
     return SysTime() - PRIVATE[self].start
 end
