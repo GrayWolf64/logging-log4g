@@ -16,7 +16,7 @@ function Configuration:Initialize(name)
 
     PRIVATE[self] = {
         appender = {},
-        loggerconfig = {}
+        lc = {}
     }
 end
 
@@ -32,12 +32,13 @@ function Configuration:AddAppender(appender)
     PRIVATE[self].appender[appender.name] = appender
 end
 
-function Configuration:AddLogger(name, loggerconfig)
-    PRIVATE[self].loggerconfig[name] = loggerconfig
+function Configuration:AddLogger(name, lc)
+    PRIVATE[self].lc[name] = lc
 end
 
-function Configuration:GetLoggerConfigs()
-    return PRIVATE[self].loggerconfig
+--- Locates the appropriate LoggerConfig for a Logger name.
+function Configuration:GetLoggerConfig(name)
+    if PRIVATE[self].lc[name] then return PRIVATE[self].lc[name] end
 end
 
 function Configuration:GetAppenders()
