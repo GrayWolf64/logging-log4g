@@ -21,13 +21,23 @@ Log4g is an advanced logging framework for Garry's Mod.
 
 ## Entity Structure
 
-```txt
-INSTANCES
-   LoggerContext
-      Configuration
-         Appender
-         LoggerConfig
-      Logger
+```json
+{
+   "INSTANCES": [
+      {
+         "LoggerContext": {
+            "Configuration": {
+               "Appender"
+            },
+            "Logger": {
+               "LoggerConfig": {
+                  "Level"
+               }
+            }
+         }
+      }
+   ]
+}
 ```
 
 ## How to Add It To Your Project / How to Test?
