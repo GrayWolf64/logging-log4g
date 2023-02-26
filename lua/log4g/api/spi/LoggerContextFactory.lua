@@ -9,5 +9,5 @@ local RegisterLoggerContext = Log4g.Core.LoggerContext.Register
 function Log4g.API.LoggerContextFactory.GetContext(name)
     if not isstring(name) then return end
 
-    return RegisterLoggerContext(T)
+    return RegisterLoggerContext(name)
 end

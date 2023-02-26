@@ -30,10 +30,35 @@ function LoggerConfig:SetLevel(level)
     PRIVATE[self].level = level
 end
 
+local GetAllCtx = Log4g.Core.LoggerContext.GetAll
+
+--- Check if a LoggerConfig exists.
+-- @lfunction HasLoggerConfig
+-- @param name The name of the LoggerConfig to check
+-- @return bool ifhaslc
+local function HasLoggerConfig(name)
+    for _, v in pairs(GetAllCtx()) do
+        for _, j in pairs(v:GetLoggers()) do
+            if j:GetLoggerConfig().name == name then return true end
+        end
+    end
+
+    return false
+end
+
 --- Sets the parent of this LoggerConfig.
--- @param lc loggerconfig
-function LoggerConfig:SetParent(lc)
-    PRIVATE[self].parent = lc.name
+-- @param T LoggerConfig object or LoggerConfig name
+function LoggerConfig:SetParent(T)
+    if isstring(T) then
+        if not HasLoggerConfig(T) then return end
+        PRIVATE[self].parent = T
+    else
+        PRIVATE[self].parent = T.name
+    end
+end
+
+function LoggerConfig:GetParent()
+    return PRIVATE[self].parent
 end
 
 --- Factory method to create a LoggerConfig.
@@ -42,9 +67,62 @@ end
 -- @param level The Logging Level
 -- @return object loggerconfig
 function Log4g.Core.Config.LoggerConfig.Create(loggername, config, level)
-    local loggerconfig = LoggerConfig(name)
-    loggerconfig:SetLevel(level)
-    config:AddLogger(loggername, loggerconfig)
+    local char = string.ToTable(loggername)
+    local loggerconfig
+
+    if table.HasValue(char, ".") then
+        if char[1] == "." or char[#char] == "." then return end
+        -- lcnames {"A", ".", "B", ".", "C"}
+        local lcnames = char
+        -- lcnames {"A", ".", "B"}
+        -- loggerconfigs to check: A
+        --                         A.B
+        table.remove(lcnames, #lcnames)
+        table.remove(lcnames, #lcnames)
+
+        for k, v in pairs(lcnames) do
+            if v == "." then
+                table.remove(lcnames, k)
+            end
+        end
+
+        local tocheck = {}
+
+        for k, v in ipairs(lcnames) do
+            local tocheck2 = {}
+
+            for i = 1, k do
+                table.insert(tocheck2, lcnames[i])
+            end
+
+            table.insert(tocheck, table.concat(tocheck2, "."))
+        end
+
+        local lcname = table.concat(lcnames, ".")
+        print("self: " .. loggername .. " " .. "parent: " .. lcname)
+
+        --- Check if all the LoggerConfigs with the provided names exists.
+        -- @lfunction HasEveryLCMentioned
+        -- @param tbl The table containing all the LoggerConfigs' names to check
+        -- @return bool ifhaseverylc
+        local function HasEveryLCMentioned(tbl)
+            for _, v in pairs(tbl) do
+                if not HasLoggerConfig(v) then return false end
+            end
+
+            return true
+        end
+
+        if not HasEveryLCMentioned(tocheck) then return end
+        loggerconfig = LoggerConfig(loggername)
+        loggerconfig:SetLevel(level)
+        loggerconfig:SetParent(lcname)
+        config:AddLogger(loggername, loggerconfig)
+    else
+        loggerconfig = LoggerConfig(loggername)
+        loggerconfig:SetLevel(level)
+        config:AddLogger(loggername, loggerconfig)
+    end
 
     return loggerconfig
 end
