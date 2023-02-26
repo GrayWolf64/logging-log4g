@@ -74,18 +74,12 @@ function Log4g.Core.LoggerContext.GetAll()
     return INSTANCES
 end
 
-local GetCurrentFQSN = Log4g.Util.GetCurrentFQSN
-
 --- Get the LoggerContext with the right name.
--- @param T A string or a function
+-- @param name String name
 -- @return object loggercontext
-function Log4g.Core.LoggerContext.Get(T)
-    if isstring(T) then
-        if INSTANCES[T] then return INSTANCES[T] end
-    elseif isfunction(T) then
-        local fqsn = GetCurrentFQSN(T)
-        if INSTANCES[fqsn] then return INSTANCES[fqsn] end
-    end
+function Log4g.Core.LoggerContext.Get(name)
+    if not isstring(name) then return end
+    if INSTANCES[name] then return INSTANCES[name] end
 end
 
 --- Register a LoggerContext.

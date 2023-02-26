@@ -2,15 +2,12 @@
 -- @script LoggerContextFactory
 Log4g.API.LoggerContextFactory = Log4g.API.LoggerContextFactory or {}
 local RegisterLoggerContext = Log4g.Core.LoggerContext.Register
-local GetCurrentFQSN = Log4g.Util.GetCurrentFQSN
 
 --- Create a LoggerContext.
--- @param T String name or a function to get FQSN
--- @return loggercontext
-function Log4g.API.LoggerContextFactory.GetContext(T)
-    if isstring(T) then
-        return RegisterLoggerContext(T)
-    elseif isfunction(T) then
-        return RegisterLoggerContext(GetCurrentFQSN(T))
-    end
+-- @param name String name
+-- @return object loggercontext
+function Log4g.API.LoggerContextFactory.GetContext(name)
+    if not isstring(name) then return end
+
+    return RegisterLoggerContext(T)
 end

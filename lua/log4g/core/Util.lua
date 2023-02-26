@@ -14,12 +14,3 @@ function Util.AddNetworkStrsViaTbl(tbl)
         AddNetworkString(v)
     end
 end
-
---- Get the current FQSN according to the function provided.
--- Notice that the result will be the same across the same file where this function is called.
--- Something may go wrong if used on a C function.
--- @param func The name of the function where GetCurrentFQSN is called
--- @return string fqsn
-function Util.GetCurrentFQSN(func)
-    return string.StripExtension(debug.getinfo(func, "S").source:gsub("%/", "."):gsub("%@", ""))
-end
