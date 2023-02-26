@@ -15,7 +15,7 @@ local PRIVATE = PRIVATE or setmetatable({}, {
 function Logger:Initialize(name, context, level)
     PRIVATE[self] = {}
     self.name = name
-    PRIVATE[self].contextname = context.name
+    PRIVATE[self].ctx = context.name
     PRIVATE[self].lc = CreateLoggerConfig(name, context:GetConfiguration(), level)
 end
 
