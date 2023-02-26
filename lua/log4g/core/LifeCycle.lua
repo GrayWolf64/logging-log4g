@@ -1,4 +1,4 @@
---- In Log4j, the main interface for handling the life cycle context of an object is this one.
+--- In Log4g, the main interface for handling the life cycle context of an object is this one.
 -- An object first starts in the LifeCycle.State.INITIALIZED state by default to indicate the class has been loaded.
 -- From here, calling the `Start()` method will change this state to LifeCycle.State.STARTING.
 -- After successfully being started, this state is changed to LifeCycle.State.STARTED.
