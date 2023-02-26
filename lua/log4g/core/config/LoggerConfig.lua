@@ -20,6 +20,10 @@ function LoggerConfig:Initialize(name)
     self.name = name
 end
 
+function LoggerConfig:__tostring()
+    return "LoggerConfig: [name:" .. self.name .. "]"
+end
+
 --- Sets the logging Level.
 -- @param level The Logging Level
 function LoggerConfig:SetLevel(level)
