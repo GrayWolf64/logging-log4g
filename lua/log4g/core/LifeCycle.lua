@@ -1,10 +1,10 @@
 --- In Log4j, the main interface for handling the life cycle context of an object is this one.
 -- An object first starts in the LifeCycle.State.INITIALIZED state by default to indicate the class has been loaded.
--- From here, calling the start() method will change this state to LifeCycle.State.STARTING.
+-- From here, calling the `Start()` method will change this state to LifeCycle.State.STARTING.
 -- After successfully being started, this state is changed to LifeCycle.State.STARTED.
--- When the stop() is called, this goes into the LifeCycle.State.STOPPING state.
+-- When the `Stop()` is called, this goes into the LifeCycle.State.STOPPING state.
 -- After successfully being stopped, this goes into the LifeCycle.State.STOPPED state.
--- In most circumstances, implementation classes should store their LifeCycle.State in a volatile field or inside an AtomicReference dependent on synchronization and concurrency requirements.
+-- In most circumstances, implementation classes should store their LifeCycle.State in a volatile field dependent on synchronization and concurrency requirements.
 -- @script LifeCycle
 -- @license Apache License 2.0
 -- @copyright GrayWolf64
