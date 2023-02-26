@@ -23,30 +23,25 @@ Log4g is an advanced logging framework for Garry's Mod.
 
 ```json
 {
-   "INSTANCES": [
-      {
-         "Description": "This is where all the LoggerContexts are stored.",
-         "Location": " Local table, in lua/log4g/core/LoggerContext.lua."
-      }
+   "INSTANCES": {
+      "Description": "This is where all the LoggerContexts are stored.",
+      "Location": " Local table, in lua/log4g/core/LoggerContext.lua."
       {
          "LoggerContext": {
-            {
-               "Description": "All the Configuration objects and Loggers are kept in private fields of LoggerContext object."
-            },
-            "Configuration": [
-               {
+            "Description": "Keeps Configuration objects and Loggers in private fields."
+            {            
+               "Configuration": {
                   "Description": "All the Appenders and a list of LoggerConfigs' names are here."
                },
-               "Appender"
-            ],
-            "Logger": {
-               "LoggerConfig": {
-                  "Level"
+               "Logger": {
+                  "LoggerConfig": {
+                     "Level"
+                  }
                }
             }
          }
       }
-   ]
+   }
 }
 ```
 
