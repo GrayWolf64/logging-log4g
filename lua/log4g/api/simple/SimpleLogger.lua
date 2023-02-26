@@ -9,7 +9,7 @@ local SPACE = Log4g.SPACE
 
 function SimpleLogger:Initialize(name, context)
     self.name = name
-    self.contextname = context.name
+    self.context = context.name
 end
 
 --- Make SimpleLogger log a message.
