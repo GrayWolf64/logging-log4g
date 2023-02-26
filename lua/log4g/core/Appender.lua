@@ -4,13 +4,10 @@ Log4g.Core.Appender = Log4g.Core.Appender or {}
 local Class = include("log4g/core/impl/MiddleClass.lua")
 local Appender = Class("Appender")
 
-function Appender:Initialize(name, func)
+function Appender:Initialize(name)
     self.name = name
-    self.func = func
 end
 
-local ConsoleAppender = Appender:subclass("ConsoleAppender")
-
-function ConsoleAppender:Initialize(name)
-    Appender.Initialize(self, name, "log4g/core/appender/ConsoleAppender.lua")
+function Log4g.Core.Appender.Class()
+    return Appender
 end

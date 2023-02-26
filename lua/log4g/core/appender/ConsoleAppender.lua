@@ -1,5 +1,9 @@
-local function ConsoleAppender(args)
-    Msg(args)
+local Appender = Log4g.Core.Appender.Class()
+local ConsoleAppender = Appender:subclass("ConsoleAppender")
+
+function ConsoleAppender:Initialize(name)
+    Appender.Initialize(self, name)
 end
 
-return ConsoleAppender
+function ConsoleAppender:Append()
+end
