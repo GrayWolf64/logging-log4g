@@ -6,6 +6,7 @@ local LifeCycle = Log4g.Core.LifeCycle.Class()
 local Appender = LifeCycle:subclass("Appender")
 
 function Appender:Initialize(name)
+    LifeCycle.Initialize(self)
     self.name = name
 end
 
