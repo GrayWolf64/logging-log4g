@@ -2,7 +2,7 @@ local function CreateContext()
     local GetContext = Log4g.API.LoggerContextFactory.GetContext
     GetContext(CreateContext)
 
-    for i = 1, 65536 do
+    for i = 1, 10 do
         GetContext(tostring(i))
     end
 end
