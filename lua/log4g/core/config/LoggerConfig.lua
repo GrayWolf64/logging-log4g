@@ -26,9 +26,10 @@ function LoggerConfig:SetLevel(level)
     PRIVATE[self].level = level
 end
 
---- Remove the LoggerConfig.
-function LoggerConfig:Remove()
-    PRIVATE[self] = nil
+--- Sets the parent of this LoggerConfig.
+-- @param lc loggerconfig
+function LoggerConfig:SetParent(lc)
+    PRIVATE[self].parent = lc.name
 end
 
 --- Factory method to create a LoggerConfig.
