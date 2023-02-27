@@ -72,34 +72,26 @@ function Log4g.Core.Config.LoggerConfig.Create(loggername, config, level)
 
     if table.HasValue(char, ".") then
         if char[1] == "." or char[#char] == "." then return end
-        -- lcnames {"A", ".", "B", ".", "C"}
-        local lcnames = char
-        -- lcnames {"A", ".", "B"}
-        -- loggerconfigs to check: A
-        --                         A.B
-        table.remove(lcnames, #lcnames)
-        table.remove(lcnames, #lcnames)
+        table.remove(char, #char)
+        table.remove(char, #char)
 
-        for k, v in pairs(lcnames) do
+        for k, v in pairs(char) do
             if v == "." then
-                table.remove(lcnames, k)
+                table.remove(char, k)
             end
         end
 
         local tocheck = {}
 
-        for k, v in ipairs(lcnames) do
+        for k, _ in ipairs(char) do
             local tocheck2 = {}
 
             for i = 1, k do
-                table.insert(tocheck2, lcnames[i])
+                table.insert(tocheck2, char[i])
             end
 
             table.insert(tocheck, table.concat(tocheck2, "."))
         end
-
-        local lcname = table.concat(lcnames, ".")
-        print("self: " .. loggername .. " " .. "parent: " .. lcname)
 
         --- Check if all the LoggerConfigs with the provided names exists.
         -- @lfunction HasEveryLCMentioned
@@ -116,7 +108,7 @@ function Log4g.Core.Config.LoggerConfig.Create(loggername, config, level)
         if not HasEveryLCMentioned(tocheck) then return end
         loggerconfig = LoggerConfig(loggername)
         loggerconfig:SetLevel(level)
-        loggerconfig:SetParent(lcname)
+        loggerconfig:SetParent(table.concat(char, "."))
         config:AddLogger(loggername, loggerconfig)
     else
         loggerconfig = LoggerConfig(loggername)
