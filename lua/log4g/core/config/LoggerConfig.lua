@@ -67,6 +67,7 @@ end
 -- @param level The Logging Level
 -- @return object loggerconfig
 function Log4g.Core.Config.LoggerConfig.Create(loggername, config, level)
+    if not isstring(loggername) or not istable(config) or not istable(level) then return end
     local char = string.ToTable(loggername)
     local loggerconfig
 
