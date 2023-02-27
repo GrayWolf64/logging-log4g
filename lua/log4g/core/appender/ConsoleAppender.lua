@@ -10,3 +10,7 @@ end
 
 function ConsoleAppender:Append()
 end
+
+function Log4g.Core.Appender.CreateConsoleAppender(name)
+    return ConsoleAppender(name)
+end

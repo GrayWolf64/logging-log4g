@@ -10,10 +10,14 @@ concommand.Add("Log4g_CoreTest_CreateLogger", function()
     print("A.B's parent: " .. AB:GetLoggerConfig():GetParent())
     print("A.B.C's parent: " .. ABC:GetLoggerConfig():GetParent())
     print("A.B.C.D's parent: " .. ABCD:GetLoggerConfig():GetParent())
-
-    print(ABC:GetLoggerConfig():AddAppender({
-        name = "simulatedappender"
-    }))
-
+    print(ABC:GetLoggerConfig():AddAppender(Log4g.Core.Appender.CreateConsoleAppender("ConsoleOut")))
+    print(ABC:GetLoggerConfig():AddAppender(Log4g.Core.Appender.CreateConsoleAppender("ConsoleOut2")))
+    PrintTable(ABC:GetLoggerConfig():GetAppenders())
     PrintTable(Log4g.Core.LoggerContext.Get("TestLoggerHierarchyCtx"):GetConfiguration():GetAppenders())
+end)
+
+concommand.Add("Log4g_CoreTest_RemoveLoggerConfigAppenders", function()
+    local ctx = Log4g.API.LoggerContextFactory.GetContext("TestLoggerHierarchyCtx")
+    local ABC = ctx:GetLogger("A.B.C")
+    ABC:GetLoggerConfig():ClearAppenders()
 end)

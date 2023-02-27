@@ -91,10 +91,52 @@ function LoggerConfig:AddAppender(appender)
 
     for _, v in pairs(GetAllCtx()) do
         local config = v:GetConfiguration()
-        if config.name == self:GetConfig() then return config:AddAppender(appender) end
+
+        if config.name == self:GetConfig() then
+            appender:SetLocn(self.name)
+
+            return config:AddAppender(appender, self.name)
+        end
     end
 
     return false
+end
+
+--- Returns all Appenders in a form of table.
+-- @return table appenders
+function LoggerConfig:GetAppenders()
+    for _, v in pairs(GetAllCtx()) do
+        local config = v:GetConfiguration()
+
+        if config.name == self:GetConfig() then
+            local appenders = {}
+
+            for _, j in pairs(config:GetAppenders()) do
+                if j:GetLocn() == self.name then
+                    table.insert(appenders, j)
+                end
+            end
+
+            return appenders
+        end
+    end
+end
+
+--- Removes all Appenders configured by this LoggerConfig.
+function LoggerConfig:ClearAppenders()
+    for _, v in pairs(GetAllCtx()) do
+        local config = v:GetConfiguration()
+
+        if config.name == self:GetConfig() then
+            for i, j in pairs(config:GetAppenders()) do
+                if j:GetLocn() == self.name then
+                    config:RemoveAppender(i)
+                end
+            end
+
+            return
+        end
+    end
 end
 
 --- Factory method to create a LoggerConfig.

@@ -36,12 +36,21 @@ function Configuration:GetContext()
     return PRIVATE[self].context
 end
 
-function Configuration:AddAppender(appender)
+--- Adds a Appender to the Configuration.
+-- @param appender The Appender to add
+-- @param source LoggerConfig name where this Appender is configured
+-- @bool ifsuccessfullyadded
+function Configuration:AddAppender(appender, source)
     if not istable(appender) then return end
     if PRIVATE[self].appender[appender.name] then return false end
+    appender:SetLocn(source)
     PRIVATE[self].appender[appender.name] = appender
 
     return true
+end
+
+function Configuration:RemoveAppender(name)
+    PRIVATE[self].appender[name] = nil
 end
 
 function Configuration:AddLogger(name, lc)
