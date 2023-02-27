@@ -6,6 +6,7 @@
 Log4g.Core.Config.LoggerConfig = Log4g.Core.Config.LoggerConfig or {}
 local LifeCycle = Log4g.Core.LifeCycle.Class()
 local LoggerConfig = LifeCycle:subclass("LoggerConfig")
+local GetAllCtx = Log4g.Core.LoggerContext.GetAll
 
 --- A weak table which stores some private attributes of the LoggerConfig object.
 -- @local
@@ -34,8 +35,6 @@ end
 function LoggerConfig:SetLevel(level)
     PRIVATE[self].level = level
 end
-
-local GetAllCtx = Log4g.Core.LoggerContext.GetAll
 
 --- Check if a LoggerConfig exists.
 -- @lfunction HasLoggerConfig
