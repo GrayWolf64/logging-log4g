@@ -10,7 +10,7 @@ concommand.Add("Log4g_CoreTest_RemoveLoggerContext", function()
     local Get = Log4g.Core.LoggerContext.Get
 
     for i = 1, 10 do
-        Get(i):Terminate()
+        Get(tostring(i)):Terminate()
     end
 end)
 
