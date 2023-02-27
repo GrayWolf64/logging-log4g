@@ -10,4 +10,10 @@ concommand.Add("Log4g_CoreTest_CreateLogger", function()
     print("A.B's parent: " .. AB:GetLoggerConfig():GetParent())
     print("A.B.C's parent: " .. ABC:GetLoggerConfig():GetParent())
     print("A.B.C.D's parent: " .. ABCD:GetLoggerConfig():GetParent())
+
+    print(ABC:GetLoggerConfig():AddAppender({
+        name = "simulatedappender"
+    }))
+
+    PrintTable(Log4g.Core.LoggerContext.Get("TestLoggerHierarchyCtx"):GetConfiguration():GetAppenders())
 end)

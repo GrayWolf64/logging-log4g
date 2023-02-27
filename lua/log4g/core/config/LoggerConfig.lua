@@ -21,6 +21,7 @@ local PRIVATE = PRIVATE or setmetatable({}, {
 function LoggerConfig:Initialize(name)
     LifeCycle.Initialize(self)
     PRIVATE[self] = {}
+    PRIVATE[self].appenderref = {}
     self.name = name
 end
 
@@ -67,6 +68,36 @@ function LoggerConfig:GetParent()
     return PRIVATE[self].parent
 end
 
+--- Sets the Configuration name for the LoggerConfig.
+-- @param config Configuration object
+function LoggerConfig:SetConfig(config)
+    if not istable(config) then return end
+    PRIVATE[self].config = config.name
+end
+
+--- Gets the Configuration name of the LoggerConfig.
+-- @return string cname
+function LoggerConfig:GetConfig()
+    return PRIVATE[self].config
+end
+
+--- Adds an Appender to the LoggerConfig.
+-- It adds the Appender name to the LoggerConfig's private `appenderref` table field,
+-- then adds the Appender object to the Configuration's(the only one which owns this LoggerConfig) private `appender` table field.
+-- @param appender Appender object
+-- @return bool ifsuccessfullyadded
+function LoggerConfig:AddAppender(appender)
+    if not istable(appender) then return end
+    table.insert(PRIVATE[self].appenderref, appender.name)
+
+    for _, v in pairs(GetAllCtx()) do
+        local config = v:GetConfiguration()
+        if config.name == self:GetConfig() then return config:AddAppender(appender) end
+    end
+
+    return false
+end
+
 --- Factory method to create a LoggerConfig.
 -- @param name The name for the Logger
 -- @param config The Configuration
@@ -108,10 +139,12 @@ function Log4g.Core.Config.LoggerConfig.Create(name, config, level)
         loggerconfig = LoggerConfig(name)
         loggerconfig:SetLevel(level)
         loggerconfig:SetParent(table.concat(char, "."))
+        loggerconfig:SetConfig(config)
         config:AddLogger(name, loggerconfig)
     else
         loggerconfig = LoggerConfig(name)
         loggerconfig:SetLevel(level)
+        loggerconfig:SetConfig(config)
         config:AddLogger(name, loggerconfig)
     end
 

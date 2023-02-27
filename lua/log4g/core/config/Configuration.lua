@@ -30,8 +30,15 @@ function Configuration:SetContext(name)
     PRIVATE[self].context = name
 end
 
+function Configuration:GetContext()
+    return PRIVATE[self].context
+end
+
 function Configuration:AddAppender(appender)
+    if PRIVATE[self].appender[appender.name] then return false end
     PRIVATE[self].appender[appender.name] = appender
+
+    return true
 end
 
 function Configuration:AddLogger(name, lc)
