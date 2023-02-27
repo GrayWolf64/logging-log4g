@@ -149,10 +149,6 @@ function Log4g.Core.Config.LoggerConfig.Create(name, config, level)
             table.insert(tocheck, table.concat(tocheck2, "."))
         end
 
-        --- Check if all the LoggerConfigs with the provided names exists.
-        -- @lfunction HasEveryLCMentioned
-        -- @param tbl The table containing all the LoggerConfigs' names to check
-        -- @return bool ifhaseverylc
         local function HasEveryLCMentioned(tbl)
             for _, v in pairs(tbl) do
                 if not HasLoggerConfig(v) then return false end
