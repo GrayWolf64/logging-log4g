@@ -35,6 +35,7 @@ function Configuration:GetContext()
 end
 
 function Configuration:AddAppender(appender)
+    if not istable(appender) then return end
     if PRIVATE[self].appender[appender.name] then return false end
     PRIVATE[self].appender[appender.name] = appender
 
