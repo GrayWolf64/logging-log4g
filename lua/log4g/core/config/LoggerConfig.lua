@@ -61,6 +61,8 @@ function LoggerConfig:SetParent(T)
     end
 end
 
+--- Gets the parent of this LoggerConfig.
+-- @return string lcname
 function LoggerConfig:GetParent()
     return PRIVATE[self].parent
 end
