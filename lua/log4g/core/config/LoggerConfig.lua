@@ -86,6 +86,10 @@ function LoggerConfig:GetConfig()
     return PRIVATE[self].config
 end
 
+function LoggerConfig:GetAppenderRef()
+    return PRIVATE[self].appenderref
+end
+
 --- Adds an Appender to the LoggerConfig.
 -- It adds the Appender name to the LoggerConfig's private `appenderref` table field,
 -- then adds the Appender object to the Configuration's(the only one which owns this LoggerConfig) private `appender` table field.
@@ -105,7 +109,7 @@ function LoggerConfig:AddAppender(appender)
     return false
 end
 
---- Returns all Appenders in a form of table.
+--- Returns all Appenders configured by this LoggerConfig in a form of table.
 -- @return table appenders
 function LoggerConfig:GetAppenders()
     local config = GetCtx(self:GetContext()):GetConfiguration()
@@ -128,6 +132,8 @@ function LoggerConfig:ClearAppenders()
     local config = GetCtx(self:GetContext()):GetConfiguration()
 
     if config.name == self:GetConfig() then
+        table.Empty(PRIVATE[self].appenderref)
+
         for i, j in pairs(config:GetAppenders()) do
             if j:GetLocn() == self.name then
                 config:RemoveAppender(i)
@@ -146,7 +152,9 @@ end
 function Log4g.Core.Config.LoggerConfig.Create(name, config, level)
     if not isstring(name) or not istable(config) or not istable(level) then return end
     local char = string.ToTable(name)
-    local loggerconfig
+    local loggerconfig = LoggerConfig(name)
+    loggerconfig:SetLevel(level)
+    loggerconfig:SetConfig(config)
 
     if string.find(name, "%.") then
         if string.sub(name, 1, 1) == "." or string.sub(name, #name, #name) == "." then return end
@@ -176,17 +184,10 @@ function Log4g.Core.Config.LoggerConfig.Create(name, config, level)
         end
 
         if not HasEveryLCMentioned(tocheck) then return end
-        loggerconfig = LoggerConfig(name)
-        loggerconfig:SetLevel(level)
         loggerconfig:SetParent(table.concat(char, "."))
-        loggerconfig:SetConfig(config)
-        config:AddLogger(name, loggerconfig)
-    else
-        loggerconfig = LoggerConfig(name)
-        loggerconfig:SetLevel(level)
-        loggerconfig:SetConfig(config)
-        config:AddLogger(name, loggerconfig)
     end
+
+    config:AddLogger(name, loggerconfig)
 
     return loggerconfig
 end
