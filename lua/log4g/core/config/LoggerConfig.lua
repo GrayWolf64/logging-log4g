@@ -56,7 +56,7 @@ function LoggerConfig:SetParent(T)
     if isstring(T) then
         if not HasLoggerConfig(T) then return end
         PRIVATE[self].parent = T
-    else
+    elseif istable(T) then
         PRIVATE[self].parent = T.name
     end
 end
