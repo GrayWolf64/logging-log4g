@@ -7,7 +7,11 @@ concommand.Add("Log4g_CoreTest_CreateLoggerContext", function()
 end)
 
 concommand.Add("Log4g_CoreTest_RemoveLoggerContext", function()
-    Log4g.Core.LoggerContext.Get(Log4g.Util.GetCurrentFQSN(CreateContext)):Terminate()
+    local Get = Log4g.Core.LoggerContext.Get
+
+    for i = 1, 10 do
+        Get(i):Terminate()
+    end
 end)
 
 concommand.Add("Log4g_CoreTest_ShowAllLoggerContext", function()
