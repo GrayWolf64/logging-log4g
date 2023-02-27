@@ -1,4 +1,4 @@
-0.0.1-beta
+0.0.2-beta
 
 // Log4g is using Semantic Versioning. See more about it on https://semver.org/.
 // This is helpful for making Version.lua work.
