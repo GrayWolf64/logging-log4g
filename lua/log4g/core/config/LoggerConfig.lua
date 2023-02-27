@@ -66,26 +66,18 @@ function LoggerConfig:GetParent()
 end
 
 --- Factory method to create a LoggerConfig.
--- @param loggername The name for the Logger
+-- @param name The name for the Logger
 -- @param config The Configuration
 -- @param level The Logging Level
 -- @return object loggerconfig
-function Log4g.Core.Config.LoggerConfig.Create(loggername, config, level)
-    if not isstring(loggername) or not istable(config) or not istable(level) then return end
-    local char = string.ToTable(loggername)
+function Log4g.Core.Config.LoggerConfig.Create(name, config, level)
+    if not isstring(name) or not istable(config) or not istable(level) then return end
+    local char = string.ToTable(name)
     local loggerconfig
 
-    if table.HasValue(char, ".") then
-        if char[1] == "." or char[#char] == "." then return end
-        table.remove(char, #char)
-        table.remove(char, #char)
-
-        for k, v in pairs(char) do
-            if v == "." then
-                table.remove(char, k)
-            end
-        end
-
+    if string.find(name, "%.") then
+        if string.sub(name, 1, 1) == "." or string.sub(name, #name, #name) == "." then return end
+        char = string.ToTable(string.sub(name, 1, #name - 2):gsub("%.", ""))
         local tocheck = {}
 
         for k, _ in ipairs(char) do
@@ -111,14 +103,14 @@ function Log4g.Core.Config.LoggerConfig.Create(loggername, config, level)
         end
 
         if not HasEveryLCMentioned(tocheck) then return end
-        loggerconfig = LoggerConfig(loggername)
+        loggerconfig = LoggerConfig(name)
         loggerconfig:SetLevel(level)
         loggerconfig:SetParent(table.concat(char, "."))
-        config:AddLogger(loggername, loggerconfig)
+        config:AddLogger(name, loggerconfig)
     else
-        loggerconfig = LoggerConfig(loggername)
+        loggerconfig = LoggerConfig(name)
         loggerconfig:SetLevel(level)
-        config:AddLogger(loggername, loggerconfig)
+        config:AddLogger(name, loggerconfig)
     end
 
     return loggerconfig
