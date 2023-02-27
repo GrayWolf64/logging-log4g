@@ -7,6 +7,7 @@ Log4g.Core.Config.LoggerConfig = Log4g.Core.Config.LoggerConfig or {}
 local LifeCycle = Log4g.Core.LifeCycle.Class()
 local LoggerConfig = LifeCycle:subclass("LoggerConfig")
 local GetAllCtx = Log4g.Core.LoggerContext.GetAll
+local GetCtx = Log4g.Core.LoggerContext.Get
 
 --- A weak table which stores some private attributes of the LoggerConfig object.
 -- @local
@@ -72,6 +73,11 @@ end
 function LoggerConfig:SetConfig(config)
     if not istable(config) then return end
     PRIVATE[self].config = config.name
+    PRIVATE[self].ctx = config:GetContext()
+end
+
+function LoggerConfig:GetContext()
+    return PRIVATE[self].ctx
 end
 
 --- Gets the Configuration name of the LoggerConfig.
@@ -88,15 +94,12 @@ end
 function LoggerConfig:AddAppender(appender)
     if not istable(appender) then return end
     table.insert(PRIVATE[self].appenderref, appender.name)
+    local config = GetCtx(self:GetContext()):GetConfiguration()
 
-    for _, v in pairs(GetAllCtx()) do
-        local config = v:GetConfiguration()
+    if config.name == self:GetConfig() then
+        appender:SetLocn(self.name)
 
-        if config.name == self:GetConfig() then
-            appender:SetLocn(self.name)
-
-            return config:AddAppender(appender, self.name)
-        end
+        return config:AddAppender(appender, self.name)
     end
 
     return false
@@ -105,37 +108,33 @@ end
 --- Returns all Appenders in a form of table.
 -- @return table appenders
 function LoggerConfig:GetAppenders()
-    for _, v in pairs(GetAllCtx()) do
-        local config = v:GetConfiguration()
+    local config = GetCtx(self:GetContext()):GetConfiguration()
 
-        if config.name == self:GetConfig() then
-            local appenders = {}
+    if config.name == self:GetConfig() then
+        local appenders = {}
 
-            for _, j in pairs(config:GetAppenders()) do
-                if j:GetLocn() == self.name then
-                    table.insert(appenders, j)
-                end
+        for _, j in pairs(config:GetAppenders()) do
+            if j:GetLocn() == self.name then
+                table.insert(appenders, j)
             end
-
-            return appenders
         end
+
+        return appenders
     end
 end
 
 --- Removes all Appenders configured by this LoggerConfig.
 function LoggerConfig:ClearAppenders()
-    for _, v in pairs(GetAllCtx()) do
-        local config = v:GetConfiguration()
+    local config = GetCtx(self:GetContext()):GetConfiguration()
 
-        if config.name == self:GetConfig() then
-            for i, j in pairs(config:GetAppenders()) do
-                if j:GetLocn() == self.name then
-                    config:RemoveAppender(i)
-                end
+    if config.name == self:GetConfig() then
+        for i, j in pairs(config:GetAppenders()) do
+            if j:GetLocn() == self.name then
+                config:RemoveAppender(i)
             end
-
-            return
         end
+
+        return
     end
 end
 
