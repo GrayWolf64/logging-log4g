@@ -68,22 +68,15 @@ function LoggerConfig:GetParent()
     return PRIVATE[self].parent
 end
 
---- Sets the Configuration name for the LoggerConfig.
--- @param config Configuration object
-function LoggerConfig:SetConfig(config)
-    if not istable(config) then return end
-    PRIVATE[self].config = config.name
-    PRIVATE[self].ctx = config:GetContext()
+--- Sets the Context name for the LoggerConfig.
+-- @param ctx LoggerContext object
+function LoggerConfig:SetContext(name)
+    if not isstring(name) then return end
+    PRIVATE[self].ctx = name
 end
 
 function LoggerConfig:GetContext()
     return PRIVATE[self].ctx
-end
-
---- Gets the Configuration name of the LoggerConfig.
--- @return string cname
-function LoggerConfig:GetConfig()
-    return PRIVATE[self].config
 end
 
 function LoggerConfig:GetAppenderRef()
@@ -98,49 +91,34 @@ end
 function LoggerConfig:AddAppender(appender)
     if not istable(appender) then return end
     table.insert(PRIVATE[self].appenderref, appender.name)
-    local config = GetCtx(self:GetContext()):GetConfiguration()
+    appender:SetLocn(self.name)
 
-    if config.name == self:GetConfig() then
-        appender:SetLocn(self.name)
-
-        return config:AddAppender(appender, self.name)
-    end
-
-    return false
+    return GetCtx(self:GetContext()):GetConfiguration():AddAppender(appender, self.name)
 end
 
 --- Returns all Appenders configured by this LoggerConfig in a form of table.
 -- @return table appenders
 function LoggerConfig:GetAppenders()
-    local config = GetCtx(self:GetContext()):GetConfiguration()
+    local appenders = {}
 
-    if config.name == self:GetConfig() then
-        local appenders = {}
-
-        for _, j in pairs(config:GetAppenders()) do
-            if j:GetLocn() == self.name then
-                table.insert(appenders, j)
-            end
+    for _, j in pairs(GetCtx(self:GetContext()):GetConfiguration():GetAppenders()) do
+        if j:GetLocn() == self.name then
+            table.insert(appenders, j)
         end
-
-        return appenders
     end
+
+    return appenders
 end
 
 --- Removes all Appenders configured by this LoggerConfig.
 function LoggerConfig:ClearAppenders()
     local config = GetCtx(self:GetContext()):GetConfiguration()
+    table.Empty(PRIVATE[self].appenderref)
 
-    if config.name == self:GetConfig() then
-        table.Empty(PRIVATE[self].appenderref)
-
-        for i, j in pairs(config:GetAppenders()) do
-            if j:GetLocn() == self.name then
-                config:RemoveAppender(i)
-            end
+    for i, j in pairs(config:GetAppenders()) do
+        if j:GetLocn() == self.name then
+            config:RemoveAppender(i)
         end
-
-        return
     end
 end
 
@@ -154,7 +132,7 @@ function Log4g.Core.Config.LoggerConfig.Create(name, config, level)
     local char = string.ToTable(name)
     local loggerconfig = LoggerConfig(name)
     loggerconfig:SetLevel(level)
-    loggerconfig:SetConfig(config)
+    loggerconfig:SetContext(config:GetContext())
 
     if string.find(name, "%.") then
         if string.sub(name, 1, 1) == "." or string.sub(name, #name, #name) == "." then return end
