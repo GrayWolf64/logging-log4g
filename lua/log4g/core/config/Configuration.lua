@@ -1,8 +1,8 @@
 --- Interface that must be implemented to create a Configuration.
 -- @classmod Configuration
 Log4g.Core.Config.Configuration = Log4g.Core.Config.Configuration or {}
-local Class = include("log4g/core/impl/MiddleClass.lua")
-local Configuration = Class("Configuration")
+local LifeCycle = Log4g.Core.LifeCycle.Class()
+local Configuration = LifeCycle:subclass("Configuration")
 
 --- A weak table which stores some private attributes of the Configuration object.
 -- It keeps every Configuration's Appenders, LoggerConfig names, LoggerContext name and start time.
@@ -13,6 +13,7 @@ local PRIVATE = PRIVATE or setmetatable({}, {
 })
 
 function Configuration:Initialize(name)
+    LifeCycle.Initialize(self)
     self.name = name
 
     PRIVATE[self] = {
