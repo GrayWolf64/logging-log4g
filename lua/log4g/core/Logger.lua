@@ -12,11 +12,14 @@ local PRIVATE = PRIVATE or setmetatable({}, {
     __mode = "k"
 })
 
-function Logger:Initialize(name, context, level)
+function Logger:Initialize(name, context, level, bool)
     PRIVATE[self] = {}
     self.name = name
     PRIVATE[self].ctx = context.name
-    PRIVATE[self].lc = CreateLoggerConfig(name, context:GetConfiguration(), level)
+
+    if bool then
+        PRIVATE[self].lc = CreateLoggerConfig(name, context:GetConfiguration(), level)
+    end
 end
 
 --- Get the LoggerConfig of the Logger.
@@ -30,7 +33,7 @@ function Logger:Terminate()
     PRIVATE[self] = nil
 end
 
-function Log4g.Core.Logger.Create(name, context, level)
+function Log4g.Core.Logger.Create(name, context, level, bool)
     if context:HasLogger(name) then return end
-    context:GetLoggers()[name] = Logger(name, context, level)
+    context:GetLoggers()[name] = Logger(name, context, level, bool)
 end
