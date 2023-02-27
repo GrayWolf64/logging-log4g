@@ -1,8 +1,11 @@
 --- The LoggerConfig.
+-- Subclassing `LifeCycle`.
 -- @classmod LoggerConfig
+-- @license Apache License 2.0
+-- @copyright GrayWolf64
 Log4g.Core.Config.LoggerConfig = Log4g.Core.Config.LoggerConfig or {}
-local Class = include("log4g/core/impl/MiddleClass.lua")
-local LoggerConfig = Class("LoggerConfig")
+local LifeCycle = Log4g.Core.LifeCycle.Class()
+local LoggerConfig = LifeCycle:subclass("LoggerConfig")
 
 --- A weak table which stores some private attributes of the LoggerConfig object.
 -- @local
@@ -16,6 +19,7 @@ local PRIVATE = PRIVATE or setmetatable({}, {
 -- @param name The name of the LoggerConfig
 -- @param level The Level object
 function LoggerConfig:Initialize(name)
+    LifeCycle.Initialize(self)
     PRIVATE[self] = {}
     self.name = name
 end
