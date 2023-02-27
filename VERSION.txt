@@ -3,3 +3,4 @@
 // Log4g is using Semantic Versioning. See more about it on https://semver.org/.
 // This is helpful for making Version.lua work.
 // 0.0.1-beta: Start using Semantic Versioning, and created VERSION.txt.
+// 0.0.2-beta: Now the LoggerConfig supports "A.B.C" like parenting when creating them.
