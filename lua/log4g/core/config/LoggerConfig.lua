@@ -129,21 +129,27 @@ end
 -- @return object loggerconfig
 function Log4g.Core.Config.LoggerConfig.Create(name, config, level)
     if not isstring(name) or not istable(config) or not istable(level) then return end
-    local char = string.ToTable(name)
     local loggerconfig = LoggerConfig(name)
     loggerconfig:SetLevel(level)
     loggerconfig:SetContext(config:GetContext())
 
     if string.find(name, "%.") then
         if string.sub(name, 1, 1) == "." or string.sub(name, #name, #name) == "." then return end
-        char = string.ToTable(string.sub(name, 1, #name - 2):gsub("%.", ""))
+        local _, lastdot = string.find(string.reverse(name), "%.")
+        lastdot = string.len(name) - lastdot + 1
+        local charset = {}
+
+        for k in string.gmatch(string.sub(name, 1, lastdot - 1), "(%a+)") do
+            table.insert(charset, k)
+        end
+
         local tocheck = {}
 
-        for k, _ in ipairs(char) do
+        for k, _ in ipairs(charset) do
             local tocheck2 = {}
 
             for i = 1, k do
-                table.insert(tocheck2, char[i])
+                table.insert(tocheck2, charset[i])
             end
 
             table.insert(tocheck, table.concat(tocheck2, "."))
@@ -158,7 +164,7 @@ function Log4g.Core.Config.LoggerConfig.Create(name, config, level)
         end
 
         if not HasEveryLCMentioned(tocheck) then return end
-        loggerconfig:SetParent(table.concat(char, "."))
+        loggerconfig:SetParent(table.concat(charset, "."))
     end
 
     config:AddLogger(name, loggerconfig)
