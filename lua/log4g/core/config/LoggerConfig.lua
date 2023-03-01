@@ -43,9 +43,7 @@ end
 -- @return bool ifhaslc
 local function HasLoggerConfig(name)
     for _, v in pairs(GetAllCtx()) do
-        for _, j in pairs(v:GetLoggers()) do
-            if j:GetLoggerConfig().name == name then return true end
-        end
+        if v:GetConfiguration():GetLoggerConfig(name) then return true end
     end
 
     return false
