@@ -11,6 +11,7 @@ local LoggerConfig = LifeCycle:subclass("LoggerConfig")
 local GetAllCtx = Log4g.Core.LoggerContext.GetAll
 local GetCtx = Log4g.Core.LoggerContext.Get
 local ipairs = ipairs
+local pairs = pairs
 local stringLeft = string.Left
 local stringRight = string.Right
 local stringExplode = string.Explode
