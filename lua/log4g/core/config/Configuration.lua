@@ -54,7 +54,7 @@ function Configuration:RemoveAppender(name)
 end
 
 function Configuration:AddLogger(name, lc)
-    PRIVATE[self].lc[name] = lc.name
+    PRIVATE[self].lc[name] = lc
 end
 
 --- Locates the appropriate LoggerConfig name for a Logger name.
@@ -62,6 +62,10 @@ end
 -- @return string lcname
 function Configuration:GetLoggerConfig(name)
     if PRIVATE[self].lc[name] then return PRIVATE[self].lc[name] end
+end
+
+function Configuration:GetLoggerConfigs()
+    return PRIVATE[self].lc
 end
 
 --- Gets all the Appenders in the Configuration.

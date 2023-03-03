@@ -3,11 +3,9 @@
 -- @classmod LoggerConfig
 -- @license Apache License 2.0
 -- @copyright GrayWolf64
-Log4g.Core.Config.LoggerConfig = Log4g.Core.Config.LoggerConfig or {
-    ROOT = "root"
-}
-
+Log4g.Core.Config.LoggerConfig = Log4g.Core.Config.LoggerConfig or {}
 local Accessor = Log4g.Core.Config.LoggerConfig
+Accessor.ROOT = "root"
 local LifeCycle = Log4g.Core.LifeCycle.Class()
 local LoggerConfig = LifeCycle:subclass("LoggerConfig")
 local GetAllCtx = Log4g.Core.LoggerContext.GetAll
@@ -66,9 +64,8 @@ end
 
 local function GetLoggerConfig(name)
     for _, v in pairs(GetAllCtx()) do
-        for _, j in pairs(v:GetLoggers()) do
-            local lc = j:GetLoggerConfig()
-            if lc.name == name then return lc end
+        for i, j in pairs(v:GetConfiguration():GetLoggerConfigs()) do
+            if i == name then return j end
         end
     end
 end

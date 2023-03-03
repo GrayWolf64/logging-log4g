@@ -4,6 +4,7 @@ Log4g.Core.Logger = Log4g.Core.Logger or {}
 local Class = include("log4g/core/impl/MiddleClass.lua")
 local Logger = Class("Logger")
 local CreateLoggerConfig = Log4g.Core.Config.LoggerConfig.Create
+local GetCtx = Log4g.Core.LoggerContext.Get
 
 --- A weak table which stores some private attributes of the Logger object.
 -- @local
@@ -18,19 +19,16 @@ function Logger:Initialize(name, context, level, newConfig)
     PRIVATE[self].ctx = context.name
 
     if newConfig then
-        PRIVATE[self].lc = CreateLoggerConfig(name, context:GetConfiguration(), level)
+        PRIVATE[self].lc = name
+        context:GetConfiguration():AddLogger(name, CreateLoggerConfig(name, context:GetConfiguration(), level))
     end
 end
 
 --- Get the LoggerConfig of the Logger.
 -- @return object loggerconfig
 function Logger:GetLoggerConfig()
-    return PRIVATE[self].lc
-end
-
---- Terminate the Logger.
-function Logger:Terminate()
-    PRIVATE[self] = nil
+    local lc = GetCtx(PRIVATE[self].ctx):GetConfiguration():GetLoggerConfig(PRIVATE[self].lc)
+    if lc then return lc end
 end
 
 function Log4g.Core.Logger.Create(name, context, level, newConfig)
