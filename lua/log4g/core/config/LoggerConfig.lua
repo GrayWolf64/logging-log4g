@@ -3,7 +3,11 @@
 -- @classmod LoggerConfig
 -- @license Apache License 2.0
 -- @copyright GrayWolf64
-Log4g.Core.Config.LoggerConfig = Log4g.Core.Config.LoggerConfig or {}
+Log4g.Core.Config.LoggerConfig = Log4g.Core.Config.LoggerConfig or {
+    ROOT = "root"
+}
+
+local Accessor = Log4g.Core.Config.LoggerConfig
 local LifeCycle = Log4g.Core.LifeCycle.Class()
 local LoggerConfig = LifeCycle:subclass("LoggerConfig")
 local GetAllCtx = Log4g.Core.LoggerContext.GetAll
@@ -16,7 +20,7 @@ local stringFind = string.find
 local stringSub = string.sub
 local tableInsert = table.insert
 
---- A weak table which stores some private attributes of the LoggerConfig object.
+--- Stores some private attributes of the LoggerConfig object.
 -- @local
 -- @table PRIVATE
 local PRIVATE = PRIVATE or setmetatable({}, {
@@ -44,6 +48,10 @@ function LoggerConfig:SetLevel(level)
     PRIVATE[self].level = level
 end
 
+function LoggerConfig:GetLevel()
+    return PRIVATE[self].level
+end
+
 --- Check if a LoggerConfig exists.
 -- @lfunction HasLoggerConfig
 -- @param name The name of the LoggerConfig to check
@@ -56,12 +64,25 @@ local function HasLoggerConfig(name)
     return false
 end
 
+local function GetLoggerConfig(name)
+    for _, v in pairs(GetAllCtx()) do
+        for _, j in pairs(v:GetLoggers()) do
+            local lc = j:GetLoggerConfig()
+            if lc.name == name then return lc end
+        end
+    end
+end
+
 --- Sets the parent of this LoggerConfig.
 -- @param T LoggerConfig object or LoggerConfig name
 function LoggerConfig:SetParent(T)
     if isstring(T) then
-        if not HasLoggerConfig(T) then return end
-        PRIVATE[self].parent = T
+        if T == Accessor.ROOT then
+            PRIVATE[self].parent = T
+        else
+            if not HasLoggerConfig(T) then return end
+            PRIVATE[self].parent = T
+        end
     elseif istable(T) then
         PRIVATE[self].parent = T.name
     end
@@ -127,15 +148,21 @@ function LoggerConfig:ClearAppenders()
     end
 end
 
+local RootLoggerConfig = LoggerConfig(Accessor.ROOT)
+RootLoggerConfig:SetLevel(Log4g.Level.GetLevel("INFO"))
+
+function Accessor.GetRootLoggerConfig()
+    return RootLoggerConfig
+end
+
 --- Factory method to create a LoggerConfig.
 -- @param name The name for the Logger
 -- @param config The Configuration
 -- @param level The Logging Level
 -- @return object loggerconfig
-function Log4g.Core.Config.LoggerConfig.Create(name, config, level)
+function Accessor.Create(name, config, level)
     if not isstring(name) or not istable(config) or not istable(level) then return end
     local loggerconfig = LoggerConfig(name)
-    loggerconfig:SetLevel(level)
     loggerconfig:SetContext(config:GetContext())
 
     if stringFind(name, "%.") then
@@ -161,7 +188,18 @@ function Log4g.Core.Config.LoggerConfig.Create(name, config, level)
         end
 
         if not HasEveryLCMentioned(tocheck) then return end
-        loggerconfig:SetParent(table.concat(charset, "."))
+        local parent = table.concat(charset, ".")
+
+        if level and istable(level) then
+            loggerconfig:SetLevel(level)
+        else
+            loggerconfig:SetLevel(GetLoggerConfig(parent):GetLevel())
+        end
+
+        loggerconfig:SetParent(parent)
+    else
+        loggerconfig:SetLevel(RootLoggerConfig:GetLevel())
+        loggerconfig:SetParent(Accessor.ROOT)
     end
 
     config:AddLogger(name, loggerconfig)
