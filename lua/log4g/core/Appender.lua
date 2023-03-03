@@ -15,17 +15,6 @@ function Appender:Initialize(name)
     self.name = name
 end
 
---- Sets the location of the Appender.
--- It's where this Appender is configured, namely a LoggerConfig.
--- @param name lcname
-function Appender:SetLocation(name)
-    PRIVATE[self].locn = name
-end
-
-function Appender:GetLocn()
-    return PRIVATE[self].locn
-end
-
 function Log4g.Core.Appender.Class()
     return Appender
 end

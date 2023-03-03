@@ -8,12 +8,9 @@ local Accessor = Log4g.Core.Config.LoggerConfig
 Accessor.ROOT = "root"
 local LifeCycle = Log4g.Core.LifeCycle.Class()
 local LoggerConfig = LifeCycle:subclass("LoggerConfig")
-local GetAllCtx = Log4g.Core.LoggerContext.GetAll
-local GetCtx = Log4g.Core.LoggerContext.Get
-local ipairs = ipairs
-local pairs = pairs
-local stringLeft = string.Left
-local stringRight = string.Right
+local GetCtx, GetAllCtx = Log4g.Core.LoggerContext.Get, Log4g.Core.LoggerContext.GetAll
+local pairs, ipairs = pairs, ipairs
+local stringLeft, stringRight = string.Left, string.Right
 local stringExplode = string.Explode
 local stringFind = string.find
 local stringSub = string.sub
@@ -115,7 +112,6 @@ end
 function LoggerConfig:AddAppender(appender)
     if not istable(appender) then return end
     tableInsert(PRIVATE[self].appenderref, appender.name)
-    appender:SetLocation(self.name)
 
     return GetCtx(self:GetContext()):GetConfiguration():AddAppender(appender, self.name)
 end
@@ -124,10 +120,13 @@ end
 -- @return table appenders
 function LoggerConfig:GetAppenders()
     local appenders = {}
+    local config = GetCtx(self:GetContext()):GetConfiguration()
 
-    for _, v in pairs(GetCtx(self:GetContext()):GetConfiguration():GetAppenders()) do
-        if v:GetLocn() == self.name then
-            tableInsert(appenders, v)
+    for k, _ in pairs(PRIVATE[self].appenderref) do
+        for i, j in pairs(config:GetAppenders()) do
+            if k == i then
+                table.insert(appenders, j)
+            end
         end
     end
 
@@ -137,13 +136,16 @@ end
 --- Removes all Appenders configured by this LoggerConfig.
 function LoggerConfig:ClearAppenders()
     local config = GetCtx(self:GetContext()):GetConfiguration()
-    table.Empty(PRIVATE[self].appenderref)
 
-    for k, v in pairs(config:GetAppenders()) do
-        if v:GetLocn() == self.name then
-            config:RemoveAppender(k)
+    for k, _ in pairs(PRIVATE[self].appenderref) do
+        for i, _ in pairs(config:GetAppenders()) do
+            if k == i then
+                config:RemoveAppender(k)
+            end
         end
     end
+
+    table.Empty(PRIVATE[self].appenderref)
 end
 
 local RootLoggerConfig = LoggerConfig(Accessor.ROOT)
