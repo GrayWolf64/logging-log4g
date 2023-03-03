@@ -6,7 +6,7 @@ local LifeCycle = Log4g.Core.LifeCycle.Class()
 local Configuration = LifeCycle:subclass("Configuration")
 
 --- A weak table which stores some private attributes of the Configuration object.
--- It keeps every Configuration's Appenders, LoggerConfig names, LoggerContext name and start time.
+-- It keeps every Configuration's Appenders, LoggerConfigs, LoggerContext name and start time.
 -- @local
 -- @table PRIVATE
 local PRIVATE = PRIVATE or setmetatable({}, {
