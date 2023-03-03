@@ -18,7 +18,7 @@ end
 --- Sets the location of the Appender.
 -- It's where this Appender is configured, namely a LoggerConfig.
 -- @param name lcname
-function Appender:SetLocn(name)
+function Appender:SetLocation(name)
     PRIVATE[self].locn = name
 end
 

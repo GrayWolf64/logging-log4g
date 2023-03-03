@@ -43,7 +43,7 @@ end
 function Configuration:AddAppender(appender, source)
     if not istable(appender) then return end
     if PRIVATE[self].appender[appender.name] then return false end
-    appender:SetLocn(source)
+    appender:SetLocation(source)
     PRIVATE[self].appender[appender.name] = appender
 
     return true

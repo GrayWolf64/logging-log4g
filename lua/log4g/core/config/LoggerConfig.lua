@@ -114,7 +114,7 @@ end
 function LoggerConfig:AddAppender(appender)
     if not istable(appender) then return end
     tableInsert(PRIVATE[self].appenderref, appender.name)
-    appender:SetLocn(self.name)
+    appender:SetLocation(self.name)
 
     return GetCtx(self:GetContext()):GetConfiguration():AddAppender(appender, self.name)
 end
