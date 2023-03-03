@@ -133,7 +133,7 @@ function Log4g.Core.Config.LoggerConfig.Create(name, config, level)
 
     if string.find(name, "%.") then
         if string.sub(name, 1, 1) == "." or string.sub(name, #name, #name) == "." then return end
-        local charset, tocheck = string.Explode("%.", string.sub(name, 1, #name - string.find(string.reverse(name), "%."))), {}
+        local charset, tocheck = string.Explode(".", string.sub(name, 1, #name - string.find(string.reverse(name), "%."))), {}
 
         for k, _ in ipairs(charset) do
             local tocheck2 = {}
