@@ -38,12 +38,10 @@ end
 
 --- Adds a Appender to the Configuration.
 -- @param appender The Appender to add
--- @param source LoggerConfig name where this Appender is configured
 -- @bool ifsuccessfullyadded
-function Configuration:AddAppender(appender, source)
+function Configuration:AddAppender(appender)
     if not istable(appender) then return end
     if PRIVATE[self].appender[appender.name] then return false end
-    appender:SetLocation(source)
     PRIVATE[self].appender[appender.name] = appender
 
     return true
