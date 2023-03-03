@@ -8,6 +8,13 @@ local LifeCycle = Log4g.Core.LifeCycle.Class()
 local LoggerConfig = LifeCycle:subclass("LoggerConfig")
 local GetAllCtx = Log4g.Core.LoggerContext.GetAll
 local GetCtx = Log4g.Core.LoggerContext.Get
+local ipairs = ipairs
+local stringLeft = string.Left
+local stringRight = string.Right
+local stringExplode = string.Explode
+local stringFind = string.find
+local stringSub = string.sub
+local tableInsert = table.insert
 
 --- A weak table which stores some private attributes of the LoggerConfig object.
 -- @local
@@ -131,18 +138,18 @@ function Log4g.Core.Config.LoggerConfig.Create(name, config, level)
     loggerconfig:SetLevel(level)
     loggerconfig:SetContext(config:GetContext())
 
-    if string.find(name, "%.") then
-        if string.sub(name, 1, 1) == "." or string.sub(name, #name, #name) == "." then return end
-        local charset, tocheck = string.Explode(".", string.sub(name, 1, #name - string.find(string.reverse(name), "%."))), {}
+    if stringFind(name, "%.") then
+        if stringLeft(name, 1) == "." or stringRight(name, 1) == "." then return end
+        local charset, tocheck = stringExplode(".", stringSub(name, 1, #name - stringFind(string.reverse(name), "%."))), {}
 
         for k, _ in ipairs(charset) do
             local tocheck2 = {}
 
             for i = 1, k do
-                table.insert(tocheck2, charset[i])
+                tableInsert(tocheck2, charset[i])
             end
 
-            table.insert(tocheck, table.concat(tocheck2, "."))
+            tableInsert(tocheck, table.concat(tocheck2, "."))
         end
 
         local function HasEveryLCMentioned(tbl)
