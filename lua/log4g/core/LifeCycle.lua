@@ -11,6 +11,8 @@
 Log4g.Core.LifeCycle = Log4g.Core.LifeCycle or {}
 local Class = include("log4g/core/impl/MiddleClass.lua")
 local LifeCycle = Class("LifeCycle")
+local tableHasValue = table.HasValue
+local isfunction = isfunction
 
 local PRIVATE = PRIVATE or setmetatable({}, {
     __mode = "k"
@@ -37,7 +39,7 @@ local State = {
 --- Sets the LifeCycle state.
 -- @param state A function in the `State` table which returns a string representing the state
 function LifeCycle:SetState(state)
-    if not isfunction(state) or not table.HasValue(State, state) then return end
+    if not isfunction(state) or not tableHasValue(State, state) then return end
     PRIVATE[self] = state
 end
 
