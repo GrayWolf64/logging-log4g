@@ -95,7 +95,7 @@ end
 -- @return bool ifsuccessfullyadded
 function LoggerConfig:AddAppender(appender)
     if not istable(appender) then return end
-    table.insert(PRIVATE[self].appenderref, appender.name)
+    tableInsert(PRIVATE[self].appenderref, appender.name)
     appender:SetLocn(self.name)
 
     return GetCtx(self:GetContext()):GetConfiguration():AddAppender(appender, self.name)
@@ -108,7 +108,7 @@ function LoggerConfig:GetAppenders()
 
     for _, v in pairs(GetCtx(self:GetContext()):GetConfiguration():GetAppenders()) do
         if v:GetLocn() == self.name then
-            table.insert(appenders, v)
+            tableInsert(appenders, v)
         end
     end
 
