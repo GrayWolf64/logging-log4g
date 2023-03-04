@@ -47,13 +47,14 @@ Then you just have to make sure it loads before your addon, or you can use valid
 
 ```lua
 if Log4g.Core.Logger and Log4g.Core.LoggerContext and Log4g.Level then
+
    --- Do some calculation here.
    local function Calculate()
-      --- This will locate / create a proper LoggerContext for the file where this function is called.
-      -- You won't need to create a new one later on the same file,
-      -- because using GetContext by providing a function always result in a same LoggerContext.
-      -- However, you can just provide a string name instead of a function to have multiple LoggerContext across a single .lua file.
-      local ctx = Log4g.API.LoggerContextFactory.GetContext(Calculate)
+
+      --- This will locate / create a proper LoggerContext named 'Foo'.
+      local ctx = Log4g.API.LoggerContextFactory.GetContext("Foo")
+
+      --- This will create a Logger named 'Calculate', whose Level is 'INFO', and is in 'Foo'.
       Log4g.Core.Logger.Create("Calculate", ctx, Log4g.Level.GetLevel("INFO"))
 
       for i = 1, 100 do
@@ -61,7 +62,9 @@ if Log4g.Core.Logger and Log4g.Core.LoggerContext and Log4g.Level then
          -- Note that when this was written, the logging system isn't finished yet,
          -- so I just leave it blank here, for now.
       end
+
    end
+
 end
 ```
 
