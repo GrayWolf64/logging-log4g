@@ -126,7 +126,7 @@ function LoggerConfig:GetAppenders()
     for k, _ in pairs(PRIVATE[self].appenderref) do
         for i, j in pairs(GetCtx(self:GetContext()):GetConfiguration():GetAppenders()) do
             if k == i then
-                table.insert(appenders, j)
+                tableInsert(appenders, j)
             end
         end
     end
