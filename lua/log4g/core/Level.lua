@@ -2,8 +2,7 @@
 -- Levels used for identifying the severity of an event.
 -- @classmod Level
 Log4g.Level = Log4g.Level or {}
-local Class = include("log4g/core/impl/MiddleClass.lua")
-local Level = Class("Level")
+local Level = include("log4g/core/impl/MiddleClass.lua")("Level")
 
 function Level:Initialize(name, int, color)
     self.name = name

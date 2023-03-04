@@ -9,8 +9,7 @@
 -- @license Apache License 2.0
 -- @copyright GrayWolf64
 Log4g.Core.LifeCycle = Log4g.Core.LifeCycle or {}
-local Class = include("log4g/core/impl/MiddleClass.lua")
-local LifeCycle = Class("LifeCycle")
+local LifeCycle = include("log4g/core/impl/MiddleClass.lua")("LifeCycle")
 local tableHasValue = table.HasValue
 local isfunction = isfunction
 
