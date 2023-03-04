@@ -79,9 +79,9 @@ function Configuration:GetUpTime()
     return SysTime() - PRIVATE[self].start
 end
 
---- Register a Configuration.
+--- Create a Configuration.
 -- @param name The name of the Configuration
 -- @return object configuration
-function Log4g.Core.Config.Configuration.Register(name)
+function Log4g.Core.Config.Configuration.Create(name)
     return Configuration(name)
 end

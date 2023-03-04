@@ -1,7 +1,7 @@
-local RegisterConfiguration = Log4g.Core.Config.Configuration.Register
+local CreateConfiguration = Log4g.Core.Config.Configuration.Create
 
 function Log4g.Core.Config.GetDefaultConfiguration()
-    local configuration = RegisterConfiguration("DEFAULT")
+    local configuration = CreateConfiguration("DEFAULT")
 
     return configuration
 end
