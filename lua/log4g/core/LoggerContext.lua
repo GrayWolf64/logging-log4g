@@ -3,6 +3,7 @@
 -- It maintains a list of all the loggers requested by applications and a reference to the Configuration.
 -- @classmod LoggerContext
 Log4g.Core.LoggerContext = Log4g.Core.LoggerContext or {}
+local Accessor = Log4g.Core.LoggerContext
 local LifeCycle = Log4g.Core.LifeCycle.Class()
 local LoggerContext = LifeCycle:subclass("LoggerContext")
 local GetDefaultConfiguration = Log4g.Core.Config.GetDefaultConfiguration
@@ -70,14 +71,14 @@ function LoggerContext:HasLogger(name)
     return false
 end
 
-function Log4g.Core.LoggerContext.GetAll()
+function Accessor.GetAll()
     return INSTANCES
 end
 
 --- Get the LoggerContext with the right name.
 -- @param name String name
 -- @return object loggercontext
-function Log4g.Core.LoggerContext.Get(name)
+function Accessor.Get(name)
     if not isstring(name) then return end
     if INSTANCES[name] then return INSTANCES[name] end
 end
@@ -85,7 +86,7 @@ end
 --- Register a LoggerContext.
 -- @param name The name of the LoggerContext
 -- @return object loggercontext
-function Log4g.Core.LoggerContext.Register(name)
+function Accessor.Register(name)
     if INSTANCES[name] then return INSTANCES[name] end
     INSTANCES[name] = LoggerContext(name)
     INSTANCES[name]:SetConfiguration(GetDefaultConfiguration())
