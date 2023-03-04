@@ -45,10 +45,6 @@ function LoggerConfig:GetLevel()
     return PRIVATE[self].level
 end
 
---- Check if a LoggerConfig exists.
--- @lfunction HasLoggerConfig
--- @param name The name of the LoggerConfig to check
--- @return bool ifhaslc
 local function HasLoggerConfig(name)
     for _, v in pairs(GetAllCtx()) do
         if v:GetConfiguration():GetLoggerConfig(name) then return true end
@@ -59,9 +55,8 @@ end
 
 local function GetLoggerConfig(name)
     for _, v in pairs(GetAllCtx()) do
-        for i, j in pairs(v:GetConfiguration():GetLoggerConfigs()) do
-            if i == name then return j end
-        end
+        local lc = v:GetConfiguration():GetLoggerConfig(name)
+        if lc then return lc end
     end
 end
 
