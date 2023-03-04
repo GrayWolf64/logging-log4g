@@ -12,7 +12,7 @@ local GetCtx, GetAllCtx = Log4g.Core.LoggerContext.Get, Log4g.Core.LoggerContext
 local pairs, ipairs = pairs, ipairs
 local stringLeft, stringRight = string.Left, string.Right
 local stringExplode, stringFind, stringSub = string.Explode, string.find, string.sub
-local tableInsert = table.insert
+local tableInsert, tableConcat = table.insert, table.concat
 
 --- Stores some private attributes of the LoggerConfig object.
 -- @local
@@ -177,7 +177,7 @@ function Accessor.Create(name, config, level)
                 tableInsert(tocheck2, charset[i])
             end
 
-            tableInsert(tocheck, table.concat(tocheck2, "."))
+            tableInsert(tocheck, tableConcat(tocheck2, "."))
         end
 
         local function HasEveryLCMentioned(tbl)
@@ -189,7 +189,7 @@ function Accessor.Create(name, config, level)
         end
 
         if not HasEveryLCMentioned(tocheck) then return end
-        local parent = table.concat(charset, ".")
+        local parent = tableConcat(charset, ".")
 
         if level and istable(level) then
             loggerconfig:SetLevel(level)
