@@ -46,7 +46,8 @@ Simply clone this project and extract the project folder into your `garrysmod/ad
 Then you just have to make sure it loads before your addon, or you can use valid checks:
 
 ```lua
-if Log4g.Core.Logger and Log4g.Core.LoggerContext and Log4g.Level then
+--- Check the 'Log4g' global table.
+if Log4g then
 
    --- Do some calculation here.
    local function Calculate()
