@@ -28,12 +28,11 @@ Log4g is an advanced logging framework for Garry's Mod.
          "LoggerContext": {
             {            
                "Configuration": {
-               },
-               "Logger": {
                   "LoggerConfig": {
                      "Level"
                   }
-               }
+               },
+               "Logger": {}
             }
          }
       }
