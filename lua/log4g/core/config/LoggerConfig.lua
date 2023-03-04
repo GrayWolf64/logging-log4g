@@ -160,7 +160,7 @@ end
 -- @param level The Logging Level
 -- @return object loggerconfig
 function Accessor.Create(name, config, level)
-    if not isstring(name) or not istable(config) or not istable(level) or name == Accessor.ROOT then return end
+    if not isstring(name) or not istable(config) or name == Accessor.ROOT then return end
     local loggerconfig = LoggerConfig(name)
     loggerconfig:SetContext(config:GetContext())
 
