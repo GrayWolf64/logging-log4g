@@ -1,13 +1,8 @@
-local function PatternLayout(input)
-    if string.find(input, "%%d{DEFAULT}") then
-        input = string.gsub(input, "%%d{DEFAULT}", os.date("%Y-%m-%d %H-%M-%S"))
-    end
+--- A flexible layout configurable with pattern string.
+-- @classmod PatternLayout
+local Layout = Log4g.Core.Layout.Class()
+local PatternLayout = Layout:subclass("PatternLayout")
 
-    if string.find(input, "%%d{UNIX}") then
-        input = string.gsub(input, "%%d{UNIX}", os.time())
-    end
-
-    return input
+function PatternLayout:Initialize(name)
+    Layout.Initialize(self, name)
 end
-
-return PatternLayout
