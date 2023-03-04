@@ -123,11 +123,11 @@ end
 function LoggerConfig:GetAppenders()
     local appenders = {}
 
-    for k, _ in pairs(PRIVATE[self].appenderref) do
-        for i, j in pairs(GetCtx(self:GetContext()):GetConfiguration():GetAppenders()) do
-            if k == i then
-                tableInsert(appenders, j)
-            end
+    for _, v in pairs(PRIVATE[self].appenderref) do
+        local appender = GetCtx(self:GetContext()):GetConfiguration():GetAppenders()[v]
+
+        if appender then
+            tableInsert(appenders, appender)
         end
     end
 
@@ -138,9 +138,9 @@ end
 function LoggerConfig:ClearAppenders()
     local config = GetCtx(self:GetContext()):GetConfiguration()
 
-    for k, _ in pairs(PRIVATE[self].appenderref) do
-        if config:GetAppenders()[k] then
-            config:RemoveAppender(k)
+    for _, v in pairs(PRIVATE[self].appenderref) do
+        if config:GetAppenders()[v] then
+            config:RemoveAppender(v)
         end
     end
 
