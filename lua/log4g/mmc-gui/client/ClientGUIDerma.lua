@@ -57,33 +57,6 @@ function ClientGUIDerma.GetRowControl(row)
     return row:GetChild(1):GetChild(0):GetChild(0)
 end
 
---- In a Panel's Think, run a function and run another function but timed.
--- @param panel The Panel which has a Think function to override
--- @param interval The function will run every given seconds
--- @param a The first function, can be nil
--- @param b The second function
-function ClientGUIDerma.PanelTimedFunc(panel, interval, a, b)
-    local prevtime = os.time()
-
-    local function time()
-        local prestime = os.time()
-        if prevtime + interval > prestime then return end
-        b()
-        prevtime = prevtime + interval
-    end
-
-    if a and isfunction(a) then
-        function panel:Think()
-            a()
-            time()
-        end
-    else
-        function panel:Think()
-            time()
-        end
-    end
-end
-
 --- Get a line's content text(s) at specific columns.
 -- @param num The number of the line
 -- @param listview The DListView containing the line

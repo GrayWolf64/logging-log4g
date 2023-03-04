@@ -6,8 +6,6 @@ local ClientGUIDerma = include("log4g/mmc-gui/client/ClientGUIDerma.lua")
 local CreateDFrame = ClientGUIDerma.CreateDFrame
 local CreateDPropertySheet = ClientGUIDerma.CreateDPropertySheet
 local CreateDPropRow, GetRowControl = ClientGUIDerma.CreateDPropRow, ClientGUIDerma.GetRowControl
-local PanelTimedFunc = ClientGUIDerma.PanelTimedFunc
-CreateClientConVar("Log4g_CL_GUI_UpdateInterval", 5, true, false, nil, 2, 10)
 local Frame = nil
 
 concommand.Add("Log4g_MMC", function()
@@ -17,14 +15,13 @@ concommand.Add("Log4g_MMC", function()
         return
     end
 
-    local UpdateInterval = GetConVar("Log4g_CL_GUI_UpdateInterval"):GetInt()
-
     local function GetGameInfo()
         return "Server: " .. game.GetIPAddress() .. " " .. "SinglePlayer: " .. tostring(game.SinglePlayer())
     end
 
     Frame = CreateDFrame(770, 440, "Log4g Monitoring & Management Console" .. " - " .. GetGameInfo(), "icon16/application.png", nil)
     local MenuBar = vgui.Create("DMenuBar", Frame)
+    local MenuA = MenuBar:AddMenu("View")
     local Icon = vgui.Create("DImageButton", MenuBar)
     Icon:Dock(RIGHT)
     Icon:DockMargin(4, 4, 4, 4)
@@ -44,7 +41,6 @@ concommand.Add("Log4g_MMC", function()
         end)
     end
 
-    PanelTimedFunc(Icon, UpdateInterval, nil, UpdateIcon)
     Icon:SetKeepAspect(true)
     Icon:SetSize(16, 16)
     local SheetA = CreateDPropertySheet(Frame, FILL, 0, 1, 0, 0, 4)
@@ -70,22 +66,27 @@ concommand.Add("Log4g_MMC", function()
         RowA:SetValue(tostring(os.date()))
     end
 
-    local function SetValue()
-        RowB:SetValue(tostring(1 / engine.ServerFrameTime()))
-        RowC:SetValue(tostring(net.ReadFloat()))
-        RowD:SetValue(tostring(net.ReadUInt(14)))
-        RowE:SetValue(tostring(net.ReadUInt(13)))
-        RowF:SetValue(tostring(net.ReadUInt(12)))
-        RowG:SetValue(tostring(net.ReadUInt(32)))
-        RowH:SetValue(tostring(net.ReadUInt(16)))
-    end
-
     local function UpdateSummary()
         SendEmptyMsgToSV("Log4g_CLReq_SVSummaryData")
-        net.Receive("Log4g_CLRcv_SVSummaryData", SetValue)
+
+        net.Receive("Log4g_CLRcv_SVSummaryData", function()
+            RowB:SetValue(tostring(1 / engine.ServerFrameTime()))
+            RowC:SetValue(tostring(net.ReadFloat()))
+            RowD:SetValue(tostring(net.ReadUInt(14)))
+            RowE:SetValue(tostring(net.ReadUInt(13)))
+            RowF:SetValue(tostring(net.ReadUInt(12)))
+            RowG:SetValue(tostring(net.ReadUInt(32)))
+            RowH:SetValue(tostring(net.ReadUInt(16)))
+        end)
     end
 
-    PanelTimedFunc(SummarySheet, UpdateInterval, UpdateTime, UpdateSummary)
+    MenuA:AddOption("Refresh", function()
+        UpdateTime()
+        UpdateIcon()
+        UpdateSummary()
+    end):SetIcon("icon16/arrow_refresh.png")
+
+    UpdateTime()
     UpdateIcon()
     UpdateSummary()
 end)
