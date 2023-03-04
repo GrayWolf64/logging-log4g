@@ -69,6 +69,8 @@ end
 --- Sets the parent of this LoggerConfig.
 -- @param T LoggerConfig object or LoggerConfig name
 function LoggerConfig:SetParent(T)
+    if self.name == Accessor.ROOT then return end
+
     if isstring(T) then
         if T == Accessor.ROOT then
             PRIVATE[self].parent = T
@@ -84,6 +86,8 @@ end
 --- Gets the parent of this LoggerConfig.
 -- @return string lcname
 function LoggerConfig:GetParent()
+    if self.name == Accessor.ROOT then return end
+
     return PRIVATE[self].parent
 end
 
@@ -158,7 +162,7 @@ end
 -- @param level The Logging Level
 -- @return object loggerconfig
 function Accessor.Create(name, config, level)
-    if not isstring(name) or not istable(config) or not istable(level) then return end
+    if not isstring(name) or not istable(config) or not istable(level) or name == Accessor.ROOT then return end
     local loggerconfig = LoggerConfig(name)
     loggerconfig:SetContext(config:GetContext())
 
