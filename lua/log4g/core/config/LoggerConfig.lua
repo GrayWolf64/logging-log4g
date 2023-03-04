@@ -139,10 +139,8 @@ function LoggerConfig:ClearAppenders()
     local config = GetCtx(self:GetContext()):GetConfiguration()
 
     for k, _ in pairs(PRIVATE[self].appenderref) do
-        for i, _ in pairs(config:GetAppenders()) do
-            if k == i then
-                config:RemoveAppender(k)
-            end
+        if config:GetAppenders()[k] then
+            config:RemoveAppender(k)
         end
     end
 
