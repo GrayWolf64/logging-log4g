@@ -120,10 +120,9 @@ end
 -- @return table appenders
 function LoggerConfig:GetAppenders()
     local appenders = {}
-    local config = GetCtx(self:GetContext()):GetConfiguration()
 
     for k, _ in pairs(PRIVATE[self].appenderref) do
-        for i, j in pairs(config:GetAppenders()) do
+        for i, j in pairs(GetCtx(self:GetContext()):GetConfiguration():GetAppenders()) do
             if k == i then
                 table.insert(appenders, j)
             end
