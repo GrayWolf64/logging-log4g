@@ -10,9 +10,8 @@ local LifeCycle = Log4g.Core.LifeCycle.Class()
 local LoggerConfig = LifeCycle:subclass("LoggerConfig")
 local GetCtx, GetAllCtx = Log4g.Core.LoggerContext.Get, Log4g.Core.LoggerContext.GetAll
 local pairs, ipairs = pairs, ipairs
-local stringLeft, stringRight = string.Left, string.Right
-local stringExplode, stringFind, stringSub = string.Explode, string.find, string.sub
-local tableInsert, tableConcat = table.insert, table.concat
+local STRL, STRR, STREXPL, STRF, STRS = string.Left, string.Right, string.Explode, string.find, string.sub
+local TBLINS, TBLCON = table.insert, table.concat
 
 --- Stores some private attributes of the LoggerConfig object.
 -- @local
@@ -113,7 +112,7 @@ end
 -- @return bool ifsuccessfullyadded
 function LoggerConfig:AddAppender(appender)
     if not istable(appender) then return end
-    tableInsert(PRIVATE[self].appenderref, appender.name)
+    TBLINS(PRIVATE[self].appenderref, appender.name)
 
     return GetCtx(self:GetContext()):GetConfiguration():AddAppender(appender, self.name)
 end
@@ -127,7 +126,7 @@ function LoggerConfig:GetAppenders()
         local appender = GetCtx(self:GetContext()):GetConfiguration():GetAppenders()[v]
 
         if appender then
-            tableInsert(appenders, appender)
+            TBLINS(appenders, appender)
         end
     end
 
@@ -154,6 +153,32 @@ function Accessor.GetRootLoggerConfig()
     return RootLoggerConfig
 end
 
+local function ValidateAncestors(name)
+    local nodes, ancestors = STREXPL(".", STRS(name, 1, #name - STRF(string.reverse(name), "%."))), {}
+
+    for k, _ in ipairs(nodes) do
+        local ancestor = {}
+
+        for i = 1, k do
+            TBLINS(ancestor, nodes[i])
+        end
+
+        TBLINS(ancestors, TBLCON(ancestor, "."))
+    end
+
+    local function HasEveryLoggerConfig(tbl)
+        for _, v in pairs(tbl) do
+            if not HasLoggerConfig(v) then return false end
+        end
+
+        return true
+    end
+
+    if HasEveryLoggerConfig(ancestors) then return true, TBLCON(nodes, ".") end
+
+    return false
+end
+
 --- Factory method to create a LoggerConfig.
 -- @param name The name for the Logger
 -- @param config The Configuration
@@ -164,30 +189,10 @@ function Accessor.Create(name, config, level)
     local loggerconfig = LoggerConfig(name)
     loggerconfig:SetContext(config:GetContext())
 
-    if stringFind(name, "%.") then
-        if stringLeft(name, 1) == "." or stringRight(name, 1) == "." then return end
-        local charset, tocheck = stringExplode(".", stringSub(name, 1, #name - stringFind(string.reverse(name), "%."))), {}
-
-        for k, _ in ipairs(charset) do
-            local tocheck2 = {}
-
-            for i = 1, k do
-                tableInsert(tocheck2, charset[i])
-            end
-
-            tableInsert(tocheck, tableConcat(tocheck2, "."))
-        end
-
-        local function HasEveryLCMentioned(tbl)
-            for _, v in pairs(tbl) do
-                if not HasLoggerConfig(v) then return false end
-            end
-
-            return true
-        end
-
-        if not HasEveryLCMentioned(tocheck) then return end
-        local parent = tableConcat(charset, ".")
+    if STRF(name, "%.") then
+        if STRL(name, 1) == "." or STRR(name, 1) == "." then return end
+        local valid, parent = ValidateAncestors(name)
+        if not valid then return end
 
         if level and istable(level) then
             loggerconfig:SetLevel(level)
