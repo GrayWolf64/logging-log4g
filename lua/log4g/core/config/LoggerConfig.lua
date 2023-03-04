@@ -11,7 +11,7 @@ local LoggerConfig = LifeCycle:subclass("LoggerConfig")
 local GetCtx, GetAllCtx = Log4g.Core.LoggerContext.Get, Log4g.Core.LoggerContext.GetAll
 local pairs, ipairs = pairs, ipairs
 local STRL, STRR, STREXPL, STRF, STRS = string.Left, string.Right, string.Explode, string.find, string.sub
-local TBLINS, TBLCON = table.insert, table.concat
+local TBLINS, TBLCON, TBLEMT = table.insert, table.concat, table.Empty
 
 --- Stores some private attributes of the LoggerConfig object.
 -- @local
@@ -138,7 +138,7 @@ function LoggerConfig:ClearAppenders()
         end
     end
 
-    table.Empty(PRIVATE[self].appenderref)
+    TBLEMT(PRIVATE[self].appenderref)
 end
 
 local RootLoggerConfig = LoggerConfig(Accessor.ROOT)
