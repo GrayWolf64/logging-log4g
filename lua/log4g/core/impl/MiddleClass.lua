@@ -3,6 +3,7 @@
 -- @license MIT License
 -- @copyright Enrique García Cota
 local MiddleClass = {}
+local isstring, istable = isstring, istable
 
 local function _createIndexWrapper(aClass, f)
     if f == nil then
@@ -100,9 +101,7 @@ local function _createClass(name, super)
 end
 
 local function _includeMixin(aClass, mixin)
-    if not istable(mixin) then
-        error()
-    end
+    if not istable(mixin) then return end
 
     for name, method in pairs(mixin) do
         if name ~= "included" and name ~= "static" then
@@ -127,29 +126,21 @@ local DefaultMixin = {
     isInstanceOf = function(self, aClass) return type(aClass) == "table" and type(self) == "table" and (self.class == aClass or type(self.class) == "table" and type(self.class.isSubclassOf) == "function" and self.class:isSubclassOf(aClass)) end,
     static = {
         allocate = function(self)
-            if not istable(self) then
-                error()
-            end
+            if not istable(self) then return end
 
             return setmetatable({
                 class = self,
             }, self.__instanceDict)
         end,
         New = function(self, ...)
-            if not istable(self) then
-                error()
-            end
-
+            if not istable(self) then return end
             local instance = self:allocate()
             instance:Initialize(...)
 
             return instance
         end,
         subclass = function(self, name)
-            if not istable(self) or not isstring(name) then
-                error()
-            end
-
+            if not istable(self) or not isstring(name) then return end
             local subclass = _createClass(name, self)
 
             for methodName, f in pairs(self.__instanceDict) do
@@ -167,11 +158,7 @@ local DefaultMixin = {
         subclassed = function(self, other) end,
         isSubclassOf = function(self, other) return type(other) == "table" and type(self.super) == "table" and (self.super == other or self.super:isSubclassOf(other)) end,
         include = function(self, ...)
-            if not istable(self) then
-                error()
-
-                return
-            end
+            if not istable(self) then return end
 
             for _, mixin in ipairs({...}) do
                 _includeMixin(self, mixin)
@@ -183,9 +170,7 @@ local DefaultMixin = {
 }
 
 function MiddleClass.class(name, super)
-    if not isstring(name) then
-        error()
-    end
+    if not isstring(name) then return end
 
     return super and super:subclass(name) or _includeMixin(_createClass(name), DefaultMixin)
 end

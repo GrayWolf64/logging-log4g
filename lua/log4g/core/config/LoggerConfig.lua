@@ -11,9 +11,7 @@ local LoggerConfig = LifeCycle:subclass("LoggerConfig")
 local GetCtx, GetAllCtx = Log4g.Core.LoggerContext.Get, Log4g.Core.LoggerContext.GetAll
 local pairs, ipairs = pairs, ipairs
 local stringLeft, stringRight = string.Left, string.Right
-local stringExplode = string.Explode
-local stringFind = string.find
-local stringSub = string.sub
+local stringExplode, stringFind, stringSub = string.Explode, string.find, string.sub
 local tableInsert = table.insert
 
 --- Stores some private attributes of the LoggerConfig object.
