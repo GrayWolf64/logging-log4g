@@ -28,6 +28,6 @@ end
 
 --- Returns the SimpleLogger class for subclassing on other files.
 -- @return object SimpleLogger
-function Log4g.API.Simple.SimpleLogger.Class()
+function Log4g.API.Simple.SimpleLogger.GetClass()
     return SimpleLogger
 end

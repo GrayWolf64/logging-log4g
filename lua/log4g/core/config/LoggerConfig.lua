@@ -6,7 +6,7 @@
 Log4g.Core.Config.LoggerConfig = Log4g.Core.Config.LoggerConfig or {}
 local Accessor = Log4g.Core.Config.LoggerConfig
 Accessor.ROOT = "root"
-local LifeCycle = Log4g.Core.LifeCycle.Class()
+local LifeCycle = Log4g.Core.LifeCycle.GetClass()
 local LoggerConfig = LifeCycle:subclass("LoggerConfig")
 local GetCtx, GetAllCtx = Log4g.Core.LoggerContext.Get, Log4g.Core.LoggerContext.GetAll
 local pairs, ipairs = pairs, ipairs

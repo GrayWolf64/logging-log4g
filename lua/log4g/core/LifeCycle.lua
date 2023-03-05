@@ -60,6 +60,6 @@ function Log4g.Core.LifeCycle.GetAll()
     return State
 end
 
-function Log4g.Core.LifeCycle.Class()
+function Log4g.Core.LifeCycle.GetClass()
     return LifeCycle
 end

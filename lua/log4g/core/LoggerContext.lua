@@ -4,7 +4,7 @@
 -- @classmod LoggerContext
 Log4g.Core.LoggerContext = Log4g.Core.LoggerContext or {}
 local Accessor = Log4g.Core.LoggerContext
-local LifeCycle = Log4g.Core.LifeCycle.Class()
+local LifeCycle = Log4g.Core.LifeCycle.GetClass()
 local LoggerContext = LifeCycle:subclass("LoggerContext")
 local GetDefaultConfiguration = Log4g.Core.Config.GetDefaultConfiguration
 --- This is where LoggerContexts are stored.

@@ -2,7 +2,7 @@
 -- Subclassing `LifeCycle`.
 -- @classmod Configuration
 Log4g.Core.Config.Configuration = Log4g.Core.Config.Configuration or {}
-local LifeCycle = Log4g.Core.LifeCycle.Class()
+local LifeCycle = Log4g.Core.LifeCycle.GetClass()
 local Configuration = LifeCycle:subclass("Configuration")
 
 --- A weak table which stores some private attributes of the Configuration object.

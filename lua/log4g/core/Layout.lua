@@ -12,6 +12,6 @@ function Layout:Initialize(name)
     PRIVATE[self] = {}
 end
 
-function Log4g.Core.Layout.Class()
+function Log4g.Core.Layout.GetClass()
     return Layout
 end

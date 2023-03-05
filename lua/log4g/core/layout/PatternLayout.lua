@@ -1,6 +1,6 @@
 --- A flexible layout configurable with pattern string.
 -- @classmod PatternLayout
-local Layout = Log4g.Core.Layout.Class()
+local Layout = Log4g.Core.Layout.GetClass()
 local PatternLayout = Layout:subclass("PatternLayout")
 
 function PatternLayout:Initialize(name)
