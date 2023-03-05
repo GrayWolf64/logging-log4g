@@ -3,8 +3,7 @@
 -- @license Apache License 2.0
 -- @copyright GrayWolf64
 local ClientGUIDerma = include("log4g/mmc-gui/client/ClientGUIDerma.lua")
-local CreateDFrame = ClientGUIDerma.CreateDFrame
-local CreateDPropertySheet = ClientGUIDerma.CreateDPropertySheet
+local CreateDFrame, CreateDPropertySheet = ClientGUIDerma.CreateDFrame, ClientGUIDerma.CreateDPropertySheet
 local CreateDPropRow, GetRowControl = ClientGUIDerma.CreateDPropRow, ClientGUIDerma.GetRowControl
 local Frame = nil
 
