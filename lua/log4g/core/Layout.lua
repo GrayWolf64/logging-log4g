@@ -7,7 +7,7 @@ local PRIVATE = PRIVATE or setmetatable({}, {
     __mode = "k"
 })
 
-function Layout:Initialize(name, func)
+function Layout:Initialize(name)
     self.name = name
     PRIVATE[self] = {}
 end
