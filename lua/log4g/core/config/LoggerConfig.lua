@@ -10,7 +10,7 @@ local LifeCycle = Log4g.Core.LifeCycle.GetClass()
 local LoggerConfig = LifeCycle:subclass("LoggerConfig")
 local GetCtx, GetAllCtx = Log4g.Core.LoggerContext.Get, Log4g.Core.LoggerContext.GetAll
 local pairs, ipairs = pairs, ipairs
-local STRL, STRR, STREXPL, STRF, STRS = string.Left, string.Right, string.Explode, string.find, string.sub
+local STREXPL, STRF, STRS = string.Explode, string.find, string.sub
 local TBLINS, TBLCON, TBLEMT = table.insert, table.concat, table.Empty
 
 --- Stores some private attributes of the LoggerConfig object.
@@ -185,7 +185,6 @@ function Accessor.Create(name, config, level)
     loggerconfig:SetContext(config:GetContext())
 
     if STRF(name, "%.") then
-        if STRL(name, 1) == "." or STRR(name, 1) == "." then return end
         local valid, parent = ValidateAncestors(name)
         if not valid then return end
 
