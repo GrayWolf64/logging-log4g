@@ -20,6 +20,7 @@ if SERVER then
     Log4g.SPACE = " "
 
     if file.Exists(Core, "lsv") then
+        MsgN("Found Log4g 'Core' implementation, using: '" .. Core .. "'.")
         include(Core)
     end
 
