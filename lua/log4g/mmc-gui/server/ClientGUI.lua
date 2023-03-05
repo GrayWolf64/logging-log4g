@@ -31,5 +31,6 @@ net.Receive("Log4g_CLReq_SVSummaryData", function(_, ply)
     end
 
     net.WriteUInt(ConstraintCount / 2, 16)
+    net.WriteDouble(SysTime())
     net.Send(ply)
 end)

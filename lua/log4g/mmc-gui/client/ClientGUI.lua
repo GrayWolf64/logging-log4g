@@ -51,7 +51,6 @@ concommand.Add("Log4g_MMC", function()
     local SummarySheet = vgui.Create("DProperties", SheetPanelD)
     SummarySheet:Dock(FILL)
 
-    --- Create a row with a Generic RowControl which users can't type into inside SummarySheet.
     local function CreateSpecialRow(category, name)
         local control = GetRowControl(CreateDPropRow(SummarySheet, category, name, "Generic"))
         control:SetEditable(false)
@@ -61,6 +60,7 @@ concommand.Add("Log4g_MMC", function()
 
     local RowA, RowB, RowC, RowD = CreateSpecialRow("Client", "OS Date"), CreateSpecialRow("Server", "Estimated Tickrate"), CreateSpecialRow("Server", "Floored Lua Dynamic RAM Usage (kB)"), CreateSpecialRow("Server", "Entity Count")
     local RowE, RowF, RowG, RowH = CreateSpecialRow("Server", "Networked Entity (EDICT) Count"), CreateSpecialRow("Server", "Net Receiver Count"), CreateSpecialRow("Server", "Lua Registry Table Element Count"), CreateSpecialRow("Server", "Constraint Count")
+    local RowI = CreateSpecialRow("Server", "Uptime (Seconds)")
 
     local function UpdateTime()
         RowA:SetValue(tostring(os.date()))
@@ -77,6 +77,7 @@ concommand.Add("Log4g_MMC", function()
             RowF:SetValue(tostring(net.ReadUInt(12)))
             RowG:SetValue(tostring(net.ReadUInt(32)))
             RowH:SetValue(tostring(net.ReadUInt(16)))
+            RowI:SetValue(tostring(net.ReadDouble()))
         end)
     end
 
