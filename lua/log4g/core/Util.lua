@@ -5,6 +5,7 @@
 Log4g.Util = Log4g.Util or {}
 local Util = Log4g.Util
 local STRL, STRR = string.Left, string.Right
+local isstring = isstring
 
 --- Add all the string keys in a table to network string table.
 -- @param tbl The table of network strings to add
@@ -20,7 +21,7 @@ end
 -- @param str String name
 -- @return bool ifvalid
 function Util.QualifyName(str)
-    if STRL(str, 1) == "." or STRR(str, 1) == "." or string.find(str, "[^%a%.]") then return false end
+    if not isstring(str) or STRL(str, 1) == "." or STRR(str, 1) == "." or string.find(str, "[^%a%.]") then return false end
 
     return true
 end
