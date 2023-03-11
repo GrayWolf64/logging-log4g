@@ -42,12 +42,12 @@ concommand.Add("Log4g_MMC", function()
 
     Icon:SetKeepAspect(true)
     Icon:SetSize(16, 16)
-    local SheetA = CreateDPropertySheet(Frame, FILL, 0, 1, 0, 0, 4)
-    local SheetPanelA = vgui.Create("DPanel", SheetA)
-    SheetPanelA.Paint = nil
-    local SheetPanelD = vgui.Create("DPanel", SheetA)
-    SheetA:AddSheet("Summary", SheetPanelD, "icon16/table.png")
-    local SummarySheet = vgui.Create("DProperties", SheetPanelD)
+    local BaseSheet = CreateDPropertySheet(Frame, FILL, 0, 1, 0, 0, 4)
+    local BasePanel = vgui.Create("DPanel", BaseSheet)
+    BasePanel.Paint = nil
+    local SummaryPanel = vgui.Create("DPanel", BaseSheet)
+    BaseSheet:AddSheet("Summary", SummaryPanel, "icon16/table.png")
+    local SummarySheet = vgui.Create("DProperties", SummaryPanel)
     SummarySheet:Dock(FILL)
 
     local function CreateSpecialRow(category, name)
@@ -80,11 +80,11 @@ concommand.Add("Log4g_MMC", function()
         end)
     end
 
-    local SheetPanelC = vgui.Create("DPanel", SheetA)
-    SheetA:AddSheet("Configuration", SheetPanelC, "icon16/wrench.png")
-    local ComboBoxA = vgui.Create("DComboBox", SheetPanelC)
-    ComboBoxA:SetWide(200)
-    ComboBoxA:SetPos(2, 2)
+    local SheetPanelC = vgui.Create("DPanel", BaseSheet)
+    BaseSheet:AddSheet("Configuration", SheetPanelC, "icon16/wrench.png")
+    local ConfigFileOption = vgui.Create("DComboBox", SheetPanelC)
+    ConfigFileOption:SetWide(300)
+    ConfigFileOption:SetPos(2, 2)
     local TextEditor = vgui.Create("DTextEntry", SheetPanelC)
     TextEditor:SetMultiline(true)
     TextEditor:SetSize(748, 325)
@@ -96,17 +96,20 @@ concommand.Add("Log4g_MMC", function()
         SendEmptyMsgToSV("Log4g_CLReq_SVConfigurationFiles")
 
         net.Receive("Log4g_CLRcv_SVConfigurationFiles", function()
-            ComboBoxA:Clear()
+            ConfigFileOption:Clear()
 
             for k, v in pairs(net.ReadTable()) do
-                ComboBoxA:AddChoice(k, v)
+                ConfigFileOption:AddChoice(k, v)
             end
         end)
     end
 
-    function ComboBoxA:OnSelect(index, text)
-        ComboBoxA:SetWide(#text * 5.5)
-        TextEditor:SetText(ComboBoxA:GetOptionData(index))
+    function ConfigFileOption:OnMenuOpened(dmenu)
+        self:SetWide(dmenu:GetWide())
+    end
+
+    function ConfigFileOption:OnSelect(index)
+        TextEditor:SetText(self:GetOptionData(index))
     end
 
     MenuA:AddOption("Refresh", function()
