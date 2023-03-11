@@ -25,6 +25,13 @@ function LoggerContext:Initialize(name)
     PRIVATE[self] = {}
     self.name = name
     PRIVATE[self].logger = {}
+    PRIVATE[self].source = debug.getinfo(4, "S")
+end
+
+--- Gets where this LoggerContext is declared
+-- @return table S
+function LoggerContext:GetSource()
+    return PRIVATE[self].source
 end
 
 --- Gets a Logger from the Context.

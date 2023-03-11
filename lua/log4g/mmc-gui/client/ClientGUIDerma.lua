@@ -1,5 +1,10 @@
 local ClientGUIDerma = {}
 
+surface.CreateFont("Log4gMMCConfigurationFileEditorDefault", {
+    font = "Arial",
+    size = 16
+})
+
 function ClientGUIDerma.CreateDFrame(a, b, title, icon, parent)
     local dframe = vgui.Create("DFrame")
     dframe:MakePopup()

@@ -80,13 +80,44 @@ concommand.Add("Log4g_MMC", function()
         end)
     end
 
+    local SheetPanelC = vgui.Create("DPanel", SheetA)
+    SheetA:AddSheet("Configuration", SheetPanelC, "icon16/wrench.png")
+    local ComboBoxA = vgui.Create("DComboBox", SheetPanelC)
+    ComboBoxA:SetWide(200)
+    ComboBoxA:SetPos(2, 2)
+    local TextEditor = vgui.Create("DTextEntry", SheetPanelC)
+    TextEditor:SetMultiline(true)
+    TextEditor:SetSize(748, 325)
+    TextEditor:SetPos(2, 26)
+    TextEditor:SetDrawLanguageID(false)
+    TextEditor:SetFont("Log4gMMCConfigurationFileEditorDefault")
+
+    local function UpdateConfigurationFilePaths()
+        SendEmptyMsgToSV("Log4g_CLReq_SVConfigurationFiles")
+
+        net.Receive("Log4g_CLRcv_SVConfigurationFiles", function()
+            ComboBoxA:Clear()
+
+            for k, v in pairs(net.ReadTable()) do
+                ComboBoxA:AddChoice(k, v)
+            end
+        end)
+    end
+
+    function ComboBoxA:OnSelect(index, text)
+        ComboBoxA:SetWide(#text * 5.5)
+        TextEditor:SetText(ComboBoxA:GetOptionData(index))
+    end
+
     MenuA:AddOption("Refresh", function()
         UpdateTime()
         UpdateIcon()
         UpdateSummary()
+        UpdateConfigurationFilePaths()
     end):SetIcon("icon16/arrow_refresh.png")
 
     UpdateTime()
     UpdateIcon()
     UpdateSummary()
+    UpdateConfigurationFilePaths()
 end)
