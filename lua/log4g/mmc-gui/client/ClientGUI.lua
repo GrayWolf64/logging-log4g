@@ -91,8 +91,12 @@ concommand.Add("Log4g_MMC", function()
     TextEditor:SetPos(2, 26)
     TextEditor:SetDrawLanguageID(false)
     TextEditor:SetFont("Log4gMMCConfigurationFileEditorDefault")
-    TextEditor:SetEnabled(false)
     TextEditor:SetVerticalScrollbarEnabled(true)
+
+    local function ClearTextEditor()
+        TextEditor:SetValue("")
+        TextEditor:SetEnabled(false)
+    end
 
     local function UpdateConfigurationFilePaths()
         SendEmptyMsgToSV("Log4g_CLReq_SVConfigurationFiles")
@@ -116,15 +120,17 @@ concommand.Add("Log4g_MMC", function()
         TextEditor:SetEnabled(true)
     end
 
-    MenuA:AddOption("Refresh", function()
+    local function UpdateGUI()
         UpdateTime()
         UpdateIcon()
         UpdateSummary()
         UpdateConfigurationFilePaths()
+        ClearTextEditor()
+    end
+
+    MenuA:AddOption("Refresh", function()
+        UpdateGUI()
     end):SetIcon("icon16/arrow_refresh.png")
 
-    UpdateTime()
-    UpdateIcon()
-    UpdateSummary()
-    UpdateConfigurationFilePaths()
+    UpdateGUI()
 end)
