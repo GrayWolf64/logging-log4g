@@ -1,6 +1,6 @@
 concommand.Add("Log4g_CoreTest_LoggerConfigHierarchy", function()
     local ctx = Log4g.API.LoggerContextFactory.GetContext("TestLoggerHierarchyCtx")
-    PrintTable(ctx:GetSource())
+    PrintTable(ctx:GetConfigurationSource())
     Log4g.Core.Logger.Create("foo", ctx, Log4g.Level.GetLevel("ALL"), true)
     Log4g.Core.Logger.Create("foo.bar", ctx, Log4g.Level.GetLevel("ALL"), true)
     Log4g.Core.Logger.Create("foo.bar.quiz", ctx, nil, true)

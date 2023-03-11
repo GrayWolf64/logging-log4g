@@ -45,7 +45,7 @@ net.Receive("Log4g_CLReq_SVConfigurationFiles", function(_, ply)
     local map = {}
 
     for _, v in pairs(GetAllCtx()) do
-        local path = string.sub(v:GetSource().source, 2)
+        local path = string.sub(v:GetConfigurationSource().source, 2)
 
         if not TBLHSV(map, path) then
             map[path] = file.Read(path, "GAME")
