@@ -10,8 +10,8 @@ local LifeCycle = Log4g.Core.LifeCycle.GetClass()
 local LoggerConfig = LifeCycle:subclass("LoggerConfig")
 local GetCtx, GetAllCtx = Log4g.Core.LoggerContext.Get, Log4g.Core.LoggerContext.GetAll
 local pairs, ipairs = pairs, ipairs
-local STREXPL, STRF, STRS = string.Explode, string.find, string.sub
-local TBLINS, TBLCON, TBLEMT = table.insert, table.concat, table.Empty
+local SExplode, SFind, STRS = string.Explode, string.find, string.sub
+local TInsert, TConcat, TEmpty = table.insert, table.concat, table.Empty
 
 --- Stores some private attributes of the LoggerConfig object.
 -- @local
@@ -107,7 +107,7 @@ end
 -- @return bool ifsuccessfullyadded
 function LoggerConfig:AddAppender(appender)
     if not istable(appender) then return end
-    TBLINS(PRIVATE[self].appenderref, appender.name)
+    TInsert(PRIVATE[self].appenderref, appender.name)
 
     return GetCtx(self:GetContext()):GetConfiguration():AddAppender(appender, self.name)
 end
@@ -121,7 +121,7 @@ function LoggerConfig:GetAppenders()
         local appender = GetCtx(self:GetContext()):GetConfiguration():GetAppenders()[v]
 
         if appender then
-            TBLINS(appenders, appender)
+            TInsert(appenders, appender)
         end
     end
 
@@ -138,7 +138,7 @@ function LoggerConfig:ClearAppenders()
         end
     end
 
-    TBLEMT(PRIVATE[self].appenderref)
+    TEmpty(PRIVATE[self].appenderref)
 end
 
 local RootLoggerConfig = LoggerConfig(Accessor.ROOT)
@@ -149,16 +149,16 @@ function Accessor.GetRootLoggerConfig()
 end
 
 local function ValidateAncestors(name)
-    local nodes, ancestors = STREXPL(".", STRS(name, 1, #name - STRF(string.reverse(name), "%."))), {}
+    local nodes, ancestors = SExplode(".", STRS(name, 1, #name - SFind(string.reverse(name), "%."))), {}
 
     for k, _ in ipairs(nodes) do
         local ancestor = {}
 
         for i = 1, k do
-            TBLINS(ancestor, nodes[i])
+            TInsert(ancestor, nodes[i])
         end
 
-        TBLINS(ancestors, TBLCON(ancestor, "."))
+        TInsert(ancestors, TConcat(ancestor, "."))
     end
 
     local function HasEveryLoggerConfig(tbl)
@@ -169,7 +169,7 @@ local function ValidateAncestors(name)
         return true
     end
 
-    if HasEveryLoggerConfig(ancestors) then return true, TBLCON(nodes, ".") end
+    if HasEveryLoggerConfig(ancestors) then return true, TConcat(nodes, ".") end
 
     return false
 end
@@ -184,7 +184,7 @@ function Accessor.Create(name, config, level)
     local loggerconfig = LoggerConfig(name)
     loggerconfig:SetContext(config:GetContext())
 
-    if STRF(name, "%.") then
+    if SFind(name, "%.") then
         local valid, parent = ValidateAncestors(name)
         if not valid then return end
 
