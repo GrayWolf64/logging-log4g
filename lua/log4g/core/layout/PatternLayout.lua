@@ -6,3 +6,7 @@ local PatternLayout = Layout:subclass("PatternLayout")
 function PatternLayout:Initialize(name)
     Layout.Initialize(self, name)
 end
+
+function Log4g.Core.Layout.CreatePatternLayout(name)
+    return PatternLayout(name)
+end

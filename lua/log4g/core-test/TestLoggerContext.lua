@@ -1,17 +1,15 @@
-concommand.Add("Log4g_CoreTest_CreateLoggerContext", function()
-    local GetContext = Log4g.API.LoggerContextFactory.GetContext
+local Get = Log4g.Core.LoggerContext.Get
+local GetContext = Log4g.API.LoggerContextFactory.GetContext
 
-    for i = 1, 10 do
-        GetContext(tostring(i))
-    end
+concommand.Add("Log4g_CoreTest_CreateLoggerContext", function()
+    GetContext("Foo")
+    GetContext("Bar")
+    PrintTable(Get("Foo"):GetConfiguration())
 end)
 
 concommand.Add("Log4g_CoreTest_RemoveLoggerContext", function()
-    local Get = Log4g.Core.LoggerContext.Get
-
-    for i = 1, 10 do
-        Get(tostring(i)):Terminate()
-    end
+    Get("Foo"):Terminate()
+    Get("Bar"):Terminate()
 end)
 
 concommand.Add("Log4g_CoreTest_ShowAllLoggerContext", function()
