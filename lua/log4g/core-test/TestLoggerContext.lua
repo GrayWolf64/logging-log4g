@@ -3,8 +3,9 @@ local GetContext = Log4g.API.LoggerContextFactory.GetContext
 
 concommand.Add("Log4g_CoreTest_CreateLoggerContext", function()
     GetContext("Foo")
-    GetContext("Bar")
-    PrintTable(Get("Foo"):GetConfiguration())
+    GetContext("Bar", false)
+    print("is 'Foo' Configuration created: ", Get("Foo"):GetConfiguration() ~= nil)
+    print("is 'Bar' Configuration created: ", Get("Bar"):GetConfiguration() ~= nil)
 end)
 
 concommand.Add("Log4g_CoreTest_RemoveLoggerContext", function()

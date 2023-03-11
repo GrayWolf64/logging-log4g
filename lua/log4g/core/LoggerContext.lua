@@ -85,11 +85,15 @@ end
 
 --- Register a LoggerContext.
 -- @param name The name of the LoggerContext
+-- @param withconfig Whether or not come with a DefaultConfiguration, leaving it nil will make it come with one
 -- @return object loggercontext
-function Accessor.Register(name)
+function Accessor.Register(name, withconfig)
     if INSTANCES[name] then return INSTANCES[name] end
     INSTANCES[name] = LoggerContext(name)
-    INSTANCES[name]:SetConfiguration(GetDefaultConfiguration())
+
+    if withconfig or withconfig == nil then
+        INSTANCES[name]:SetConfiguration(GetDefaultConfiguration())
+    end
 
     return INSTANCES[name]
 end
