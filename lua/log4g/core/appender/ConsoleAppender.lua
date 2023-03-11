@@ -3,14 +3,16 @@
 -- @classmod ConsoleAppender
 local Appender = Log4g.Core.Appender.GetClass()
 local ConsoleAppender = Appender:subclass("ConsoleAppender")
+local istable = istable
 
-function ConsoleAppender:Initialize(name)
-    Appender.Initialize(self, name)
+function ConsoleAppender:Initialize(name, layout)
+    Appender.Initialize(self, name, layout)
 end
 
-function ConsoleAppender:Append()
+function ConsoleAppender:Append(logevent)
+    if not istable(logevent) then return end
 end
 
-function Log4g.Core.Appender.CreateConsoleAppender(name)
-    return ConsoleAppender(name)
+function Log4g.Core.Appender.CreateConsoleAppender(name, layout)
+    return ConsoleAppender(name, layout)
 end

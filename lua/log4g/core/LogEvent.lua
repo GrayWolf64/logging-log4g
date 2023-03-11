@@ -4,11 +4,13 @@
 Log4g.Core.LogEvent = Log4g.Core.LogEvent or {}
 local LogEvent = include("log4g/core/impl/MiddleClass.lua")("LogEvent")
 
-function LogEvent:Initialize(lname, level)
-    self.lname = lname
+function LogEvent:Initialize(loggername, level, time, msg)
+    self.loggername = loggername
     self.level = level
+    self.time = time
+    self.msg = msg
 end
 
-function Log4g.Core.LogEvent.Builder(lname, level)
-    return LogEvent(lname, level)
+function Log4g.Core.LogEvent.Builder(loggername, level, time, msg)
+    return LogEvent(loggername, level, time, msg)
 end
