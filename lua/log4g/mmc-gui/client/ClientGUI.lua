@@ -91,6 +91,8 @@ concommand.Add("Log4g_MMC", function()
     TextEditor:SetPos(2, 26)
     TextEditor:SetDrawLanguageID(false)
     TextEditor:SetFont("Log4gMMCConfigurationFileEditorDefault")
+    TextEditor:SetEnabled(false)
+    TextEditor:SetVerticalScrollbarEnabled(true)
 
     local function UpdateConfigurationFilePaths()
         SendEmptyMsgToSV("Log4g_CLReq_SVConfigurationFiles")
@@ -108,8 +110,10 @@ concommand.Add("Log4g_MMC", function()
         self:SetWide(dmenu:GetWide())
     end
 
-    function ConfigFileOption:OnSelect(index)
-        TextEditor:SetText(self:GetOptionData(index))
+    function ConfigFileOption:OnSelect(_, _, data)
+        TextEditor:SetText(data)
+        if TextEditor:IsEnabled() then return end
+        TextEditor:SetEnabled(true)
     end
 
     MenuA:AddOption("Refresh", function()
