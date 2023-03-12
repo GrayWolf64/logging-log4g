@@ -2,6 +2,8 @@
 -- Subclassing `LifeCycle`.
 -- It maintains a list of all the loggers requested by applications and a reference to the Configuration.
 -- @classmod LoggerContext
+-- @license Apache License 2.0
+-- @copyright GrayWolf64
 Log4g.Core.LoggerContext = Log4g.Core.LoggerContext or {}
 local Accessor = Log4g.Core.LoggerContext
 local LifeCycle = Log4g.Core.LifeCycle.GetClass()

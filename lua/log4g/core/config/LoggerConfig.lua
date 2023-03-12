@@ -1,4 +1,5 @@
 --- The LoggerConfig.
+-- Logger object that is created via configuration.
 -- Subclassing `LifeCycle`.
 -- @classmod LoggerConfig
 -- @license Apache License 2.0

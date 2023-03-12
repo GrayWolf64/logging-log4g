@@ -1,6 +1,8 @@
 --- Interface that must be implemented to create a Configuration.
 -- Subclassing `LifeCycle`.
 -- @classmod Configuration
+-- @license Apache License 2.0
+-- @copyright GrayWolf64
 Log4g.Core.Config.Configuration = Log4g.Core.Config.Configuration or {}
 local LifeCycle = Log4g.Core.LifeCycle.GetClass()
 local Accessor = Log4g.Core.Config
