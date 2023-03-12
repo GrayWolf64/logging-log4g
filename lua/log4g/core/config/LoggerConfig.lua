@@ -163,7 +163,7 @@ end
 local function ValidateAncestors(name)
     local nodes, ancestors = SExplode(".", STRS(name, 1, #name - SFind(string.reverse(name), "%."))), {}
 
-    for k, _ in ipairs(nodes) do
+    for k in ipairs(nodes) do
         local ancestor = {}
 
         for i = 1, k do
