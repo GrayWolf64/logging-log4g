@@ -6,7 +6,6 @@ concommand.Add("Log4g_CoreTest_CreateLoggerContext", function()
     GetContext("Bar", false)
     print("is 'Foo' Configuration created: ", Get("Foo"):GetConfiguration() ~= nil)
     print("is 'Bar' Configuration created: ", Get("Bar"):GetConfiguration() ~= nil)
-    PrintTable(Get("Foo"):GetConfigurationSource())
 end)
 
 concommand.Add("Log4g_CoreTest_RemoveLoggerContext", function()
