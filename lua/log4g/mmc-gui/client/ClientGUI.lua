@@ -105,6 +105,7 @@ concommand.Add("Log4g_MMC", function()
         net.Receive("Log4g_CLRcv_SVConfigurationFiles", function()
             local files = net.ReadTable()
             ConfigFileOption:Clear()
+            ConfigFileOption:SetValue("Location")
 
             if TIsEmpty(files) then
                 ConfigFileOption:SetEnabled(false)
