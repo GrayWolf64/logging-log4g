@@ -6,6 +6,7 @@ local ClientGUIDerma = include("log4g/mmc-gui/client/ClientGUIDerma.lua")
 local CreateDFrame, CreateDPropertySheet = ClientGUIDerma.CreateDFrame, ClientGUIDerma.CreateDPropertySheet
 local CreateDPropRow, GetRowControl = ClientGUIDerma.CreateDPropRow, ClientGUIDerma.GetRowControl
 local Frame = nil
+local TIsEmpty = table.IsEmpty
 
 concommand.Add("Log4g_MMC", function()
     if IsValid(Frame) then
@@ -20,7 +21,7 @@ concommand.Add("Log4g_MMC", function()
 
     Frame = CreateDFrame(770, 440, "Log4g Monitoring & Management Console" .. " - " .. GetGameInfo(), "icon16/application.png", nil)
     local MenuBar = vgui.Create("DMenuBar", Frame)
-    local MenuA = MenuBar:AddMenu("View")
+    local ViewMenu = MenuBar:AddMenu("View")
     local Icon = vgui.Create("DImageButton", MenuBar)
     Icon:Dock(RIGHT)
     Icon:DockMargin(4, 4, 4, 4)
@@ -80,12 +81,12 @@ concommand.Add("Log4g_MMC", function()
         end)
     end
 
-    local SheetPanelC = vgui.Create("DPanel", BaseSheet)
-    BaseSheet:AddSheet("Configuration", SheetPanelC, "icon16/wrench.png")
-    local ConfigFileOption = vgui.Create("DComboBox", SheetPanelC)
+    local ConfigurationPanel = vgui.Create("DPanel", BaseSheet)
+    BaseSheet:AddSheet("Configuration", ConfigurationPanel, "icon16/wrench.png")
+    local ConfigFileOption = vgui.Create("DComboBox", ConfigurationPanel)
     ConfigFileOption:SetWide(300)
     ConfigFileOption:SetPos(2, 2)
-    local TextEditor = vgui.Create("DTextEntry", SheetPanelC)
+    local TextEditor = vgui.Create("DTextEntry", ConfigurationPanel)
     TextEditor:SetMultiline(true)
     TextEditor:SetSize(748, 325)
     TextEditor:SetPos(2, 26)
@@ -102,9 +103,18 @@ concommand.Add("Log4g_MMC", function()
         SendEmptyMsgToSV("Log4g_CLReq_SVConfigurationFiles")
 
         net.Receive("Log4g_CLRcv_SVConfigurationFiles", function()
+            local files = net.ReadTable()
             ConfigFileOption:Clear()
 
-            for k, v in pairs(net.ReadTable()) do
+            if TIsEmpty(files) then
+                ConfigFileOption:SetEnabled(false)
+
+                return
+            end
+
+            ConfigFileOption:SetEnabled(true)
+
+            for k, v in pairs(files) do
                 ConfigFileOption:AddChoice(k, v)
             end
         end)
@@ -128,7 +138,7 @@ concommand.Add("Log4g_MMC", function()
         ClearTextEditor()
     end
 
-    MenuA:AddOption("Refresh", function()
+    ViewMenu:AddOption("Refresh", function()
         UpdateGUI()
     end):SetIcon("icon16/arrow_refresh.png")
 
