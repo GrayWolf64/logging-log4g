@@ -7,6 +7,7 @@ local CreateDFrame, CreateDPropertySheet = ClientGUIDerma.CreateDFrame, ClientGU
 local CreateDPropRow, GetRowControl = ClientGUIDerma.CreateDPropRow, ClientGUIDerma.GetRowControl
 local Frame = nil
 local TIsEmpty = table.IsEmpty
+local pairs = pairs
 
 concommand.Add("Log4g_MMC", function()
     if IsValid(Frame) then
