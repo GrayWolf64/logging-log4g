@@ -63,8 +63,6 @@ end
 --- Sets the parent of this LoggerConfig.
 -- @param T LoggerConfig object or LoggerConfig name
 function LoggerConfig:SetParent(T)
-    if self.name == Accessor.ROOT then return end
-
     if isstring(T) then
         if T == Accessor.ROOT then
             PRIVATE[self].parent = T
@@ -80,8 +78,6 @@ end
 --- Gets the parent of this LoggerConfig.
 -- @return string lcname
 function LoggerConfig:GetParent()
-    if self.name == Accessor.ROOT then return end
-
     return PRIVATE[self].parent
 end
 
@@ -141,10 +137,26 @@ function LoggerConfig:ClearAppenders()
     TEmpty(PRIVATE[self].appenderref)
 end
 
-local RootLoggerConfig = LoggerConfig(Accessor.ROOT)
-RootLoggerConfig:SetLevel(Log4g.Level.GetLevel("INFO"))
+local RootLoggerConfig = LoggerConfig:subclass("LoggerConfig.RootLogger")
 
-function Accessor.GetRootLoggerConfig()
+function RootLoggerConfig:Initialize()
+    LoggerConfig.Initialize(self)
+    self.name = Accessor.ROOT
+end
+
+--- Overrides `LoggerConfig:SetParent()`.
+-- @return bool false
+function RootLoggerConfig:SetParent()
+    return false
+end
+
+--- Overrides `LoggerConfig:GetParent()`.
+-- @return bool false
+function RootLoggerConfig:GetParent()
+    return false
+end
+
+function Accessor.GetRootLoggerConfigClass()
     return RootLoggerConfig
 end
 
