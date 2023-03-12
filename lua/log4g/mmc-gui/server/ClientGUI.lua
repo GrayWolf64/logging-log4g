@@ -4,7 +4,7 @@
 -- @copyright GrayWolf64
 local AddNetworkStrsViaTbl = Log4g.Util.AddNetworkStrsViaTbl
 local GetAllCtx = Log4g.Core.LoggerContext.GetAll
-local TBLHSV = table.HasValue
+local THasValue = table.HasValue
 local pairs = pairs
 
 AddNetworkStrsViaTbl({
@@ -29,13 +29,13 @@ net.Receive("Log4g_CLReq_SVSummaryData", function(_, ply)
     net.WriteUInt(ents.GetEdictCount(), 13)
     net.WriteUInt(table.Count(net.Receivers), 12)
     net.WriteUInt(table.Count(debug.getregistry()), 32)
-    local ConstraintCount = 0
+    local constraintcount = 0
 
     for _, v in pairs(ents.GetAll()) do
-        ConstraintCount = ConstraintCount + table.Count(constraint.GetTable(v))
+        constraintcount = constraintcount + table.Count(constraint.GetTable(v))
     end
 
-    net.WriteUInt(ConstraintCount / 2, 16)
+    net.WriteUInt(constraintcount / 2, 16)
     net.WriteDouble(SysTime())
     net.Send(ply)
 end)
@@ -47,7 +47,7 @@ net.Receive("Log4g_CLReq_SVConfigurationFiles", function(_, ply)
     for _, v in pairs(GetAllCtx()) do
         local path = string.sub(v:GetConfigurationSource().source, 2)
 
-        if not TBLHSV(map, path) then
+        if not THasValue(map, path) then
             map[path] = file.Read(path, "GAME")
         end
     end
