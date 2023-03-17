@@ -1,7 +1,6 @@
 --- The anchor point for the Log4g logging system.
 -- @script LogManager
 Log4g.API.LogManager = Log4g.API.LogManager or {}
-Log4g.API.LogManager.RootLoggerName = "ROOT"
 local API = Log4g.API.LogManager
 local GetAllContexts = Log4g.Core.LoggerContext.GetAll
 
