@@ -5,7 +5,6 @@
 -- @license Apache License 2.0
 -- @copyright GrayWolf64
 Log4g.Core.LoggerContext = Log4g.Core.LoggerContext or {}
-local Accessor = Log4g.Core.LoggerContext
 local LifeCycle = Log4g.Core.LifeCycle.GetClass()
 local LoggerContext = LifeCycle:subclass("LoggerContext")
 local GetDefaultConfiguration = Log4g.Core.Config.GetDefaultConfiguration
@@ -83,14 +82,14 @@ function LoggerContext:HasLogger(name)
     return false
 end
 
-function Accessor.GetAll()
+function Log4g.Core.LoggerContext.GetAll()
     return INSTANCES
 end
 
 --- Get the LoggerContext with the right name.
 -- @param name String name
 -- @return object loggercontext
-function Accessor.Get(name)
+function Log4g.Core.LoggerContext.Get(name)
     if not isstring(name) then return end
     if INSTANCES[name] then return INSTANCES[name] end
 end
@@ -99,7 +98,7 @@ end
 -- @param name The name of the LoggerContext
 -- @param withconfig Whether or not come with a DefaultConfiguration, leaving it nil will make it come with one
 -- @return object loggercontext
-function Accessor.Register(name, withconfig)
+function Log4g.Core.LoggerContext.Register(name, withconfig)
     if INSTANCES[name] then return INSTANCES[name] end
     INSTANCES[name] = LoggerContext(name)
 

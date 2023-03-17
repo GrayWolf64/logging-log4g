@@ -5,8 +5,8 @@
 -- @license Apache License 2.0
 -- @copyright GrayWolf64
 Log4g.Core.Config.LoggerConfig = Log4g.Core.Config.LoggerConfig or {}
-local Accessor = Log4g.Core.Config.LoggerConfig
-Accessor.ROOT = Log4g.ROOT
+Log4g.Core.Config.LoggerConfig.ROOT = Log4g.ROOT
+local ROOT = Log4g.Core.Config.LoggerConfig.ROOT
 local LifeCycle = Log4g.Core.LifeCycle.GetClass()
 local LoggerConfig = LifeCycle:subclass("LoggerConfig")
 local GetCtx, GetAllCtx = Log4g.Core.LoggerContext.Get, Log4g.Core.LoggerContext.GetAll
@@ -66,7 +66,7 @@ end
 -- @param T LoggerConfig object or LoggerConfig name
 function LoggerConfig:SetParent(T)
     if isstring(T) then
-        if T == Accessor.ROOT then
+        if T == ROOT then
             PRIVATE[self].parent = T
         else
             if not HasLoggerConfig(T) then return end
@@ -142,7 +142,7 @@ end
 local RootLoggerConfig = LoggerConfig:subclass("LoggerConfig.RootLogger")
 
 function RootLoggerConfig:Initialize()
-    LoggerConfig.Initialize(self, Accessor.ROOT)
+    LoggerConfig.Initialize(self, ROOT)
     self:SetLevel(GetLevel("INFO"))
 end
 
@@ -163,7 +163,7 @@ function RootLoggerConfig:GetParent()
     return false
 end
 
-function Accessor.GetRootLoggerConfigClass()
+function Log4g.Core.Config.LoggerConfig.GetRootLoggerConfigClass()
     return RootLoggerConfig
 end
 
@@ -199,8 +199,8 @@ end
 -- @param config The Configuration
 -- @param level The Logging Level
 -- @return object loggerconfig
-function Accessor.Create(name, config, level)
-    if not isstring(name) or not istable(config) or name == Accessor.ROOT then return end
+function Log4g.Core.Config.LoggerConfig.Create(name, config, level)
+    if not isstring(name) or not istable(config) or name == ROOT then return end
     local loggerconfig = LoggerConfig(name)
     local ctxname = config:GetContext()
     loggerconfig:SetContext(ctxname)
@@ -233,7 +233,7 @@ function Accessor.Create(name, config, level)
             loggerconfig:SetLevel(config:GetRootLogger():GetLevel())
         end
 
-        loggerconfig:SetParent(Accessor.ROOT)
+        loggerconfig:SetParent(ROOT)
     end
 
     config:AddLogger(name, loggerconfig)
