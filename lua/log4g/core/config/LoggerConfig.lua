@@ -12,7 +12,7 @@ local LoggerConfig = LifeCycle:subclass("LoggerConfig")
 local GetCtx, GetAllCtx = Log4g.Core.LoggerContext.Get, Log4g.Core.LoggerContext.GetAll
 local GetLevel = Log4g.Level.GetLevel
 local pairs, ipairs = pairs, ipairs
-local SExplode, SFind, STRS = string.Explode, string.find, string.sub
+local SExplode, SFind, SSub, SReverse = string.Explode, string.find, string.sub, string.reverse
 local TInsert, TConcat, TEmpty = table.insert, table.concat, table.Empty
 
 --- Stores some private attributes of the LoggerConfig object.
@@ -164,7 +164,7 @@ function Accessor.GetRootLoggerConfigClass()
 end
 
 local function ValidateAncestors(name)
-    local nodes, ancestors = SExplode(".", STRS(name, 1, #name - SFind(string.reverse(name), "%."))), {}
+    local nodes, ancestors = SExplode(".", SSub(name, 1, #name - SFind(SReverse(name), "%."))), {}
 
     for k in ipairs(nodes) do
         local ancestor = {}
