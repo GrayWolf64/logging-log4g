@@ -194,7 +194,6 @@ local function ValidateAncestors(name)
 end
 
 --- Factory method to create a LoggerConfig.
--- @function Log4g.Core.Config.LoggerConfig.Create
 -- @param name The name for the Logger
 -- @param config The Configuration
 -- @param level The Logging Level
