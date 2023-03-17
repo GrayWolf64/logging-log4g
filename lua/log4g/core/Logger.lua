@@ -6,19 +6,16 @@ local CreateLoggerConfig = Log4g.Core.Config.LoggerConfig.Create
 local GetCtx = Log4g.Core.LoggerContext.Get
 local QualifyName = Log4g.Util.QualifyName
 
---- A weak table which stores some private attributes of the Logger object.
--- @local
--- @table PRIVATE
 local PRIVATE = PRIVATE or setmetatable({}, {
     __mode = "k"
 })
 
-function Logger:Initialize(name, context, level, newConfig)
+function Logger:Initialize(name, context, level, withconfig)
     PRIVATE[self] = {}
     self.name = name
     PRIVATE[self].ctx = context.name
 
-    if newConfig then
+    if withconfig then
         PRIVATE[self].lc = name
         context:GetConfiguration():AddLogger(name, CreateLoggerConfig(name, context:GetConfiguration(), level))
     end
@@ -31,7 +28,7 @@ function Logger:GetLoggerConfig()
     if lc then return lc end
 end
 
-function Log4g.Core.Logger.Create(name, context, level, newConfig)
+function Log4g.Core.Logger.Create(name, context, level, withconfig)
     if context:HasLogger(name) or not QualifyName(name) then return end
-    context:GetLoggers()[name] = Logger(name, context, level, newConfig)
+    context:GetLoggers()[name] = Logger(name, context, level, withconfig)
 end
