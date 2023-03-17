@@ -69,6 +69,11 @@ function Configuration:GetLoggerConfigs()
     return PRIVATE[self].lc
 end
 
+function Configuration:GetRootLogger()
+    local RootLCN = Log4g.ROOT
+    if PRIVATE[self].lc[RootLCN] then return PRIVATE[self].lc[RootLCN] end
+end
+
 --- Gets all the Appenders in the Configuration.
 -- Keys are the names of Appenders and values are the Appenders themselves.
 -- @return table appenders

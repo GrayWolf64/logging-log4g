@@ -18,6 +18,7 @@ if SERVER then
     -- @field _VERSION
     Log4g = Log4g or {}
     Log4g.SPACE = " "
+    Log4g.ROOT = " "
 
     if file.Exists(Core, "lsv") then
         MsgN("Found Log4g 'Core' implementation, using: '" .. Core .. "'.")

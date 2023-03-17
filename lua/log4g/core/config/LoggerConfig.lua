@@ -6,10 +6,11 @@
 -- @copyright GrayWolf64
 Log4g.Core.Config.LoggerConfig = Log4g.Core.Config.LoggerConfig or {}
 local Accessor = Log4g.Core.Config.LoggerConfig
-Accessor.ROOT = "root"
+Accessor.ROOT = Log4g.ROOT
 local LifeCycle = Log4g.Core.LifeCycle.GetClass()
 local LoggerConfig = LifeCycle:subclass("LoggerConfig")
 local GetCtx, GetAllCtx = Log4g.Core.LoggerContext.Get, Log4g.Core.LoggerContext.GetAll
+local GetLevel = Log4g.Level.GetLevel
 local pairs, ipairs = pairs, ipairs
 local SExplode, SFind, STRS = string.Explode, string.find, string.sub
 local TInsert, TConcat, TEmpty = table.insert, table.concat, table.Empty
@@ -142,6 +143,7 @@ local RootLoggerConfig = LoggerConfig:subclass("LoggerConfig.RootLogger")
 
 function RootLoggerConfig:Initialize()
     LoggerConfig.Initialize(self)
+    self:SetLevel(GetLevel("INFO"))
     self.name = Accessor.ROOT
 end
 
@@ -195,11 +197,20 @@ end
 function Accessor.Create(name, config, level)
     if not isstring(name) or not istable(config) or name == Accessor.ROOT then return end
     local loggerconfig = LoggerConfig(name)
-    loggerconfig:SetContext(config:GetContext())
+    local ctxname = config:GetContext()
+    loggerconfig:SetContext(ctxname)
+
+    local function PutRootLCIfAbsent(ctxn)
+        local conf = GetCtx(ctxn):GetConfiguration()
+        if #conf:GetLoggerConfigs() ~= 0 then return end
+        local rootlc = RootLoggerConfig()
+        conf:AddLogger(rootlc.name, rootlc)
+    end
 
     if SFind(name, "%.") then
         local valid, parent = ValidateAncestors(name)
         if not valid then return end
+        PutRootLCIfAbsent(ctxname)
 
         if level and istable(level) then
             loggerconfig:SetLevel(level)
@@ -209,7 +220,8 @@ function Accessor.Create(name, config, level)
 
         loggerconfig:SetParent(parent)
     else
-        loggerconfig:SetLevel(RootLoggerConfig:GetLevel())
+        PutRootLCIfAbsent(ctxname)
+        loggerconfig:SetLevel(config:GetRootLogger():GetLevel())
         loggerconfig:SetParent(Accessor.ROOT)
     end
 
