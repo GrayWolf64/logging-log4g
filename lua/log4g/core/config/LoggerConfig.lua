@@ -221,7 +221,13 @@ function Accessor.Create(name, config, level)
         loggerconfig:SetParent(parent)
     else
         PutRootLCIfAbsent(ctxname)
-        loggerconfig:SetLevel(config:GetRootLogger():GetLevel())
+
+        if level and istable(level) then
+            loggerconfig:SetLevel(level)
+        else
+            loggerconfig:SetLevel(config:GetRootLogger():GetLevel())
+        end
+
         loggerconfig:SetParent(Accessor.ROOT)
     end
 
