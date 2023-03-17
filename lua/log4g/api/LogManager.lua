@@ -8,7 +8,10 @@ local GetAllContexts = Log4g.Core.LoggerContext.GetAll
 -- @param name The name of the Logger
 -- @return bool haslogger
 function API.Exists(name)
-    for _, v in pairs(GetAllContexts()) do
+    local ctxs = GetAllContexts()
+    if #ctxs == 0 then return end
+
+    for _, v in pairs(ctxs) do
         if v:HasLogger(name) then return true end
     end
 
