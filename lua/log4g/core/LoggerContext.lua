@@ -52,10 +52,10 @@ function LoggerContext:GetLoggers()
 end
 
 --- Sets the Configuration to be used.
--- @param configuration Configuration
-function LoggerContext:SetConfiguration(configuration)
-    configuration:SetContext(self.name)
-    PRIVATE[self].configuration = configuration
+-- @param config Configuration
+function LoggerContext:SetConfiguration(config)
+    config:SetContext(self.name)
+    PRIVATE[self].configuration = config
 end
 
 --- Returns the current Configuration of the LoggerContext.
