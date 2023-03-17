@@ -142,9 +142,13 @@ end
 local RootLoggerConfig = LoggerConfig:subclass("LoggerConfig.RootLogger")
 
 function RootLoggerConfig:Initialize()
-    LoggerConfig.Initialize(self)
+    LoggerConfig.Initialize(self, Accessor.ROOT)
     self:SetLevel(GetLevel("INFO"))
-    self.name = Accessor.ROOT
+end
+
+--- Overrides `LoggerConfig:__tostring()`.
+function RootLoggerConfig:__tostring()
+    return "RootLoggerConfig: [name:" .. self.name .. "]"
 end
 
 --- Overrides `LoggerConfig:SetParent()`.
@@ -190,6 +194,7 @@ local function ValidateAncestors(name)
 end
 
 --- Factory method to create a LoggerConfig.
+-- @function Log4g.Core.Config.LoggerConfig.Create
 -- @param name The name for the Logger
 -- @param config The Configuration
 -- @param level The Logging Level
