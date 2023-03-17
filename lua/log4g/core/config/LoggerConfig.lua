@@ -13,7 +13,7 @@ local GetCtx, GetAllCtx = Log4g.Core.LoggerContext.Get, Log4g.Core.LoggerContext
 local GetLevel = Log4g.Level.GetLevel
 local pairs, ipairs = pairs, ipairs
 local SExplode, SFind, SSub, SReverse = string.Explode, string.find, string.sub, string.reverse
-local TInsert, TConcat, TEmpty = table.insert, table.concat, table.Empty
+local TInsert, TConcat, TEmpty, TIsEmpty = table.insert, table.concat, table.Empty, table.IsEmpty
 
 --- Stores some private attributes of the LoggerConfig object.
 -- @local
@@ -207,7 +207,7 @@ function Accessor.Create(name, config, level)
 
     local function PutRootLCIfAbsent(ctxn)
         local conf = GetCtx(ctxn):GetConfiguration()
-        if #conf:GetLoggerConfigs() ~= 0 then return end
+        if not TIsEmpty(conf:GetLoggerConfigs()) then return end
         local rootlc = RootLoggerConfig()
         conf:AddLogger(rootlc.name, rootlc)
     end
