@@ -2,8 +2,9 @@
 -- Levels used for identifying the severity of an event.
 -- @classmod Level
 Log4g.Level = Log4g.Level or {}
-local Accessor = Log4g.Level
 local Level = include("log4g/core/impl/MiddleClass.lua")("Level")
+local tostring = tostring
+local isstring, isnumber = isstring, isnumber
 
 function Level:Initialize(name, int, color)
     self.name = name
@@ -16,7 +17,7 @@ function Level:__tostring()
 end
 
 function Level:__eq(lhs, rhs)
-    return lhs == rhs
+    return lhs.int == rhs.int and lhs.color == rhs.color
 end
 
 --- Get the Level's name.
@@ -63,7 +64,7 @@ local CustomLevel = CustomLevel or {}
 
 --- Get the Custom Levels as a table.
 -- @return table customlevel
-function Accessor.GetCustomLevel()
+function Log4g.Level.GetCustomLevel()
     return CustomLevel
 end
 
@@ -114,13 +115,13 @@ end
 
 --- Get the Standard Levels as a table.
 -- @return table StdLevel
-function Accessor.GetStdLevel()
+function Log4g.Level.GetStdLevel()
     return StdLevel
 end
 
 --- Get the Standard IntLevels as a table.
 -- @return table standardintlevel
-function Accessor.GetStandardIntLevel()
+function Log4g.Level.GetStandardIntLevel()
     return StdIntLevel
 end
 
@@ -128,7 +129,7 @@ end
 -- Return the Level associated with the name or nil if the Level cannot be found.
 -- @param name The Level's name
 -- @return object level
-function Accessor.GetLevel(name)
+function Log4g.Level.GetLevel(name)
     if StdLevel[name] then
         return StdLevel[name]
     elseif CustomLevel[name] then
@@ -141,8 +142,9 @@ end
 -- @param name The Level's name
 -- @param int The Level's intlevel
 -- @return object level
-function Accessor.ForName(name, int)
-    if #name == 0 or int < 0 or StdLevel[name] then return end
+function Log4g.Level.ForName(name, int)
+    if not isstring(name) or not isnumber(int) or StdLevel[name] then return end
+    if #name == 0 or int <= 0 then return end
 
     if not CustomLevel[name] then
         local level = Level(name, int)
