@@ -43,7 +43,8 @@ end
 -- @name The name of the Logger
 function LoggerContext:GetLogger(name)
     if not isstring(name) then return end
-    if PRIVATE[self].logger[name] then return PRIVATE[self].logger[name] end
+    local logger = PRIVATE[self].logger[name]
+    if logger then return logger end
 end
 
 --- Gets a table of the current loggers.
@@ -55,7 +56,8 @@ end
 --- Returns the current Configuration of the LoggerContext.
 -- @return object configuration
 function LoggerContext:GetConfiguration()
-    if PRIVATE[self].configuration then return PRIVATE[self].configuration end
+    local conf = PRIVATE[self].configuration
+    if conf then return conf end
 end
 
 --- Sets the Configuration to be used.
