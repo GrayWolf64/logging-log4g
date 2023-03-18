@@ -52,18 +52,19 @@ function LoggerContext:GetLoggers()
     return PRIVATE[self].logger
 end
 
+--- Returns the current Configuration of the LoggerContext.
+-- @return object configuration
+function LoggerContext:GetConfiguration()
+    if PRIVATE[self].configuration then return PRIVATE[self].configuration end
+end
+
 --- Sets the Configuration to be used.
 -- @param config Configuration
 function LoggerContext:SetConfiguration(config)
     if not istable(config) then return end
+    if self:GetConfiguration() == config then return end
     config:SetContext(self.name)
     PRIVATE[self].configuration = config
-end
-
---- Returns the current Configuration of the LoggerContext.
--- @return object configuration
-function LoggerContext:GetConfiguration()
-    return PRIVATE[self].configuration
 end
 
 function LoggerContext:__tostring()
