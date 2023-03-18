@@ -25,8 +25,8 @@ local PRIVATE = PRIVATE or setmetatable({}, {
 function LoggerContext:Initialize(name)
     LifeCycle.Initialize(self)
     PRIVATE[self] = {}
-    self.name = name
     PRIVATE[self].logger = {}
+    self.name = name
 end
 
 function LoggerContext:SetConfigurationSource(src)
