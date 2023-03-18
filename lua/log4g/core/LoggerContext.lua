@@ -8,6 +8,7 @@ Log4g.Core.LoggerContext = Log4g.Core.LoggerContext or {}
 local LifeCycle = Log4g.Core.LifeCycle.GetClass()
 local LoggerContext = LifeCycle:subclass("LoggerContext")
 local GetDefaultConfiguration = Log4g.Core.Config.GetDefaultConfiguration
+local istable, isstring = istable, isstring
 --- This is where LoggerContexts are stored.
 -- This is done to prevent the rapid changes in logging system's global table from polluting it.
 -- @local
@@ -41,6 +42,7 @@ end
 --- Gets a Logger from the Context.
 -- @name The name of the Logger
 function LoggerContext:GetLogger(name)
+    if not isstring(name) then return end
     if PRIVATE[self].logger[name] then return PRIVATE[self].logger[name] end
 end
 
@@ -53,6 +55,7 @@ end
 --- Sets the Configuration to be used.
 -- @param config Configuration
 function LoggerContext:SetConfiguration(config)
+    if not istable(config) then return end
     config:SetContext(self.name)
     PRIVATE[self].configuration = config
 end
@@ -77,6 +80,7 @@ end
 -- @param The name of the Logger to check
 -- @return bool haslogger
 function LoggerContext:HasLogger(name)
+    if not isstring(name) then return end
     if PRIVATE[self].logger[name] then return true end
 
     return false
