@@ -11,15 +11,12 @@ local PRIVATE = PRIVATE or setmetatable({}, {
     __mode = "k"
 })
 
-function Logger:Initialize(name, context, level, withconfig)
+function Logger:Initialize(name, context, level)
     PRIVATE[self] = {}
     PRIVATE[self].ctx = context.name
+    PRIVATE[self].lc = name
     self.name = name
-
-    if withconfig then
-        PRIVATE[self].lc = name
-        context:GetConfiguration():AddLogger(name, CreateLoggerConfig(name, context:GetConfiguration(), level))
-    end
+    context:GetConfiguration():AddLogger(name, CreateLoggerConfig(name, context:GetConfiguration(), level))
 end
 
 --- Get the LoggerConfig of the Logger.
@@ -29,9 +26,9 @@ function Logger:GetLoggerConfig()
     if lc then return lc end
 end
 
-function Log4g.Core.Logger.Create(name, context, level, withconfig)
+function Log4g.Core.Logger.Create(name, context, level)
     if not istable(context) then return end
     if withconfig and not level then return end
     if context:HasLogger(name) or not QualifyName(name) then return end
-    context:GetLoggers()[name] = Logger(name, context, level, withconfig)
+    context:GetLoggers()[name] = Logger(name, context, level)
 end
