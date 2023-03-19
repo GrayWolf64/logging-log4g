@@ -34,17 +34,15 @@ function Logger:Initialize(name, context, loggerconfig)
                     return
                 end
 
-                local validparent = lc
+                while not HasLoggerConfig(lc) do
+                    lc = StripDotExtension(lc)
 
-                while not HasLoggerConfig(validparent) do
-                    validparent = StripDotExtension(validparent)
-
-                    if not string.find(validparent, "%.") then
+                    if not string.find(lc, "%.") then
                         self:SetLoggerConfigN(Log4g.ROOT)
                     end
 
-                    if HasLoggerConfig(validparent) then
-                        self:SetLoggerConfigN(validparent)
+                    if HasLoggerConfig(lc) then
+                        self:SetLoggerConfigN(lc)
                         break
                     end
                 end
