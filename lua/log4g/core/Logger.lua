@@ -28,7 +28,6 @@ end
 
 function Log4g.Core.Logger.Create(name, context, level)
     if not istable(context) then return end
-    if withconfig and not level then return end
     if context:HasLogger(name) or not QualifyName(name) then return end
     context:GetLoggers()[name] = Logger(name, context, level)
 end
