@@ -7,6 +7,7 @@ local QualifyName = Log4g.Util.QualifyName
 local istable, isstring = istable, isstring
 local HasLoggerConfig = Log4g.Core.Config.LoggerConfig.HasLoggerConfig
 local StripDotExtension = Log4g.Util.StripDotExtension
+local ROOT = Log4g.ROOT
 
 local PRIVATE = PRIVATE or setmetatable({}, {
     __mode = "k"
@@ -29,7 +30,7 @@ function Logger:Initialize(name, context, loggerconfig)
 
             if not HasLoggerConfig(lc) then
                 if not string.find(lc, "%.") then
-                    self:SetLoggerConfigN(Log4g.ROOT)
+                    self:SetLoggerConfigN(ROOT)
 
                     return
                 end
@@ -38,7 +39,7 @@ function Logger:Initialize(name, context, loggerconfig)
                     lc = StripDotExtension(lc)
 
                     if not string.find(lc, "%.") then
-                        self:SetLoggerConfigN(Log4g.ROOT)
+                        self:SetLoggerConfigN(ROOT)
                     end
 
                     if HasLoggerConfig(lc) then
@@ -48,7 +49,7 @@ function Logger:Initialize(name, context, loggerconfig)
                 end
             end
         else
-            self:SetLoggerConfigN(Log4g.ROOT)
+            self:SetLoggerConfigN(ROOT)
         end
     end
 end
