@@ -13,8 +13,9 @@ local GetCtx, GetAllCtx = Log4g.Core.LoggerContext.Get, Log4g.Core.LoggerContext
 local GetLevel = Log4g.Level.GetLevel
 local istable = istable
 local pairs, ipairs = pairs, ipairs
-local SExplode, SFind, SSub, SReverse = string.Explode, string.find, string.sub, string.reverse
-local TInsert, TConcat, TEmpty, TIsEmpty = table.insert, table.concat, table.Empty, table.IsEmpty
+local SFind = string.find
+local TInsert, TConcat, TEmpty = table.insert, table.concat, table.Empty
+local StripDotExtension = Log4g.Util.StripDotExtension
 
 --- Stores some private attributes of the LoggerConfig object.
 -- @local
@@ -55,6 +56,8 @@ local function HasLoggerConfig(name)
 
     return false
 end
+
+Log4g.Core.Config.LoggerConfig.HasLoggerConfig = HasLoggerConfig
 
 local function GetLoggerConfig(name)
     for _, v in pairs(GetAllCtx()) do
@@ -164,12 +167,8 @@ function RootLoggerConfig:GetParent()
     return false
 end
 
-function Log4g.Core.Config.LoggerConfig.GetRootLoggerConfigClass()
-    return RootLoggerConfig
-end
-
 local function ValidateAncestors(name)
-    local nodes, ancestors = SExplode(".", SSub(name, 1, #name - SFind(SReverse(name), "%."))), {}
+    local nodes, ancestors = StripDotExtension(name), {}
 
     for k in ipairs(nodes) do
         local ancestor = {}
@@ -205,17 +204,9 @@ function Log4g.Core.Config.LoggerConfig.Create(name, config, level)
     local ctxname = config:GetContext()
     loggerconfig:SetContext(ctxname)
 
-    local function PutRootLCIfAbsent(ctxn)
-        local conf = GetCtx(ctxn):GetConfiguration()
-        if not TIsEmpty(conf:GetLoggerConfigs()) then return end
-        local rootlc = RootLoggerConfig()
-        conf:AddLogger(rootlc.name, rootlc)
-    end
-
     if SFind(name, "%.") then
         local valid, parent = ValidateAncestors(name)
         if not valid then return end
-        PutRootLCIfAbsent(ctxname)
 
         if level and istable(level) then
             loggerconfig:SetLevel(level)
@@ -225,8 +216,6 @@ function Log4g.Core.Config.LoggerConfig.Create(name, config, level)
 
         loggerconfig:SetParent(parent)
     else
-        PutRootLCIfAbsent(ctxname)
-
         if level and istable(level) then
             loggerconfig:SetLevel(level)
         else
@@ -239,4 +228,8 @@ function Log4g.Core.Config.LoggerConfig.Create(name, config, level)
     config:AddLogger(name, loggerconfig)
 
     return loggerconfig
+end
+
+function Log4g.Core.Config.LoggerConfig.GetRootLoggerConfigClass()
+    return RootLoggerConfig
 end

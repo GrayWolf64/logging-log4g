@@ -2,6 +2,7 @@
 -- @script LoggerContextFactory
 Log4g.API.LoggerContextFactory = Log4g.API.LoggerContextFactory or {}
 local RegisterLoggerContext = Log4g.Core.LoggerContext.Register
+local RootLoggerConfigClass = Log4g.Core.Config.LoggerConfig.GetRootLoggerConfigClass
 
 --- Create a LoggerContext.
 -- This is meant to be used in Programmatic Configuration.
@@ -12,6 +13,8 @@ function Log4g.API.LoggerContextFactory.GetContext(name, withconfig)
     if not isstring(name) then return end
     local ctx = RegisterLoggerContext(name, withconfig)
     ctx:SetConfigurationSource(debug.getinfo(2, "S"))
+    local rootlc = RootLoggerConfigClass()()
+    ctx:GetConfiguration():AddLogger(rootlc.name, rootlc)
 
     return ctx
 end
