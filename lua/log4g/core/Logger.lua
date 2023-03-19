@@ -5,6 +5,7 @@ local Logger = include("log4g/core/impl/MiddleClass.lua")("Logger")
 local CreateLoggerConfig = Log4g.Core.Config.LoggerConfig.Create
 local GetCtx = Log4g.Core.LoggerContext.Get
 local QualifyName = Log4g.Util.QualifyName
+local isstring, istable = isstring, istable
 
 local PRIVATE = PRIVATE or setmetatable({}, {
     __mode = "k"
@@ -12,8 +13,8 @@ local PRIVATE = PRIVATE or setmetatable({}, {
 
 function Logger:Initialize(name, context, level, withconfig)
     PRIVATE[self] = {}
-    self.name = name
     PRIVATE[self].ctx = context.name
+    self.name = name
 
     if withconfig then
         PRIVATE[self].lc = name
@@ -29,6 +30,7 @@ function Logger:GetLoggerConfig()
 end
 
 function Log4g.Core.Logger.Create(name, context, level, withconfig)
+    if not isstring(name) or not istable(context) or not istable(level) then return end
     if context:HasLogger(name) or not QualifyName(name) then return end
     context:GetLoggers()[name] = Logger(name, context, level, withconfig)
 end
