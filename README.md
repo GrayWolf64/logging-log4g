@@ -19,27 +19,6 @@ Log4g is an advanced logging framework for Garry's Mod.
 
 [lua/log4g](https://github.com/GrayWolf64/gmod-logging-log4g/tree/main/lua/log4g)
 
-## Entity Structure
-
-```json
-{
-   "INSTANCES": {
-      {
-         "LoggerContext": {
-            {            
-               "Configuration": {
-                  "LoggerConfig": {
-                     "Level"
-                  }
-               },
-               "Logger": {}
-            }
-         }
-      }
-   }
-}
-```
-
 ## How to Add It To Your Project / How to Test?
 
 Simply clone this project and extract the project folder into your `garrysmod/addons` folder.
