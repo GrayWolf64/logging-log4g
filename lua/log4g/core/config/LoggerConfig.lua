@@ -168,7 +168,7 @@ function RootLoggerConfig:GetParent()
 end
 
 local function ValidateAncestors(name)
-    local nodes, ancestors = StripDotExtension(name), {}
+    local nodes, ancestors = StripDotExtension(name, false), {}
 
     for k in ipairs(nodes) do
         local ancestor = {}

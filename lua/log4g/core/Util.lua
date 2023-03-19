@@ -28,9 +28,14 @@ end
 
 --- Removes the dot extension of a string.
 -- @param str String
+-- @param doconcat Whether `table.concat` the result
 -- @return string result
-function Log4g.Util.StripDotExtension(str)
+function Log4g.Util.StripDotExtension(str, doconcat)
     if not isstring(str) then return end
 
-    return TConcat(SExplode(".", SSub(str, 1, #str - SFind(SReverse(str), "%."))))
+    if doconcat ~= false then
+        return TConcat(SExplode(".", SSub(str, 1, #str - SFind(SReverse(str), "%."))))
+    else
+        return SExplode(".", SSub(str, 1, #str - SFind(SReverse(str), "%.")))
+    end
 end
