@@ -11,6 +11,7 @@ local LifeCycle = Log4g.Core.LifeCycle.GetClass()
 local LoggerConfig = LifeCycle:subclass("LoggerConfig")
 local GetCtx, GetAllCtx = Log4g.Core.LoggerContext.Get, Log4g.Core.LoggerContext.GetAll
 local GetLevel = Log4g.Level.GetLevel
+local istable = istable
 local pairs, ipairs = pairs, ipairs
 local SExplode, SFind, SSub, SReverse = string.Explode, string.find, string.sub, string.reverse
 local TInsert, TConcat, TEmpty, TIsEmpty = table.insert, table.concat, table.Empty, table.IsEmpty
@@ -199,7 +200,7 @@ end
 -- @param level The Logging Level
 -- @return object loggerconfig
 function Log4g.Core.Config.LoggerConfig.Create(name, config, level)
-    if not isstring(name) or not istable(config) or name == ROOT then return end
+    if not istable(config) or name == ROOT then return end
     local loggerconfig = LoggerConfig(name)
     local ctxname = config:GetContext()
     loggerconfig:SetContext(ctxname)
