@@ -13,8 +13,8 @@ local GetCtx, GetAllCtx = Log4g.Core.LoggerContext.Get, Log4g.Core.LoggerContext
 local GetLevel = Log4g.Level.GetLevel
 local istable = istable
 local pairs, ipairs = pairs, ipairs
-local SFind = string.find
-local TInsert, TConcat, TEmpty = table.insert, table.concat, table.Empty
+local sfind = string.find
+local tinsert, tconcat, TEmpty = table.insert, table.concat, table.Empty
 local StripDotExtension = Log4g.Util.StripDotExtension
 
 --- Stores some private attributes of the LoggerConfig object.
@@ -56,8 +56,6 @@ local function HasLoggerConfig(name)
 
     return false
 end
-
-Log4g.Core.Config.LoggerConfig.HasLoggerConfig = HasLoggerConfig
 
 local function GetLoggerConfig(name)
     for _, v in pairs(GetAllCtx()) do
@@ -109,7 +107,7 @@ end
 -- @return bool ifsuccessfullyadded
 function LoggerConfig:AddAppender(appender)
     if not istable(appender) then return end
-    TInsert(PRIVATE[self].appenderref, appender.name)
+    tinsert(PRIVATE[self].appenderref, appender.name)
 
     return GetCtx(self:GetContext()):GetConfiguration():AddAppender(appender, self.name)
 end
@@ -123,7 +121,7 @@ function LoggerConfig:GetAppenders()
         local appender = GetCtx(self:GetContext()):GetConfiguration():GetAppenders()[v]
 
         if appender then
-            TInsert(appenders, appender)
+            tinsert(appenders, appender)
         end
     end
 
@@ -167,18 +165,24 @@ function RootLoggerConfig:GetParent()
     return false
 end
 
-local function ValidateAncestors(name)
+local function GenerateParentNames(name)
     local nodes, ancestors = StripDotExtension(name, false), {}
 
     for k in ipairs(nodes) do
         local ancestor = {}
 
         for i = 1, k do
-            TInsert(ancestor, nodes[i])
+            tinsert(ancestor, nodes[i])
         end
 
-        TInsert(ancestors, TConcat(ancestor, "."))
+        tinsert(ancestors, tconcat(ancestor, "."))
     end
+
+    return ancestors, nodes
+end
+
+local function ValidateAncestors(name)
+    local ancestors, nodes = GenerateParentNames(name)
 
     local function HasEveryLoggerConfig(tbl)
         for _, v in pairs(tbl) do
@@ -188,7 +192,7 @@ local function ValidateAncestors(name)
         return true
     end
 
-    if HasEveryLoggerConfig(ancestors) then return true, TConcat(nodes, ".") end
+    if HasEveryLoggerConfig(ancestors) then return true, tconcat(nodes, ".") end
 
     return false
 end
@@ -204,7 +208,7 @@ function Log4g.Core.Config.LoggerConfig.Create(name, config, level)
     local ctxname = config:GetContext()
     loggerconfig:SetContext(ctxname)
 
-    if SFind(name, "%.") then
+    if sfind(name, "%.") then
         local valid, parent = ValidateAncestors(name)
         if not valid then return end
 
@@ -233,3 +237,6 @@ end
 function Log4g.Core.Config.LoggerConfig.GetRootLoggerConfigClass()
     return RootLoggerConfig
 end
+
+Log4g.Core.Config.LoggerConfig.HasLoggerConfig = HasLoggerConfig
+Log4g.Core.Config.LoggerConfig.GenerateParentNames = GenerateParentNames
