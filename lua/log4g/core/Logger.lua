@@ -46,7 +46,7 @@ function Log4g.Core.Logger.Create(name, context, loggerconfig)
     if context:HasLogger(name) or not QualifyName(name) then return end
     local logger = Logger(name, context)
 
-    if string.find(name, "%.") then
+    if sfind(name, "%.") then
         if loggerconfig and istable(loggerconfig) then
             if loggerconfig.name == name then
                 logger:SetLoggerConfigN(name)
