@@ -14,7 +14,7 @@ local GetLevel = Log4g.Level.GetLevel
 local istable = istable
 local pairs, ipairs = pairs, ipairs
 local sfind = string.find
-local tinsert, tconcat, TEmpty = table.insert, table.concat, table.Empty
+local tinsert, tconcat, tempty = table.insert, table.concat, table.Empty
 local StripDotExtension = Log4g.Util.StripDotExtension
 
 --- Stores some private attributes of the LoggerConfig object.
@@ -138,7 +138,7 @@ function LoggerConfig:ClearAppenders()
         end
     end
 
-    TEmpty(PRIVATE[self].appenderref)
+    tempty(PRIVATE[self].appenderref)
 end
 
 local RootLoggerConfig = LoggerConfig:subclass("LoggerConfig.RootLogger")
