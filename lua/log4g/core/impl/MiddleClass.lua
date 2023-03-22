@@ -123,7 +123,7 @@ end
 local DefaultMixin = {
     __tostring = function(self) return "instance of " .. tostring(self.class) end,
     Initialize = function(self, ...) end,
-    isInstanceOf = function(self, aClass) return type(aClass) == "table" and type(self) == "table" and (self.class == aClass or type(self.class) == "table" and type(self.class.issubclassOf) == "function" and self.class:issubclassOf(aClass)) end,
+    isInstanceOf = function(self, aClass) return type(aClass) == "table" and type(self) == "table" and (self.class == aClass or type(self.class) == "table" and type(self.class.isSubclassOf) == "function" and self.class:isSubclassOf(aClass)) end,
     static = {
         allocate = function(self)
             if not istable(self) then return end
@@ -156,7 +156,7 @@ local DefaultMixin = {
             return subclass
         end,
         subclassed = function(self, other) end,
-        issubclassOf = function(self, other) return type(other) == "table" and type(self.super) == "table" and (self.super == other or self.super:issubclassOf(other)) end,
+        isSubclassOf = function(self, other) return type(other) == "table" and type(self.super) == "table" and (self.super == other or self.super:isSubclassOf(other)) end,
         include = function(self, ...)
             if not istable(self) then return end
 
