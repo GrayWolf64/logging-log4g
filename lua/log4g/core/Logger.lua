@@ -51,10 +51,10 @@ function Log4g.Core.Logger.Create(name, context, loggerconfig)
             if loggerconfig.name == name then
                 logger:SetLoggerConfigN(name)
             else
-                local ancestors = GenerateParentNames(name)
-
-                if thasvalue(ancestors, loggerconfig.name) then
+                if thasvalue(GenerateParentNames(name), loggerconfig.name) then
                     logger:SetLoggerConfigN(loggerconfig.name)
+                else
+                    logger:SetLoggerConfigN(ROOT)
                 end
             end
         else
