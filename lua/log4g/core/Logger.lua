@@ -27,7 +27,9 @@ function Logger:GetContext()
     return PRIVATE[self].ctx
 end
 
-function Logger:SetLoggerConfigN(name)
+--- Sets the LoggerConfig name for the Logger.
+-- @param name String name
+function Logger:SetLoggerConfig(name)
     PRIVATE[self].lc = name
 end
 
@@ -50,12 +52,12 @@ function Log4g.Core.Logger.Create(name, context, loggerconfig)
     if sfind(name, "%.") then
         if loggerconfig and istable(loggerconfig) then
             if loggerconfig.name == name then
-                logger:SetLoggerConfigN(name)
+                logger:SetLoggerConfig(name)
             else
                 if thasvalue(GenerateParentNames(name), loggerconfig.name) then
-                    logger:SetLoggerConfigN(loggerconfig.name)
+                    logger:SetLoggerConfig(loggerconfig.name)
                 else
-                    logger:SetLoggerConfigN(ROOT)
+                    logger:SetLoggerConfig(ROOT)
                 end
             end
         else
@@ -63,23 +65,23 @@ function Log4g.Core.Logger.Create(name, context, loggerconfig)
 
             for i = 1, mathhuge do
                 if HasLoggerConfig(lc) then
-                    logger:SetLoggerConfigN(lc)
+                    logger:SetLoggerConfig(lc)
                     break
                 end
 
                 lc = StripDotExtension(lc)
 
                 if not sfind(lc, "%.") and not HasLoggerConfig(lc) then
-                    logger:SetLoggerConfigN(ROOT)
+                    logger:SetLoggerConfig(ROOT)
                     break
                 end
             end
         end
     else
         if loggerconfig and istable(loggerconfig) and loggerconfig.name == name then
-            logger:SetLoggerConfigN(name)
+            logger:SetLoggerConfig(name)
         else
-            logger:SetLoggerConfigN(ROOT)
+            logger:SetLoggerConfig(ROOT)
         end
     end
 
