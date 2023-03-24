@@ -26,7 +26,7 @@ function LoggerContext:SetConfigurationSource(src)
 end
 
 --- Gets where this LoggerContext is declared.
--- @return table S
+-- @return table source
 function LoggerContext:GetConfigurationSource()
     return self:GetPrivateField("source")
 end
