@@ -39,7 +39,7 @@ local State = {
 -- @param state A function in the `State` table which returns a string representing the state
 function LifeCycle:SetState(state)
     if not isfunction(state) or not thasvalue(State, state) then return end
-    PRIVATE[self] = state
+    PRIVATE[self].state = state
 end
 
 function LifeCycle:Initialize()
@@ -62,10 +62,15 @@ function LifeCycle:HashCode()
     return util.SHA256(tostring(self))
 end
 
+function LifeCycle:SetPrivateField(key, value)
+    if not key or not value then return end
+    PRIVATE[self][key] = value
+end
+
 --- Gets the LifeCycle state.
 -- @return function state
 function LifeCycle:GetState()
-    return PRIVATE[self]
+    return PRIVATE[self].state
 end
 
 function Log4g.Core.LifeCycle.GetAll()
