@@ -204,34 +204,34 @@ end
 -- @return object loggerconfig
 function Log4g.Core.Config.LoggerConfig.Create(name, config, level)
     if not istable(config) or name == ROOT then return end
-    local loggerconfig = LoggerConfig(name)
+    local lc = LoggerConfig(name)
     local ctxname = config:GetContext()
-    loggerconfig:SetContext(ctxname)
+    lc:SetContext(ctxname)
 
     if sfind(name, "%.") then
         local valid, parent = ValidateAncestors(name)
         if not valid then return end
 
         if level and istable(level) then
-            loggerconfig:SetLevel(level)
+            lc:SetLevel(level)
         else
-            loggerconfig:SetLevel(GetLoggerConfig(parent):GetLevel())
+            lc:SetLevel(GetLoggerConfig(parent):GetLevel())
         end
 
-        loggerconfig:SetParent(parent)
+        lc:SetParent(parent)
     else
         if level and istable(level) then
-            loggerconfig:SetLevel(level)
+            lc:SetLevel(level)
         else
-            loggerconfig:SetLevel(config:GetRootLogger():GetLevel())
+            lc:SetLevel(config:GetRootLogger():GetLevel())
         end
 
-        loggerconfig:SetParent(ROOT)
+        lc:SetParent(ROOT)
     end
 
-    config:AddLogger(name, loggerconfig)
+    config:AddLogger(name, lc)
 
-    return loggerconfig
+    return lc
 end
 
 function Log4g.Core.Config.LoggerConfig.GetRootLoggerConfigClass()

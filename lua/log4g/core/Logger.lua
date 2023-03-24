@@ -11,6 +11,7 @@ local StripDotExtension = Log4g.Util.StripDotExtension
 local ROOT = Log4g.ROOT
 local HasLoggerConfig = Log4g.Core.Config.LoggerConfig.HasLoggerConfig
 local GenerateParentNames = Log4g.Core.Config.LoggerConfig.GenerateParentNames
+local mathhuge = math.huge
 
 local PRIVATE = PRIVATE or setmetatable({}, {
     __mode = "k"
@@ -60,7 +61,7 @@ function Log4g.Core.Logger.Create(name, context, loggerconfig)
         else
             local lc = name
 
-            for i = 1, math.huge do
+            for i = 1, mathhuge do
                 if HasLoggerConfig(lc) then
                     logger:SetLoggerConfigN(lc)
                     break
