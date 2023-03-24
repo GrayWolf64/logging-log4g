@@ -7,6 +7,7 @@ Log4g.Core.Config.Configuration = Log4g.Core.Config.Configuration or {}
 local LifeCycle = Log4g.Core.LifeCycle.GetClass()
 local Accessor = Log4g.Core.Config
 local Configuration = LifeCycle:subclass("Configuration")
+local isstring = isstring
 
 --- A weak table which stores some private attributes of the Configuration object.
 -- It keeps every Configuration's Appenders, LoggerConfigs, LoggerContext name and start time.
@@ -62,6 +63,7 @@ end
 -- @param name The Logger name
 -- @return string lcname
 function Configuration:GetLoggerConfig(name)
+    if not isstring(name) then return end
     if PRIVATE[self].lc[name] then return PRIVATE[self].lc[name] end
 end
 
