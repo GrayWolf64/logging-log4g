@@ -5,8 +5,7 @@
 -- @license Apache License 2.0
 -- @copyright GrayWolf64
 Log4g.Core.Config.LoggerConfig = Log4g.Core.Config.LoggerConfig or {}
-Log4g.Core.Config.LoggerConfig.ROOT = Log4g.ROOT
-local ROOT = Log4g.Core.Config.LoggerConfig.ROOT
+local ROOT = Log4g.ROOT
 local LifeCycle = Log4g.Core.LifeCycle.GetClass()
 local LoggerConfig = LifeCycle:subclass("LoggerConfig")
 local GetCtx, GetAllCtx = Log4g.Core.LoggerContext.Get, Log4g.Core.LoggerContext.GetAll
