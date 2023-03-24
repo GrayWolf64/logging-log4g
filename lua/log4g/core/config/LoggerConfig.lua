@@ -15,7 +15,7 @@ local istable = istable
 local pairs, ipairs = pairs, ipairs
 local sfind = string.find
 local tinsert, tconcat, tempty = table.insert, table.concat, table.Empty
-local StripDotExtension = Log4g.Util.StripDotExtension
+local StripDotExtension = include("log4g/core/Util.lua").StripDotExtension
 
 --- Stores some private attributes of the LoggerConfig object.
 -- @local

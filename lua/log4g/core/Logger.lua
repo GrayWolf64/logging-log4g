@@ -3,11 +3,11 @@
 Log4g.Core.Logger = Log4g.Core.Logger or {}
 local Logger = include("log4g/core/impl/MiddleClass.lua")("Logger")
 local GetCtx = Log4g.Core.LoggerContext.Get
-local QualifyName = Log4g.Util.QualifyName
+local Util = include("log4g/core/Util.lua")
+local QualifyName, StripDotExtension = Util.QualifyName, Util.StripDotExtension
 local istable = istable
 local sfind = string.find
 local thasvalue = table.HasValue
-local StripDotExtension = Log4g.Util.StripDotExtension
 local ROOT = Log4g.ROOT
 local HasLoggerConfig = Log4g.Core.Config.LoggerConfig.HasLoggerConfig
 local GenerateParentNames = Log4g.Core.Config.LoggerConfig.GenerateParentNames

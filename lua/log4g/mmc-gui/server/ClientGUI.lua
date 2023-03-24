@@ -2,7 +2,7 @@
 -- @script ClientGUI
 -- @license Apache License 2.0
 -- @copyright GrayWolf64
-local AddNetworkStrsViaTbl = Log4g.Util.AddNetworkStrsViaTbl
+local AddNetworkStrsViaTbl = include("log4g/core/Util.lua").AddNetworkStrsViaTbl
 local GetAllCtx = Log4g.Core.LoggerContext.GetAll
 local THasValue = table.HasValue
 local pairs = pairs

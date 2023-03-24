@@ -14,7 +14,6 @@ if SERVER then
     -- @table Log4g
     -- @field Core
     -- @field Level
-    -- @field Util
     -- @field _VERSION
     Log4g = Log4g or {}
     Log4g.SPACE = " "
