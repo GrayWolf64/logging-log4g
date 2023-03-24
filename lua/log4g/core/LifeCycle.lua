@@ -10,7 +10,7 @@
 -- @copyright GrayWolf64
 Log4g.Core.LifeCycle = Log4g.Core.LifeCycle or {}
 local LifeCycle = include("log4g/core/impl/MiddleClass.lua")("LifeCycle")
-local TBLHV = table.HasValue
+local thasvalue = table.HasValue
 local isfunction = isfunction
 
 local PRIVATE = PRIVATE or setmetatable({}, {
@@ -38,7 +38,7 @@ local State = {
 --- Sets the LifeCycle state.
 -- @param state A function in the `State` table which returns a string representing the state
 function LifeCycle:SetState(state)
-    if not isfunction(state) or not TBLHV(State, state) then return end
+    if not isfunction(state) or not thasvalue(State, state) then return end
     PRIVATE[self] = state
 end
 
