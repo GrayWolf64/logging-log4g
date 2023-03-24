@@ -3,12 +3,11 @@ local GetContext = Log4g.API.LoggerContextFactory.GetContext
 local GetLevel = Log4g.Level.GetLevel
 local CreateLoggerConfig = Log4g.Core.Config.LoggerConfig.Create
 local print = print
-local X, XY, XYZ
 
-local function PrintLoggerInfo()
+local function PrintLoggerInfo(...)
     print("Logger", "Assigned LC", "LC Parent", "Level")
 
-    for _, v in pairs({X, XY, XYZ}) do
+    for _, v in pairs({...}) do
         print(v.name, v:GetLoggerConfig().name, tostring(v:GetLoggerConfig():GetParent()), v:GetLoggerConfig():GetLevel().name)
     end
 end
@@ -18,8 +17,7 @@ concommand.Add("Log4g_CoreTest_LoggerConfig_Inheritance_Example1", function()
     CreateLogger("X", ctx)
     CreateLogger("X.Y", ctx)
     CreateLogger("X.Y.Z", ctx)
-    X, XY, XYZ = ctx:GetLogger("X"), ctx:GetLogger("X.Y"), ctx:GetLogger("X.Y.Z")
-    PrintLoggerInfo()
+    PrintLoggerInfo(ctx:GetLogger("X"), ctx:GetLogger("X.Y"), ctx:GetLogger("X.Y.Z"))
 end)
 
 concommand.Add("Log4g_CoreTest_LoggerConfig_Inheritance_Example2", function()
@@ -27,8 +25,7 @@ concommand.Add("Log4g_CoreTest_LoggerConfig_Inheritance_Example2", function()
     CreateLogger("X", ctx, CreateLoggerConfig("X", ctx:GetConfiguration(), GetLevel("ERROR")))
     CreateLogger("X.Y", ctx, CreateLoggerConfig("X.Y", ctx:GetConfiguration(), GetLevel("INFO")))
     CreateLogger("X.Y.Z", ctx, CreateLoggerConfig("X.Y.Z", ctx:GetConfiguration(), GetLevel("WARN")))
-    X, XY, XYZ = ctx:GetLogger("X"), ctx:GetLogger("X.Y"), ctx:GetLogger("X.Y.Z")
-    PrintLoggerInfo()
+    PrintLoggerInfo(ctx:GetLogger("X"), ctx:GetLogger("X.Y"), ctx:GetLogger("X.Y.Z"))
 end)
 
 concommand.Add("Log4g_CoreTest_LoggerConfig_Inheritance_Example3", function()
@@ -36,8 +33,7 @@ concommand.Add("Log4g_CoreTest_LoggerConfig_Inheritance_Example3", function()
     CreateLogger("X", ctx, CreateLoggerConfig("X", ctx:GetConfiguration(), GetLevel("ERROR")))
     CreateLogger("X.Y", ctx)
     CreateLogger("X.Y.Z", ctx, CreateLoggerConfig("X.Y.Z", ctx:GetConfiguration(), GetLevel("WARN")))
-    X, XY, XYZ = ctx:GetLogger("X"), ctx:GetLogger("X.Y"), ctx:GetLogger("X.Y.Z")
-    PrintLoggerInfo()
+    PrintLoggerInfo(ctx:GetLogger("X"), ctx:GetLogger("X.Y"), ctx:GetLogger("X.Y.Z"))
 end)
 
 concommand.Add("Log4g_CoreTest_LoggerConfig_Inheritance_Example4", function()
@@ -45,8 +41,7 @@ concommand.Add("Log4g_CoreTest_LoggerConfig_Inheritance_Example4", function()
     CreateLogger("X", ctx, CreateLoggerConfig("X", ctx:GetConfiguration(), GetLevel("ERROR")))
     CreateLogger("X.Y", ctx)
     CreateLogger("X.Y.Z", ctx)
-    X, XY, XYZ = ctx:GetLogger("X"), ctx:GetLogger("X.Y"), ctx:GetLogger("X.Y.Z")
-    PrintLoggerInfo()
+    PrintLoggerInfo(ctx:GetLogger("X"), ctx:GetLogger("X.Y"), ctx:GetLogger("X.Y.Z"))
 end)
 
 concommand.Add("Log4g_CoreTest_LoggerConfig_Inheritance_Example5", function()
@@ -54,8 +49,7 @@ concommand.Add("Log4g_CoreTest_LoggerConfig_Inheritance_Example5", function()
     CreateLogger("X", ctx, CreateLoggerConfig("X", ctx:GetConfiguration(), GetLevel("ERROR")))
     CreateLogger("X.Y", ctx, CreateLoggerConfig("X.Y", ctx:GetConfiguration(), GetLevel("INFO")))
     CreateLogger("X.YZ", ctx)
-    X, XY, XYZ = ctx:GetLogger("X"), ctx:GetLogger("X.Y"), ctx:GetLogger("X.YZ")
-    PrintLoggerInfo()
+    PrintLoggerInfo(ctx:GetLogger("X"), ctx:GetLogger("X.Y"), ctx:GetLogger("X.YZ"))
 end)
 
 concommand.Add("Log4g_CoreTest_LoggerConfig_Inheritance_Example6", function()
@@ -63,6 +57,5 @@ concommand.Add("Log4g_CoreTest_LoggerConfig_Inheritance_Example6", function()
     CreateLogger("X", ctx, CreateLoggerConfig("X", ctx:GetConfiguration(), GetLevel("ERROR")))
     CreateLogger("X.Y", ctx, CreateLoggerConfig("X.Y", ctx:GetConfiguration()))
     CreateLogger("X.Y.Z", ctx)
-    X, XY, XYZ = ctx:GetLogger("X"), ctx:GetLogger("X.Y"), ctx:GetLogger("X.Y.Z")
-    PrintLoggerInfo()
+    PrintLoggerInfo(ctx:GetLogger("X"), ctx:GetLogger("X.Y"), ctx:GetLogger("X.Y.Z"))
 end)
