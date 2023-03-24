@@ -15,49 +15,40 @@ local istable, isstring = istable, isstring
 -- @table INSTANCES
 local INSTANCES = INSTANCES or {}
 
---- A weak table which stores some private attributes of the LoggerContext object.
--- @local
--- @table PRIVATE
-local PRIVATE = PRIVATE or setmetatable({}, {
-    __mode = "k"
-})
-
 function LoggerContext:Initialize(name)
     LifeCycle.Initialize(self)
-    PRIVATE[self] = {}
-    PRIVATE[self].logger = {}
+    self:SetPrivateField("logger", {})
     self.name = name
 end
 
 function LoggerContext:SetConfigurationSource(src)
-    PRIVATE[self].source = src
+    self:SetPrivateField("source", src)
 end
 
 --- Gets where this LoggerContext is declared.
 -- @return table S
 function LoggerContext:GetConfigurationSource()
-    return PRIVATE[self].source
+    return self:GetPrivateField("source")
 end
 
 --- Gets a Logger from the Context.
 -- @name The name of the Logger
 function LoggerContext:GetLogger(name)
     if not isstring(name) then return end
-    local logger = PRIVATE[self].logger[name]
-    if logger then return logger end
+
+    return self:GetPrivateField("logger")[name]
 end
 
 --- Gets a table of the current loggers.
 -- @return table loggers
 function LoggerContext:GetLoggers()
-    return PRIVATE[self].logger
+    return self:GetPrivateField("logger")
 end
 
 --- Returns the current Configuration of the LoggerContext.
 -- @return object configuration
 function LoggerContext:GetConfiguration()
-    local conf = PRIVATE[self].configuration
-    if conf then return conf end
+    return self:GetPrivateField("configuration")
 end
 
 --- Sets the Configuration to be used.
@@ -66,7 +57,7 @@ function LoggerContext:SetConfiguration(config)
     if not istable(config) then return end
     if self:GetConfiguration() == config then return end
     config:SetContext(self.name)
-    PRIVATE[self].configuration = config
+    self:SetPrivateField("configuration", config)
 end
 
 function LoggerContext:__tostring()
@@ -75,7 +66,7 @@ end
 
 --- Terminate the LoggerContext.
 function LoggerContext:Terminate()
-    PRIVATE[self] = nil
+    self:DestroyPrivateTable()
     INSTANCES[self.name] = nil
 end
 
@@ -84,7 +75,7 @@ end
 -- @return bool haslogger
 function LoggerContext:HasLogger(name)
     if not isstring(name) then return end
-    if PRIVATE[self].logger[name] then return true end
+    if self:GetLogger(name) then return true end
 
     return false
 end

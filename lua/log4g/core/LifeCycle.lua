@@ -35,15 +35,16 @@ local State = {
     STOPPED = function() return 600 end,
 }
 
+function LifeCycle:Initialize()
+    PRIVATE[self] = {}
+    self:SetState(State.INITIALIZED)
+end
+
 --- Sets the LifeCycle state.
 -- @param state A function in the `State` table which returns a string representing the state
 function LifeCycle:SetState(state)
     if not isfunction(state) or not thasvalue(State, state) then return end
     PRIVATE[self].state = state
-end
-
-function LifeCycle:Initialize()
-    self:SetState(State.INITIALIZED)
 end
 
 function LifeCycle:Start()
@@ -71,6 +72,10 @@ function LifeCycle:GetPrivateField(key)
     if not key then return end
 
     return PRIVATE[self][key]
+end
+
+function LifeCycle:DestroyPrivateTable()
+    PRIVATE[self] = nil
 end
 
 --- Gets the LifeCycle state.
