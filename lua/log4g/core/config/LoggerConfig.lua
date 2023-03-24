@@ -17,17 +17,10 @@ local sfind = string.find
 local tinsert, tconcat, tempty = table.insert, table.concat, table.Empty
 local StripDotExtension = include("log4g/core/util/StringUtils.lua").StripDotExtension
 
---- Stores some private attributes of the LoggerConfig object.
--- @local
--- @table PRIVATE
 local PRIVATE = PRIVATE or setmetatable({}, {
     __mode = "k"
 })
 
---- Initialize the LoggerConfig object.
--- This is meant to be used internally.
--- @param name The name of the LoggerConfig
--- @param level The Level object
 function LoggerConfig:Initialize(name)
     LifeCycle.Initialize(self)
     PRIVATE[self] = {}
@@ -39,9 +32,10 @@ function LoggerConfig:__tostring()
     return "LoggerConfig: [name:" .. self.name .. "]"
 end
 
---- Sets the logging Level.
+--- Sets the log Level.
 -- @param level The Logging Level
 function LoggerConfig:SetLevel(level)
+    if not istable(level) then return end
     PRIVATE[self].level = level
 end
 
