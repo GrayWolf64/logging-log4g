@@ -20,7 +20,6 @@ if SERVER then
     Log4g.ROOT = "root"
 
     if file.Exists(Core, "lsv") then
-        MsgN("Log4g found 'Core' implementation, using: '" .. Core .. "'.")
         include(Core)
     end
 
