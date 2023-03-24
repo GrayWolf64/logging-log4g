@@ -2,10 +2,13 @@
 -- @script ClientGUI
 -- @license Apache License 2.0
 -- @copyright GrayWolf64
-local AddNetworkStrsViaTbl = include("log4g/core/util/NetUtils.lua").AddNetworkStrsViaTbl
+local NetUtils = include("log4g/core/util/NetUtils.lua")
+local AddNetworkStrsViaTbl = NetUtils.AddNetworkStrsViaTbl
+local WriteDataSimple = NetUtils.WriteDataSimple
 local GetAllCtx = Log4g.Core.LoggerContext.GetAll
-local THasValue = table.HasValue
+local thasvalue = table.HasValue
 local pairs = pairs
+local TableToJson = util.TableToJSON
 
 AddNetworkStrsViaTbl({
     [1] = "Log4g_CLReq_ChkConnected",
@@ -47,11 +50,11 @@ net.Receive("Log4g_CLReq_SVConfigurationFiles", function(_, ply)
     for _, v in pairs(GetAllCtx()) do
         local path = string.sub(v:GetConfigurationSource().source, 2)
 
-        if not THasValue(map, path) then
+        if not thasvalue(map, path) then
             map[path] = file.Read(path, "GAME")
         end
     end
 
-    net.WriteTable(map)
+    WriteDataSimple(TableToJson(map), 32)
     net.Send(ply)
 end)

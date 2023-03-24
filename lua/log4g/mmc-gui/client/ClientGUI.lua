@@ -6,8 +6,9 @@ local ClientGUIDerma = include("log4g/mmc-gui/client/ClientGUIDerma.lua")
 local CreateDFrame, CreateDPropertySheet = ClientGUIDerma.CreateDFrame, ClientGUIDerma.CreateDPropertySheet
 local CreateDPropRow, GetRowControl = ClientGUIDerma.CreateDPropRow, ClientGUIDerma.GetRowControl
 local Frame = nil
-local TIsEmpty = table.IsEmpty
-local pairs = pairs
+local tisempty = table.IsEmpty
+local JSONToTable = util.JSONToTable
+local pairs, isstring = pairs, isstring
 
 concommand.Add("Log4g_MMC", function()
     if IsValid(Frame) then
@@ -104,11 +105,12 @@ concommand.Add("Log4g_MMC", function()
         SendEmptyMsgToSV("Log4g_CLReq_SVConfigurationFiles")
 
         net.Receive("Log4g_CLRcv_SVConfigurationFiles", function()
-            local files = net.ReadTable()
+            local files = net.ReadData(net.ReadUInt(32))
+            if not isstring(files) or #files == 0 then return end
+            files = JSONToTable(util.Decompress(files))
             ConfigFileOption:Clear()
-            ConfigFileOption:SetValue("Location")
 
-            if TIsEmpty(files) then
+            if tisempty(files) then
                 ConfigFileOption:SetEnabled(false)
 
                 return
