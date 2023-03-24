@@ -121,6 +121,8 @@ concommand.Add("Log4g_MMC", function()
             for k, v in pairs(files) do
                 ConfigFileOption:AddChoice(k, v)
             end
+
+            ConfigFileOption:ChooseOptionID(1)
         end)
     end
 
