@@ -67,6 +67,12 @@ function LifeCycle:SetPrivateField(key, value)
     PRIVATE[self][key] = value
 end
 
+function LifeCycle:GetPrivateField(key)
+    if not key then return end
+
+    return PRIVATE[self][key]
+end
+
 --- Gets the LifeCycle state.
 -- @return function state
 function LifeCycle:GetState()
