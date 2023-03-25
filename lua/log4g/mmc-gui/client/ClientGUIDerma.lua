@@ -92,7 +92,7 @@ end
 -- @param line The line to set the texts in
 -- @param panel The DListView
 function ClientGUIDerma.SetProperLineText(tbl, line, panel)
-    if panel:GetClassName() ~= "DListView" or table.IsEmpty(panel.Columns) then return end
+    if table.IsEmpty(panel.Columns) then return end
 
     for i, j in pairs(tbl) do
         for m, n in ipairs(panel.Columns) do
