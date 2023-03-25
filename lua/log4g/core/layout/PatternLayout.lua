@@ -7,6 +7,6 @@ function PatternLayout:Initialize(name)
     Layout.Initialize(self, name)
 end
 
-function Log4g.Core.Layout.CreatePatternLayout(name)
+function Log4g.Core.Layout.CreateDefaultLayout(name)
     return PatternLayout(name)
 end
