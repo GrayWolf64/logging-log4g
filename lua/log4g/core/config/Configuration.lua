@@ -5,7 +5,6 @@
 -- @copyright GrayWolf64
 Log4g.Core.Config.Configuration = Log4g.Core.Config.Configuration or {}
 local LifeCycle = Log4g.Core.LifeCycle.GetClass()
-local Accessor = Log4g.Core.Config
 local Configuration = LifeCycle:subclass("Configuration")
 local isstring = isstring
 local SysTime = SysTime
@@ -79,13 +78,13 @@ function Configuration:GetUpTime()
     return SysTime() - self:GetPrivateField("start")
 end
 
-function Accessor.Configuration.GetClass()
+function Log4g.Core.Config.Configuration.GetClass()
     return Configuration
 end
 
 --- Create a Configuration.
 -- @param name The name of the Configuration
 -- @return object configuration
-function Accessor.Configuration.Create(name)
+function Log4g.Core.Config.Configuration.Create(name)
     return Configuration(name)
 end
