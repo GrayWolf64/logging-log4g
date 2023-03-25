@@ -1,6 +1,4 @@
---- The Logger.
--- This is the central interface in the Log4g.
--- Most logging operations, except configuration, are done through this interface.
+--- The core implementation of the Logger interface.
 -- @classmod Logger
 -- @license Apache License 2.0
 -- @copyright GrayWolf64
