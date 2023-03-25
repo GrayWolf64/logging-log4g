@@ -16,14 +16,9 @@ local sfind = string.find
 local tinsert, tconcat, tempty = table.insert, table.concat, table.Empty
 local StripDotExtension = include("log4g/core/util/StringUtils.lua").StripDotExtension
 
-local PRIVATE = PRIVATE or setmetatable({}, {
-    __mode = "k"
-})
-
 function LoggerConfig:Initialize(name)
     LifeCycle.Initialize(self)
-    PRIVATE[self] = {}
-    PRIVATE[self].appenderref = {}
+    self:SetPrivateField("apref", {})
     self.name = name
 end
 
@@ -35,11 +30,11 @@ end
 -- @param level The Logging Level
 function LoggerConfig:SetLevel(level)
     if not istable(level) then return end
-    PRIVATE[self].level = level
+    self:SetPrivateField("level", level)
 end
 
 function LoggerConfig:GetLevel()
-    return PRIVATE[self].level
+    return self:GetPrivateField("level")
 end
 
 local function HasLoggerConfig(name)
@@ -62,45 +57,45 @@ end
 function LoggerConfig:SetParent(T)
     if isstring(T) then
         if T == ROOT then
-            PRIVATE[self].parent = T
+            self:SetPrivateField("parent", T)
         else
             if not HasLoggerConfig(T) then return end
-            PRIVATE[self].parent = T
+            self:SetPrivateField("parent", T)
         end
     elseif istable(T) then
-        PRIVATE[self].parent = T.name
+        self:SetPrivateField("parent", T.name)
     end
 end
 
 --- Gets the parent of this LoggerConfig.
 -- @return string lcname
 function LoggerConfig:GetParent()
-    return PRIVATE[self].parent
+    return self:GetPrivateField("parent")
 end
 
 --- Sets the Context name for the LoggerConfig.
 -- @param ctx LoggerContext object
 function LoggerConfig:SetContext(name)
     if not isstring(name) then return end
-    PRIVATE[self].ctx = name
+    self:SetPrivateField("ctx", name)
 end
 
 function LoggerConfig:GetContext()
-    return PRIVATE[self].ctx
+    return self:GetPrivateField("ctx")
 end
 
 function LoggerConfig:GetAppenderRef()
-    return PRIVATE[self].appenderref
+    return self:GetPrivateField("apref")
 end
 
 --- Adds an Appender to the LoggerConfig.
--- It adds the Appender name to the LoggerConfig's private `appenderref` table field,
+-- It adds the Appender name to the LoggerConfig's private `apref` table field,
 -- then adds the Appender object to the Configuration's(the only one which owns this LoggerConfig) private `appender` table field.
 -- @param appender Appender object
 -- @return bool ifsuccessfullyadded
 function LoggerConfig:AddAppender(appender)
     if not istable(appender) then return end
-    tinsert(PRIVATE[self].appenderref, appender.name)
+    tinsert(self:GetAppenderRef(), appender.name)
 
     return GetCtx(self:GetContext()):GetConfiguration():AddAppender(appender, self.name)
 end
@@ -110,7 +105,7 @@ end
 function LoggerConfig:GetAppenders()
     local appenders = {}
 
-    for _, v in pairs(PRIVATE[self].appenderref) do
+    for _, v in pairs(self:GetAppenderRef()) do
         local appender = GetCtx(self:GetContext()):GetConfiguration():GetAppenders()[v]
 
         if appender then
@@ -125,13 +120,13 @@ end
 function LoggerConfig:ClearAppenders()
     local config = GetCtx(self:GetContext()):GetConfiguration()
 
-    for _, v in pairs(PRIVATE[self].appenderref) do
+    for _, v in pairs(self:GetAppenderRef()) do
         if config:GetAppenders()[v] then
             config:RemoveAppender(v)
         end
     end
 
-    tempty(PRIVATE[self].appenderref)
+    tempty(self:GetAppenderRef())
 end
 
 local RootLoggerConfig = LoggerConfig:subclass("LoggerConfig.RootLogger")
