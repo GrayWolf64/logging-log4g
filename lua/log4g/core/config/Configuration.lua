@@ -8,24 +8,14 @@ local LifeCycle = Log4g.Core.LifeCycle.GetClass()
 local Accessor = Log4g.Core.Config
 local Configuration = LifeCycle:subclass("Configuration")
 local isstring = isstring
-
---- A weak table which stores some private attributes of the Configuration object.
--- It keeps every Configuration's Appenders, LoggerConfigs, LoggerContext name and start time.
--- @local
--- @table PRIVATE
-local PRIVATE = PRIVATE or setmetatable({}, {
-    __mode = "k"
-})
+local SysTime = SysTime
 
 function Configuration:Initialize(name)
     LifeCycle.Initialize(self)
+    self:SetPrivateField("ap", {})
+    self:SetPrivateField("lc", {})
+    self:SetPrivateField("start", SysTime())
     self.name = name
-
-    PRIVATE[self] = {
-        appender = {},
-        lc = {},
-        start = SysTime()
-    }
 end
 
 --- Sets the LoggerContext name for the Configuration.
@@ -33,11 +23,11 @@ end
 -- and associating the DefaultConfiguration with it, then the Configuration will have a string field of the LoggerContext's name.
 -- @param name ctxname
 function Configuration:SetContext(name)
-    PRIVATE[self].context = name
+    self:SetPrivateField("ctx", name)
 end
 
 function Configuration:GetContext()
-    return PRIVATE[self].context
+    return self:GetPrivateField("ctx")
 end
 
 --- Adds a Appender to the Configuration.
@@ -45,18 +35,25 @@ end
 -- @bool ifsuccessfullyadded
 function Configuration:AddAppender(appender)
     if not istable(appender) then return end
-    if PRIVATE[self].appender[appender.name] then return false end
-    PRIVATE[self].appender[appender.name] = appender
+    if self:GetPrivateField("ap")[appender.name] then return false end
+    self:GetPrivateField("ap")[appender.name] = appender
 
     return true
 end
 
 function Configuration:RemoveAppender(name)
-    PRIVATE[self].appender[name] = nil
+    self:GetPrivateField("ap")[name] = nil
+end
+
+--- Gets all the Appenders in the Configuration.
+-- Keys are the names of Appenders and values are the Appenders themselves.
+-- @return table appenders
+function Configuration:GetAppenders()
+    return self:GetPrivateField("ap")
 end
 
 function Configuration:AddLogger(name, lc)
-    PRIVATE[self].lc[name] = lc
+    self:GetPrivateField("lc")[name] = lc
 end
 
 --- Locates the appropriate LoggerConfig name for a Logger name.
@@ -64,29 +61,22 @@ end
 -- @return string lcname
 function Configuration:GetLoggerConfig(name)
     if not isstring(name) then return end
-    if PRIVATE[self].lc[name] then return PRIVATE[self].lc[name] end
+
+    return self:GetPrivateField("lc")[name]
 end
 
 function Configuration:GetLoggerConfigs()
-    return PRIVATE[self].lc
+    return self:GetPrivateField("lc")
 end
 
 function Configuration:GetRootLogger()
-    local RootLCN = Log4g.ROOT
-    if PRIVATE[self].lc[RootLCN] then return PRIVATE[self].lc[RootLCN] end
-end
-
---- Gets all the Appenders in the Configuration.
--- Keys are the names of Appenders and values are the Appenders themselves.
--- @return table appenders
-function Configuration:GetAppenders()
-    return PRIVATE[self].appender
+    return self:GetPrivateField("lc")[Log4g.ROOT]
 end
 
 --- Gets how long since this Configuration initialized.
 -- @return int uptime
 function Configuration:GetUpTime()
-    return SysTime() - PRIVATE[self].start
+    return SysTime() - self:GetPrivateField("start")
 end
 
 function Accessor.Configuration.GetClass()
