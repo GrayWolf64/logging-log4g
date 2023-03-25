@@ -126,10 +126,6 @@ concommand.Add("Log4g_MMC", function()
         end)
     end
 
-    function ConfigFileOption:OnMenuOpened(dmenu)
-        self:SetWide(dmenu:GetWide())
-    end
-
     function ConfigFileOption:OnSelect(_, _, data)
         TextEditor:SetText(data)
         if TextEditor:IsEnabled() then return end
