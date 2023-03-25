@@ -1,5 +1,9 @@
 --- The Logger.
+-- This is the central interface in the Log4g.
+-- Most logging operations, except configuration, are done through this interface.
 -- @classmod Logger
+-- @license Apache License 2.0
+-- @copyright GrayWolf64
 Log4g.Core.Logger = Log4g.Core.Logger or {}
 local Logger = include("log4g/core/impl/MiddleClass.lua")("Logger")
 local GetCtx = Log4g.Core.LoggerContext.Get
@@ -13,28 +17,23 @@ local HasLoggerConfig = Log4g.Core.Config.LoggerConfig.HasLoggerConfig
 local GenerateParentNames = Log4g.Core.Config.LoggerConfig.GenerateParentNames
 local mathhuge = math.huge
 
-local PRIVATE = PRIVATE or setmetatable({}, {
-    __mode = "k"
-})
-
 function Logger:Initialize(name, context)
-    PRIVATE[self] = {}
-    PRIVATE[self].ctx = context.name
+    self.ctx = context.name
     self.name = name
 end
 
 function Logger:GetContext()
-    return PRIVATE[self].ctx
+    return self.ctx
 end
 
 --- Sets the LoggerConfig name for the Logger.
 -- @param name String name
 function Logger:SetLoggerConfig(name)
-    PRIVATE[self].lc = name
+    self.lc = name
 end
 
 function Logger:GetLoggerConfigN()
-    return PRIVATE[self].lc
+    return self.lc
 end
 
 --- Get the LoggerConfig of the Logger.
