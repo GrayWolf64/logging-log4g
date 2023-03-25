@@ -13,7 +13,6 @@ local thasvalue = table.HasValue
 local ROOT = Log4g.ROOT
 local HasLoggerConfig = Log4g.Core.Config.LoggerConfig.HasLoggerConfig
 local GenerateParentNames = Log4g.Core.Config.LoggerConfig.GenerateParentNames
-local mathhuge = math.huge
 
 function Logger:Initialize(name, context)
     self.ctx = context.name
@@ -37,8 +36,7 @@ end
 --- Get the LoggerConfig of the Logger.
 -- @return object loggerconfig
 function Logger:GetLoggerConfig()
-    local lc = GetCtx(self:GetContext()):GetConfiguration():GetLoggerConfig(self:GetLoggerConfigN())
-    if lc then return lc end
+    return GetCtx(self:GetContext()):GetConfiguration():GetLoggerConfig(self:GetLoggerConfigN())
 end
 
 function Log4g.Core.Logger.Create(name, context, loggerconfig)
@@ -60,7 +58,7 @@ function Log4g.Core.Logger.Create(name, context, loggerconfig)
         else
             local lc = name
 
-            for i = 1, mathhuge do
+            while true do
                 if HasLoggerConfig(lc) then
                     logger:SetLoggerConfig(lc)
                     break
