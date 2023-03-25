@@ -15,8 +15,10 @@ if SERVER then
     -- @field Core
     -- @field Level
     Log4g = Log4g or {}
-    Log4g.SPACE = " "
-    Log4g.ROOT = "root"
+    LOG4G_SPACE = " "
+    LOG4G_ROOT = "root"
+    LOG4G_CONFIGURATION_DEFAULT_NAME = "default"
+    LOG4G_CONFIGURATION_DEFAULT_LEVEL = "DEBUG"
 
     if file.Exists(Core, "lsv") then
         include(Core)

@@ -5,7 +5,6 @@
 Log4g.API.Simple.SimpleLogger = Log4g.API.Simple.SimpleLogger or {}
 local Class = include("log4g/core/impl/MiddleClass.lua")
 local SimpleLogger = Class("SimpleLogger")
-local SPACE = Log4g.SPACE
 
 function SimpleLogger:Initialize(name, context)
     self.name = name
@@ -16,7 +15,7 @@ end
 -- @param level The Level object
 -- @param ... args to output to console
 function SimpleLogger:Log(level, ...)
-    MsgC(os.date("%Y-%m-%d %H-%M-%S"), SPACE, level:GetColor(), "[" .. level:Name() .. "]", SPACE, color_white, ...)
+    MsgC(os.date("%Y-%m-%d %H-%M-%S"), LOG4G_SPACE, level:GetColor(), "[" .. level:Name() .. "]", LOG4G_SPACE, color_white, ...)
 end
 
 --- Create a SimpleLogger object and add it into the SimpleLoggerContext.

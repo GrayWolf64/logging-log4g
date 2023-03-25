@@ -5,7 +5,6 @@
 -- @license Apache License 2.0
 -- @copyright GrayWolf64
 Log4g.Core.Config.LoggerConfig = Log4g.Core.Config.LoggerConfig or {}
-local ROOT = Log4g.ROOT
 local LifeCycle = Log4g.Core.LifeCycle.GetClass()
 local LoggerConfig = LifeCycle:subclass("LoggerConfig")
 local GetCtx, GetAllCtx = Log4g.Core.LoggerContext.Get, Log4g.Core.LoggerContext.GetAll
@@ -56,7 +55,7 @@ end
 -- @param T LoggerConfig object or LoggerConfig name
 function LoggerConfig:SetParent(T)
     if isstring(T) then
-        if T == ROOT then
+        if T == LOG4G_ROOT then
             self:SetPrivateField("parent", T)
         else
             if not HasLoggerConfig(T) then return end
@@ -132,7 +131,7 @@ end
 local RootLoggerConfig = LoggerConfig:subclass("LoggerConfig.RootLogger")
 
 function RootLoggerConfig:Initialize()
-    LoggerConfig.Initialize(self, ROOT)
+    LoggerConfig.Initialize(self, LOG4G_ROOT)
     self:SetLevel(GetLevel("INFO"))
 end
 
@@ -191,7 +190,7 @@ end
 -- @param level The Logging Level
 -- @return object loggerconfig
 function Log4g.Core.Config.LoggerConfig.Create(name, config, level)
-    if not istable(config) or name == ROOT then return end
+    if not istable(config) or name == LOG4G_ROOT then return end
     local lc = LoggerConfig(name)
     local ctxname = config:GetContext()
     lc:SetContext(ctxname)
@@ -214,7 +213,7 @@ function Log4g.Core.Config.LoggerConfig.Create(name, config, level)
             lc:SetLevel(config:GetRootLogger():GetLevel())
         end
 
-        lc:SetParent(ROOT)
+        lc:SetParent(LOG4G_ROOT)
     end
 
     config:AddLogger(name, lc)

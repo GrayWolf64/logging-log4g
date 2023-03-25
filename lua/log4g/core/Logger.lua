@@ -10,7 +10,6 @@ local QualifyName, StripDotExtension = StringUtils.QualifyName, StringUtils.Stri
 local istable = istable
 local sfind = string.find
 local thasvalue = table.HasValue
-local ROOT = Log4g.ROOT
 local HasLoggerConfig = Log4g.Core.Config.LoggerConfig.HasLoggerConfig
 local GenerateParentNames = Log4g.Core.Config.LoggerConfig.GenerateParentNames
 
@@ -52,7 +51,7 @@ function Log4g.Core.Logger.Create(name, context, loggerconfig)
                 if thasvalue(GenerateParentNames(name), loggerconfig.name) then
                     logger:SetLoggerConfig(loggerconfig.name)
                 else
-                    logger:SetLoggerConfig(ROOT)
+                    logger:SetLoggerConfig(LOG4G_ROOT)
                 end
             end
         else
@@ -67,7 +66,7 @@ function Log4g.Core.Logger.Create(name, context, loggerconfig)
                 lc = StripDotExtension(lc)
 
                 if not sfind(lc, "%.") and not HasLoggerConfig(lc) then
-                    logger:SetLoggerConfig(ROOT)
+                    logger:SetLoggerConfig(LOG4G_ROOT)
                     break
                 end
             end
@@ -76,7 +75,7 @@ function Log4g.Core.Logger.Create(name, context, loggerconfig)
         if loggerconfig and istable(loggerconfig) and loggerconfig.name == name then
             logger:SetLoggerConfig(name)
         else
-            logger:SetLoggerConfig(ROOT)
+            logger:SetLoggerConfig(LOG4G_ROOT)
         end
     end
 
