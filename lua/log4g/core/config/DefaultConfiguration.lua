@@ -1,6 +1,6 @@
 local Configuration = Log4g.Core.Config.Configuration.GetClass()
 local DefaultConfiguration = Configuration:subclass("DefaultConfiguration")
-local CreateConsoleAppender, CreatePatternLayout = Log4g.Core.Appender.CreateConsoleAppender, Log4g.Core.Layout.CreatePatternLayout
+local CreateConsoleAppender, CreatePatternLayout = Log4g.Core.Appender.CreateConsoleAppender, Log4g.Core.Layout.PatternLayout.CreateDefaultLayout
 
 function DefaultConfiguration:Initialize(name)
     Configuration.Initialize(self, name)
