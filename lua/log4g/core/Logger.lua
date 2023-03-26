@@ -38,6 +38,10 @@ function Logger:GetLoggerConfig()
     return GetCtx(self:GetContext()):GetConfiguration():GetLoggerConfig(self:GetLoggerConfigN())
 end
 
+function Logger:GetLevel()
+    return self:GetLoggerConfig():GetLevel()
+end
+
 function Log4g.Core.Logger.Create(name, context, loggerconfig)
     if not istable(context) then return end
     if context:HasLogger(name) or not QualifyName(name) then return end

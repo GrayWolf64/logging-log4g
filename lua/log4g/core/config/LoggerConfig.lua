@@ -29,6 +29,7 @@ end
 -- @param level The Logging Level
 function LoggerConfig:SetLevel(level)
     if not istable(level) then return end
+    if self:GetPrivateField("level") == level then return end
     self:SetPrivateField("level", level)
 end
 

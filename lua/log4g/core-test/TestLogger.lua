@@ -8,7 +8,7 @@ local function PrintLoggerInfo(...)
     print("Logger", "Assigned LC", "LC Parent", "Level")
 
     for _, v in pairs({...}) do
-        print(v.name, v:GetLoggerConfig().name, tostring(v:GetLoggerConfig():GetParent()), v:GetLoggerConfig():GetLevel().name)
+        print(v.name, v:GetLoggerConfig().name, tostring(v:GetLoggerConfig():GetParent()), v:GetLevel().name)
     end
 end
 
