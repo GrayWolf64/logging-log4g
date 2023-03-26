@@ -106,3 +106,7 @@ function Log4g.Core.LoggerContext.Register(name, withconfig)
 
     return INSTANCES[name]
 end
+
+function Log4g.Core.LoggerContext.GetClass()
+    return LoggerContext
+end

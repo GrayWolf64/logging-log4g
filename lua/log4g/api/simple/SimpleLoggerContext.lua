@@ -1,29 +1,16 @@
 --- A simple LoggerContext implementation.
 -- @classmod SimpleLoggerContext
 Log4g.API.Simple.SimpleLoggerContext = Log4g.API.Simple.SimpleLoggerContext or {}
-local Class = include("log4g/core/impl/MiddleClass.lua")
-local SimpleLoggerContext = Class("SimpleLoggerContext")
---- This is where all the SimpleLoggerContexts are stored.
--- @local
--- @table INSTANCES
+local LoggerContext = Log4g.Core.LoggerContext.GetClass()
+local SimpleLoggerContext = LoggerContext:subclass("SimpleLoggerContext")
 local INSTANCES = INSTANCES or {}
 
 function SimpleLoggerContext:Initialize(name)
-    self.name = name
-    self.logger = {}
+    SimpleLoggerContext.Initialize(self, name)
 end
 
 function SimpleLoggerContext:__tostring()
     return "SimpleLoggerContext: [name:" .. self.name .. "]"
-end
-
---- Determines if the specified Logger exists.
--- @param The name of the Logger to check
--- @return bool haslogger
-function SimpleLoggerContext:HasLogger(name)
-    if self.logger[name] then return true end
-
-    return false
 end
 
 --- Get the SimpleLoggerContext with the right name.

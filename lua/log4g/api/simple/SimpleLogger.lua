@@ -3,19 +3,11 @@
 -- Now it only supports outputing to console.
 -- @classmod SimpleLogger
 Log4g.API.Simple.SimpleLogger = Log4g.API.Simple.SimpleLogger or {}
-local Class = include("log4g/core/impl/MiddleClass.lua")
-local SimpleLogger = Class("SimpleLogger")
+local Logger = Log4g.Core.Logger.GetClass()
+local SimpleLogger = Logger:subclass("SimpleLogger")
 
 function SimpleLogger:Initialize(name, context)
-    self.name = name
-    self.context = context.name
-end
-
---- Make SimpleLogger log a message.
--- @param level The Level object
--- @param ... args to output to console
-function SimpleLogger:Log(level, ...)
-    MsgC(os.date("%Y-%m-%d %H-%M-%S"), LOG4G_SPACE, level:GetColor(), "[" .. level:Name() .. "]", LOG4G_SPACE, color_white, ...)
+    Logger.Initialize(self, name, context)
 end
 
 --- Create a SimpleLogger object and add it into the SimpleLoggerContext.
