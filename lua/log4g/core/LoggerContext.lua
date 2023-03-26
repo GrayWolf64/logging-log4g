@@ -19,6 +19,10 @@ function LoggerContext:Initialize(name)
     LifeCycle.Initialize(self)
     self:SetPrivateField("logger", {})
     self.name = name
+
+    function self.IsLoggerContext()
+        return true
+    end
 end
 
 function LoggerContext:SetConfigurationSource(src)

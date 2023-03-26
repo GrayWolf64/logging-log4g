@@ -43,7 +43,7 @@ function Logger:GetLevel()
 end
 
 function Log4g.Core.Logger.Create(name, context, loggerconfig)
-    if not istable(context) then return end
+    if not context.IsLoggerContext then return end
     if context:HasLogger(name) or not QualifyName(name) then return end
     local logger = Logger(name, context)
 
