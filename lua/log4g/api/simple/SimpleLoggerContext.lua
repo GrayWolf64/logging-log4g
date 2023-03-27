@@ -30,9 +30,10 @@ end
 --- Register a SimpleLoggerContext.
 -- @param name The name of the SimpleLoggerContext
 function Log4g.API.Simple.SimpleLoggerContext.Register(name)
-    local ctx = GetCDICT()[name]
+    local cdict = GetCDICT()
+    local ctx = cdict[name]
     if ctx and ctx.IsSimpleLoggerContext then return ctx end
-    GetCDICT()[name] = SimpleLoggerContext(name)
+    cdict[name] = SimpleLoggerContext(name)
 
-    return true
+    return cdict[name]
 end

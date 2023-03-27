@@ -101,7 +101,8 @@ end
 -- @param withconfig Whether or not come with a DefaultConfiguration, leaving it nil will make it come with one
 -- @return object loggercontext
 function Log4g.Core.LoggerContext.Register(name, withconfig)
-    if CDICT[name] then return CDICT[name] end
+    local ctx = CDICT[name]
+    if ctx and ctx.IsLoggerContext and not ctx.IsSimpleLoggerContext then return ctx end
     CDICT[name] = LoggerContext(name)
 
     if withconfig or withconfig == nil then
