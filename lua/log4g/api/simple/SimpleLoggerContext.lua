@@ -3,10 +3,15 @@
 Log4g.API.Simple.SimpleLoggerContext = Log4g.API.Simple.SimpleLoggerContext or {}
 local LoggerContext = Log4g.Core.LoggerContext.GetClass()
 local SimpleLoggerContext = LoggerContext:subclass("SimpleLoggerContext")
-local INSTANCES = INSTANCES or {}
+local GetCDICT = Log4g.Core.LoggerContext.GetAll
+local isstring = isstring
 
 function SimpleLoggerContext:Initialize(name)
-    SimpleLoggerContext.Initialize(self, name)
+    LoggerContext.Initialize(self, name)
+
+    function self.IsSimpleLoggerContext()
+        return true
+    end
 end
 
 function SimpleLoggerContext:__tostring()
@@ -18,15 +23,16 @@ end
 -- @return object SimpleLoggerContext
 function Log4g.API.Simple.SimpleLoggerContext.Get(name)
     if not isstring(name) then return end
-    if INSTANCES[name] then return INSTANCES[name] end
+    local ctx = GetCDICT()[name]
+    if ctx and ctx.IsSimpleLoggerContext then return ctx end
 end
 
 --- Register a SimpleLoggerContext.
 -- @param name The name of the SimpleLoggerContext
--- @return object SimpleLoggerContext
 function Log4g.API.Simple.SimpleLoggerContext.Register(name)
-    if INSTANCES[name] then return INSTANCES[name] end
-    INSTANCES[name] = SimpleLoggerContext(name)
+    local ctx = GetCDICT()[name]
+    if ctx and ctx.IsSimpleLoggerContext then return ctx end
+    GetCDICT()[name] = SimpleLoggerContext(name)
 
-    return INSTANCES[name]
+    return true
 end

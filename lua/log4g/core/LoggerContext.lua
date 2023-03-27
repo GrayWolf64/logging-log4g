@@ -9,11 +9,11 @@ local LifeCycle = Log4g.Core.LifeCycle.GetClass()
 local LoggerContext = LifeCycle:subclass("LoggerContext")
 local GetDefaultConfiguration = Log4g.Core.Config.GetDefaultConfiguration
 local istable, isstring = istable, isstring
---- This is where LoggerContexts are stored.
--- This is done to prevent the rapid changes in logging system's global table from polluting it.
+--- A dictionary for storing LoggerContext objects.
+-- Only one ContextDictionary exists in the logging system.
 -- @local
--- @table INSTANCES
-local INSTANCES = INSTANCES or {}
+-- @table CDICT
+local CDICT = CDICT or {}
 
 function LoggerContext:Initialize(name)
     LifeCycle.Initialize(self)
@@ -71,7 +71,7 @@ end
 --- Terminate the LoggerContext.
 function LoggerContext:Terminate()
     self:DestroyPrivateTable()
-    INSTANCES[self.name] = nil
+    CDICT[self.name] = nil
 end
 
 --- Determines if the specified Logger exists.
@@ -85,7 +85,7 @@ function LoggerContext:HasLogger(name)
 end
 
 function Log4g.Core.LoggerContext.GetAll()
-    return INSTANCES
+    return CDICT
 end
 
 --- Get the LoggerContext with the right name.
@@ -93,7 +93,7 @@ end
 -- @return object loggercontext
 function Log4g.Core.LoggerContext.Get(name)
     if not isstring(name) then return end
-    if INSTANCES[name] then return INSTANCES[name] end
+    if CDICT[name] then return CDICT[name] end
 end
 
 --- Register a LoggerContext.
@@ -101,14 +101,14 @@ end
 -- @param withconfig Whether or not come with a DefaultConfiguration, leaving it nil will make it come with one
 -- @return object loggercontext
 function Log4g.Core.LoggerContext.Register(name, withconfig)
-    if INSTANCES[name] then return INSTANCES[name] end
-    INSTANCES[name] = LoggerContext(name)
+    if CDICT[name] then return CDICT[name] end
+    CDICT[name] = LoggerContext(name)
 
     if withconfig or withconfig == nil then
-        INSTANCES[name]:SetConfiguration(GetDefaultConfiguration())
+        CDICT[name]:SetConfiguration(GetDefaultConfiguration())
     end
 
-    return INSTANCES[name]
+    return CDICT[name]
 end
 
 function Log4g.Core.LoggerContext.GetClass()
