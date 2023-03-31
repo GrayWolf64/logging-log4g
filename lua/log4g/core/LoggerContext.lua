@@ -103,13 +103,15 @@ end
 function Log4g.Core.LoggerContext.Register(name, withconfig)
     local ctx = CDICT[name]
     if ctx and ctx.IsLoggerContext and not ctx.IsSimpleLoggerContext then return ctx end
-    CDICT[name] = LoggerContext(name)
+    ctx = LoggerContext(name)
 
     if withconfig or withconfig == nil then
-        CDICT[name]:SetConfiguration(GetDefaultConfiguration())
+        ctx:SetConfiguration(GetDefaultConfiguration())
     end
 
-    return CDICT[name]
+    CDICT[name] = ctx
+
+    return ctx
 end
 
 function Log4g.Core.LoggerContext.GetClass()
