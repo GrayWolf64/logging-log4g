@@ -5,11 +5,13 @@
 -- When the `Stop()` is called, this goes into the LifeCycle.State.STOPPING state.
 -- After successfully being stopped, this goes into the LifeCycle.State.STOPPED state.
 -- In most circumstances, implementation classes should store their LifeCycle.State in a volatile field dependent on synchronization and concurrency requirements.
+-- Subclassing 'Object'.
 -- @script LifeCycle
 -- @license Apache License 2.0
 -- @copyright GrayWolf64
 Log4g.Core.LifeCycle = Log4g.Core.LifeCycle or {}
-local LifeCycle = include("log4g/core/impl/MiddleClass.lua")("LifeCycle")
+local Object = include("log4g/core/impl/Object.lua")
+local LifeCycle = Object:subclass("LifeCycle")
 local thasvalue = table.HasValue
 local isfunction = isfunction
 
@@ -36,6 +38,7 @@ local State = {
 }
 
 function LifeCycle:Initialize()
+    Object.Initialize(self)
     PRIVATE[self] = {}
     self:SetState(State.INITIALIZED)
 end
