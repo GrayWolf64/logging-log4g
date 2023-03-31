@@ -5,8 +5,8 @@
 Log4g.Core.Logger = Log4g.Core.Logger or {}
 local Logger = include("log4g/core/impl/MiddleClass.lua")("Logger")
 local GetCtx = Log4g.Core.LoggerContext.Get
-local StringUtils = include("log4g/core/util/StringUtils.lua")
-local QualifyName, StripDotExtension = StringUtils.QualifyName, StringUtils.StripDotExtension
+local StringUtil = include("log4g/core/util/StringUtil.lua")
+local QualifyName, StripDotExtension = StringUtil.QualifyName, StringUtil.StripDotExtension
 local istable = istable
 local sfind = string.find
 local thasvalue = table.HasValue

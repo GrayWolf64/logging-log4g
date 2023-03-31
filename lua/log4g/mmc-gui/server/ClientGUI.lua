@@ -2,9 +2,8 @@
 -- @script ClientGUI
 -- @license Apache License 2.0
 -- @copyright GrayWolf64
-local NetUtils = include("log4g/core/util/NetUtils.lua")
-local AddNetworkStrsViaTbl = NetUtils.AddNetworkStrsViaTbl
-local WriteDataSimple = NetUtils.WriteDataSimple
+local NetUtil = include("log4g/core/util/NetUtil.lua")
+local AddNetworkStrsViaTbl, WriteDataSimple = NetUtil.AddNetworkStrsViaTbl, NetUtil.WriteDataSimple
 local GetAllCtx = Log4g.Core.LoggerContext.GetAll
 local thasvalue = table.HasValue
 local pairs = pairs

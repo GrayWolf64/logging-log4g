@@ -13,7 +13,7 @@ local istable = istable
 local pairs, ipairs = pairs, ipairs
 local sfind = string.find
 local tinsert, tconcat, tempty = table.insert, table.concat, table.Empty
-local StripDotExtension = include("log4g/core/util/StringUtils.lua").StripDotExtension
+local StripDotExtension = include("log4g/core/util/StringUtil.lua").StripDotExtension
 
 function LoggerConfig:Initialize(name)
     LifeCycle.Initialize(self)

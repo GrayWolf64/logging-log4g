@@ -1,8 +1,8 @@
---- The StringUtils Library.
--- @module StringUtils
+--- The StringUtil Library.
+-- @module StringUtil
 -- @license Apache License 2.0
 -- @copyright GrayWolf64
-local StringUtils = {}
+local StringUtil = {}
 local ssub, sfind, sexplode, sreverse = string.sub, string.find, string.Explode, string.reverse
 local tconcat = table.concat
 local isstring = isstring
@@ -10,7 +10,7 @@ local isstring = isstring
 --- Qualifies the string name of an object and returns if it's a valid name.
 -- @param str String name
 -- @return bool ifvalid
-function StringUtils.QualifyName(str)
+function StringUtil.QualifyName(str)
     if not isstring(str) or ssub(str, 1, 1) == "." or ssub(str, -1) == "." or sfind(str, "[^%a%.]") then return false end
 
     return true
@@ -20,7 +20,7 @@ end
 -- @param str String
 -- @param doconcat Whether `table.concat` the result
 -- @return string result
-function StringUtils.StripDotExtension(str, doconcat)
+function StringUtil.StripDotExtension(str, doconcat)
     if not isstring(str) then return end
     local result = sexplode(".", ssub(str, 1, #str - sfind(sreverse(str), "%.")))
 
@@ -31,4 +31,4 @@ function StringUtils.StripDotExtension(str, doconcat)
     end
 end
 
-return StringUtils
+return StringUtil
