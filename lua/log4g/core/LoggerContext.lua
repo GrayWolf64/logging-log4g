@@ -9,7 +9,7 @@ local LifeCycle = Log4g.Core.LifeCycle.GetClass()
 local LoggerContext = LifeCycle:subclass("LoggerContext")
 local GetDefaultConfiguration = Log4g.Core.Config.GetDefaultConfiguration
 local istable, isstring = istable, isstring
-local IsTypeOf = include("log4g/core/util/TypeUtil.lua").IsTypeOf
+local pcall = pcall
 --- A dictionary for storing LoggerContext objects.
 -- Only one ContextDictionary exists in the logging system.
 -- @local
@@ -20,10 +20,10 @@ function LoggerContext:Initialize(name)
     LifeCycle.Initialize(self)
     self:SetPrivateField("logger", {})
     self.name = name
+end
 
-    function self.IsLoggerContext()
-        return true
-    end
+function LoggerContext:IsLoggerContext()
+    return true
 end
 
 function LoggerContext:SetConfigurationSource(src)
@@ -103,7 +103,7 @@ end
 -- @return object loggercontext
 function Log4g.Core.LoggerContext.Register(name, withconfig)
     local ctx = CDICT[name]
-    if ctx and IsTypeOf(ctx, "LoggerContext") and not IsTypeOf(ctx, "SimpleLoggerContext") then return ctx end
+    if ctx and pcall(ctx:IsLoggerContext()) and not pcall(ctx:IsSimpleLoggerContext()) then return ctx end
     ctx = LoggerContext(name)
 
     if withconfig or withconfig == nil then
