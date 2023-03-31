@@ -1,15 +1,22 @@
 --- The Level (Log Level).
 -- Levels used for identifying the severity of an event.
+-- Subclassing 'Object'.
 -- @classmod Level
 Log4g.Level = Log4g.Level or {}
-local Level = include("log4g/core/impl/MiddleClass.lua")("Level")
+local Object = include("log4g/core/impl/Object.lua")
+local Level = Object:subclass("Level")
 local tostring = tostring
 local isstring, isnumber = isstring, isnumber
 
 function Level:Initialize(name, int, color)
+    Object.Initialize(self)
     self.name = name
     self.int = int
     self.color = color
+end
+
+function Level:IsLevel()
+    return true
 end
 
 function Level:__tostring()
