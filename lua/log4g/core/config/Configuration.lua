@@ -17,6 +17,10 @@ function Configuration:Initialize(name)
     self.name = name
 end
 
+function Configuration:IsConfiguration()
+    return true
+end
+
 --- Sets the LoggerContext name for the Configuration.
 -- This is meant to be used internally when creating a LoggerContext,
 -- and associating the DefaultConfiguration with it, then the Configuration will have a string field of the LoggerContext's name.
