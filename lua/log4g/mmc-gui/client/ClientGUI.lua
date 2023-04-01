@@ -6,7 +6,7 @@ local ClientGUIDerma = include("log4g/mmc-gui/client/ClientGUIDerma.lua")
 local CreateDFrame, CreateDPropertySheet = ClientGUIDerma.CreateDFrame, ClientGUIDerma.CreateDPropertySheet
 local CreateDPropRow, GetRowControl = ClientGUIDerma.CreateDPropRow, ClientGUIDerma.GetRowControl
 local Frame = nil
-local tisempty = table.IsEmpty
+local next = next
 local JSONToTable = util.JSONToTable
 local pairs, isstring = pairs, isstring
 
@@ -110,7 +110,7 @@ concommand.Add("Log4g_MMC", function()
             files = JSONToTable(util.Decompress(files))
             ConfigFileOption:Clear()
 
-            if tisempty(files) then
+            if not next(files) then
                 ConfigFileOption:SetEnabled(false)
 
                 return

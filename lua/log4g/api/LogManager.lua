@@ -3,15 +3,15 @@
 Log4g.API.LogManager = Log4g.API.LogManager or {}
 local API = Log4g.API.LogManager
 local GetAllContexts = Log4g.Core.LoggerContext.GetAll
-local tisempty = table.IsEmpty
 local isstring = isstring
+local next = next
 
 --- Detects if a Logger with the specified name exists.
 -- @param name The name of the Logger
 -- @return bool haslogger
 function API.Exists(name)
     local ctxs = GetAllContexts()
-    if not isstring(name) or tisempty(ctxs) then return end
+    if not isstring(name) or not next(ctxs) then return end
 
     for _, v in pairs(ctxs) do
         if v:HasLogger(name) then return true end
