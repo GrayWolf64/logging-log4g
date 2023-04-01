@@ -12,7 +12,7 @@ local GetLevel = Log4g.Level.GetLevel
 local pairs, ipairs = pairs, ipairs
 local sfind = string.find
 local pcall = pcall
-local tinsert, tconcat, tempty = table.insert, table.concat, table.Empty
+local tinsert, tconcat = table.insert, table.concat
 local StripDotExtension = include("log4g/core/util/StringUtil.lua").StripDotExtension
 CreateConVar("log4g.root", "root", FCVAR_NOTIFY)
 
@@ -120,14 +120,10 @@ end
 --- Returns all Appenders configured by this LoggerConfig in a form of table.
 -- @return table appenders
 function LoggerConfig:GetAppenders()
-    local appenders = {}
+    local appenders, config = {}, GetCtx(self:GetContext()):GetConfiguration()
 
     for _, v in pairs(self:GetAppenderRef()) do
-        local ap = GetCtx(self:GetContext()):GetConfiguration():GetAppenders()[v]
-
-        if ap then
-            tinsert(appenders, ap)
-        end
+        tinsert(appenders, config:GetAppenders()[v])
     end
 
     return appenders
@@ -137,13 +133,10 @@ end
 function LoggerConfig:ClearAppenders()
     local config = GetCtx(self:GetContext()):GetConfiguration()
 
-    for _, v in pairs(self:GetAppenderRef()) do
-        if config:GetAppenders()[v] then
-            config:RemoveAppender(v)
-        end
+    for k, v in pairs(self:GetAppenderRef()) do
+        config:RemoveAppender(v)
+        self:GetAppenderRef()[k] = nil
     end
-
-    tempty(self:GetAppenderRef())
 end
 
 local RootLoggerConfig = LoggerConfig:subclass("LoggerConfig.RootLogger")
