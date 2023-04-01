@@ -14,6 +14,7 @@ local pairs, ipairs = pairs, ipairs
 local sfind = string.find
 local tinsert, tconcat, tempty = table.insert, table.concat, table.Empty
 local StripDotExtension = include("log4g/core/util/StringUtil.lua").StripDotExtension
+local Root = CreateConVar("LOG4G_ROOT", "root", FCVAR_NOTIFY, "Name for RootLoggerConfig and so on."):GetString()
 
 function LoggerConfig:Initialize(name)
     LifeCycle.Initialize(self)
@@ -56,7 +57,7 @@ end
 -- @param T LoggerConfig object or LoggerConfig name
 function LoggerConfig:SetParent(T)
     if isstring(T) then
-        if T == LOG4G_ROOT then
+        if T == Root then
             self:SetPrivateField("parent", T)
         else
             if not HasLoggerConfig(T) then return end
@@ -132,7 +133,7 @@ end
 local RootLoggerConfig = LoggerConfig:subclass("LoggerConfig.RootLogger")
 
 function RootLoggerConfig:Initialize()
-    LoggerConfig.Initialize(self, LOG4G_ROOT)
+    LoggerConfig.Initialize(self, Root)
     self:SetLevel(GetLevel("INFO"))
 end
 
@@ -191,7 +192,7 @@ end
 -- @param level The Logging Level
 -- @return object loggerconfig
 function Log4g.Core.Config.LoggerConfig.Create(name, config, level)
-    if not istable(config) or name == LOG4G_ROOT then return end
+    if not istable(config) or name == Root then return end
     local lc = LoggerConfig(name)
     local ctxname = config:GetContext()
     lc:SetContext(ctxname)
@@ -214,7 +215,7 @@ function Log4g.Core.Config.LoggerConfig.Create(name, config, level)
             lc:SetLevel(config:GetRootLogger():GetLevel())
         end
 
-        lc:SetParent(LOG4G_ROOT)
+        lc:SetParent(Root)
     end
 
     config:AddLogger(name, lc)
