@@ -61,7 +61,7 @@ end
 
 --- Locates the appropriate LoggerConfig name for a Logger name.
 -- @param name The Logger name
--- @return string lcname
+-- @return object loggerconfig
 function Configuration:GetLoggerConfig(name)
     if not isstring(name) then return end
 
@@ -73,7 +73,7 @@ function Configuration:GetLoggerConfigs()
 end
 
 function Configuration:GetRootLogger()
-    return self:GetPrivateField("lc")[LOG4G_ROOT]
+    return self:GetPrivateField("lc")[GetConvar("LOG4G_ROOT"):GetString()]
 end
 
 --- Gets how long since this Configuration initialized.
