@@ -56,10 +56,6 @@ function LifeCycle:SetStopped()
     self:SetState(State.STOPPED)
 end
 
-function LifeCycle:HashCode()
-    return util.SHA256(tostring(self))
-end
-
 --- Gets the LifeCycle state.
 -- @return function state
 function LifeCycle:GetState()

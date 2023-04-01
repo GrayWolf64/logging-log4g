@@ -3,6 +3,8 @@
 -- @license Apache License 2.0
 -- @copyright GrayWolf64
 Log4g.Core.Object = Log4g.Core.Object or {}
+local SHA256 = util.SHA256
+local tostring = tostring
 local Object = include("log4g/core/impl/MiddleClass.lua")("Object")
 
 local PRIVATE = PRIVATE or setmetatable({}, {
@@ -30,6 +32,11 @@ end
 
 function Object:DestroyPrivateTable()
     PRIVATE[self] = nil
+end
+
+--- Returns a hash code value for the object.
+function Object:HashCode()
+    return SHA256(tostring(self))
 end
 
 function Log4g.Core.Object.GetClass()

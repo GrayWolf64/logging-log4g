@@ -45,13 +45,6 @@ function Level:GetColor()
     return self.color
 end
 
---- Calculate the Level's SHA256 Hash Code.
--- It's the same as converting the Level object to string then use util.SHA256().
--- @return string hashcode
-function Level:HashCode()
-    return util.SHA256(tostring(self))
-end
-
 --- Compares the Level against the Levels passed as arguments and returns true if this level is in between the given levels.
 -- @param minlevel The Level with minimal intlevel
 -- @param maxlevel The Level with maximal intlevel
