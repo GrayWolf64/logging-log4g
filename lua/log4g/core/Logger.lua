@@ -55,6 +55,46 @@ function Logger:GetLevel()
     return self:GetLoggerConfig():GetLevel()
 end
 
+--- Construct a log event that will always be logged.
+function Logger:Always()
+end
+
+function Logger:AtTrace()
+end
+
+function Logger:AtDebug()
+end
+
+function Logger:AtInfo()
+end
+
+function Logger:AtWarn()
+end
+
+function Logger:AtError()
+end
+
+function Logger:AtFatal()
+end
+
+function Logger:Trace()
+end
+
+function Logger:Debug()
+end
+
+function Logger:Info()
+end
+
+function Logger:Warn()
+end
+
+function Logger:Error()
+end
+
+function Logger:Fatal()
+end
+
 function Log4g.Core.Logger.Create(name, context, loggerconfig)
     if not pcall(function()
         context:IsLoggerContext()

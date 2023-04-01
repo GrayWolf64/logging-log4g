@@ -4,10 +4,13 @@
 Log4g.Core.LogEvent = Log4g.Core.LogEvent or {}
 local Object = Log4g.Core.Object.GetClass()
 local LogEvent = Object:subclass("LogEvent")
+local SysTime = SysTime
+local isstring = isstring
+local pcall = pcall
 
-function LogEvent:Initialize(loggern, level, time, msg)
+function LogEvent:Initialize(ln, level, time, msg)
     Object.Initialize(self)
-    self:SetPrivateField("loggern", loggern)
+    self:SetPrivateField("ln", ln)
     self:SetPrivateField("level", level)
     self:SetPrivateField("time", time)
     self:SetPrivateField("msg", msg)
@@ -18,13 +21,23 @@ function LogEvent:IsLogEvent()
 end
 
 function LogEvent:GetLoggerName()
-    return self:GetPrivateField("loggern")
+    return self:GetPrivateField("ln")
 end
 
 function LogEvent:GetLevel()
     return self:GetPrivateField("level")
 end
 
-function Log4g.Core.LogEvent.Builder(loggern, level, time, msg)
-    return LogEvent(loggern, level, time, msg)
+--- Build a LogEvent.
+-- @param ln Logger name
+-- @param level Level object
+-- @param msg String message
+function Log4g.Core.LogEvent.Builder(ln, level, msg)
+    if not isstring(ln) or not isstring(msg) or not pcall(function()
+        level:IsLevel()
+    end) then
+        return
+    end
+
+    return LogEvent(ln, level, SysTime(), msg)
 end
