@@ -136,6 +136,8 @@ function Log4g.Core.Logger.Create(name, context, loggerconfig)
     end
 
     context:GetLoggers()[name] = logger
+
+    return logger
 end
 
 function Log4g.Core.Logger.GetClass()
