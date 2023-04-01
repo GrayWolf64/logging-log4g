@@ -11,6 +11,10 @@ function Appender:Initialize(name, layout)
     self:SetName(name)
 end
 
+function Appender:IsAppender()
+    return true
+end
+
 function Appender:GetLayout()
     return self:GetPrivateField("layout")
 end

@@ -11,6 +11,7 @@ local GetCtx, GetAllCtx = Log4g.Core.LoggerContext.Get, Log4g.Core.LoggerContext
 local GetLevel = Log4g.Level.GetLevel
 local pairs, ipairs = pairs, ipairs
 local sfind = string.find
+local pcall = pcall
 local istable, tinsert, tconcat, tempty = istable, table.insert, table.concat, table.Empty
 local StripDotExtension = include("log4g/core/util/StringUtil.lua").StripDotExtension
 CreateConVar("log4g.root", "root", FCVAR_NOTIFY)
@@ -98,7 +99,12 @@ end
 -- @param appender Appender object
 -- @return bool ifsuccessfullyadded
 function LoggerConfig:AddAppender(ap)
-    if not istable(ap) then return end
+    if not pcall(function()
+        ap:IsAppender()
+    end) then
+        return
+    end
+
     tinsert(self:GetAppenderRef(), ap:GetName())
 
     return GetCtx(self:GetContext()):GetConfiguration():AddAppender(ap, self:GetName())
@@ -196,9 +202,14 @@ end
 -- @return object loggerconfig
 function Log4g.Core.Config.LoggerConfig.Create(name, config, level)
     local Root = GetConVar("log4g.root"):GetString()
-    if not istable(config) or name == Root then return end
-    local lc = LoggerConfig(name)
-    local ctxname = config:GetContext()
+
+    if not pcall(function()
+        config:IsConfiguration()
+    end) or name == Root then
+        return
+    end
+
+    local lc, ctxname = LoggerConfig(name), config:GetContext()
     lc:SetContext(ctxname)
 
     if sfind(name, "%.") then
