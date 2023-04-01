@@ -59,7 +59,12 @@ end
 --- Sets the Configuration to be used.
 -- @param config Configuration
 function LoggerContext:SetConfiguration(config)
-    if not pcall(config:IsConfiguration()) then return end
+    if not pcall(function()
+        config:IsConfiguration()
+    end) then
+        return
+    end
+
     if self:GetConfiguration() == config then return end
     config:SetContext(self.name)
     self:SetPrivateField("configuration", config)
@@ -103,7 +108,15 @@ end
 -- @return object loggercontext
 function Log4g.Core.LoggerContext.Register(name, withconfig)
     local ctx = CDICT[name]
-    if ctx and pcall(ctx:IsLoggerContext()) and not pcall(ctx:IsSimpleLoggerContext()) then return ctx end
+
+    if ctx and pcall(function()
+        ctx:IsLoggerContext()
+    end) and not pcall(function()
+        ctx:IsSimpleLoggerContext()
+    end) then
+        return ctx
+    end
+
     ctx = LoggerContext(name)
 
     if withconfig or withconfig == nil then

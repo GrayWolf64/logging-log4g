@@ -33,7 +33,13 @@ end
 function Log4g.API.Simple.SimpleLoggerContext.Register(name)
     local cdict = GetCDICT()
     local ctx = cdict[name]
-    if ctx and pcall(ctx:IsSimpleLoggerContext()) then return ctx end
+
+    if ctx and pcall(function()
+        ctx:IsSimpleLoggerContext()
+    end) then
+        return ctx
+    end
+
     ctx = SimpleLoggerContext(name)
     cdict[name] = ctx
 
