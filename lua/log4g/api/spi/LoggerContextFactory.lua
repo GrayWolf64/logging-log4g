@@ -16,7 +16,7 @@ function Log4g.API.LoggerContextFactory.GetContext(name, withconfig)
     if withconfig or withconfig == nil then
         ctx:SetConfigurationSource(debug.getinfo(2, "S"))
         local rootlc = RootLoggerConfigClass()()
-        ctx:GetConfiguration():AddLogger(rootlc.name, rootlc)
+        ctx:GetConfiguration():AddLogger(rootlc:GetName(), rootlc)
     end
 
     return ctx

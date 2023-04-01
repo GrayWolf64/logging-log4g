@@ -3,7 +3,8 @@
 -- @license Apache License 2.0
 -- @copyright GrayWolf64
 Log4g.Core.Logger = Log4g.Core.Logger or {}
-local Logger = include("log4g/core/impl/MiddleClass.lua")("Logger")
+local Object = Log4g.Core.Object.GetClass()
+local Logger = Object:subclass("Logger")
 local GetCtx = Log4g.Core.LoggerContext.Get
 local StringUtil = include("log4g/core/util/StringUtil.lua")
 local QualifyName, StripDotExtension = StringUtil.QualifyName, StringUtil.StripDotExtension
@@ -15,8 +16,9 @@ local GenerateParentNames = Log4g.Core.Config.LoggerConfig.GenerateParentNames
 local Root = GetConVar("LOG4G_ROOT"):GetString()
 
 function Logger:Initialize(name, context)
-    self.ctx = context.name
-    self.name = name
+    Object.Initialize(self)
+    self.ctx = context:GetName()
+    self:SetName(name)
 end
 
 function Logger:GetContext()
@@ -50,11 +52,11 @@ function Log4g.Core.Logger.Create(name, context, loggerconfig)
 
     if sfind(name, "%.") then
         if loggerconfig and istable(loggerconfig) then
-            if loggerconfig.name == name then
+            if loggerconfig:GetName() == name then
                 logger:SetLoggerConfig(name)
             else
-                if thasvalue(GenerateParentNames(name), loggerconfig.name) then
-                    logger:SetLoggerConfig(loggerconfig.name)
+                if thasvalue(GenerateParentNames(name), loggerconfig:GetName()) then
+                    logger:SetLoggerConfig(loggerconfig:GetName())
                 else
                     logger:SetLoggerConfig(Root)
                 end
@@ -77,7 +79,7 @@ function Log4g.Core.Logger.Create(name, context, loggerconfig)
             end
         end
     else
-        if loggerconfig and istable(loggerconfig) and loggerconfig.name == name then
+        if loggerconfig and istable(loggerconfig) and loggerconfig:GetName() == name then
             logger:SetLoggerConfig(name)
         else
             logger:SetLoggerConfig(Root)

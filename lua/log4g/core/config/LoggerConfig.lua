@@ -18,7 +18,7 @@ local Root = CreateConVar("LOG4G_ROOT", "root", FCVAR_NOTIFY):GetString()
 function LoggerConfig:Initialize(name)
     LifeCycle.Initialize(self)
     self:SetPrivateField("apref", {})
-    self.name = name
+    self:SetName(name)
 end
 
 function LoggerConfig:IsLoggerConfig()
@@ -26,7 +26,7 @@ function LoggerConfig:IsLoggerConfig()
 end
 
 function LoggerConfig:__tostring()
-    return "LoggerConfig: [name:" .. self.name .. "]"
+    return "LoggerConfig: [name:" .. self:GetName() .. "]"
 end
 
 --- Sets the log Level.
@@ -67,7 +67,7 @@ function LoggerConfig:SetParent(T)
             self:SetPrivateField("parent", T)
         end
     elseif istable(T) then
-        self:SetPrivateField("parent", T.name)
+        self:SetPrivateField("parent", T:GetName())
     end
 end
 
@@ -97,11 +97,11 @@ end
 -- then adds the Appender object to the Configuration's(the only one which owns this LoggerConfig) private `appender` table field.
 -- @param appender Appender object
 -- @return bool ifsuccessfullyadded
-function LoggerConfig:AddAppender(appender)
-    if not istable(appender) then return end
-    tinsert(self:GetAppenderRef(), appender.name)
+function LoggerConfig:AddAppender(ap)
+    if not istable(ap) then return end
+    tinsert(self:GetAppenderRef(), ap:GetName())
 
-    return GetCtx(self:GetContext()):GetConfiguration():AddAppender(appender, self.name)
+    return GetCtx(self:GetContext()):GetConfiguration():AddAppender(ap, self:GetName())
 end
 
 --- Returns all Appenders configured by this LoggerConfig in a form of table.
@@ -110,10 +110,10 @@ function LoggerConfig:GetAppenders()
     local appenders = {}
 
     for _, v in pairs(self:GetAppenderRef()) do
-        local appender = GetCtx(self:GetContext()):GetConfiguration():GetAppenders()[v]
+        local ap = GetCtx(self:GetContext()):GetConfiguration():GetAppenders()[v]
 
-        if appender then
-            tinsert(appenders, appender)
+        if ap then
+            tinsert(appenders, ap)
         end
     end
 
@@ -142,7 +142,7 @@ end
 
 --- Overrides `LoggerConfig:__tostring()`.
 function RootLoggerConfig:__tostring()
-    return "RootLoggerConfig: [name:" .. self.name .. "]"
+    return "RootLoggerConfig: [name:" .. self:GetName() .. "]"
 end
 
 --- Overrides `LoggerConfig:SetParent()`.

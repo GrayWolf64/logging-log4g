@@ -6,7 +6,7 @@ local Layout = Object:subclass("Layout")
 
 function Layout:Initialize(name)
     Object.Initialize(self)
-    self.name = name
+    self:SetName(name)
 end
 
 function Log4g.Core.Layout.GetClass()

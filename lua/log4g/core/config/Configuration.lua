@@ -14,7 +14,7 @@ function Configuration:Initialize(name)
     self:SetPrivateField("ap", {})
     self:SetPrivateField("lc", {})
     self:SetPrivateField("start", SysTime())
-    self.name = name
+    self:SetName(name)
 end
 
 function Configuration:IsConfiguration()
@@ -36,10 +36,10 @@ end
 --- Adds a Appender to the Configuration.
 -- @param appender The Appender to add
 -- @bool ifsuccessfullyadded
-function Configuration:AddAppender(appender)
-    if not istable(appender) then return end
-    if self:GetPrivateField("ap")[appender.name] then return false end
-    self:GetPrivateField("ap")[appender.name] = appender
+function Configuration:AddAppender(ap)
+    if not istable(ap) then return end
+    if self:GetPrivateField("ap")[ap:GetName()] then return false end
+    self:GetPrivateField("ap")[ap:GetName()] = ap
 
     return true
 end

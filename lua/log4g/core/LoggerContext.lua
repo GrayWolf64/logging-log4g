@@ -19,7 +19,7 @@ local CDICT = CDICT or {}
 function LoggerContext:Initialize(name)
     LifeCycle.Initialize(self)
     self:SetPrivateField("logger", {})
-    self.name = name
+    self:SetName(name)
 end
 
 function LoggerContext:IsLoggerContext()
@@ -66,18 +66,18 @@ function LoggerContext:SetConfiguration(config)
     end
 
     if self:GetConfiguration() == config then return end
-    config:SetContext(self.name)
+    config:SetContext(self:GetName())
     self:SetPrivateField("configuration", config)
 end
 
 function LoggerContext:__tostring()
-    return "LoggerContext: [name:" .. self.name .. "]"
+    return "LoggerContext: [name:" .. self:GetName() .. "]"
 end
 
 --- Terminate the LoggerContext.
 function LoggerContext:Terminate()
     self:DestroyPrivateTable()
-    CDICT[self.name] = nil
+    CDICT[self:GetName()] = nil
 end
 
 --- Determines if the specified Logger exists.

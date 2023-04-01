@@ -16,7 +16,7 @@ function SimpleLoggerContext:IsSimpleLoggerContext()
 end
 
 function SimpleLoggerContext:__tostring()
-    return "SimpleLoggerContext: [name:" .. self.name .. "]"
+    return "SimpleLoggerContext: [name:" .. self:GetName() .. "]"
 end
 
 --- Get the SimpleLoggerContext with the right name.
@@ -25,7 +25,12 @@ end
 function Log4g.API.Simple.SimpleLoggerContext.Get(name)
     if not isstring(name) then return end
     local ctx = GetCDICT()[name]
-    if ctx and ctx.IsSimpleLoggerContext then return ctx end
+
+    if ctx and pcall(function()
+        ctx:IsSimpleLoggerContext()
+    end) then
+        return ctx
+    end
 end
 
 --- Register a SimpleLoggerContext.

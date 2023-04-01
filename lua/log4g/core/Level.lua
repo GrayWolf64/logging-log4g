@@ -10,9 +10,9 @@ local isstring, isnumber = isstring, isnumber
 
 function Level:Initialize(name, int, color)
     Object.Initialize(self)
-    self.name = name
     self.int = int
     self.color = color
+    self:SetName(name)
 end
 
 function Level:IsLevel()
@@ -20,17 +20,11 @@ function Level:IsLevel()
 end
 
 function Level:__tostring()
-    return "Level: [name:" .. self.name .. "]" .. "[int:" .. self.int .. "]" .. "[color:" .. tostring(self.color) .. "]"
+    return "Level: [name:" .. self:GetName() .. "]" .. "[int:" .. self.int .. "]" .. "[color:" .. tostring(self.color) .. "]"
 end
 
 function Level:__eq(lhs, rhs)
     return lhs.int == rhs.int and lhs.color == rhs.color
-end
-
---- Get the Level's name.
--- @return string name
-function Level:Name()
-    return self.name
 end
 
 --- Get the Level's intlevel.
