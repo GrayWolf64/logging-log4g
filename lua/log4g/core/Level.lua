@@ -3,7 +3,7 @@
 -- Subclassing 'Object'.
 -- @classmod Level
 Log4g.Level = Log4g.Level or {}
-local Object = include("log4g/core/impl/Object.lua")
+local Object = Log4g.Core.Object.GetClass()
 local Level = Object:subclass("Level")
 local tostring = tostring
 local isstring, isnumber = isstring, isnumber

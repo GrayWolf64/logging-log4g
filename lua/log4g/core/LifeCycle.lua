@@ -10,14 +10,9 @@
 -- @license Apache License 2.0
 -- @copyright GrayWolf64
 Log4g.Core.LifeCycle = Log4g.Core.LifeCycle or {}
-local Object = include("log4g/core/impl/Object.lua")
+local Object = Log4g.Core.Object.GetClass()
 local LifeCycle = Object:subclass("LifeCycle")
-local thasvalue = table.HasValue
 local isfunction = isfunction
-
-local PRIVATE = PRIVATE or setmetatable({}, {
-    __mode = "k"
-})
 
 --- LifeCycle states.
 -- @table State
@@ -39,15 +34,14 @@ local State = {
 
 function LifeCycle:Initialize()
     Object.Initialize(self)
-    PRIVATE[self] = {}
     self:SetState(State.INITIALIZED)
 end
 
 --- Sets the LifeCycle state.
 -- @param state A function in the `State` table which returns a string representing the state
 function LifeCycle:SetState(state)
-    if not isfunction(state) or not thasvalue(State, state) then return end
-    PRIVATE[self].state = state
+    if not isfunction(state) then return end
+    self:SetPrivateField("state", state)
 end
 
 function LifeCycle:Start()
@@ -66,25 +60,10 @@ function LifeCycle:HashCode()
     return util.SHA256(tostring(self))
 end
 
-function LifeCycle:SetPrivateField(key, value)
-    if not key or not value then return end
-    PRIVATE[self][key] = value
-end
-
-function LifeCycle:GetPrivateField(key)
-    if not key then return end
-
-    return PRIVATE[self][key]
-end
-
-function LifeCycle:DestroyPrivateTable()
-    PRIVATE[self] = nil
-end
-
 --- Gets the LifeCycle state.
 -- @return function state
 function LifeCycle:GetState()
-    return PRIVATE[self].state
+    return self:GetPrivateField("state")
 end
 
 function Log4g.Core.LifeCycle.GetAll()
