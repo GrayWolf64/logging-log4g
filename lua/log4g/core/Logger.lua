@@ -13,7 +13,7 @@ local sfind = string.find
 local thasvalue = table.HasValue
 local HasLoggerConfig = Log4g.Core.Config.LoggerConfig.HasLoggerConfig
 local GenerateParentNames = Log4g.Core.Config.LoggerConfig.GenerateParentNames
-local Root = GetConVar("LOG4G_ROOT"):GetString()
+local Root = GetConVar("log4g.root"):GetString()
 
 function Logger:Initialize(name, context)
     Object.Initialize(self)
