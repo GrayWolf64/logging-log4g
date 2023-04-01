@@ -12,9 +12,12 @@ local RootLoggerConfigClass = Log4g.Core.Config.LoggerConfig.GetRootLoggerConfig
 function Log4g.API.LoggerContextFactory.GetContext(name, withconfig)
     if not isstring(name) then return end
     local ctx = RegisterLoggerContext(name, withconfig)
-    ctx:SetConfigurationSource(debug.getinfo(2, "S"))
-    local rootlc = RootLoggerConfigClass()()
-    ctx:GetConfiguration():AddLogger(rootlc.name, rootlc)
+
+    if withconfig or withconfig == nil then
+        ctx:SetConfigurationSource(debug.getinfo(2, "S"))
+        local rootlc = RootLoggerConfigClass()()
+        ctx:GetConfiguration():AddLogger(rootlc.name, rootlc)
+    end
 
     return ctx
 end
