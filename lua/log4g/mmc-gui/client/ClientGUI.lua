@@ -93,7 +93,7 @@ concommand.Add("Log4g_MMC", function()
     TextEditor:SetSize(748, 325)
     TextEditor:SetPos(2, 26)
     TextEditor:SetDrawLanguageID(false)
-    TextEditor:SetFont("Log4gMMCConfigurationFileEditorDefault")
+    TextEditor:SetFont("Log4gMMCConfigFileEditorDefault")
     TextEditor:SetVerticalScrollbarEnabled(true)
 
     local function ClearTextEditor()

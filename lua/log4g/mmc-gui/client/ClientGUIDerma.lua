@@ -1,7 +1,8 @@
 local ClientGUIDerma = {}
 
-surface.CreateFont("Log4gMMCConfigurationFileEditorDefault", {
+surface.CreateFont("Log4gMMCConfigFileEditorDefault", {
     font = "Arial",
+    antialias = false,
     size = 16
 })
 
