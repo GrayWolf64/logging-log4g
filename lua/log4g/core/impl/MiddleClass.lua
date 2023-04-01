@@ -3,7 +3,7 @@
 -- @license MIT License
 -- @copyright Enrique García Cota
 local MiddleClass = {}
-local isstring, istable = isstring, istable
+local isstring, istable, isfunction = isstring, istable, isfunction
 
 local function _createIndexWrapper(aClass, f)
     if f == nil then
