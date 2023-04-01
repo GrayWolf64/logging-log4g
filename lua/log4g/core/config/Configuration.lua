@@ -8,7 +8,7 @@ local LifeCycle = Log4g.Core.LifeCycle.GetClass()
 local Configuration = LifeCycle:subclass("Configuration")
 local isstring = isstring
 local SysTime = SysTime
-local pcall = pcall
+local IsAppender = include("log4g/core/util/TypeUtil.lua").IsAppender
 
 function Configuration:Initialize(name)
     LifeCycle.Initialize(self)
@@ -38,12 +38,7 @@ end
 -- @param appender The Appender to add
 -- @bool ifsuccessfullyadded
 function Configuration:AddAppender(ap)
-    if not pcall(function()
-        ap:IsAppender()
-    end) then
-        return
-    end
-
+    if not IsAppender(ap) then return end
     if self:GetPrivateField("ap")[ap:GetName()] then return false end
     self:GetPrivateField("ap")[ap:GetName()] = ap
 

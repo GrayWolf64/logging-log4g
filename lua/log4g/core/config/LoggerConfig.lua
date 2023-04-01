@@ -11,7 +11,10 @@ local GetCtx, GetAllCtx = Log4g.Core.LoggerContext.Get, Log4g.Core.LoggerContext
 local GetLevel = Log4g.Level.GetLevel
 local pairs, ipairs = pairs, ipairs
 local sfind, isstring = string.find, isstring
-local pcall = pcall
+local TypeUtil = include("log4g/core/util/TypeUtil.lua")
+local IsAppender, IsLoggerConfig = TypeUtil.IsAppender, TypeUtil.IsLoggerConfig
+local IsConfiguration, IsLevel = TypeUtil.IsConfiguration, TypeUtil.IsLevel
+TypeUtil = nil
 local tinsert, tconcat = table.insert, table.concat
 local StripDotExtension = include("log4g/core/util/StringUtil.lua").StripDotExtension
 CreateConVar("log4g.root", "root", FCVAR_NOTIFY)
@@ -33,12 +36,7 @@ end
 --- Sets the log Level.
 -- @param level The Logging Level
 function LoggerConfig:SetLevel(level)
-    if not pcall(function()
-        level:IsLevel()
-    end) then
-        return
-    end
-
+    if not IsLevel(level) then return end
     if self:GetPrivateField("level") == level then return end
     self:SetPrivateField("level", level)
 end
@@ -72,9 +70,7 @@ function LoggerConfig:SetParent(T)
             if not HasLoggerConfig(T) then return end
             self:SetPrivateField("parent", T)
         end
-    elseif pcall(function()
-        T:IsLoggerConfig()
-    end) then
+    elseif IsLoggerConfig(T) then
         self:SetPrivateField("parent", T:GetName())
     end
 end
@@ -106,12 +102,7 @@ end
 -- @param appender Appender object
 -- @return bool ifsuccessfullyadded
 function LoggerConfig:AddAppender(ap)
-    if not pcall(function()
-        ap:IsAppender()
-    end) then
-        return
-    end
-
+    if not IsAppender(ap) then return end
     tinsert(self:GetAppenderRef(), ap:GetName())
 
     return GetCtx(self:GetContext()):GetConfiguration():AddAppender(ap, self:GetName())
@@ -202,13 +193,7 @@ end
 -- @return object loggerconfig
 function Log4g.Core.Config.LoggerConfig.Create(name, config, level)
     local Root = GetConVar("log4g.root"):GetString()
-
-    if not pcall(function()
-        config:IsConfiguration()
-    end) or name == Root then
-        return
-    end
-
+    if not IsConfiguration(config) or name == Root then return end
     local lc = LoggerConfig(name)
     lc:SetContext(config:GetContext())
 
@@ -216,9 +201,7 @@ function Log4g.Core.Config.LoggerConfig.Create(name, config, level)
         local valid, parent = ValidateAncestors(name)
         if not valid then return end
 
-        if level and pcall(function()
-            level:IsLevel()
-        end) then
+        if level and IsLevel(level) then
             lc:SetLevel(level)
         else
             lc:SetLevel(GetLoggerConfig(parent):GetLevel())
@@ -226,9 +209,7 @@ function Log4g.Core.Config.LoggerConfig.Create(name, config, level)
 
         lc:SetParent(parent)
     else
-        if level and pcall(function()
-            level:IsLevel()
-        end) then
+        if level and IsLevel(level) then
             lc:SetLevel(level)
         else
             lc:SetLevel(config:GetRootLogger():GetLevel())

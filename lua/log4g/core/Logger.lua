@@ -8,7 +8,10 @@ local Logger = Object:subclass("Logger")
 local GetCtx = Log4g.Core.LoggerContext.Get
 local StringUtil = include("log4g/core/util/StringUtil.lua")
 local QualifyName, StripDotExtension = StringUtil.QualifyName, StringUtil.StripDotExtension
-local pcall = pcall
+local TypeUtil = include("log4g/core/util/TypeUtil.lua")
+local IsLoggerConfig, IsLoggerContext = TypeUtil.IsLoggerConfig, IsLoggerContext
+local IsLevel = TypeUtil.IsLevel
+TypeUtil, StringUtil = nil, nil
 local sfind = string.find
 local thasvalue = table.HasValue
 local HasLoggerConfig = Log4g.Core.Config.LoggerConfig.HasLoggerConfig
@@ -42,12 +45,7 @@ function Logger:GetLoggerConfig()
 end
 
 function Logger:SetLevel(level)
-    if not pcall(function()
-        level:IsLevel()
-    end) then
-        return
-    end
-
+    if not IsLevel(level) then return end
     self:GetLoggerConfig():SetLevel(level)
 end
 
@@ -96,19 +94,12 @@ function Logger:Fatal()
 end
 
 function Log4g.Core.Logger.Create(name, context, loggerconfig)
-    if not pcall(function()
-        context:IsLoggerContext()
-    end) then
-        return
-    end
-
+    if not IsLoggerContext(context) then return end
     if context:HasLogger(name) or not QualifyName(name) then return end
     local logger = Logger(name, context)
 
     if sfind(name, "%.") then
-        if loggerconfig and pcall(function()
-            loggerconfig:IsLoggerConfig()
-        end) then
+        if loggerconfig and IsLoggerConfig(loggerconfig) then
             if loggerconfig:GetName() == name then
                 logger:SetLoggerConfig(name)
             else
@@ -136,9 +127,7 @@ function Log4g.Core.Logger.Create(name, context, loggerconfig)
             end
         end
     else
-        if loggerconfig and pcall(function()
-            loggerconfig:IsLoggerConfig()
-        end) and loggerconfig:GetName() == name then
+        if loggerconfig and IsLoggerConfig(loggerconfig) and loggerconfig:GetName() == name then
             logger:SetLoggerConfig(name)
         else
             logger:SetLoggerConfig(Root)
