@@ -14,7 +14,7 @@ local pairs, ipairs = pairs, ipairs
 local sfind = string.find
 local tinsert, tconcat, tempty = table.insert, table.concat, table.Empty
 local StripDotExtension = include("log4g/core/util/StringUtil.lua").StripDotExtension
-local Root = CreateConVar("LOG4G_ROOT", "root", FCVAR_NOTIFY, "Name for RootLoggerConfig and so on."):GetString()
+local Root = CreateConVar("LOG4G_ROOT", "root", FCVAR_NOTIFY):GetString()
 
 function LoggerConfig:Initialize(name)
     LifeCycle.Initialize(self)

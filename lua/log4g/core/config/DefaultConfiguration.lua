@@ -3,8 +3,8 @@
 local Configuration = Log4g.Core.Config.Configuration.GetClass()
 local DefaultConfiguration = Configuration:subclass("DefaultConfiguration")
 local CreateConsoleAppender, CreatePatternLayout = Log4g.Core.Appender.CreateConsoleAppender, Log4g.Core.Layout.PatternLayout.CreateDefaultLayout
-local DefaultName = CreateConVar("LOG4G_CONFIGURATION_DEFAULT_NAME", "default", FCVAR_NOTIFY, "Default name for DefaultConfiguration."):GetString()
-local DefaultLevel = CreateConVar("LOG4G_CONFIGURATION_DEFAULT_LEVEL", "DEBUG", FCVAR_NOTIFY, "Default logging level for DefaultConfiguration."):GetString()
+local DefaultName = CreateConVar("LOG4G_CONFIGURATION_DEFAULT_NAME", "default", FCVAR_NOTIFY):GetString()
+local DefaultLevel = CreateConVar("LOG4G_CONFIGURATION_DEFAULT_LEVEL", "DEBUG", FCVAR_NOTIFY):GetString()
 
 function DefaultConfiguration:Initialize(name)
     Configuration.Initialize(self, name)
