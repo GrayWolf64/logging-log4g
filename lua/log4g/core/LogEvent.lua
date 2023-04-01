@@ -2,15 +2,25 @@
 -- A LogEvent must be Serializable so that it may be transmitted over a network connection.
 -- @classmod LogEvent
 Log4g.Core.LogEvent = Log4g.Core.LogEvent or {}
-local LogEvent = include("log4g/core/impl/MiddleClass.lua")("LogEvent")
+local Object = Log4g.Core.Object.GetClass()
+local LogEvent = Object:subclass("LogEvent")
 
-function LogEvent:Initialize(loggername, level, time, msg)
-    self.loggername = loggername
-    self.level = level
-    self.time = time
-    self.msg = msg
+function LogEvent:Initialize(loggern, level, time, msg)
+    Object.Initialize(self)
+    self:SetPrivateField("loggern", loggern)
+    self:SetPrivateField("level", level)
+    self:SetPrivateField("time", time)
+    self:SetPrivateField("msg", msg)
 end
 
-function Log4g.Core.LogEvent.Builder(loggername, level, time, msg)
-    return LogEvent(loggername, level, time, msg)
+function LogEvent:GetLoggerName()
+    return self:GetPrivateField("loggern")
+end
+
+function LogEvent:GetLevel()
+    return self:GetPrivateField("level")
+end
+
+function Log4g.Core.LogEvent.Builder(loggern, level, time, msg)
+    return LogEvent(loggern, level, time, msg)
 end
