@@ -13,6 +13,10 @@ function LogEvent:Initialize(loggern, level, time, msg)
     self:SetPrivateField("msg", msg)
 end
 
+function LogEvent:IsLogEvent()
+    return true
+end
+
 function LogEvent:GetLoggerName()
     return self:GetPrivateField("loggern")
 end

@@ -12,7 +12,7 @@ local GetLevel = Log4g.Level.GetLevel
 local pairs, ipairs = pairs, ipairs
 local sfind = string.find
 local pcall = pcall
-local istable, tinsert, tconcat, tempty = istable, table.insert, table.concat, table.Empty
+local tinsert, tconcat, tempty = table.insert, table.concat, table.Empty
 local StripDotExtension = include("log4g/core/util/StringUtil.lua").StripDotExtension
 CreateConVar("log4g.root", "root", FCVAR_NOTIFY)
 
@@ -33,7 +33,12 @@ end
 --- Sets the log Level.
 -- @param level The Logging Level
 function LoggerConfig:SetLevel(level)
-    if not istable(level) then return end
+    if not pcall(function()
+        level:IsLevel()
+    end) then
+        return
+    end
+
     if self:GetPrivateField("level") == level then return end
     self:SetPrivateField("level", level)
 end
@@ -67,7 +72,9 @@ function LoggerConfig:SetParent(T)
             if not HasLoggerConfig(T) then return end
             self:SetPrivateField("parent", T)
         end
-    elseif istable(T) then
+    elseif pcall(function()
+        T:IsLoggerConfig()
+    end) then
         self:SetPrivateField("parent", T:GetName())
     end
 end
@@ -216,7 +223,9 @@ function Log4g.Core.Config.LoggerConfig.Create(name, config, level)
         local valid, parent = ValidateAncestors(name)
         if not valid then return end
 
-        if level and istable(level) then
+        if level and pcall(function()
+            level:IsLevel()
+        end) then
             lc:SetLevel(level)
         else
             lc:SetLevel(GetLoggerConfig(parent):GetLevel())
@@ -224,7 +233,9 @@ function Log4g.Core.Config.LoggerConfig.Create(name, config, level)
 
         lc:SetParent(parent)
     else
-        if level and istable(level) then
+        if level and pcall(function()
+            level:IsLevel()
+        end) then
             lc:SetLevel(level)
         else
             lc:SetLevel(config:GetRootLogger():GetLevel())

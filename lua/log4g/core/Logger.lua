@@ -8,7 +8,7 @@ local Logger = Object:subclass("Logger")
 local GetCtx = Log4g.Core.LoggerContext.Get
 local StringUtil = include("log4g/core/util/StringUtil.lua")
 local QualifyName, StripDotExtension = StringUtil.QualifyName, StringUtil.StripDotExtension
-local istable = istable
+local pcall = pcall
 local sfind = string.find
 local thasvalue = table.HasValue
 local HasLoggerConfig = Log4g.Core.Config.LoggerConfig.HasLoggerConfig
@@ -17,22 +17,22 @@ local Root = GetConVar("log4g.root"):GetString()
 
 function Logger:Initialize(name, context)
     Object.Initialize(self)
-    self.ctx = context:GetName()
+    self:SetPrivateField("ctx", context:GetName())
     self:SetName(name)
 end
 
 function Logger:GetContext()
-    return self.ctx
+    return self:GetPrivateField("ctx")
 end
 
 --- Sets the LoggerConfig name for the Logger.
 -- @param name String name
 function Logger:SetLoggerConfig(name)
-    self.lc = name
+    self:SetPrivateField("lc", name)
 end
 
 function Logger:GetLoggerConfigN()
-    return self.lc
+    return self:GetPrivateField("lc")
 end
 
 --- Get the LoggerConfig of the Logger.
@@ -41,17 +41,34 @@ function Logger:GetLoggerConfig()
     return GetCtx(self:GetContext()):GetConfiguration():GetLoggerConfig(self:GetLoggerConfigN())
 end
 
+function Logger:SetLevel(level)
+    if not pcall(function()
+        level:IsLevel()
+    end) then
+        return
+    end
+
+    self:GetLoggerConfig():SetLevel(level)
+end
+
 function Logger:GetLevel()
     return self:GetLoggerConfig():GetLevel()
 end
 
 function Log4g.Core.Logger.Create(name, context, loggerconfig)
-    if not context.IsLoggerContext then return end
+    if not pcall(function()
+        context:IsLoggerContext()
+    end) then
+        return
+    end
+
     if context:HasLogger(name) or not QualifyName(name) then return end
     local logger = Logger(name, context)
 
     if sfind(name, "%.") then
-        if loggerconfig and istable(loggerconfig) then
+        if loggerconfig and pcall(function()
+            loggerconfig:IsLoggerConfig()
+        end) then
             if loggerconfig:GetName() == name then
                 logger:SetLoggerConfig(name)
             else
@@ -79,7 +96,9 @@ function Log4g.Core.Logger.Create(name, context, loggerconfig)
             end
         end
     else
-        if loggerconfig and istable(loggerconfig) and loggerconfig:GetName() == name then
+        if loggerconfig and pcall(function()
+            loggerconfig:IsLoggerConfig()
+        end) and loggerconfig:GetName() == name then
             logger:SetLoggerConfig(name)
         else
             logger:SetLoggerConfig(Root)
