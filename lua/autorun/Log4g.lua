@@ -15,7 +15,6 @@ if SERVER then
     -- @field Core
     -- @field Level
     Log4g = Log4g or {}
-    LOG4G_SPACE = " "
 
     if file.Exists(Core, "lsv") then
         include(Core)
