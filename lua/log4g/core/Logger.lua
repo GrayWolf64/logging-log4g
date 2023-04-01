@@ -99,11 +99,13 @@ function Log4g.Core.Logger.Create(name, context, loggerconfig)
 
     if sfind(name, "%.") then
         if loggerconfig and IsLoggerConfig(loggerconfig) then
-            if loggerconfig:GetName() == name then
+            local lcn = loggerconfig:GetName()
+
+            if lcn == name then
                 logger:SetLoggerConfig(name)
             else
-                if GenerateAncestorsN(name)[loggerconfig:GetName()] then
-                    logger:SetLoggerConfig(loggerconfig:GetName())
+                if GenerateAncestorsN(name)[lcn] then
+                    logger:SetLoggerConfig(lcn)
                 else
                     logger:SetLoggerConfig(Root)
                 end
