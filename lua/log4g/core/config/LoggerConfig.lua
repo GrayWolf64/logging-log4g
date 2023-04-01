@@ -9,10 +9,9 @@ local LifeCycle = Log4g.Core.LifeCycle.GetClass()
 local LoggerConfig = LifeCycle:subclass("LoggerConfig")
 local GetCtx, GetAllCtx = Log4g.Core.LoggerContext.Get, Log4g.Core.LoggerContext.GetAll
 local GetLevel = Log4g.Level.GetLevel
-local istable = istable
 local pairs, ipairs = pairs, ipairs
 local sfind = string.find
-local tinsert, tconcat, tempty = table.insert, table.concat, table.Empty
+local istable, tinsert, tconcat, tempty = istable, table.insert, table.concat, table.Empty
 local StripDotExtension = include("log4g/core/util/StringUtil.lua").StripDotExtension
 local Root = CreateConVar("LOG4G_ROOT", "root", FCVAR_NOTIFY):GetString()
 
@@ -20,6 +19,10 @@ function LoggerConfig:Initialize(name)
     LifeCycle.Initialize(self)
     self:SetPrivateField("apref", {})
     self.name = name
+end
+
+function LoggerConfig:IsLoggerConfig()
+    return true
 end
 
 function LoggerConfig:__tostring()
