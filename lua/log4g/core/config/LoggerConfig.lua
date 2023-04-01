@@ -164,7 +164,7 @@ local function GenerateAncestorsN(name)
             tinsert(ancestor, nodes[i])
         end
 
-        tinsert(ancestors, tconcat(ancestor, "."))
+        ancestors[tconcat(ancestor, ".")] = true
     end
 
     return ancestors, nodes
@@ -174,8 +174,8 @@ local function ValidateAncestors(name)
     local ancestors, nodes = GenerateAncestorsN(name)
 
     local function HasEveryLoggerConfig(tbl)
-        for _, v in pairs(tbl) do
-            if not HasLoggerConfig(v) then return false end
+        for k in pairs(tbl) do
+            if not HasLoggerConfig(k) then return false end
         end
 
         return true

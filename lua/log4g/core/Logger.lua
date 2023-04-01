@@ -13,7 +13,6 @@ local IsLoggerConfig, IsLoggerContext = TypeUtil.IsLoggerConfig, TypeUtil.IsLogg
 local IsLevel = TypeUtil.IsLevel
 TypeUtil, StringUtil = nil, nil
 local sfind = string.find
-local thasvalue = table.HasValue
 local HasLoggerConfig = Log4g.Core.Config.LoggerConfig.HasLoggerConfig
 local GenerateAncestorsN = Log4g.Core.Config.LoggerConfig.GenerateAncestorsN
 local Root = GetConVar("log4g.root"):GetString()
@@ -103,7 +102,7 @@ function Log4g.Core.Logger.Create(name, context, loggerconfig)
             if loggerconfig:GetName() == name then
                 logger:SetLoggerConfig(name)
             else
-                if thasvalue(GenerateAncestorsN(name), loggerconfig:GetName()) then
+                if GenerateAncestorsN(name)[loggerconfig:GetName()] then
                     logger:SetLoggerConfig(loggerconfig:GetName())
                 else
                     logger:SetLoggerConfig(Root)
