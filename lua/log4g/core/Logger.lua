@@ -13,6 +13,7 @@ local IsLoggerConfig, IsLoggerContext = TypeUtil.IsLoggerConfig, TypeUtil.IsLogg
 local IsLevel = TypeUtil.IsLevel
 TypeUtil, StringUtil = nil, nil
 local sfind = string.find
+local isstring = isstring
 local HasLoggerConfig = Log4g.Core.Config.LoggerConfig.HasLoggerConfig
 local GenerateAncestorsN = Log4g.Core.Config.LoggerConfig.GenerateAncestorsN
 local Root = GetConVar("log4g.root"):GetString()
@@ -74,22 +75,28 @@ end
 function Logger:AtFatal()
 end
 
-function Logger:Trace()
+function Logger:Trace(msg)
+    if not isstring(msg) then return end
 end
 
-function Logger:Debug()
+function Logger:Debug(msg)
+    if not isstring(msg) then return end
 end
 
-function Logger:Info()
+function Logger:Info(msg)
+    if not isstring(msg) then return end
 end
 
-function Logger:Warn()
+function Logger:Warn(msg)
+    if not isstring(msg) then return end
 end
 
-function Logger:Error()
+function Logger:Error(msg)
+    if not isstring(msg) then return end
 end
 
-function Logger:Fatal()
+function Logger:Fatal(msg)
+    if not isstring(msg) then return end
 end
 
 function Log4g.Core.Logger.Create(name, context, loggerconfig)
