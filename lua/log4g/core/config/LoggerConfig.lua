@@ -163,7 +163,7 @@ function RootLoggerConfig:GetParent()
     return false
 end
 
-local function GenerateParentNames(name)
+local function GenerateAncestorsN(name)
     local nodes, ancestors = StripDotExtension(name, false), {}
 
     for k in ipairs(nodes) do
@@ -180,7 +180,7 @@ local function GenerateParentNames(name)
 end
 
 local function ValidateAncestors(name)
-    local ancestors, nodes = GenerateParentNames(name)
+    local ancestors, nodes = GenerateAncestorsN(name)
 
     local function HasEveryLoggerConfig(tbl)
         for _, v in pairs(tbl) do
@@ -247,4 +247,4 @@ function Log4g.Core.Config.LoggerConfig.GetRootLoggerConfigClass()
 end
 
 Log4g.Core.Config.LoggerConfig.HasLoggerConfig = HasLoggerConfig
-Log4g.Core.Config.LoggerConfig.GenerateParentNames = GenerateParentNames
+Log4g.Core.Config.LoggerConfig.GenerateAncestorsN = GenerateAncestorsN

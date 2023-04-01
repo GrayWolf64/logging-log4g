@@ -12,7 +12,7 @@ local pcall = pcall
 local sfind = string.find
 local thasvalue = table.HasValue
 local HasLoggerConfig = Log4g.Core.Config.LoggerConfig.HasLoggerConfig
-local GenerateParentNames = Log4g.Core.Config.LoggerConfig.GenerateParentNames
+local GenerateAncestorsN = Log4g.Core.Config.LoggerConfig.GenerateAncestorsN
 local Root = GetConVar("log4g.root"):GetString()
 
 function Logger:Initialize(name, context)
@@ -72,7 +72,7 @@ function Log4g.Core.Logger.Create(name, context, loggerconfig)
             if loggerconfig:GetName() == name then
                 logger:SetLoggerConfig(name)
             else
-                if thasvalue(GenerateParentNames(name), loggerconfig:GetName()) then
+                if thasvalue(GenerateAncestorsN(name), loggerconfig:GetName()) then
                     logger:SetLoggerConfig(loggerconfig:GetName())
                 else
                     logger:SetLoggerConfig(Root)
