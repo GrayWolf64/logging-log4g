@@ -1,6 +1,6 @@
 --- The LoggerContext, which is the anchor for the logging system.
 -- Subclassing `LifeCycle`.
--- It maintains a list of all the loggers requested by applications and a reference to the Configuration.
+-- It maintains a list of all the loggers requested by users and a reference to the Configuration.
 -- @classmod LoggerContext
 -- @license Apache License 2.0
 -- @copyright GrayWolf64
@@ -99,7 +99,8 @@ end
 -- @return object loggercontext
 function Log4g.Core.LoggerContext.Get(name)
     if not isstring(name) then return end
-    if CDICT[name] then return CDICT[name] end
+
+    return CDICT[name]
 end
 
 --- Register a LoggerContext.
