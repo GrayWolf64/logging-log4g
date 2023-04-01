@@ -8,7 +8,7 @@ Log4g.Core.LoggerContext = Log4g.Core.LoggerContext or {}
 local LifeCycle = Log4g.Core.LifeCycle.GetClass()
 local LoggerContext = LifeCycle:subclass("LoggerContext")
 local GetDefaultConfiguration = Log4g.Core.Config.GetDefaultConfiguration
-local istable, isstring = istable, isstring
+local isstring = isstring
 local pcall = pcall
 --- A dictionary for storing LoggerContext objects.
 -- Only one ContextDictionary exists in the logging system.
@@ -59,7 +59,7 @@ end
 --- Sets the Configuration to be used.
 -- @param config Configuration
 function LoggerContext:SetConfiguration(config)
-    if not istable(config) then return end
+    if not pcall(config:IsConfiguration()) then return end
     if self:GetConfiguration() == config then return end
     config:SetContext(self.name)
     self:SetPrivateField("configuration", config)
