@@ -10,7 +10,7 @@ local StringUtil = include("log4g/core/util/StringUtil.lua")
 local QualifyName, StripDotExtension = StringUtil.QualifyName, StringUtil.StripDotExtension
 local TypeUtil = include("log4g/core/util/TypeUtil.lua")
 local IsLoggerConfig, IsLoggerContext = TypeUtil.IsLoggerConfig, TypeUtil.IsLoggerContext
-local IsLevel = TypeUtil.IsLevel
+local IsLevel, IsSimpleLoggerContext = TypeUtil.IsLevel, TypeUtil.IsSimpleLoggerContext
 TypeUtil, StringUtil = nil, nil
 local string_find = string.find
 local isstring = isstring
@@ -104,7 +104,7 @@ function Logger:Fatal(msg)
 end
 
 function Log4g.Core.Logger.Create(name, context, loggerconfig)
-    if not IsLoggerContext(context) then return end
+    if not IsLoggerContext(context) or IsSimpleLoggerContext(context) then return end
     if context:HasLogger(name) or not QualifyName(name) then return end
     local logger = Logger(name, context)
 

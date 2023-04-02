@@ -19,6 +19,26 @@ function SimpleLoggerContext:__tostring()
     return "SimpleLoggerContext: [name:" .. self:GetName() .. "]"
 end
 
+--- Overrides `LoggerContext:SetConfigurationSource()`.
+function SimpleLoggerContext:SetConfigurationSource()
+    return false
+end
+
+--- Overrides `LoggerContext:GetConfigurationSource()`.
+function SimpleLoggerContext:GetConfigurationSource()
+    return false
+end
+
+--- Overrides `LoggerContext:GetConfiguration()`.
+function SimpleLoggerContext:GetConfiguration()
+    return false
+end
+
+--- Overrides `LoggerContext:SetConfiguration()`.
+function SimpleLoggerContext:SetConfiguration()
+    return false
+end
+
 --- Get the SimpleLoggerContext with the right name.
 -- @param name string name
 -- @return object SimpleLoggerContext
