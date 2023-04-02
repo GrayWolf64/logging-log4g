@@ -22,6 +22,19 @@ local QualifyName, StripDotExtension = StringUtil.QualifyName, StringUtil.StripD
 TypeUtil = nil
 CreateConVar("log4g.root", "root", FCVAR_NOTIFY)
 
+cvars.AddChangeCallback("log4g.root", function(cvarn, oldn, newn)
+    if string_find(newn, "%.") or not QualifyName(newn) then
+        GetConVar(cvarn):SetString(oldn)
+    else
+        local ctxs = GetAllCtx()
+        if not next(ctxs) then return end
+
+        for _, v in pairs(ctxs) do
+            v:GetConfiguration():GetLoggerConfig(oldn):SetName(newn)
+        end
+    end
+end)
+
 function LoggerConfig:Initialize(name)
     LifeCycle.Initialize(self)
     self:SetPrivateField("apref", {})
@@ -147,19 +160,6 @@ function RootLoggerConfig:Initialize()
     LoggerConfig.Initialize(self, GetConVar("log4g.root"):GetString())
     self:SetLevel(GetLevel("INFO"))
 end
-
-cvars.AddChangeCallback("log4g.root", function(cvarn, oldn, newn)
-    if string_find(newn, "%.") or not QualifyName(newn) then
-        GetConVar(cvarn):SetString(oldn)
-    else
-        local ctxs = GetAllCtx()
-        if not next(ctxs) then return end
-
-        for _, v in pairs(ctxs) do
-            v:GetConfiguration():GetLoggerConfig(oldn):SetName(newn)
-        end
-    end
-end)
 
 --- Overrides `LoggerConfig:__tostring()`.
 function RootLoggerConfig:__tostring()
