@@ -24,8 +24,16 @@ function Logger:Initialize(name, context)
     self:SetName(name)
 end
 
-function Logger:GetContext()
-    return self:GetPrivateField("ctx")
+--- Gets the LoggerContext of the Logger.
+-- @param ex True for getting the object, false or nil for getting the name
+-- @return string ctxname
+-- @return object ctx
+function Logger:GetContext(ex)
+    if not ex or ex == false then
+        return self:GetPrivateField("ctx")
+    else
+        return GetCtx(self:GetContext())
+    end
 end
 
 function Logger:__tostring()
@@ -45,7 +53,7 @@ end
 --- Get the LoggerConfig of the Logger.
 -- @return object loggerconfig
 function Logger:GetLoggerConfig()
-    return GetCtx(self:GetContext()):GetConfiguration():GetLoggerConfig(self:GetLoggerConfigN())
+    return self:GetContext(true):GetConfiguration():GetLoggerConfig(self:GetLoggerConfigN())
 end
 
 function Logger:SetLevel(level)
