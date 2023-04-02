@@ -3,7 +3,7 @@
 -- @license Apache License 2.0
 -- @copyright GrayWolf64
 local StringUtil = {}
-local ssub, sfind, sexplode, sreverse = string.sub, string.find, string.Explode, string.reverse
+local string_sub, string_find, string_explode, string_reverse = string.sub, string.find, string.Explode, string.reverse
 local table_concat = table.concat
 local isstring = isstring
 
@@ -11,7 +11,7 @@ local isstring = isstring
 -- @param str String name
 -- @return bool ifvalid
 function StringUtil.QualifyName(str)
-    if not isstring(str) or ssub(str, 1, 1) == "." or ssub(str, -1) == "." or sfind(str, "[^%a%.]") then return false end
+    if not isstring(str) or string_sub(str, 1, 1) == "." or string_sub(str, -1) == "." or string_find(str, "[^%a%.]") then return false end
 
     return true
 end
@@ -22,7 +22,7 @@ end
 -- @return string result
 function StringUtil.StripDotExtension(str, doconcat)
     if not isstring(str) then return end
-    local result = sexplode(".", ssub(str, 1, #str - sfind(sreverse(str), "%.")))
+    local result = string_explode(".", string_sub(str, 1, #str - string_find(string_reverse(str), "%.")))
 
     if doconcat ~= false then
         return table_concat(result, ".")

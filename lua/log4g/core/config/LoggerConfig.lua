@@ -9,14 +9,14 @@ local LifeCycle = Log4g.Core.LifeCycle.GetClass()
 local LoggerConfig = LifeCycle:subclass("LoggerConfig")
 local GetCtx, GetAllCtx = Log4g.Core.LoggerContext.Get, Log4g.Core.LoggerContext.GetAll
 local GetLevel = Log4g.Level.GetLevel
+local next = next
 local pairs, ipairs = pairs, ipairs
-local sfind, isstring = string.find, isstring
+local string_find, isstring = string.find, isstring
+local table_insert, table_concat = table.insert, table.concat
 local TypeUtil = include("log4g/core/util/TypeUtil.lua")
 local IsAppender, IsLoggerConfig = TypeUtil.IsAppender, TypeUtil.IsLoggerConfig
 local IsConfiguration, IsLevel = TypeUtil.IsConfiguration, TypeUtil.IsLevel
 TypeUtil = nil
-local next = next
-local table_insert, table_concat = table.insert, table.concat
 local StripDotExtension = include("log4g/core/util/StringUtil.lua").StripDotExtension
 CreateConVar("log4g.root", "root", FCVAR_NOTIFY)
 
@@ -200,7 +200,7 @@ function Log4g.Core.Config.LoggerConfig.Create(name, config, level)
     local lc = LoggerConfig(name)
     lc:SetContext(config:GetContext())
 
-    if sfind(name, "%.") then
+    if string_find(name, "%.") then
         local valid, parent = ValidateAncestors(name)
         if not valid then return end
 
