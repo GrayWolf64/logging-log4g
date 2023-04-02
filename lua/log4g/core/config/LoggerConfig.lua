@@ -15,6 +15,7 @@ local TypeUtil = include("log4g/core/util/TypeUtil.lua")
 local IsAppender, IsLoggerConfig = TypeUtil.IsAppender, TypeUtil.IsLoggerConfig
 local IsConfiguration, IsLevel = TypeUtil.IsConfiguration, TypeUtil.IsLevel
 TypeUtil = nil
+local next = next
 local tinsert, tconcat = table.insert, table.concat
 local StripDotExtension = include("log4g/core/util/StringUtil.lua").StripDotExtension
 CreateConVar("log4g.root", "root", FCVAR_NOTIFY)
@@ -100,21 +101,22 @@ end
 -- It adds the Appender name to the LoggerConfig's private `apref` table field,
 -- then adds the Appender object to the Configuration's(the only one which owns this LoggerConfig) private `appender` table field.
 -- @param appender Appender object
--- @return bool ifsuccessfullyadded
+-- @return bool ifadded
 function LoggerConfig:AddAppender(ap)
     if not IsAppender(ap) then return end
-    tinsert(self:GetAppenderRef(), ap:GetName())
+    self:GetAppenderRef()[ap:GetName()] = true
 
     return GetCtx(self:GetContext()):GetConfiguration():AddAppender(ap, self:GetName())
 end
 
---- Returns all Appenders configured by this LoggerConfig in a form of table.
+--- Returns all Appenders configured by this LoggerConfig in a form of table (keys are Appenders, values are booleans).
 -- @return table appenders
 function LoggerConfig:GetAppenders()
-    local appenders, config = {}, GetCtx(self:GetContext()):GetConfiguration()
+    local appenders, config, apref = {}, GetCtx(self:GetContext()):GetConfiguration(), self:GetAppenderRef()
+    if not next(apref) then return end
 
-    for _, v in pairs(self:GetAppenderRef()) do
-        tinsert(appenders, config:GetAppenders()[v])
+    for k in pairs(apref) do
+        appenders[config:GetAppenders()[k]] = true
     end
 
     return appenders
@@ -122,10 +124,11 @@ end
 
 --- Removes all Appenders configured by this LoggerConfig.
 function LoggerConfig:ClearAppenders()
-    local config = GetCtx(self:GetContext()):GetConfiguration()
+    local config, apref = GetCtx(self:GetContext()):GetConfiguration(), self:GetAppenderRef()
+    if not next(apref) then return end
 
-    for k, v in pairs(self:GetAppenderRef()) do
-        config:RemoveAppender(v)
+    for k in pairs(apref) do
+        config:RemoveAppender(k)
         self:GetAppenderRef()[k] = nil
     end
 end
