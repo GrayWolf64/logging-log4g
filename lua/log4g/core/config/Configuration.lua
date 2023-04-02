@@ -18,6 +18,10 @@ function Configuration:Initialize(name)
     self:SetName(name)
 end
 
+function Configuration:__tostring()
+    return "Configuration: [name:" .. self:GetName() .. "]"
+end
+
 function Configuration:IsConfiguration()
     return true
 end
