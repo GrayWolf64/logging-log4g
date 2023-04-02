@@ -11,6 +11,10 @@ function Appender:Initialize(name, layout)
     self:SetName(name)
 end
 
+function Appender:__tostring()
+    return "Appender: [name:" .. self:GetName() .. "]"
+end
+
 function Appender:IsAppender()
     return true
 end

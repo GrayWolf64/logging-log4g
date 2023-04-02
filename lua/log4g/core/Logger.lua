@@ -28,6 +28,10 @@ function Logger:GetContext()
     return self:GetPrivateField("ctx")
 end
 
+function Logger:__tostring()
+    return "Logger: [name:" .. self:GetName() .. "][ctx:" .. self:GetContext() .. "]"
+end
+
 --- Sets the LoggerConfig name for the Logger.
 -- @param name String name
 function Logger:SetLoggerConfig(name)
