@@ -17,8 +17,9 @@ local TypeUtil = include("log4g/core/util/TypeUtil.lua")
 local IsAppender, IsLoggerConfig = TypeUtil.IsAppender, TypeUtil.IsLoggerConfig
 local IsLoggerContext = TypeUtil.IsLoggerContext
 local IsConfiguration, IsLevel = TypeUtil.IsConfiguration, TypeUtil.IsLevel
+local StringUtil = include("log4g/core/util/StringUtil.lua")
+local QualifyName, StripDotExtension = StringUtil.QualifyName, StringUtil.StripDotExtension
 TypeUtil = nil
-local StripDotExtension = include("log4g/core/util/StringUtil.lua").StripDotExtension
 CreateConVar("log4g.root", "root", FCVAR_NOTIFY)
 
 function LoggerConfig:Initialize(name)
@@ -142,10 +143,25 @@ end
 
 local RootLoggerConfig = LoggerConfig:subclass("LoggerConfig.RootLogger")
 
-function RootLoggerConfig:Initialize(name)
-    LoggerConfig.Initialize(self, name)
+function RootLoggerConfig:Initialize()
+    LoggerConfig.Initialize(self, GetConVar("log4g.root"):GetString())
     self:SetLevel(GetLevel("INFO"))
 end
+
+cvars.AddChangeCallback("log4g.root", function(cvarn, oldn, newn)
+    if string_find(newn, "%.") or not QualifyName(newn) then
+        GetConVar(cvarn):SetString(oldn)
+
+        return
+    end
+
+    local ctxs = GetAllCtx()
+    if not next(ctxs) then return end
+
+    for _, v in pairs(ctxs) do
+        v:GetConfiguration():GetLoggerConfig(oldn):SetName(newn)
+    end
+end)
 
 --- Overrides `LoggerConfig:__tostring()`.
 function RootLoggerConfig:__tostring()
