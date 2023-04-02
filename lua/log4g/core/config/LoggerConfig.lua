@@ -16,7 +16,7 @@ local IsAppender, IsLoggerConfig = TypeUtil.IsAppender, TypeUtil.IsLoggerConfig
 local IsConfiguration, IsLevel = TypeUtil.IsConfiguration, TypeUtil.IsLevel
 TypeUtil = nil
 local next = next
-local tinsert, tconcat = table.insert, table.concat
+local table_insert, table_concat = table.insert, table.concat
 local StripDotExtension = include("log4g/core/util/StringUtil.lua").StripDotExtension
 CreateConVar("log4g.root", "root", FCVAR_NOTIFY)
 
@@ -164,10 +164,10 @@ local function GenerateAncestorsN(name)
         local ancestor = {}
 
         for i = 1, k do
-            tinsert(ancestor, nodes[i])
+            table_insert(ancestor, nodes[i])
         end
 
-        ancestors[tconcat(ancestor, ".")] = true
+        ancestors[table_concat(ancestor, ".")] = true
     end
 
     return ancestors, nodes
@@ -184,7 +184,7 @@ local function ValidateAncestors(name)
         return true
     end
 
-    if HasEveryLoggerConfig(ancestors) then return true, tconcat(nodes, ".") end
+    if HasEveryLoggerConfig(ancestors) then return true, table_concat(nodes, ".") end
 
     return false
 end

@@ -4,7 +4,7 @@
 -- @copyright GrayWolf64
 local StringUtil = {}
 local ssub, sfind, sexplode, sreverse = string.sub, string.find, string.Explode, string.reverse
-local tconcat = table.concat
+local table_concat = table.concat
 local isstring = isstring
 
 --- Qualifies the string name of an object and returns if it's a valid name.
@@ -25,7 +25,7 @@ function StringUtil.StripDotExtension(str, doconcat)
     local result = sexplode(".", ssub(str, 1, #str - sfind(sreverse(str), "%.")))
 
     if doconcat ~= false then
-        return tconcat(result, ".")
+        return table_concat(result, ".")
     else
         return result
     end
