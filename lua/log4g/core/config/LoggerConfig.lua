@@ -151,15 +151,13 @@ end
 cvars.AddChangeCallback("log4g.root", function(cvarn, oldn, newn)
     if string_find(newn, "%.") or not QualifyName(newn) then
         GetConVar(cvarn):SetString(oldn)
+    else
+        local ctxs = GetAllCtx()
+        if not next(ctxs) then return end
 
-        return
-    end
-
-    local ctxs = GetAllCtx()
-    if not next(ctxs) then return end
-
-    for _, v in pairs(ctxs) do
-        v:GetConfiguration():GetLoggerConfig(oldn):SetName(newn)
+        for _, v in pairs(ctxs) do
+            v:GetConfiguration():GetLoggerConfig(oldn):SetName(newn)
+        end
     end
 end)
 
@@ -181,11 +179,11 @@ function RootLoggerConfig:GetParent()
 end
 
 --- Generate all the ancestors' names of a LoggerConfig or something else.
--- The provided name must contain '.'.
+-- The provided name must follow [Named Hierarchy](https://logging.apache.org/log4j/2.x/manual/architecture.html).
 -- For example, A.B.C's ancestors are A.B and A.
 -- @lfunction GenerateAncestorsN
--- @param name object's name
--- @return table ancestors' names
+-- @param name Object's name
+-- @return table ancestors' names in a list-styled table
 -- @return table parent name but with dots removed in a table
 local function GenerateAncestorsN(name)
     local nodes, ancestors = StripDotExtension(name, false), {}
@@ -204,7 +202,7 @@ local function GenerateAncestorsN(name)
 end
 
 --- Check if a LoggerConfig's ancestors exist and return its desired parent name.
--- The LoggerConfig's name must contain '.'.
+-- The name of the provided LoggerConfig must follow [Named Hierarchy](https://logging.apache.org/log4j/2.x/manual/architecture.html).
 -- For example, A.B.C's ancestors who are A.B and A will be checked, and its parent will be A.B.
 -- @lfunction ValidateAncestors
 -- @param lc LoggerConfig object
