@@ -15,6 +15,7 @@ local string_find, isstring = string.find, isstring
 local table_insert, table_concat = table.insert, table.concat
 local TypeUtil = include("log4g/core/util/TypeUtil.lua")
 local IsAppender, IsLoggerConfig = TypeUtil.IsAppender, TypeUtil.IsLoggerConfig
+local IsLoggerContext = TypeUtil.IsLoggerContext
 local IsConfiguration, IsLevel = TypeUtil.IsConfiguration, TypeUtil.IsLevel
 TypeUtil = nil
 local StripDotExtension = include("log4g/core/util/StringUtil.lua").StripDotExtension
@@ -46,9 +47,15 @@ function LoggerConfig:GetLevel()
     return self:GetPrivateField("level")
 end
 
-local function HasLoggerConfig(name)
-    for _, v in pairs(GetAllCtx()) do
-        if v:GetConfiguration():GetLoggerConfig(name) then return true end
+local function HasLoggerConfig(name, context)
+    local getlc = function(ctx, lcn) return ctx:GetConfiguration():GetLoggerConfig(lcn) end
+
+    if not context or not IsLoggerContext(context) then
+        for _, v in pairs(GetAllCtx()) do
+            if getlc(v, name) then return true end
+        end
+    else
+        if getlc(context, name) then return true end
     end
 
     return false
@@ -68,7 +75,7 @@ function LoggerConfig:SetParent(T)
         if T == GetConVar("log4g.root"):GetString() then
             self:SetPrivateField("parent", T)
         else
-            if not HasLoggerConfig(T) then return end
+            if not HasLoggerConfig(T, GetCtx(self:GetContext())) then return end
             self:SetPrivateField("parent", T)
         end
     elseif IsLoggerConfig(T) then
@@ -157,6 +164,13 @@ function RootLoggerConfig:GetParent()
     return false
 end
 
+--- Generate all the ancestors' names of a LoggerConfig or something else.
+-- The provided name must contain '.'.
+-- For example, A.B.C's ancestors are A.B and A.
+-- @lfunction GenerateAncestorsN
+-- @param name object's name
+-- @return table ancestors' names
+-- @return table parent name but with dots removed in a table
 local function GenerateAncestorsN(name)
     local nodes, ancestors = StripDotExtension(name, false), {}
 
@@ -173,12 +187,21 @@ local function GenerateAncestorsN(name)
     return ancestors, nodes
 end
 
-local function ValidateAncestors(name)
-    local ancestors, nodes = GenerateAncestorsN(name)
+--- Check if a LoggerConfig's ancestors exist and return its desired parent name.
+-- The LoggerConfig's name must contain '.'.
+-- For example, A.B.C's ancestors who are A.B and A will be checked, and its parent will be A.B.
+-- @lfunction ValidateAncestors
+-- @param lc LoggerConfig object
+-- @return bool valid
+-- @return string parent name
+local function ValidateAncestors(lc)
+    local ancestors, nodes = GenerateAncestorsN(lc:GetName())
 
     local function HasEveryLoggerConfig(tbl)
+        local ctx = GetCtx(lc:GetContext())
+
         for k in pairs(tbl) do
-            if not HasLoggerConfig(k) then return false end
+            if not HasLoggerConfig(k, ctx) then return false end
         end
 
         return true
@@ -201,7 +224,7 @@ function Log4g.Core.Config.LoggerConfig.Create(name, config, level)
     lc:SetContext(config:GetContext())
 
     if string_find(name, "%.") then
-        local valid, parent = ValidateAncestors(name)
+        local valid, parent = ValidateAncestors(lc)
         if not valid then return end
 
         if level and IsLevel(level) then

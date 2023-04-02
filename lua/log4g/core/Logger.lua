@@ -125,14 +125,14 @@ function Log4g.Core.Logger.Create(name, context, loggerconfig)
             local lc = name
 
             while true do
-                if HasLoggerConfig(lc) then
+                if HasLoggerConfig(lc, context) then
                     logger:SetLoggerConfig(lc)
                     break
                 end
 
                 lc = StripDotExtension(lc)
 
-                if not string_find(lc, "%.") and not HasLoggerConfig(lc) then
+                if not string_find(lc, "%.") and not HasLoggerConfig(lc, context) then
                     logger:SetLoggerConfig(Root)
                     break
                 end
