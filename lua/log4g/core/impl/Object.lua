@@ -15,6 +15,10 @@ function Object:Initialize()
     PRIVATE[self] = {}
 end
 
+function Object:__tostring()
+    return "Object: [name:" .. self:GetName() .. "]"
+end
+
 function Object:IsObject()
     return true
 end
