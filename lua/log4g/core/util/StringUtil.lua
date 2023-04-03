@@ -9,9 +9,16 @@ local isstring = isstring
 
 --- Qualifies the string name of an object and returns if it's a valid name.
 -- @param str String name
+-- @param dot If dots are allowed, default is allowed if param not set
 -- @return bool ifvalid
-function StringUtil.QualifyName(str)
-    if not isstring(str) or string_sub(str, 1, 1) == "." or string_sub(str, -1) == "." or string_find(str, "[^%a%.]") then return false end
+function StringUtil.QualifyName(str, dot)
+    if not isstring(str) then return false end
+
+    if dot == true or dot == nil then
+        if string_sub(str, 1, 1) == "." or string_sub(str, -1) == "." or string_find(str, "[^%a%.]") then return false end
+    else
+        if string_find(str, "[^%a]") then return false end
+    end
 
     return true
 end

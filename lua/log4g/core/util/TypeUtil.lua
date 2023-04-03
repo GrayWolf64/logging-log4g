@@ -7,10 +7,16 @@ function TypeUtil.IsLoggerContext(o)
     end)
 end
 
-function TypeUtil.IsLoggerConfig(o)
-    return pcall(function()
-        o:IsLoggerConfig()
-    end)
+function TypeUtil.IsLoggerConfig(o, root)
+    if root == true then
+        return pcall(function()
+            o:IsRootLoggerConfig()
+        end)
+    else
+        return pcall(function()
+            o:IsLoggerConfig()
+        end)
+    end
 end
 
 function TypeUtil.IsSimpleLoggerContext(o)
