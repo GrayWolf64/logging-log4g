@@ -12,32 +12,28 @@ local function PrintLoggerInfo(...)
     end
 end
 
-concommand.Add("Log4g_CoreTest_LoggerConfig_Inheritance_Example1", function()
-    local ctx = GetContext("TestLoggerConfigInheritanceExample1Context", true)
-    PrintLoggerInfo(CreateLogger("X", ctx), CreateLogger("X.Y", ctx), CreateLogger("X.Y.Z", ctx))
-end)
+concommand.Add("Log4g_CoreTest_LoggerConfig_Inheritance", function(_, _, _, arg)
+    local ctx
 
-concommand.Add("Log4g_CoreTest_LoggerConfig_Inheritance_Example2", function()
-    local ctx = GetContext("TestLoggerConfigInheritanceExample2Context", true)
-    PrintLoggerInfo(CreateLogger("X", ctx, CreateLoggerConfig("X", ctx:GetConfiguration(), GetLevel("ERROR"))), CreateLogger("X.Y", ctx, CreateLoggerConfig("X.Y", ctx:GetConfiguration(), GetLevel("INFO"))), CreateLogger("X.Y.Z", ctx, CreateLoggerConfig("X.Y.Z", ctx:GetConfiguration(), GetLevel("WARN"))))
-end)
+    if arg == "1" then
+        ctx = GetContext("TestLoggerConfigInheritanceExample1Context", true)
+        PrintLoggerInfo(CreateLogger("X", ctx), CreateLogger("X.Y", ctx), CreateLogger("X.Y.Z", ctx))
+    elseif arg == "2" then
+        ctx = GetContext("TestLoggerConfigInheritanceExample2Context", true)
+        PrintLoggerInfo(CreateLogger("X", ctx, CreateLoggerConfig("X", ctx:GetConfiguration(), GetLevel("ERROR"))), CreateLogger("X.Y", ctx, CreateLoggerConfig("X.Y", ctx:GetConfiguration(), GetLevel("INFO"))), CreateLogger("X.Y.Z", ctx, CreateLoggerConfig("X.Y.Z", ctx:GetConfiguration(), GetLevel("WARN"))))
+    elseif arg == "3" then
+        ctx = GetContext("TestLoggerConfigInheritanceExample3Context", true)
+        PrintLoggerInfo(CreateLogger("X", ctx, CreateLoggerConfig("X", ctx:GetConfiguration(), GetLevel("ERROR"))), CreateLogger("X.Y", ctx), CreateLogger("X.Y.Z", ctx, CreateLoggerConfig("X.Y.Z", ctx:GetConfiguration(), GetLevel("WARN"))))
+    elseif arg == "4" then
+        ctx = GetContext("TestLoggerConfigInheritanceExample4Context", true)
+        PrintLoggerInfo(CreateLogger("X", ctx, CreateLoggerConfig("X", ctx:GetConfiguration(), GetLevel("ERROR"))), CreateLogger("X.Y", ctx), CreateLogger("X.Y.Z", ctx))
+    elseif arg == "5" then
+        ctx = GetContext("TestLoggerConfigInheritanceExample5Context", true)
+        PrintLoggerInfo(CreateLogger("X", ctx, CreateLoggerConfig("X", ctx:GetConfiguration(), GetLevel("ERROR"))), CreateLogger("X.Y", ctx, CreateLoggerConfig("X.Y", ctx:GetConfiguration(), GetLevel("INFO"))), CreateLogger("X.YZ", ctx))
+    elseif arg == "6" then
+        ctx = GetContext("TestLoggerConfigInheritanceExample6Context", true)
+        PrintLoggerInfo(CreateLogger("X", ctx, CreateLoggerConfig("X", ctx:GetConfiguration(), GetLevel("ERROR"))), CreateLogger("X.Y", ctx, CreateLoggerConfig("X.Y", ctx:GetConfiguration())), CreateLogger("X.Y.Z", ctx))
+    end
 
-concommand.Add("Log4g_CoreTest_LoggerConfig_Inheritance_Example3", function()
-    local ctx = GetContext("TestLoggerConfigInheritanceExample3Context", true)
-    PrintLoggerInfo(CreateLogger("X", ctx, CreateLoggerConfig("X", ctx:GetConfiguration(), GetLevel("ERROR"))), CreateLogger("X.Y", ctx), CreateLogger("X.Y.Z", ctx, CreateLoggerConfig("X.Y.Z", ctx:GetConfiguration(), GetLevel("WARN"))))
-end)
-
-concommand.Add("Log4g_CoreTest_LoggerConfig_Inheritance_Example4", function()
-    local ctx = GetContext("TestLoggerConfigInheritanceExample4Context", true)
-    PrintLoggerInfo(CreateLogger("X", ctx, CreateLoggerConfig("X", ctx:GetConfiguration(), GetLevel("ERROR"))), CreateLogger("X.Y", ctx), CreateLogger("X.Y.Z", ctx))
-end)
-
-concommand.Add("Log4g_CoreTest_LoggerConfig_Inheritance_Example5", function()
-    local ctx = GetContext("TestLoggerConfigInheritanceExample5Context", true)
-    PrintLoggerInfo(CreateLogger("X", ctx, CreateLoggerConfig("X", ctx:GetConfiguration(), GetLevel("ERROR"))), CreateLogger("X.Y", ctx, CreateLoggerConfig("X.Y", ctx:GetConfiguration(), GetLevel("INFO"))), CreateLogger("X.YZ", ctx))
-end)
-
-concommand.Add("Log4g_CoreTest_LoggerConfig_Inheritance_Example6", function()
-    local ctx = GetContext("TestLoggerConfigInheritanceExample6Context", true)
-    PrintLoggerInfo(CreateLogger("X", ctx, CreateLoggerConfig("X", ctx:GetConfiguration(), GetLevel("ERROR"))), CreateLogger("X.Y", ctx, CreateLoggerConfig("X.Y", ctx:GetConfiguration())), CreateLogger("X.Y.Z", ctx))
+    ctx:Terminate()
 end)

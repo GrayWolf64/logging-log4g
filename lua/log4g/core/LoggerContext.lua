@@ -74,8 +74,9 @@ end
 
 --- Terminate the LoggerContext.
 function LoggerContext:Terminate()
+    local name = self:GetName()
     self:DestroyPrivateTable()
-    CDICT[self:GetName()] = nil
+    CDICT[name] = nil
 end
 
 --- Determines if the specified Logger exists.
