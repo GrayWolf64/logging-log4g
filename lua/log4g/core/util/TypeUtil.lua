@@ -55,4 +55,10 @@ function TypeUtil.IsLogger(o)
     end)
 end
 
+function TypeUtil.IsLayout(o)
+    return pcall(function()
+        o:IsLayout()
+    end)
+end
+
 return TypeUtil
