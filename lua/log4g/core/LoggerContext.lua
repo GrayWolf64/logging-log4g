@@ -56,7 +56,7 @@ end
 --- Returns the current Configuration of the LoggerContext.
 -- @return object configuration
 function LoggerContext:GetConfiguration()
-    return self:GetPrivateField("configuration")
+    return self:GetPrivateField("config")
 end
 
 --- Sets the Configuration to be used.
@@ -65,7 +65,7 @@ function LoggerContext:SetConfiguration(config)
     if not IsConfiguration(config) then return end
     if self:GetConfiguration() == config then return end
     config:SetContext(self:GetName())
-    self:SetPrivateField("configuration", config)
+    self:SetPrivateField("config", config)
 end
 
 function LoggerContext:__tostring()
