@@ -6,5 +6,5 @@ local SimpleLogger = Log4g.API.Simple.SimpleLogger.GetClass()
 local StatusLogger = SimpleLogger:subclass("StatusLogger")
 
 function StatusLogger:Initialize(name, context)
-    SimpleLogger:Initialize(self, name, context)
+    SimpleLogger.Initialize(self, name, context)
 end
