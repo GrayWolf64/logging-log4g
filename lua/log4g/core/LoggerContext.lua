@@ -10,8 +10,7 @@ local LoggerContext = LifeCycle:subclass("LoggerContext")
 local GetDefaultConfiguration = Log4g.Core.Config.GetDefaultConfiguration
 local isstring = isstring
 local TypeUtil = include("log4g/core/util/TypeUtil.lua")
-local IsLoggerContext = TypeUtil.IsLoggerContext
-local IsConfiguration = TypeUtil.IsConfiguration
+local IsLoggerContext, IsConfiguration = TypeUtil.IsLoggerContext, TypeUtil.IsConfiguration
 TypeUtil = nil
 --- A dictionary for storing LoggerContext objects.
 -- Only one ContextDictionary exists in the logging system.
