@@ -37,3 +37,12 @@ concommand.Add("Log4g_CoreTest_LoggerConfig_Inheritance", function(_, _, _, arg)
 
     ctx:Terminate()
 end)
+
+concommand.Add("Log4g_CoreTest_LoggerLog", function()
+    local ctx = GetContext("TestLoggerLogContext", true)
+    local lc = CreateLoggerConfig("LogTester", ctx:GetConfiguration(), GetLevel("INFO"))
+    lc:AddAppender(Log4g.Core.Appender.CreateConsoleAppender("TestAp", Log4g.Core.Layout.PatternLayout.CreateDefaultLayout("TestLayout")))
+    local logger = CreateLogger("LogTester", ctx, lc)
+    logger:Trace("A message from a actual Logger!")
+    ctx:Terminate()
+end)

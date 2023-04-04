@@ -10,12 +10,14 @@ local StringUtil = include("log4g/core/util/StringUtil.lua")
 local QualifyName, StripDotExtension = StringUtil.QualifyName, StringUtil.StripDotExtension
 local TypeUtil = include("log4g/core/util/TypeUtil.lua")
 local IsLoggerConfig, IsLoggerContext = TypeUtil.IsLoggerConfig, TypeUtil.IsLoggerContext
-local IsLevel = TypeUtil.IsLevel
+local IsLevel, IsLogEvent = TypeUtil.IsLevel, TypeUtil.IsLogEvent
 TypeUtil, StringUtil = nil, nil
 local string_find = string.find
 local isstring = isstring
+local next = next
 local HasLoggerConfig = Log4g.Core.Config.LoggerConfig.HasLoggerConfig
 local GenerateAncestorsN = Log4g.Core.Config.LoggerConfig.GenerateAncestorsN
+local LogEventBuilder = Log4g.Core.LogEvent.Builder
 local Root = GetConVar("log4g.root"):GetString()
 
 function Logger:Initialize(name, context)
@@ -65,6 +67,16 @@ function Logger:GetLevel()
     return self:GetLoggerConfig():GetLevel()
 end
 
+function Logger:CallAppenders(event)
+    if not IsLogEvent(event) then return end
+    local aps = self:GetLoggerConfig():GetAppenders()
+    if not next(aps) then return end
+
+    for k in pairs(aps) do
+        k:Append(event)
+    end
+end
+
 --- Construct a log event that will always be logged.
 function Logger:Always()
 end
@@ -89,6 +101,7 @@ end
 
 function Logger:Trace(msg)
     if not isstring(msg) then return end
+    self:CallAppenders(LogEventBuilder(self:GetName(), self:GetLevel(), msg))
 end
 
 function Logger:Debug(msg)
