@@ -157,7 +157,6 @@ function RootLoggerConfig:IsRootLoggerConfig()
     return true
 end
 
---- Overrides `LoggerConfig:__tostring()`.
 function RootLoggerConfig:__tostring()
     return "RootLoggerConfig: [name:" .. self:GetName() .. "]"
 end
@@ -172,6 +171,10 @@ end
 -- @return bool false
 function RootLoggerConfig:GetParent()
     return false
+end
+
+function Log4g.Core.Config.LoggerConfig.GetRootLoggerConfigClass()
+    return RootLoggerConfig
 end
 
 --- Generate all the ancestors' names of a LoggerConfig or something else.
@@ -257,10 +260,6 @@ function Log4g.Core.Config.LoggerConfig.Create(name, config, level)
     config:AddLogger(name, lc)
 
     return lc
-end
-
-function Log4g.Core.Config.LoggerConfig.GetRootLoggerConfigClass()
-    return RootLoggerConfig
 end
 
 Log4g.Core.Config.LoggerConfig.HasLoggerConfig = HasLoggerConfig
