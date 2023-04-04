@@ -21,24 +21,9 @@ local StringUtil = include("log4g/core/util/StringUtil.lua")
 local QualifyName, StripDotExtension = StringUtil.QualifyName, StringUtil.StripDotExtension
 TypeUtil = nil
 
-cvars.AddChangeCallback(CreateConVar("log4g.root", "root", FCVAR_NOTIFY):GetName(), function(cvarn, oldn, newn)
-    if not QualifyName(newn, false) then
-        GetConVar(cvarn):SetString(oldn)
-    else
-        local ctxs = GetAllCtx()
-        if not next(ctxs) then return end
-
-        for _, v in pairs(ctxs) do
-            local lcs = v:GetConfiguration():GetLoggerConfigs()
-
-            if next(lcs) then
-                for _, j in pairs(lcs) do
-                    if IsLoggerConfig(j, true) then
-                        j:SetName(newn)
-                    end
-                end
-            end
-        end
+cvars.AddChangeCallback(CreateConVar("log4g.root", "root", FCVAR_NOTIFY):GetName(), function(cvarn)
+    if not QualifyName(newn, false) or next(GetAllCtx()) then
+        GetConVar(cvarn):Revert()
     end
 end)
 
