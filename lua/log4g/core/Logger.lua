@@ -100,34 +100,35 @@ end
 function Logger:AtFatal()
 end
 
+--- Logs a message if the specified level is active.
+local function LogIfEnabled(self, level, msg)
+    if not isstring(msg) or self:GetLevel():IntLevel() <= level:IntLevel() then return end
+    level = GetLevel(level)
+    self:CallAppenders(LogEventBuilder(self:GetName(), level, msg))
+end
+
 function Logger:Trace(msg)
-    if not isstring(msg) then return end
-    self:CallAppenders(LogEventBuilder(self:GetName(), GetLevel("TRACE"), msg))
+    LogIfEnabled(self, "TRACE", msg)
 end
 
 function Logger:Debug(msg)
-    if not isstring(msg) then return end
-    self:CallAppenders(LogEventBuilder(self:GetName(), GetLevel("DEBUG"), msg))
+    LogIfEnabled(self, "DEBUG", msg)
 end
 
 function Logger:Info(msg)
-    if not isstring(msg) then return end
-    self:CallAppenders(LogEventBuilder(self:GetName(), GetLevel("INFO"), msg))
+    LogIfEnabled(self, "INFO", msg)
 end
 
 function Logger:Warn(msg)
-    if not isstring(msg) then return end
-    self:CallAppenders(LogEventBuilder(self:GetName(), GetLevel("WARN"), msg))
+    LogIfEnabled(self, "WARN", msg)
 end
 
 function Logger:Error(msg)
-    if not isstring(msg) then return end
-    self:CallAppenders(LogEventBuilder(self:GetName(), GetLevel("ERROR"), msg))
+    LogIfEnabled(self, "ERROR", msg)
 end
 
 function Logger:Fatal(msg)
-    if not isstring(msg) then return end
-    self:CallAppenders(LogEventBuilder(self:GetName(), GetLevel("FATAL"), msg))
+    LogIfEnabled(self, "FATAL", msg)
 end
 
 function Log4g.Core.Logger.Create(name, context, loggerconfig)
