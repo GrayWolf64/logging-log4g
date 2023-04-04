@@ -12,6 +12,7 @@ local TypeUtil = include("log4g/core/util/TypeUtil.lua")
 local IsLoggerConfig, IsLoggerContext = TypeUtil.IsLoggerConfig, TypeUtil.IsLoggerContext
 local IsLevel, IsLogEvent = TypeUtil.IsLevel, TypeUtil.IsLogEvent
 TypeUtil, StringUtil = nil, nil
+local GetLevel = Log4g.Level.GetLevel
 local string_find = string.find
 local isstring = isstring
 local next = next
@@ -101,27 +102,32 @@ end
 
 function Logger:Trace(msg)
     if not isstring(msg) then return end
-    self:CallAppenders(LogEventBuilder(self:GetName(), self:GetLevel(), msg))
+    self:CallAppenders(LogEventBuilder(self:GetName(), GetLevel("TRACE"), msg))
 end
 
 function Logger:Debug(msg)
     if not isstring(msg) then return end
+    self:CallAppenders(LogEventBuilder(self:GetName(), GetLevel("DEBUG"), msg))
 end
 
 function Logger:Info(msg)
     if not isstring(msg) then return end
+    self:CallAppenders(LogEventBuilder(self:GetName(), GetLevel("INFO"), msg))
 end
 
 function Logger:Warn(msg)
     if not isstring(msg) then return end
+    self:CallAppenders(LogEventBuilder(self:GetName(), GetLevel("WARN"), msg))
 end
 
 function Logger:Error(msg)
     if not isstring(msg) then return end
+    self:CallAppenders(LogEventBuilder(self:GetName(), GetLevel("ERROR"), msg))
 end
 
 function Logger:Fatal(msg)
     if not isstring(msg) then return end
+    self:CallAppenders(LogEventBuilder(self:GetName(), GetLevel("FATAL"), msg))
 end
 
 function Log4g.Core.Logger.Create(name, context, loggerconfig)

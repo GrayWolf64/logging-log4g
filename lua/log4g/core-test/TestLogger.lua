@@ -2,6 +2,8 @@ local CreateLogger = Log4g.Core.Logger.Create
 local GetContext = Log4g.API.LoggerContextFactory.GetContext
 local GetLevel = Log4g.Level.GetLevel
 local CreateLoggerConfig = Log4g.Core.Config.LoggerConfig.Create
+local CreateConsoleAppender = Log4g.Core.Appender.CreateConsoleAppender
+local CreatePatternLayout = Log4g.Core.Layout.PatternLayout.CreateDefaultLayout
 local print = print
 
 local function PrintLoggerInfo(...)
@@ -41,8 +43,8 @@ end)
 concommand.Add("Log4g_CoreTest_LoggerLog", function()
     local ctx = GetContext("TestLoggerLogContext", true)
     local lc = CreateLoggerConfig("LogTester", ctx:GetConfiguration(), GetLevel("INFO"))
-    lc:AddAppender(Log4g.Core.Appender.CreateConsoleAppender("TestAp", Log4g.Core.Layout.PatternLayout.CreateDefaultLayout("TestLayout")))
+    lc:AddAppender(CreateConsoleAppender("TestAp", CreatePatternLayout("TestLay")))
     local logger = CreateLogger("LogTester", ctx, lc)
-    logger:Trace("A message from a actual Logger!")
+    logger:Trace("A TRACE message from 'LogTester'.")
     ctx:Terminate()
 end)
