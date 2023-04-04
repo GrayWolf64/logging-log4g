@@ -102,8 +102,8 @@ end
 
 --- Logs a message if the specified level is active.
 local function LogIfEnabled(self, level, msg)
-    if not isstring(msg) or self:GetLevel():IntLevel() <= level:IntLevel() then return end
     level = GetLevel(level)
+    if not isstring(msg) or self:GetLevel():IntLevel() < level:IntLevel() then return end
     self:CallAppenders(LogEventBuilder(self:GetName(), level, msg))
 end
 

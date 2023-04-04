@@ -42,7 +42,7 @@ end)
 
 concommand.Add("Log4g_CoreTest_LoggerLog", function()
     local ctx = GetContext("TestLoggerLogContext", true)
-    local lc = CreateLoggerConfig("LogTester", ctx:GetConfiguration(), GetLevel("INFO"))
+    local lc = CreateLoggerConfig("LogTester", ctx:GetConfiguration(), GetLevel("TRACE"))
     lc:AddAppender(CreateConsoleAppender("TestAp", CreatePatternLayout("TestLay")))
     local logger = CreateLogger("LogTester", ctx, lc)
     logger:Trace("A TRACE message from 'LogTester'.")
