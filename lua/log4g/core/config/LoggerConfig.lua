@@ -78,13 +78,9 @@ end
 -- @param T LoggerConfig object or LoggerConfig name
 function LoggerConfig:SetParent(T)
     if isstring(T) then
-        if T == GetConVar("log4g.root"):GetString() then
-            self:SetPrivateField("parent", T)
-        else
-            if not HasLoggerConfig(T, GetCtx(self:GetContext())) then return end
-            self:SetPrivateField("parent", T)
-        end
-    elseif IsLoggerConfig(T) then
+        if not HasLoggerConfig(T, GetCtx(self:GetContext())) then return end
+        self:SetPrivateField("parent", T)
+    elseif IsLoggerConfig(T) and T:GetContext() == self:GetContext() then
         self:SetPrivateField("parent", T:GetName())
     end
 end
