@@ -10,7 +10,7 @@ local LoggerContext = LifeCycle:subclass("LoggerContext")
 local GetDefaultConfiguration = Log4g.Core.Config.GetDefaultConfiguration
 local isstring = isstring
 local TypeUtil = include("log4g/core/util/TypeUtil.lua")
-local IsLoggerContext, IsSimpleLoggerContext = TypeUtil.IsLoggerContext, TypeUtil.IsSimpleLoggerContext
+local IsLoggerContext = TypeUtil.IsLoggerContext
 local IsConfiguration = TypeUtil.IsConfiguration
 TypeUtil = nil
 --- A dictionary for storing LoggerContext objects.
@@ -107,7 +107,7 @@ end
 -- @return object loggercontext
 function Log4g.Core.LoggerContext.Register(name, withconfig)
     local ctx = CDICT[name]
-    if ctx and IsLoggerContext(ctx) and not IsSimpleLoggerContext(ctx) then return ctx end
+    if ctx and IsLoggerContext(ctx) and not IsLoggerContext(ctx, true) then return ctx end
     ctx = LoggerContext(name)
 
     if withconfig or withconfig == nil then

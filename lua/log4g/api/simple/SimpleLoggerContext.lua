@@ -5,7 +5,7 @@ local LoggerContext = Log4g.Core.LoggerContext.GetClass()
 local SimpleLoggerContext = LoggerContext:subclass("SimpleLoggerContext")
 local GetCDICT = Log4g.Core.LoggerContext.GetAll
 local isstring = isstring
-local IsSimpleLoggerContext = include("log4g/core/util/TypeUtil.lua").IsSimpleLoggerContext
+local IsLoggerContext = include("log4g/core/util/TypeUtil.lua").IsLoggerContext
 
 function SimpleLoggerContext:Initialize(name)
     LoggerContext.Initialize(self, name)
@@ -45,7 +45,7 @@ end
 function Log4g.API.Simple.SimpleLoggerContext.Get(name)
     if not isstring(name) then return end
     local ctx = GetCDICT()[name]
-    if ctx and IsSimpleLoggerContext(ctx) then return ctx end
+    if ctx and IsLoggerContext(ctx, true) then return ctx end
 end
 
 --- Register a SimpleLoggerContext.
@@ -53,7 +53,7 @@ end
 function Log4g.API.Simple.SimpleLoggerContext.Register(name)
     local cdict = GetCDICT()
     local ctx = cdict[name]
-    if ctx and IsSimpleLoggerContext(ctx) then return ctx end
+    if ctx and IsLoggerContext(ctx, true) then return ctx end
     ctx = SimpleLoggerContext(name)
     cdict[name] = ctx
 

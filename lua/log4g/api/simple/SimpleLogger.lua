@@ -4,7 +4,7 @@
 Log4g.API.Simple.SimpleLogger = Log4g.API.Simple.SimpleLogger or {}
 local Logger = Log4g.Core.Logger.GetClass()
 local SimpleLogger = Logger:subclass("SimpleLogger")
-local IsSimpleLoggerContext = include("log4g/core/util/TypeUtil.lua").IsSimpleLoggerContext
+local IsLoggerContext = include("log4g/core/util/TypeUtil.lua").IsLoggerContext
 
 function SimpleLogger:Initialize(name, context)
     Logger.Initialize(self, name, context)
@@ -44,7 +44,7 @@ end
 -- @param name The name of the SimpleLogger
 -- @param context SimpleLoggerContext object
 function Log4g.API.Simple.SimpleLogger.Create(name, context)
-    if not IsSimpleLoggerContext(context) then return end
+    if not IsLoggerContext(context, true) then return end
     context:GetLoggers()[name] = SimpleLogger(name, context)
 end
 
