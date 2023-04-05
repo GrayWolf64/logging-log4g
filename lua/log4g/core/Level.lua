@@ -6,7 +6,6 @@
 Log4g.Level = Log4g.Level or {}
 local Object = Log4g.Core.Object.GetClass()
 local Level = Object:subclass("Level")
-local tostring = tostring
 local isstring, isnumber = isstring, isnumber
 local IsLevel = include("log4g/core/util/TypeUtil.lua").IsLevel
 
@@ -22,7 +21,7 @@ function Level:IsLevel()
 end
 
 function Level:__tostring()
-    return "Level: [name:" .. self:GetName() .. "]" .. "[int:" .. self:IntLevel() .. "]" .. "[color:" .. tostring(self:GetColor()) .. "]"
+    return "Level: [name:" .. self:GetName() .. "]" .. "[int:" .. self:IntLevel() .. "]" .. "[color:" .. self:GetColor():__tostring() .. "]"
 end
 
 function Level:__eq(lhs, rhs)
