@@ -82,7 +82,6 @@ end
 -- @param The name of the Logger to check
 -- @return bool haslogger
 function LoggerContext:HasLogger(name)
-    if not isstring(name) then return end
     if self:GetLogger(name) then return true end
 
     return false
@@ -107,7 +106,7 @@ end
 -- @return object loggercontext
 function Log4g.Core.LoggerContext.Register(name, withconfig)
     local ctx = CDICT[name]
-    if ctx and IsLoggerContext(ctx) and not IsLoggerContext(ctx, true) then return ctx end
+    if ctx and not IsLoggerContext(ctx, true) then return ctx end
     ctx = LoggerContext(name)
 
     if withconfig or withconfig == nil then
