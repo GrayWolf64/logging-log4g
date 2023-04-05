@@ -8,11 +8,12 @@ local Object = Log4g.Core.Object.GetClass()
 local Level = Object:subclass("Level")
 local tostring = tostring
 local isstring, isnumber = isstring, isnumber
+local IsLevel = include("log4g/core/util/TypeUtil.lua").IsLevel
 
 function Level:Initialize(name, int, color)
     Object.Initialize(self)
-    self.int = int
-    self.color = color
+    self:SetPrivateField("int", int)
+    self:SetPrivateField("color", color)
     self:SetName(name)
 end
 
@@ -21,23 +22,25 @@ function Level:IsLevel()
 end
 
 function Level:__tostring()
-    return "Level: [name:" .. self:GetName() .. "]" .. "[int:" .. self.int .. "]" .. "[color:" .. tostring(self.color) .. "]"
+    return "Level: [name:" .. self:GetName() .. "]" .. "[int:" .. self:IntLevel() .. "]" .. "[color:" .. tostring(self:GetColor()) .. "]"
 end
 
 function Level:__eq(lhs, rhs)
-    return lhs.int == rhs.int and lhs.color == rhs.color
+    if not IsLevel(lhs) or not IsLevel(rhs) then return false end
+
+    return lhs:IntLevel() == rhs:IntLevel() and lhs:GetColor() == rhs:GetColor()
 end
 
 --- Get the Level's intlevel.
 -- @return int intlevel
 function Level:IntLevel()
-    return self.int
+    return self:GetPrivateField("int")
 end
 
 --- Get the Level's Color.
 -- @return object color
 function Level:GetColor()
-    return self.color
+    return self:GetPrivateField("color")
 end
 
 --- Compares the Level against the Levels passed as arguments and returns true if this level is in between the given levels.
@@ -45,11 +48,10 @@ end
 -- @param maxlevel The Level with maximal intlevel
 -- @return bool isinrange
 function Level:IsInRange(minlevel, maxlevel)
-    if self.int >= minlevel.int and self.int <= maxlevel.int then
-        return true
-    else
-        return false
-    end
+    if not IsLevel(minlevel) or not IsLevel(maxlevel) then return end
+    if self:IntLevel() >= minlevel:IntLevel() and self:IntLevel() <= maxlevel:IntLevel() then return true end
+
+    return false
 end
 
 --- Custom Logging Levels created by users.
