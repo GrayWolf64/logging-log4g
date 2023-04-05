@@ -17,7 +17,6 @@ local isstring, next = isstring, next
 local HasLoggerConfig = Log4g.Core.Config.LoggerConfig.HasLoggerConfig
 local GenerateAncestorsN = Log4g.Core.Config.LoggerConfig.GenerateAncestorsN
 local LogEventBuilder = Log4g.Core.LogEvent.Builder
-local Root = GetConVar("log4g.root"):GetString()
 
 function Logger:Initialize(name, context)
     Object.Initialize(self)
@@ -132,7 +131,7 @@ end
 function Log4g.Core.Logger.Create(name, context, loggerconfig)
     if not IsLoggerContext(context) or IsLoggerContext(context, true) then return end
     if context:HasLogger(name) or not QualifyName(name) then return end
-    local logger = Logger(name, context)
+    local logger, root = Logger(name, context), GetConVar("log4g.rootLogger"):GetString()
 
     if name:find("%.") then
         if loggerconfig and IsLoggerConfig(loggerconfig) then
@@ -144,7 +143,7 @@ function Log4g.Core.Logger.Create(name, context, loggerconfig)
                 if GenerateAncestorsN(name)[lcn] then
                     logger:SetLoggerConfig(lcn)
                 else
-                    logger:SetLoggerConfig(Root)
+                    logger:SetLoggerConfig(root)
                 end
             end
         else
@@ -159,7 +158,7 @@ function Log4g.Core.Logger.Create(name, context, loggerconfig)
                 lc = StripDotExtension(lc)
 
                 if not lc:find("%.") and not HasLoggerConfig(lc, context) then
-                    logger:SetLoggerConfig(Root)
+                    logger:SetLoggerConfig(root)
                     break
                 end
             end
@@ -168,7 +167,7 @@ function Log4g.Core.Logger.Create(name, context, loggerconfig)
         if loggerconfig and IsLoggerConfig(loggerconfig) and loggerconfig:GetName() == name then
             logger:SetLoggerConfig(name)
         else
-            logger:SetLoggerConfig(Root)
+            logger:SetLoggerConfig(root)
         end
     end
 
