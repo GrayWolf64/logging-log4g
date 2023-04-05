@@ -19,9 +19,9 @@ local function DoFormat(event)
         local lv = event:GetLevel()
         cp = cp:gsub("%%%p%d%l", lv:GetColor():__tostring() .. lv:GetName())
         cp = cp:gsub("%%%m", color_white:__tostring() .. event:GetMsg()):gsub("%%%n", "\n")
-
-        return cp
     end
+
+    return cp
 end
 
 function PatternLayout:Format(event)
