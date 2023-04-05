@@ -3,7 +3,7 @@
 Log4g.API.LogManager = Log4g.API.LogManager or {}
 local GetAllContexts = Log4g.Core.LoggerContext.GetAll
 local GetContext = Log4g.API.LoggerContextFactory.GetContext
-local GetSimpleContext = Log4g.API.SimpleLoggerContextFactory.GetContext
+local GetSimpleContext = Log4g.API.Simple.SimpleLoggerContextFactory.GetContext
 local isstring, next, pcall = isstring, next, pcall
 
 --- Detects if a Logger with the specified name exists.

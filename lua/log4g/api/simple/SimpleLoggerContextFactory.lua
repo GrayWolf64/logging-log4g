@@ -1,6 +1,6 @@
-Log4g.API.SimpleLoggerContextFactory = Log4g.API.SimpleLoggerContextFactory or {}
+Log4g.API.Simple.SimpleLoggerContextFactory = Log4g.API.Simple.SimpleLoggerContextFactory or {}
 local RegisterSimpleLoggerContext = Log4g.API.Simple.SimpleLoggerContext.Register
 
-function Log4g.API.SimpleLoggerContextFactory.GetContext(name)
+function Log4g.API.Simple.SimpleLoggerContextFactory.GetContext(name)
     return RegisterSimpleLoggerContext(name)
 end
