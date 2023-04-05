@@ -1,5 +1,6 @@
 --- The Level (Log Level).
 -- Levels used for identifying the severity of an event.
+-- Every standard Level has a [Color](https://wiki.facepunch.com/gmod/Color).
 -- Subclassing 'Object'.
 -- @classmod Level
 Log4g.Level = Log4g.Level or {}
