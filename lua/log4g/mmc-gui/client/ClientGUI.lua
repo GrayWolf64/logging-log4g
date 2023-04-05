@@ -10,7 +10,7 @@ local next = next
 local JSONToTable = util.JSONToTable
 local pairs, isstring = pairs, isstring
 
-concommand.Add("Log4g_MMC", function()
+concommand.Add("log4g_mmc", function()
     if IsValid(Frame) then
         Frame:Remove()
 
