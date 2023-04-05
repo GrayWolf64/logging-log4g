@@ -15,25 +15,19 @@ local function PrintLoggerInfo(...)
 end
 
 concommand.Add("Log4g_CoreTest_LoggerConfig_Inheritance", function(_, _, _, arg)
-    local ctx
+    local ctx = GetContext("TestLCInheritanceContext", true)
 
     if arg == "1" then
-        ctx = GetContext("TestLoggerConfigInheritanceExample1Context", true)
         PrintLoggerInfo(CreateLogger("X", ctx), CreateLogger("X.Y", ctx), CreateLogger("X.Y.Z", ctx))
     elseif arg == "2" then
-        ctx = GetContext("TestLoggerConfigInheritanceExample2Context", true)
         PrintLoggerInfo(CreateLogger("X", ctx, CreateLoggerConfig("X", ctx:GetConfiguration(), GetLevel("ERROR"))), CreateLogger("X.Y", ctx, CreateLoggerConfig("X.Y", ctx:GetConfiguration(), GetLevel("INFO"))), CreateLogger("X.Y.Z", ctx, CreateLoggerConfig("X.Y.Z", ctx:GetConfiguration(), GetLevel("WARN"))))
     elseif arg == "3" then
-        ctx = GetContext("TestLoggerConfigInheritanceExample3Context", true)
         PrintLoggerInfo(CreateLogger("X", ctx, CreateLoggerConfig("X", ctx:GetConfiguration(), GetLevel("ERROR"))), CreateLogger("X.Y", ctx), CreateLogger("X.Y.Z", ctx, CreateLoggerConfig("X.Y.Z", ctx:GetConfiguration(), GetLevel("WARN"))))
     elseif arg == "4" then
-        ctx = GetContext("TestLoggerConfigInheritanceExample4Context", true)
         PrintLoggerInfo(CreateLogger("X", ctx, CreateLoggerConfig("X", ctx:GetConfiguration(), GetLevel("ERROR"))), CreateLogger("X.Y", ctx), CreateLogger("X.Y.Z", ctx))
     elseif arg == "5" then
-        ctx = GetContext("TestLoggerConfigInheritanceExample5Context", true)
         PrintLoggerInfo(CreateLogger("X", ctx, CreateLoggerConfig("X", ctx:GetConfiguration(), GetLevel("ERROR"))), CreateLogger("X.Y", ctx, CreateLoggerConfig("X.Y", ctx:GetConfiguration(), GetLevel("INFO"))), CreateLogger("X.YZ", ctx))
     elseif arg == "6" then
-        ctx = GetContext("TestLoggerConfigInheritanceExample6Context", true)
         PrintLoggerInfo(CreateLogger("X", ctx, CreateLoggerConfig("X", ctx:GetConfiguration(), GetLevel("ERROR"))), CreateLogger("X.Y", ctx, CreateLoggerConfig("X.Y", ctx:GetConfiguration())), CreateLogger("X.Y.Z", ctx))
     end
 
@@ -43,8 +37,8 @@ end)
 concommand.Add("Log4g_CoreTest_LoggerLog", function()
     local ctx = GetContext("TestLoggerLogContext", true)
     local lc = CreateLoggerConfig("LogTester", ctx:GetConfiguration(), GetLevel("TRACE"))
-    lc:AddAppender(CreateConsoleAppender("TestAp", CreatePatternLayout("TestLay")))
+    lc:AddAppender(CreateConsoleAppender("TestAppender", CreatePatternLayout("TestLayout")))
     local logger = CreateLogger("LogTester", ctx, lc)
-    logger:Trace("A TRACE message from 'LogTester'.")
+    logger:Trace("TRACE message.")
     ctx:Terminate()
 end)
