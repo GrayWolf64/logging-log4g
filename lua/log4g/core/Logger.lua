@@ -13,7 +13,7 @@ local IsLoggerConfig, IsLoggerContext = TypeUtil.IsLoggerConfig, TypeUtil.IsLogg
 local IsLevel, IsLogEvent = TypeUtil.IsLevel, TypeUtil.IsLogEvent
 TypeUtil, StringUtil = nil, nil
 local GetLevel = Log4g.Level.GetLevel
-local string_find, isstring, next = string.find, isstring, next
+local isstring, next = isstring, next
 local HasLoggerConfig = Log4g.Core.Config.LoggerConfig.HasLoggerConfig
 local GenerateAncestorsN = Log4g.Core.Config.LoggerConfig.GenerateAncestorsN
 local LogEventBuilder = Log4g.Core.LogEvent.Builder
@@ -134,7 +134,7 @@ function Log4g.Core.Logger.Create(name, context, loggerconfig)
     if context:HasLogger(name) or not QualifyName(name) then return end
     local logger = Logger(name, context)
 
-    if string_find(name, "%.") then
+    if name:find("%.") then
         if loggerconfig and IsLoggerConfig(loggerconfig) then
             local lcn = loggerconfig:GetName()
 
@@ -158,7 +158,7 @@ function Log4g.Core.Logger.Create(name, context, loggerconfig)
 
                 lc = StripDotExtension(lc)
 
-                if not string_find(lc, "%.") and not HasLoggerConfig(lc, context) then
+                if not lc:find("%.") and not HasLoggerConfig(lc, context) then
                     logger:SetLoggerConfig(Root)
                     break
                 end
