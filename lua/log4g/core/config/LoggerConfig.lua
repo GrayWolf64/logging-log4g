@@ -20,7 +20,7 @@ local StringUtil = include("log4g/core/util/StringUtil.lua")
 local QualifyName, StripDotExtension = StringUtil.QualifyName, StringUtil.StripDotExtension
 TypeUtil = nil
 
-cvars.AddChangeCallback(CreateConVar("log4g.root", "root", FCVAR_NOTIFY):GetName(), function(cvarn)
+cvars.AddChangeCallback(CreateConVar("log4g.rootLogger", "root", FCVAR_NOTIFY):GetName(), function(cvarn)
     if not QualifyName(newn, false) or next(GetAllCtx()) then
         GetConVar(cvarn):Revert()
     end
@@ -144,7 +144,7 @@ end
 local RootLoggerConfig = LoggerConfig:subclass("LoggerConfig.RootLogger")
 
 function RootLoggerConfig:Initialize()
-    LoggerConfig.Initialize(self, GetConVar("log4g.root"):GetString())
+    LoggerConfig.Initialize(self, GetConVar("log4g.rootLogger"):GetString())
     self:SetLevel(GetLevel("INFO"))
 end
 
@@ -226,7 +226,7 @@ end
 -- @param level The Logging Level
 -- @return object loggerconfig
 function Log4g.Core.Config.LoggerConfig.Create(name, config, level)
-    local Root = GetConVar("log4g.root"):GetString()
+    local Root = GetConVar("log4g.rootLogger"):GetString()
     if not IsConfiguration(config) or name == Root then return end
     local lc = LoggerConfig(name)
     lc:SetContext(config:GetContext())
