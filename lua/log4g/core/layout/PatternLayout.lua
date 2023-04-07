@@ -14,8 +14,10 @@ end
 
 local function DoFormat(event)
     local res = GetConVar(cvar_cp):GetString()
-    res = res:gsub("%%%m", event:GetMsg()):gsub("%%%n", "\n")
-    res = res:gsub("%%%t", debug_getinfo(6, "S").source:GetFileFromFilename())
+    res = res:gsub("%%d", event:GetTime())
+    res = res:gsub("%%m", event:GetMsg()):gsub("%%n", "\n")
+    res = res:gsub("%%t", debug_getinfo(6, "S").source:GetFileFromFilename())
+    res = res:gsub("%%p", event:GetLevel():GetName())
 
     return res
 end
