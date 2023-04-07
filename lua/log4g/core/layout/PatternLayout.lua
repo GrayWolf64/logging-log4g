@@ -6,6 +6,7 @@ local PatternLayout = Layout:subclass("PatternLayout")
 local IsLogEvent = include("log4g/core/util/TypeUtil.lua").IsLogEvent
 local ipairs = ipairs
 local table_remove, table_insert = table.remove, table.insert
+local debug_getinfo = debug.getinfo
 local cvar_cp = "log4g.patternlayout.ConversionPattern"
 CreateConVar(cvar_cp, "%-5p [%t]: %m%n", FCVAR_NOTIFY)
 
@@ -43,7 +44,7 @@ local function DoFormat(event)
                 remove2(chars, k)
                 table_insert(chars, k, 10)
             elseif nchar == 116 then
-                insertchars(chars, getcharst(debug.getinfo(6, "S").source:GetFileFromFilename()), k)
+                insertchars(chars, getcharst(debug_getinfo(6, "S").source:GetFileFromFilename()), k)
             end
         end
     end
