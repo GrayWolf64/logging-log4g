@@ -32,6 +32,10 @@ function LogEvent:GetMsg()
     return self:GetPrivateField("msg")
 end
 
+function LogEvent:GetTime()
+    return self:GetPrivateField("time")
+end
+
 --- Build a LogEvent.
 -- @param ln Logger name
 -- @param level Level object
