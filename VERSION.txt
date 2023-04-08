@@ -1,4 +1,4 @@
-0.0.4-beta
+0.0.5-beta
 
 // Log4g is using Semantic Versioning. See more about it on https://semver.org/.
 // This is helpful for making Version.lua work.
@@ -6,3 +6,4 @@
 // 0.0.2-beta: Now the LoggerConfig supports "A.B.C" like parenting when creating them.
 // 0.0.3-beta: Some minor changes.
 // 0.0.4-beta: More strong types, convars and so on.
+// 0.0.5-beta: Working PatternLayout and so on.
