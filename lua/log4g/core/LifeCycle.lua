@@ -6,7 +6,7 @@
 -- After successfully being stopped, this goes into the LifeCycle.State.STOPPED state.
 -- In most circumstances, implementation classes should store their LifeCycle.State in a volatile field dependent on synchronization and concurrency requirements.
 -- Subclassing 'Object'.
--- @script LifeCycle
+-- @classmod LifeCycle
 -- @license Apache License 2.0
 -- @copyright GrayWolf64
 Log4g.Core.LifeCycle = Log4g.Core.LifeCycle or {}
