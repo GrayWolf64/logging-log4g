@@ -1,5 +1,7 @@
 --- A flexible layout configurable with pattern string.
 -- @classmod PatternLayout
+-- @license Apache License 2.0
+-- @copyright GrayWolf64
 Log4g.Core.Layout.PatternLayout = Log4g.Core.Layout.PatternLayout or {}
 local Layout = Log4g.Core.Layout.GetClass()
 local PatternLayout = Layout:subclass("PatternLayout")
