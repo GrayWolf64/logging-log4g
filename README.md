@@ -34,16 +34,26 @@ if Log4g then
       --- This will locate / create a proper LoggerContext named 'Foo'.
       local ctx = Log4g.API.LoggerContextFactory.GetContext("Foo")
 
-      --- This will create a Logger named 'Calculate', whose Level is 'INFO', and is in 'Foo'.
-      Log4g.Core.Logger.Create("Calculate", ctx, Log4g.Level.GetLevel("INFO"))
+      --- This will create a new LoggerConfig named 'Calculator' and it to ctx's Configuration, then set its level to DEBUG.
+      local lc = Log4g.Core.Config.LoggerConfig.Create("Calculator", ctx:GetConfiguration(), Log4g.Level.GetLevel("TRACE"))
+
+      --- It will add a ConsoleAppender to lc and set its layout to PatternLayout with default settings.
+      lc:AddAppender(Log4g.Core.Appender.CreateConsoleAppender("CalcOutput", Log4g.Core.Layout.PatternLayout.CreateDefaultLayout("CalcLayout")))
+
+      --- This will create a Logger named 'Calculate' using lc and add it to ctx.
+      local logger = Log4g.Core.Logger.Create("Calculate", ctx, lc)
 
       for i = 1, 100 do
          --- Do something with i, and log messages.
          -- Note that when this was written, the logging system isn't finished yet,
-         -- so I just leave it blank here, for now.
+         -- so I just leave it simple here, for now.
+
+         logger:Debug("Calculated: " .. i .. " times.")
       end
 
    end
+
+   Calculate()
 
 end
 ```
