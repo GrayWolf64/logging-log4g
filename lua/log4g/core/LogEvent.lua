@@ -32,6 +32,11 @@ function LogEvent:GetMsg()
     return self:GetPrivateField("msg")
 end
 
+function LogEvent:SetMsg(msg)
+    if not isstring(msg) then return end
+    self:SetPrivateField("msg", msg)
+end
+
 function LogEvent:GetTime()
     return self:GetPrivateField("time")
 end
@@ -41,7 +46,7 @@ end
 -- @param level Level object
 -- @param msg String message
 function Log4g.Core.LogEvent.Builder(ln, level, msg)
-    if not isstring(ln) or not isstring(msg) or not IsLevel(level) then return end
+    if not isstring(ln) or not IsLevel(level) then return end
 
     return LogEvent(ln, level, SysTime(), msg)
 end

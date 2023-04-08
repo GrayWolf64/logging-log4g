@@ -77,24 +77,37 @@ end
 
 --- Construct a log event that will always be logged.
 function Logger:Always()
+    return LogEventBuilder(self:GetName(), GetLevel("ALL"))
 end
 
+--- Construct a trace log event.
 function Logger:AtTrace()
+    return LogEventBuilder(self:GetName(), GetLevel("TRACE"))
 end
 
+--- Construct a debug log event.
 function Logger:AtDebug()
+    return LogEventBuilder(self:GetName(), GetLevel("DEBUG"))
 end
 
+--- Construct a info log event.
 function Logger:AtInfo()
+    return LogEventBuilder(self:GetName(), GetLevel("INFO"))
 end
 
+--- Construct a warn log event.
 function Logger:AtWarn()
+    return LogEventBuilder(self:GetName(), GetLevel("WARN"))
 end
 
+--- Construct a error log event.
 function Logger:AtError()
+    return LogEventBuilder(self:GetName(), GetLevel("ERROR"))
 end
 
+--- Construct a fatal log event.
 function Logger:AtFatal()
+    return LogEventBuilder(self:GetName(), GetLevel("FATAL"))
 end
 
 --- Logs a message if the specified level is active.
