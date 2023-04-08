@@ -5,7 +5,6 @@ local Layout = Log4g.Core.Layout.GetClass()
 local PatternLayout = Layout:subclass("PatternLayout")
 local IsLogEvent = include("log4g/core/util/TypeUtil.lua").IsLogEvent
 local cvar_cp = "log4g.patternlayout.ConversionPattern"
-local debug_getinfo = debug.getinfo
 local pairs, ipairs = pairs, ipairs
 local unpack = unpack
 local table_insert, table_remove = table.insert, table.remove
@@ -68,7 +67,7 @@ local function DoFormat(event)
     local lv = event:GetLevel()
     mkfunc_precolor("%level", lv:GetColor())(substrs, lv:GetName())
     mkfunc_precolor("%msg", color_white)(substrs, event:GetMsg())
-    mkfunc_precolor("%file", color_white)(substrs, debug_getinfo(6, "S").source:GetFileFromFilename())
+    mkfunc_precolor("%file", color_white)(substrs, event:GetSource():GetFileFromFilename())
     mkfunc_precolor("%endl")(substrs, "\n")
     mkfunc_precolor("%uptime")(substrs, event:GetTime())
 
