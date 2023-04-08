@@ -195,9 +195,9 @@ local function GenerateAncestorsN(name)
 end
 
 --- Check if a LoggerConfig's ancestors exist and return its desired parent name.
--- The name of the provided LoggerConfig must follow [Named Hierarchy](https://logging.apache.org/log4j/2.x/manual/architecture.html).
 -- For example, A.B.C's ancestors who are A.B and A will be checked, and its parent will be A.B.
 -- @lfunction ValidateAncestors
+-- @see GenerateAncestorsN
 -- @param lc LoggerConfig object
 -- @return bool valid
 -- @return string parent name
