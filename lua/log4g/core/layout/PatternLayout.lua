@@ -7,6 +7,7 @@ local IsLogEvent = include("log4g/core/util/TypeUtil.lua").IsLogEvent
 local cvar_cp = "log4g.patternlayout.ConversionPattern"
 local pairs, ipairs = pairs, ipairs
 local unpack = unpack
+local color_white = color_white
 local table_insert, table_remove = table.insert, table.remove
 local CharPos = include("log4g/core/util/StringUtil.lua").CharPos
 CreateConVar(cvar_cp, "%uptime %level [%file]: %msg%endl", FCVAR_NOTIFY)
