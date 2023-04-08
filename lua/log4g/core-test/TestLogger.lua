@@ -14,7 +14,7 @@ local function PrintLoggerInfo(...)
     end
 end
 
-concommand.Add("Log4g_CoreTest_LoggerConfig_Inheritance", function(_, _, _, arg)
+concommand.Add("log4g_coretest_LoggerConfig_Inheritance", function(_, _, _, arg)
     local ctx = GetContext("TestLCInheritanceContext", true)
 
     if arg == "1" then
@@ -34,7 +34,7 @@ concommand.Add("Log4g_CoreTest_LoggerConfig_Inheritance", function(_, _, _, arg)
     ctx:Terminate()
 end)
 
-concommand.Add("Log4g_CoreTest_LoggerLog", function()
+concommand.Add("log4g_coretest_LoggerLog", function()
     local ctx = GetContext("TestLoggerLogContext", true)
     local lc = CreateLoggerConfig("LogTester", ctx:GetConfiguration(), GetLevel("TRACE"))
     lc:AddAppender(CreateConsoleAppender("TestAppender", CreatePatternLayout("TestLayout")))
