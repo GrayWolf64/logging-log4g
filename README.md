@@ -32,7 +32,7 @@ if Log4g then
    local function Calculate()
 
       --- This will locate / create a proper LoggerContext named 'Foo' with DefaultConfiguration.
-      local ctx = Log4g.API.LoggerContextFactory.GetContext("Foo"， true)
+      local ctx = Log4g.API.LoggerContextFactory.GetContext("Foo", true)
 
       --- This will create a new LoggerConfig named 'Calculator' and it to ctx's Configuration, then set its level to DEBUG.
       local lc = Log4g.Core.Config.LoggerConfig.Create("Calculator", ctx:GetConfiguration(), Log4g.Level.GetLevel("TRACE"))
