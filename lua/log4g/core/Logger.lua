@@ -13,7 +13,7 @@ local IsLoggerConfig, IsLoggerContext = TypeUtil.IsLoggerConfig, TypeUtil.IsLogg
 local IsLevel, IsLogEvent = TypeUtil.IsLevel, TypeUtil.IsLogEvent
 TypeUtil, StringUtil = nil, nil
 local GetLevel = Log4g.Level.GetLevel
-local isstring, next, pairs = isstring, next, pairs
+local isstring, next, pairs, isbool = isstring, next, pairs, isbool
 local HasLoggerConfig = Log4g.Core.Config.LoggerConfig.HasLoggerConfig
 local GenerateAncestorsN = Log4g.Core.Config.LoggerConfig.GenerateAncestorsN
 local LogEventBuilder = Log4g.Core.LogEvent.Builder
@@ -22,6 +22,7 @@ function Logger:Initialize(name, context)
     Object.Initialize(self)
     self:SetPrivateField("ctx", context:GetName())
     self:SetName(name)
+    self:SetAdditive(true)
 end
 
 --- Gets the LoggerContext of the Logger.
@@ -54,6 +55,15 @@ end
 -- @return object loggerconfig
 function Logger:GetLoggerConfig()
     return self:GetContext(true):GetConfiguration():GetLoggerConfig(self:GetLoggerConfigN())
+end
+
+function Logger:SetAdditive(bool)
+    if not isbool(bool) then return end
+    self:SetPrivateField("additive", bool)
+end
+
+function Logger:IsAdditive()
+    return self:GetPrivateField("additive")
 end
 
 function Logger:SetLevel(level)
