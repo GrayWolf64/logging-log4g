@@ -62,7 +62,7 @@ function LifeCycle:GetState()
     return self:GetPrivateField("state")
 end
 
-function Log4g.Core.LifeCycle.GetAll()
+function Log4g.Core.LifeCycle.GetAllStates()
     return State
 end
 
