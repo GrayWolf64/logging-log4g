@@ -65,6 +65,16 @@ However, your addon won't successfully log any messages until the logging system
 
 The Log4g Documentation is available [here](https://github.com/GrayWolf64/Log4g/wiki).
 
+## Compatibility With Non-GMOD Projects
+
+Some functions need to be replaced in order for this to work.
+
+1. `isstring()`
+2. `isbool()`
+3. `Color(r, g, b, a)`
+4. `table.Count()`
+5. ...
+
 ## Thanks to Third-party Projects Below
 
 * [Apache Log4j 2](https://github.com/apache/logging-log4j2)
