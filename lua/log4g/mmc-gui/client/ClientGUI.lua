@@ -8,7 +8,7 @@ local CreateDPropRow, GetRowControl = ClientGUIDerma.CreateDPropRow, ClientGUIDe
 local Frame = nil
 local next = next
 local JSONToTable = util.JSONToTable
-local pairs, isstring = pairs, isstring
+local pairs, isstring, tostring = pairs, isstring, tostring
 
 concommand.Add("log4g_mmc", function()
     if IsValid(Frame) then
@@ -62,7 +62,7 @@ concommand.Add("log4g_mmc", function()
 
     local RowA, RowB, RowC, RowD = CreateSpecialRow("Client", "OS Date"), CreateSpecialRow("Server", "Estimated Tickrate"), CreateSpecialRow("Server", "Floored Lua Dynamic RAM Usage (kB)"), CreateSpecialRow("Server", "Entity Count")
     local RowE, RowF, RowG, RowH = CreateSpecialRow("Server", "Networked Entity (EDICT) Count"), CreateSpecialRow("Server", "Net Receiver Count"), CreateSpecialRow("Server", "Lua Registry Table Element Count"), CreateSpecialRow("Server", "Constraint Count")
-    local RowI = CreateSpecialRow("Server", "Uptime (Seconds)")
+    local RowI, RowJ = CreateSpecialRow("Server", "Uptime (Seconds)"), CreateSpecialRow("Server", "_G Element Count")
 
     local function UpdateTime()
         RowA:SetValue(tostring(os.date()))
@@ -80,13 +80,14 @@ concommand.Add("log4g_mmc", function()
             RowG:SetValue(tostring(net.ReadUInt(32)))
             RowH:SetValue(tostring(net.ReadUInt(16)))
             RowI:SetValue(tostring(net.ReadDouble()))
+            RowJ:SetValue(tostring(net.ReadUInt(32)))
         end)
     end
 
     local ConfigurationPanel = vgui.Create("DPanel", BaseSheet)
     BaseSheet:AddSheet("Configuration", ConfigurationPanel, "icon16/wrench.png")
     local ConfigFileOption = vgui.Create("DComboBox", ConfigurationPanel)
-    ConfigFileOption:SetWide(300)
+    ConfigFileOption:SetWide(340)
     ConfigFileOption:SetPos(2, 2)
     local TextEditor = vgui.Create("DTextEntry", ConfigurationPanel)
     TextEditor:SetMultiline(true)
@@ -98,7 +99,7 @@ concommand.Add("log4g_mmc", function()
 
     local function ClearTextEditor()
         TextEditor:SetValue("")
-        TextEditor:SetEnabled(false)
+        TextEditor:SetEditable(false)
     end
 
     local function UpdateConfigurationFilePaths()
@@ -109,14 +110,7 @@ concommand.Add("log4g_mmc", function()
             if not isstring(files) or #files == 0 then return end
             files = JSONToTable(util.Decompress(files))
             ConfigFileOption:Clear()
-
-            if not next(files) then
-                ConfigFileOption:SetEnabled(false)
-
-                return
-            end
-
-            ConfigFileOption:SetEnabled(true)
+            if not next(files) then return end
 
             for k, v in pairs(files) do
                 ConfigFileOption:AddChoice(k, v)
@@ -128,8 +122,6 @@ concommand.Add("log4g_mmc", function()
 
     function ConfigFileOption:OnSelect(_, _, data)
         TextEditor:SetText(data)
-        if TextEditor:IsEnabled() then return end
-        TextEditor:SetEnabled(true)
     end
 
     local function UpdateGUI()

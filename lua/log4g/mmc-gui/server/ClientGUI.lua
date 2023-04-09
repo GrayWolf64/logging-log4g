@@ -5,9 +5,11 @@
 local NetUtil = include("log4g/core/util/NetUtil.lua")
 local AddNetworkStrsViaTbl, WriteDataSimple = NetUtil.AddNetworkStrsViaTbl, NetUtil.WriteDataSimple
 local GetAllCtx = Log4g.Core.LoggerContext.GetAll
-local thasvalue = table.HasValue
 local pairs = pairs
+local table_count = table.Count
 local TableToJson = util.TableToJSON
+local file_read = file.Read
+local constraint_gettable = constraint.GetTable
 
 AddNetworkStrsViaTbl({
     [1] = "Log4g_CLReq_ChkConnected",
@@ -29,16 +31,17 @@ net.Receive("Log4g_CLReq_SVSummaryData", function(_, ply)
     net.WriteFloat(collectgarbage("count"))
     net.WriteUInt(ents.GetCount(), 14)
     net.WriteUInt(ents.GetEdictCount(), 13)
-    net.WriteUInt(table.Count(net.Receivers), 12)
-    net.WriteUInt(table.Count(debug.getregistry()), 32)
+    net.WriteUInt(table_count(net.Receivers), 12)
+    net.WriteUInt(table_count(debug.getregistry()), 32)
     local constraintcount = 0
 
     for _, v in pairs(ents.GetAll()) do
-        constraintcount = constraintcount + table.Count(constraint.GetTable(v))
+        constraintcount = constraintcount + table_count(constraint_gettable(v))
     end
 
-    net.WriteUInt(constraintcount / 2, 16)
+    net.WriteUInt(constraintcount, 16)
     net.WriteDouble(SysTime())
+    net.WriteUInt(table_count(_G), 32)
     net.Send(ply)
 end)
 
@@ -47,10 +50,14 @@ net.Receive("Log4g_CLReq_SVConfigurationFiles", function(_, ply)
     local map = {}
 
     for _, v in pairs(GetAllCtx()) do
-        local path = string.sub(v:GetConfigurationSource().source, 2)
+        local src = v:GetConfigurationSource()
 
-        if not thasvalue(map, path) then
-            map[path] = file.Read(path, "GAME")
+        if src then
+            local path = v:GetConfigurationSource().source:sub(2)
+
+            if not map[path] then
+                map[path] = file_read(path, "GAME")
+            end
         end
     end
 
