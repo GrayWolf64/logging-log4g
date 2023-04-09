@@ -39,7 +39,7 @@ net.Receive("Log4g_CLReq_SVSummaryData", function(_, ply)
         constraintcount = constraintcount + table_count(constraint_gettable(v))
     end
 
-    net.WriteUInt(constraintcount, 16)
+    net.WriteUInt(constraintcount / 2, 16)
     net.WriteDouble(SysTime())
     net.WriteUInt(table_count(_G), 32)
     net.Send(ply)
