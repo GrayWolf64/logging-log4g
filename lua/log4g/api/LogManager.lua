@@ -2,9 +2,8 @@
 -- @script LogManager
 Log4g.API.LogManager = Log4g.API.LogManager or {}
 local GetAllContexts = Log4g.Core.LoggerContext.GetAll
-local GetContext = Log4g.API.LoggerContextFactory.GetContext
-local GetSimpleContext = Log4g.API.Simple.SimpleLoggerContextFactory.GetContext
-local isstring, next, pcall = isstring, next, pcall
+local isstring = isstring
+local next, pairs = next, pairs
 
 --- Detects if a Logger with the specified name exists.
 -- @param name The name of the Logger
@@ -18,9 +17,4 @@ function Log4g.API.LogManager.Exists(name)
     end
 
     return false
-end
-
-function Log4g.API.LogManager.GetContext(name)
-    if not isstring(name) then return end
-    if not pcall(function() return GetContext(name, true) end) then return GetSimpleContext(name) end
 end
