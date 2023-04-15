@@ -115,12 +115,6 @@ function Log4g.Level.GetStdLevel()
     return StdLevel
 end
 
---- Get the Standard IntLevels as a table.
--- @return table standardintlevel
-function Log4g.Level.GetStandardIntLevel()
-    return StdIntLevel
-end
-
 --- Get the Level.
 -- Return the Level associated with the name or nil if the Level cannot be found.
 -- @param name The Level's name
