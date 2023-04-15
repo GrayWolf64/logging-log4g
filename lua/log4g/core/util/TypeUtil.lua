@@ -1,16 +1,10 @@
 local TypeUtil = {}
 local pcall = pcall
 
-function TypeUtil.IsLoggerContext(o, simple)
-    if simple == true then
-        return pcall(function()
-            o:IsSimpleLoggerContext()
-        end)
-    else
-        return pcall(function()
-            o:IsLoggerContext()
-        end)
-    end
+function TypeUtil.IsLoggerContext(o)
+    return pcall(function()
+        o:IsLoggerContext()
+    end)
 end
 
 function TypeUtil.IsLoggerConfig(o, root)

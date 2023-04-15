@@ -106,7 +106,7 @@ end
 -- @return object loggercontext
 function Log4g.Core.LoggerContext.Register(name, withconfig)
     local ctx = CDICT[name]
-    if ctx and not IsLoggerContext(ctx, true) then return ctx end
+    if ctx and IsLoggerContext(ctx) then return ctx end
     ctx = LoggerContext(name)
 
     if withconfig or withconfig == nil then
