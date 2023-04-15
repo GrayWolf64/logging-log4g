@@ -1,58 +1,20 @@
 local TypeUtil = {}
-local pcall = pcall
+local type, assert = type, assert
+local tostring = tostring
 
-function TypeUtil.IsLoggerContext(o)
-    return pcall(function()
-        o:IsLoggerContext()
-    end)
-end
+local classes = {"Object", "LoggerContext", "Configuration", "Level", "Appender", "Layout", "Logger", "LogEvent", "LoggerConfig", "RootLoggerConfig"}
 
-function TypeUtil.IsLoggerConfig(o, root)
-    if root == true then
-        return pcall(function()
-            o:IsRootLoggerConfig()
-        end)
-    else
-        return pcall(function()
-            o:IsLoggerConfig()
-        end)
+local function mkfunc_classcheck(cls)
+    return function(o)
+        local class = o.class
+        assert(class, "MiddleClass object expected, got " .. type(o) .. ".")
+        local clsname = class.name
+        assert(clsname == cls, "'" .. cls .. "' object expected, got " .. tostring(clsname) .. ".")
     end
 end
 
-function TypeUtil.IsConfiguration(o)
-    return pcall(function()
-        o:IsConfiguration()
-    end)
-end
-
-function TypeUtil.IsLevel(o)
-    return pcall(function()
-        o:IsLevel()
-    end)
-end
-
-function TypeUtil.IsAppender(o)
-    return pcall(function()
-        o:IsAppender()
-    end)
-end
-
-function TypeUtil.IsLogEvent(o)
-    return pcall(function()
-        o:IsLogEvent()
-    end)
-end
-
-function TypeUtil.IsLogger(o)
-    return pcall(function()
-        o:IsLogger()
-    end)
-end
-
-function TypeUtil.IsLayout(o)
-    return pcall(function()
-        o:IsLayout()
-    end)
+for k in pairs(classes) do
+    TypeUtil["Is" .. k] = mkfunc_classcheck(k)
 end
 
 return TypeUtil

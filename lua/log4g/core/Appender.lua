@@ -15,10 +15,6 @@ function Appender:__tostring()
     return "Appender: [name:" .. self:GetName() .. "]"
 end
 
-function Appender:IsAppender()
-    return true
-end
-
 --- Returns the Layout used by this Appender if applicable.
 function Appender:GetLayout()
     return self:GetPrivateField("layout")

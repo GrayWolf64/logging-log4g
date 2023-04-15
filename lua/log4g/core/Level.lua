@@ -16,10 +16,6 @@ function Level:Initialize(name, int, color)
     self:SetName(name)
 end
 
-function Level:IsLevel()
-    return true
-end
-
 function Level:__tostring()
     return "Level: [name:" .. self:GetName() .. "]" .. "[int:" .. self:IntLevel() .. "]" .. "[color:" .. self:GetColor():__tostring() .. "]"
 end

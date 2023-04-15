@@ -31,10 +31,6 @@ function LoggerConfig:Initialize(name)
     self:SetName(name)
 end
 
-function LoggerConfig:IsLoggerConfig()
-    return true
-end
-
 function LoggerConfig:__tostring()
     return "LoggerConfig: [name:" .. self:GetName() .. "]"
 end
@@ -145,10 +141,6 @@ local RootLoggerConfig = LoggerConfig:subclass("LoggerConfig.RootLogger")
 function RootLoggerConfig:Initialize()
     LoggerConfig.Initialize(self, GetConVar("log4g_rootLogger"):GetString())
     self:SetLevel(GetLevel("INFO"))
-end
-
-function RootLoggerConfig:IsRootLoggerConfig()
-    return true
 end
 
 function RootLoggerConfig:__tostring()

@@ -17,10 +17,6 @@ function LogEvent:Initialize(ln, level, time, msg, src)
     self:SetPrivateField("src", src)
 end
 
-function LogEvent:IsLogEvent()
-    return true
-end
-
 function LogEvent:GetLoggerName()
     return self:GetPrivateField("ln")
 end

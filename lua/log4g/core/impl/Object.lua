@@ -22,10 +22,6 @@ function Object:__tostring()
     return "Object: [name:" .. self:GetName() .. "]"
 end
 
-function Object:IsObject()
-    return true
-end
-
 function Object:SetName(name)
     if not isstring(name) then return end
     PRIVATE[self].name = name

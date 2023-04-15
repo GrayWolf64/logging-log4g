@@ -24,10 +24,6 @@ function LoggerContext:Initialize(name)
     self:SetName(name)
 end
 
-function LoggerContext:IsLoggerContext()
-    return true
-end
-
 function LoggerContext:SetConfigurationSource(src)
     self:SetPrivateField("source", src)
 end

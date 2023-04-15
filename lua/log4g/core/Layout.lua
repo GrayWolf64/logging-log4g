@@ -9,10 +9,6 @@ function Layout:Initialize(name)
     self:SetName(name)
 end
 
-function Layout:IsLayout()
-    return true
-end
-
 function Layout:__tostring()
     return "Layout: [name:" .. self:GetName() .. "]"
 end
