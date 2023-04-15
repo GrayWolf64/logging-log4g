@@ -8,13 +8,13 @@ local IsLevel = include("log4g/core/util/TypeUtil.lua").IsLevel
 local SysTime, debug_getinfo = SysTime, debug.getinfo
 local isstring = isstring
 
-function LogEvent:Initialize(ln, level, time, msg)
+function LogEvent:Initialize(ln, level, time, msg, src)
     Object.Initialize(self)
     self:SetPrivateField("ln", ln)
-    self:SetPrivateField("level", level)
+    self:SetPrivateField("lv", level)
     self:SetPrivateField("time", time)
     self:SetPrivateField("msg", msg)
-    self:SetPrivateField("src", debug_getinfo(5, "S").source)
+    self:SetPrivateField("src", src)
 end
 
 function LogEvent:IsLogEvent()
@@ -26,7 +26,7 @@ function LogEvent:GetLoggerName()
 end
 
 function LogEvent:GetLevel()
-    return self:GetPrivateField("level")
+    return self:GetPrivateField("lv")
 end
 
 function LogEvent:GetSource()
@@ -53,5 +53,5 @@ end
 function Log4g.Core.LogEvent.Builder(ln, level, msg)
     if not isstring(ln) or not IsLevel(level) then return end
 
-    return LogEvent(ln, level, SysTime(), msg)
+    return LogEvent(ln, level, SysTime(), msg, debug_getinfo(4, "S").source)
 end
