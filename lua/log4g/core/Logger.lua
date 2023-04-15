@@ -154,7 +154,7 @@ end
 function Log4g.Core.Logger.Create(name, context, loggerconfig)
     if not IsLoggerContext(context) then return end
     if context:HasLogger(name) or not QualifyName(name) then return end
-    local logger, root = Logger(name, context), GetConVar("log4g.rootLogger"):GetString()
+    local logger, root = Logger(name, context), GetConVar("log4g_rootLogger"):GetString()
 
     if name:find("%.") then
         if loggerconfig and IsLoggerConfig(loggerconfig) then

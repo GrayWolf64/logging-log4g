@@ -19,7 +19,7 @@ local QualifyName = StringUtil.QualifyName
 local EnumerateAncestors = Log4g.Core.Object.EnumerateAncestors
 TypeUtil, StringUtil = nil, nil
 
-cvars.AddChangeCallback(CreateConVar("log4g.rootLogger", "root", FCVAR_NOTIFY):GetName(), function(cvarn)
+cvars.AddChangeCallback(CreateConVar("log4g_rootLogger", "root", FCVAR_NOTIFY):GetName(), function(cvarn)
     if not QualifyName(newn, false) or next(GetAllCtx()) then
         GetConVar(cvarn):Revert()
     end
@@ -143,7 +143,7 @@ end
 local RootLoggerConfig = LoggerConfig:subclass("LoggerConfig.RootLogger")
 
 function RootLoggerConfig:Initialize()
-    LoggerConfig.Initialize(self, GetConVar("log4g.rootLogger"):GetString())
+    LoggerConfig.Initialize(self, GetConVar("log4g_rootLogger"):GetString())
     self:SetLevel(GetLevel("INFO"))
 end
 
@@ -200,7 +200,7 @@ end
 -- @param level The Logging Level
 -- @return object loggerconfig
 function Log4g.Core.Config.LoggerConfig.Create(name, config, level)
-    local root = GetConVar("log4g.rootLogger"):GetString()
+    local root = GetConVar("log4g_rootLogger"):GetString()
     if not IsConfiguration(config) or name == root then return end
     local lc = LoggerConfig(name)
     lc:SetContext(config:GetContext())

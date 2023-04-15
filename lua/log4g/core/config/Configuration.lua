@@ -78,7 +78,7 @@ function Configuration:GetLoggerConfigs()
 end
 
 function Configuration:GetRootLogger()
-    return self:GetPrivateField("lc")[GetConVar("log4g.rootLogger"):GetString()]
+    return self:GetPrivateField("lc")[GetConVar("log4g_rootLogger"):GetString()]
 end
 
 --- Gets how long since this Configuration initialized.
