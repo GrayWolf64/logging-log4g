@@ -207,7 +207,7 @@ function Log4g.Core.Config.LoggerConfig.Create(name, config, level)
     local lc = LoggerConfig(name)
     lc:SetContext(config:GetContext())
 
-    local function setlvp(o, l1, l2, p)
+    local setlvp = function(o, l1, l2, p)
         if l1 and IsLevel(l1) then
             o:SetLevel(l1)
         else
