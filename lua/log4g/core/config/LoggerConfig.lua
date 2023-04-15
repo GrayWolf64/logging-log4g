@@ -11,14 +11,13 @@ local GetCtx, GetAllCtx = Log4g.Core.LoggerContext.Get, Log4g.Core.LoggerContext
 local GetLevel = Log4g.Level.GetLevel
 local pairs, isstring, next = pairs, isstring, next
 local table_concat = table.concat
-local TypeUtil = include("log4g/core/util/TypeUtil.lua")
+local TypeUtil, StringUtil = include("log4g/core/util/TypeUtil.lua"), include("log4g/core/util/StringUtil.lua")
 local IsAppender, IsLoggerConfig = TypeUtil.IsAppender, TypeUtil.IsLoggerConfig
 local IsLoggerContext = TypeUtil.IsLoggerContext
 local IsConfiguration, IsLevel = TypeUtil.IsConfiguration, TypeUtil.IsLevel
-local StringUtil = include("log4g/core/util/StringUtil.lua")
 local QualifyName = StringUtil.QualifyName
 local EnumerateAncestors = Log4g.Core.Object.EnumerateAncestors
-TypeUtil = nil
+TypeUtil, StringUtil = nil, nil
 
 cvars.AddChangeCallback(CreateConVar("log4g.rootLogger", "root", FCVAR_NOTIFY):GetName(), function(cvarn)
     if not QualifyName(newn, false) or next(GetAllCtx()) then
