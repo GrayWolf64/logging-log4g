@@ -5,6 +5,9 @@
 Log4g.Core.Object = Log4g.Core.Object or {}
 local SHA256 = util.SHA256
 local tostring, isstring = tostring, isstring
+local ipairs = ipairs
+local table_insert, table_concat = table.insert, table.concat
+local StripDotExtension = include("log4g/core/util/StringUtil.lua").StripDotExtension
 local Object = include("log4g/core/impl/MiddleClass.lua")("Object")
 
 local PRIVATE = PRIVATE or setmetatable({}, {
@@ -54,4 +57,27 @@ end
 
 function Log4g.Core.Object.GetClass()
     return Object
+end
+
+--- Generate all the ancestors' names of a LoggerConfig or something else.
+-- The provided name must follow [Named Hierarchy](https://logging.apache.org/log4j/2.x/manual/architecture.html).
+-- For example, A.B.C's ancestors are A.B and A.
+-- @lfunction EnumerateAncestors
+-- @param name Object's name
+-- @return table ancestors' names in a list-styled table
+-- @return table parent name but with dots removed in a table
+function Log4g.Core.Object.EnumerateAncestors(name)
+    local nodes, ancestors = StripDotExtension(name, false), {}
+
+    for k in ipairs(nodes) do
+        local ancestor = {}
+
+        for i = 1, k do
+            table_insert(ancestor, nodes[i])
+        end
+
+        ancestors[table_concat(ancestor, ".")] = true
+    end
+
+    return ancestors, nodes
 end

@@ -16,7 +16,7 @@ local GetLevel = Log4g.Level.GetLevel
 local next, pairs = next, pairs
 local isstring, isbool = isstring, isbool
 local HasLoggerConfig = Log4g.Core.Config.LoggerConfig.HasLoggerConfig
-local GenerateAncestorsN = Log4g.Core.Config.LoggerConfig.GenerateAncestorsN
+local EnumerateAncestors = Log4g.Core.Object.EnumerateAncestors
 local LogEventBuilder = Log4g.Core.LogEvent.Builder
 
 function Logger:Initialize(name, context)
@@ -164,7 +164,7 @@ function Log4g.Core.Logger.Create(name, context, loggerconfig)
             if lcn == name then
                 logger:SetLoggerConfig(name)
             else
-                if GenerateAncestorsN(name)[lcn] then
+                if EnumerateAncestors(name)[lcn] then
                     logger:SetLoggerConfig(lcn)
                 else
                     logger:SetLoggerConfig(root)

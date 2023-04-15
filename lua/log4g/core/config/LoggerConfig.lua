@@ -9,14 +9,15 @@ local LifeCycle = Log4g.Core.LifeCycle.GetClass()
 local LoggerConfig = LifeCycle:subclass("LoggerConfig")
 local GetCtx, GetAllCtx = Log4g.Core.LoggerContext.Get, Log4g.Core.LoggerContext.GetAll
 local GetLevel = Log4g.Level.GetLevel
-local pairs, ipairs, isstring, next = pairs, ipairs, isstring, next
-local table_insert, table_concat = table.insert, table.concat
+local pairs, isstring, next = pairs, isstring, next
+local table_concat = table.concat
 local TypeUtil = include("log4g/core/util/TypeUtil.lua")
 local IsAppender, IsLoggerConfig = TypeUtil.IsAppender, TypeUtil.IsLoggerConfig
 local IsLoggerContext = TypeUtil.IsLoggerContext
 local IsConfiguration, IsLevel = TypeUtil.IsConfiguration, TypeUtil.IsLevel
 local StringUtil = include("log4g/core/util/StringUtil.lua")
-local QualifyName, StripDotExtension = StringUtil.QualifyName, StringUtil.StripDotExtension
+local QualifyName = StringUtil.QualifyName
+local EnumerateAncestors = Log4g.Core.Object.EnumerateAncestors
 TypeUtil = nil
 
 cvars.AddChangeCallback(CreateConVar("log4g.rootLogger", "root", FCVAR_NOTIFY):GetName(), function(cvarn)
@@ -171,38 +172,14 @@ function Log4g.Core.Config.LoggerConfig.GetRootLoggerConfigClass()
     return RootLoggerConfig
 end
 
---- Generate all the ancestors' names of a LoggerConfig or something else.
--- The provided name must follow [Named Hierarchy](https://logging.apache.org/log4j/2.x/manual/architecture.html).
--- For example, A.B.C's ancestors are A.B and A.
--- @lfunction GenerateAncestorsN
--- @param name Object's name
--- @return table ancestors' names in a list-styled table
--- @return table parent name but with dots removed in a table
-local function GenerateAncestorsN(name)
-    local nodes, ancestors = StripDotExtension(name, false), {}
-
-    for k in ipairs(nodes) do
-        local ancestor = {}
-
-        for i = 1, k do
-            table_insert(ancestor, nodes[i])
-        end
-
-        ancestors[table_concat(ancestor, ".")] = true
-    end
-
-    return ancestors, nodes
-end
-
 --- Check if a LoggerConfig's ancestors exist and return its desired parent name.
 -- For example, A.B.C's ancestors who are A.B and A will be checked, and its parent will be A.B.
 -- @lfunction ValidateAncestors
--- @see GenerateAncestorsN
 -- @param lc LoggerConfig object
 -- @return bool valid
 -- @return string parent name
 local function ValidateAncestors(lc)
-    local ancestors, nodes = GenerateAncestorsN(lc:GetName())
+    local ancestors, nodes = EnumerateAncestors(lc:GetName())
 
     local function HasEveryLoggerConfig(tbl)
         local ctx = GetCtx(lc:GetContext())
@@ -257,4 +234,3 @@ function Log4g.Core.Config.LoggerConfig.Create(name, config, level)
 end
 
 Log4g.Core.Config.LoggerConfig.HasLoggerConfig = HasLoggerConfig
-Log4g.Core.Config.LoggerConfig.GenerateAncestorsN = GenerateAncestorsN
