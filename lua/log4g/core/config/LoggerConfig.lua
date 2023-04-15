@@ -202,30 +202,27 @@ end
 -- @param level The Logging Level
 -- @return object loggerconfig
 function Log4g.Core.Config.LoggerConfig.Create(name, config, level)
-    local Root = GetConVar("log4g.rootLogger"):GetString()
-    if not IsConfiguration(config) or name == Root then return end
+    local root = GetConVar("log4g.rootLogger"):GetString()
+    if not IsConfiguration(config) or name == root then return end
     local lc = LoggerConfig(name)
     lc:SetContext(config:GetContext())
+
+    local function setlvp(o, l1, l2, p)
+        if l1 and IsLevel(l1) then
+            o:SetLevel(l1)
+        else
+            o:SetLevel(l2)
+        end
+
+        o:SetParent(p)
+    end
 
     if name:find("%.") then
         local valid, parent = ValidateAncestors(lc)
         if not valid then return end
-
-        if level and IsLevel(level) then
-            lc:SetLevel(level)
-        else
-            lc:SetLevel(GetLoggerConfig(parent):GetLevel())
-        end
-
-        lc:SetParent(parent)
+        setlvp(lc, level, GetLoggerConfig(parent):GetLevel(), parent)
     else
-        if level and IsLevel(level) then
-            lc:SetLevel(level)
-        else
-            lc:SetLevel(config:GetRootLogger():GetLevel())
-        end
-
-        lc:SetParent(Root)
+        setlvp(lc, level, config:GetRootLogger():GetLevel(), root)
     end
 
     config:AddLogger(name, lc)
