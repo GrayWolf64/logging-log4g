@@ -2,13 +2,12 @@
 -- @script Log4g
 -- @license Apache License 2.0
 -- @copyright GrayWolf64
-local Core = "log4g/core/Core.lua"
-local API = "log4g/api/API.lua"
 local MMC = "log4g/mmc-gui/MMC.lua"
-local CoreTest = "log4g/core-test/CoreTest.lua"
-file.CreateDir("log4g")
 
 if SERVER then
+    local Core = "log4g/core/Core.lua"
+    local API = "log4g/api/API.lua"
+    local CoreTest = "log4g/core-test/CoreTest.lua"
     --- The global table for the logging system.
     -- It provides easy access to some functions for other components of the logging system that require them.
     -- @table Log4g
