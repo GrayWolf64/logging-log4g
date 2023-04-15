@@ -61,7 +61,6 @@ end
 
 --- Generate all the ancestors' names of a LoggerConfig or something else.
 -- The provided name must follow [Named Hierarchy](https://logging.apache.org/log4j/2.x/manual/architecture.html).
--- For example, A.B.C's ancestors are A.B and A.
 -- @lfunction EnumerateAncestors
 -- @param name Object's name
 -- @return table ancestors' names in a list-styled table

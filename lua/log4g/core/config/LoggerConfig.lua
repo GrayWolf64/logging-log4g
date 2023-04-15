@@ -172,7 +172,6 @@ function Log4g.Core.Config.LoggerConfig.GetRootLoggerConfigClass()
 end
 
 --- Check if a LoggerConfig's ancestors exist and return its desired parent name.
--- For example, A.B.C's ancestors who are A.B and A will be checked, and its parent will be A.B.
 -- @lfunction ValidateAncestors
 -- @param lc LoggerConfig object
 -- @return bool valid
