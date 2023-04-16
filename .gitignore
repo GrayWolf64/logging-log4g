@@ -1,0 +1,4 @@
+# Ignore the folder created by 'VS Code Counter'.
+# https://marketplace.visualstudio.com/items?itemName=uctakeoff.vscode-counter
+# Used for analyse code statics.
+/.VSCodeCounter
