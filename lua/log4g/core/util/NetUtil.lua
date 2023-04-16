@@ -1,3 +1,7 @@
+--- Library for enabling Log4g to transfer data over the game network.
+-- @module NetUtil
+-- @license Apache License 2.0
+-- @copyright GrayWolf64
 local NetUtil = {}
 local AddNetworkString = util.AddNetworkString
 local Compress, WriteUInt, WriteData = util.Compress, net.WriteUInt, net.WriteData

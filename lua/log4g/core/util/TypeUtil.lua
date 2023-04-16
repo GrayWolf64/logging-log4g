@@ -1,8 +1,15 @@
+--- A type(class) checking library to extend `MiddleClass`'s functionality.
+-- @module TypeUtil
+-- @license Apache License 2.0
+-- @copyright GrayWolf64
 local TypeUtil = {}
 local pairs = pairs
 
+--- All the class names in Log4g will be here.
+-- @local
+-- @table classes
 local classes = {
-    ["Object"] = {"LifeCycle", "RootLoggerConfig", "LoggerConfig", "LogEvent", "LoggerContext", "Configuration", "Level", "Layout", "Logger", "Appender", "DefaultConfiguration"},
+    ["Object"] = {"LifeCycle", "RootLoggerConfig", "LoggerConfig", "LogEvent", "LoggerContext", "Configuration", "Level", "Layout", "Logger", "Appender", "DefaultConfiguration", "PatternLayout", "ConsoleAppender"},
     ["Configuration"] = {"DefaultConfiguration"},
     ["LoggerConfig"] = {"RootLoggerConfig"},
     ["Appender"] = {"ConsoleAppender"},
