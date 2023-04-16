@@ -6,13 +6,19 @@ Log4g.Core.Layout.PatternLayout = Log4g.Core.Layout.PatternLayout or {}
 local Layout = Log4g.Core.Layout.GetClass()
 local PatternLayout = Layout:subclass("PatternLayout")
 local IsLogEvent = include("log4g/core/util/TypeUtil.lua").IsLogEvent
-local cvar_cp = "log4g_patternlayout_ConversionPattern"
 local pairs, ipairs = pairs, ipairs
 local unpack = unpack
-local color_white = color_white
+local color_default = Color(0, 201, 255)
 local table_insert, table_remove = table.insert, table.remove
 local CharPos = include("log4g/core/util/StringUtil.lua").CharPos
-CreateConVar(cvar_cp, "%uptime %level [%file]: %msg%endl", FCVAR_NOTIFY)
+local cvar_cp = "log4g_patternlayout_ConversionPattern"
+local cvar_msgc = "log4g_patternlayout_msgcolor"
+local cvar_uptimec = "log4g_patternlayout_uptimecolor"
+local cvar_filec = "log4g_patternlayout_filecolor"
+CreateConVar(cvar_cp, "[%uptime] [%level] @ %file: %msg%endl")
+CreateConVar(cvar_msgc, "135 206 250 255")
+CreateConVar(cvar_uptimec, "135 206 250 255")
+CreateConVar(cvar_filec, "60 179 113 255")
 
 function PatternLayout:Initialize(name)
     Layout.Initialize(self, name)
@@ -23,26 +29,59 @@ local function DoFormat(event)
     local pos = CharPos(cp, "%")
     if pos == true then return cp end
     local substrs = {}
+    local headerpos = 1
 
     for k, v in ipairs(pos) do
-        local n = pos[k + 1]
+        local prevpos, nextpos = pos[k - 1], pos[k + 1]
 
-        if n then
-            substrs[k] = cp:sub(v, n - 1)
-        else
-            substrs[k] = cp:sub(v, #cp)
+        if prevpos then
+            headerpos = prevpos
+        end
+
+        if v - 1 ~= 0 then
+            substrs[k] = cp:sub(headerpos, v - 1)
+        end
+
+        if not nextpos then
+            substrs[k + 1] = cp:sub(v, #cp)
         end
     end
 
-    local tokens = {"%msg", "%endl", "%uptime", "%file", "%level"}
+    local lv = event:GetLevel()
 
-    for _, v in pairs(tokens) do
+    local function getcvarcolor(cvar)
+        return GetConVar(cvar):GetString():ToColor()
+    end
+
+    local tkmap = {
+        ["%msg"] = {
+            color = getcvarcolor(cvar_msgc),
+            content = event:GetMsg()
+        },
+        ["%endl"] = {
+            content = "\n"
+        },
+        ["%uptime"] = {
+            color = getcvarcolor(cvar_uptimec),
+            content = event:GetTime()
+        },
+        ["%file"] = {
+            color = getcvarcolor(cvar_filec),
+            content = event:GetSource():GetFileFromFilename()
+        },
+        ["%level"] = {
+            color = lv:GetColor(),
+            content = lv:GetName()
+        }
+    }
+
+    for k in pairs(tkmap) do
         for i, j in ipairs(substrs) do
-            if j:find(v, 1, true) then
+            if j:find(k, 1, true) then
                 local oldvalue = substrs[i]
                 table_remove(substrs, i)
-                table_insert(substrs, i, v)
-                table_insert(substrs, i + 1, oldvalue:sub(#v + 1, #oldvalue))
+                table_insert(substrs, i, k)
+                table_insert(substrs, i + 1, oldvalue:sub(#k + 1, #oldvalue))
             end
         end
     end
@@ -55,30 +94,25 @@ local function DoFormat(event)
     -- @return function output func
     local function mkfunc_precolor(token, color)
         return function(tbl, content)
-            local i = {}
-
             for k, v in ipairs(tbl) do
                 if v == token then
-                    i[k] = true
-                end
-            end
+                    tbl[k] = content
 
-            for idx in pairs(i) do
-                tbl[idx] = content
+                    if color then
+                        table_insert(tbl, k, color)
+                    else
+                        table_insert(tbl, k, color_default)
+                    end
 
-                if color then
-                    table_insert(tbl, idx - 1, color)
+                    table_insert(tbl, k + 2, color_default)
                 end
             end
         end
     end
 
-    local lv = event:GetLevel()
-    mkfunc_precolor(tokens[5], lv:GetColor())(substrs, lv:GetName())
-    mkfunc_precolor(tokens[1], color_white)(substrs, event:GetMsg())
-    mkfunc_precolor(tokens[4], color_white)(substrs, event:GetSource():GetFileFromFilename())
-    mkfunc_precolor(tokens[2])(substrs, "\n")
-    mkfunc_precolor(tokens[3])(substrs, event:GetTime())
+    for k, v in pairs(tkmap) do
+        mkfunc_precolor(k, v.color)(substrs, v.content)
+    end
 
     return unpack(substrs)
 end
