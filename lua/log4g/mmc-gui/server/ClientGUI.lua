@@ -6,7 +6,7 @@ local NetUtil = include("log4g/core/util/NetUtil.lua")
 local AddNetworkStrsViaTbl, WriteDataSimple = NetUtil.AddNetworkStrsViaTbl, NetUtil.WriteDataSimple
 local GetAllCtx = Log4g.Core.LoggerContext.GetAll
 local pairs = pairs
-local table_count = table.Count
+local count = table.Count
 local TableToJson = util.TableToJSON
 local file_read = file.Read
 local constraint_gettable = constraint.GetTable
@@ -31,17 +31,17 @@ net.Receive("Log4g_CLReq_SVSummaryData", function(_, ply)
     net.WriteFloat(collectgarbage("count"))
     net.WriteUInt(ents.GetCount(), 14)
     net.WriteUInt(ents.GetEdictCount(), 13)
-    net.WriteUInt(table_count(net.Receivers), 12)
-    net.WriteUInt(table_count(debug.getregistry()), 32)
+    net.WriteUInt(count(net.Receivers), 12)
+    net.WriteUInt(count(debug.getregistry()), 32)
     local constraintcount = 0
 
     for _, v in pairs(ents.GetAll()) do
-        constraintcount = constraintcount + table_count(constraint_gettable(v))
+        constraintcount = constraintcount + count(constraint_gettable(v))
     end
 
     net.WriteUInt(constraintcount / 2, 16)
     net.WriteDouble(SysTime())
-    net.WriteUInt(table_count(_G), 32)
+    net.WriteUInt(count(_G), 32)
     net.Send(ply)
 end)
 

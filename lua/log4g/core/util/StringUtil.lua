@@ -4,7 +4,7 @@
 -- @copyright GrayWolf64
 local StringUtil = {}
 local string_explode = string.Explode
-local table_concat, table_insert = table.concat, table.insert
+local concat, insert = table.concat, table.insert
 local isstring = isstring
 
 --- Qualifies the string name of an object and returns if it's a valid name.
@@ -32,7 +32,7 @@ function StringUtil.StripDotExtension(str, doconcat)
     local result = string_explode(".", str:sub(1, #str - str:reverse():find("%.")))
 
     if doconcat ~= false then
-        return table_concat(result, ".")
+        return concat(result, ".")
     else
         return result
     end
@@ -49,7 +49,7 @@ function StringUtil.CharPos(str, char)
 
     for k, v in ipairs({str:byte(1, #str)}) do
         if v == char then
-            table_insert(pos, k)
+            insert(pos, k)
         end
     end
 

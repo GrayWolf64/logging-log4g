@@ -9,7 +9,7 @@ local IsLogEvent = include("log4g/core/util/TypeUtil.lua").IsLogEvent
 local pairs, ipairs = pairs, ipairs
 local unpack = unpack
 local color_default = Color(0, 201, 255)
-local table_insert, table_remove = table.insert, table.remove
+local insert, remove = table.insert, table.remove
 local CharPos = include("log4g/core/util/StringUtil.lua").CharPos
 local cvar_cp = "log4g_patternlayout_ConversionPattern"
 local cvar_msgc = "log4g_patternlayout_msgcolor"
@@ -79,9 +79,9 @@ local function DoFormat(event)
         for i, j in ipairs(substrs) do
             if j:find(k, 1, true) then
                 local oldvalue = substrs[i]
-                table_remove(substrs, i)
-                table_insert(substrs, i, k)
-                table_insert(substrs, i + 1, oldvalue:sub(#k + 1, #oldvalue))
+                remove(substrs, i)
+                insert(substrs, i, k)
+                insert(substrs, i + 1, oldvalue:sub(#k + 1, #oldvalue))
             end
         end
     end
@@ -99,12 +99,12 @@ local function DoFormat(event)
                     tbl[k] = content
 
                     if color then
-                        table_insert(tbl, k, color)
+                        insert(tbl, k, color)
                     else
-                        table_insert(tbl, k, color_default)
+                        insert(tbl, k, color_default)
                     end
 
-                    table_insert(tbl, k + 2, color_default)
+                    insert(tbl, k + 2, color_default)
                 end
             end
         end

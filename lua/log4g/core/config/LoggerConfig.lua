@@ -10,7 +10,7 @@ local LoggerConfig = LifeCycle:subclass("LoggerConfig")
 local GetCtx, GetAllCtx = Log4g.Core.LoggerContext.Get, Log4g.Core.LoggerContext.GetAll
 local GetLevel = Log4g.Level.GetLevel
 local pairs, isstring, next = pairs, isstring, next
-local table_concat = table.concat
+local concat = table.concat
 local TypeUtil, StringUtil = include("log4g/core/util/TypeUtil.lua"), include("log4g/core/util/StringUtil.lua")
 local IsAppender, IsLoggerConfig = TypeUtil.IsAppender, TypeUtil.IsLoggerConfig
 local IsLoggerContext = TypeUtil.IsLoggerContext
@@ -181,7 +181,7 @@ local function ValidateAncestors(lc)
         return true
     end
 
-    if HasEveryLoggerConfig(ancestors) then return true, table_concat(nodes, ".") end
+    if HasEveryLoggerConfig(ancestors) then return true, concat(nodes, ".") end
 
     return false
 end
