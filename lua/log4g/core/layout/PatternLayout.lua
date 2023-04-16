@@ -24,6 +24,10 @@ function PatternLayout:Initialize(name)
     Layout.Initialize(self, name)
 end
 
+--- Format the LogEvent using patterns.
+-- @lfunction DoFormat
+-- @param event LogEvent
+-- @return vararg formatted event in substrs
 local function DoFormat(event)
     local cp = GetConVar(cvar_cp):GetString()
     local pos = CharPos(cp, "%")
@@ -117,6 +121,9 @@ local function DoFormat(event)
     return unpack(substrs)
 end
 
+--- Format a LogEvent.
+-- @param event LogEvent
+-- @return vararg result
 function PatternLayout:Format(event)
     if not IsLogEvent(event) then return end
 
