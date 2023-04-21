@@ -9,6 +9,9 @@ local Frame = nil
 local next = next
 local JSONToTable = util.JSONToTable
 local pairs, isstring, tostring = pairs, isstring, tostring
+local netReceive = net.Receive
+local netStart = net.Start
+local sendToServer = net.SendToServer
 
 concommand.Add("log4g_mmc", function()
     if IsValid(Frame) then
@@ -21,23 +24,23 @@ concommand.Add("log4g_mmc", function()
         return "Server: " .. game.GetIPAddress() .. " " .. "SinglePlayer: " .. tostring(game.SinglePlayer())
     end
 
-    Frame = CreateDFrame(770, 440, "Log4g Monitoring & Management Console" .. " - " .. GetGameInfo(), "icon16/application.png", nil)
+    Frame = CreateDFrame(700, 400, "Log4g Monitoring & Management Console" .. " - " .. GetGameInfo(), "icon16/application.png", nil)
     local MenuBar = vgui.Create("DMenuBar", Frame)
     local ViewMenu = MenuBar:AddMenu("View")
     local Icon = vgui.Create("DImageButton", MenuBar)
     Icon:Dock(RIGHT)
     Icon:DockMargin(4, 4, 4, 4)
 
-    local function SendEmptyMsgToSV(start)
-        net.Start(start)
-        net.SendToServer()
+    local function SendEmptyMsgToSV(msgn)
+        netStart(msgn)
+        sendToServer()
     end
 
     local function UpdateIcon()
         Icon:SetImage("icon16/disconnect.png")
         SendEmptyMsgToSV("Log4g_CLReq_ChkConnected")
 
-        net.Receive("Log4g_CLRcv_ChkConnected", function()
+        netReceive("Log4g_CLRcv_ChkConnected", function()
             if not net.ReadBool() then return end
             Icon:SetImage("icon16/connect.png")
         end)
@@ -62,37 +65,48 @@ concommand.Add("log4g_mmc", function()
 
     local RowA, RowB, RowC, RowD = CreateSpecialRow("Client", "OS Date"), CreateSpecialRow("Server", "Estimated Tickrate"), CreateSpecialRow("Server", "Floored Lua Dynamic RAM Usage (kB)"), CreateSpecialRow("Server", "Entity Count")
     local RowE, RowF, RowG, RowH = CreateSpecialRow("Server", "Networked Entity (EDICT) Count"), CreateSpecialRow("Server", "Net Receiver Count"), CreateSpecialRow("Server", "Lua Registry Table Element Count"), CreateSpecialRow("Server", "Constraint Count")
-    local RowI, RowJ = CreateSpecialRow("Server", "Uptime (Seconds)"), CreateSpecialRow("Server", "_G Element Count")
+    local RowI, RowJ, RowK = CreateSpecialRow("Server", "Uptime (Seconds)"), CreateSpecialRow("Server", "_G Element Count"), CreateSpecialRow("Logging System", "LoggerContext Count")
 
     local function UpdateTime()
         RowA:SetValue(tostring(os.date()))
     end
 
+    local function setValue(row, value)
+        row:SetValue(tostring(value))
+    end
+
     local function UpdateSummary()
         SendEmptyMsgToSV("Log4g_CLReq_SVSummaryData")
 
-        net.Receive("Log4g_CLRcv_SVSummaryData", function()
-            RowB:SetValue(tostring(1 / engine.ServerFrameTime()))
-            RowC:SetValue(tostring(net.ReadFloat()))
-            RowD:SetValue(tostring(net.ReadUInt(14)))
-            RowE:SetValue(tostring(net.ReadUInt(13)))
-            RowF:SetValue(tostring(net.ReadUInt(12)))
-            RowG:SetValue(tostring(net.ReadUInt(32)))
-            RowH:SetValue(tostring(net.ReadUInt(16)))
-            RowI:SetValue(tostring(net.ReadDouble()))
-            RowJ:SetValue(tostring(net.ReadUInt(32)))
+        netReceive("Log4g_CLRcv_SVSummaryData", function()
+            setValue(RowB, 1 / engine.ServerFrameTime())
+            setValue(RowC, net.ReadFloat())
+            setValue(RowD, net.ReadUInt(14))
+            setValue(RowE, net.ReadUInt(13))
+            setValue(RowF, net.ReadUInt(12))
+            setValue(RowG, net.ReadUInt(32))
+            setValue(RowH, net.ReadUInt(16))
+            setValue(RowI, net.ReadDouble())
+            setValue(RowJ, net.ReadUInt(32))
+            setValue(RowK, net.ReadUInt(16))
         end)
     end
 
     local ConfigurationPanel = vgui.Create("DPanel", BaseSheet)
     BaseSheet:AddSheet("Configuration", ConfigurationPanel, "icon16/wrench.png")
-    local ConfigFileOption = vgui.Create("DComboBox", ConfigurationPanel)
-    ConfigFileOption:SetWide(340)
-    ConfigFileOption:SetPos(2, 2)
+    local ButtonGrid = vgui.Create("DGrid", ConfigurationPanel)
+    ButtonGrid:Dock(TOP)
+    ButtonGrid:DockMargin(2, 2, 2, -2)
+    ButtonGrid:SetCols(2)
+    ButtonGrid:SetColWide(300)
+    local ConfigFileOption = vgui.Create("DComboBox")
+    ConfigFileOption:SetWide(300)
+    ConfigFileOption:SetTall(25)
+    ButtonGrid:AddItem(ConfigFileOption)
     local TextEditor = vgui.Create("DTextEntry", ConfigurationPanel)
     TextEditor:SetMultiline(true)
-    TextEditor:SetSize(748, 325)
-    TextEditor:SetPos(2, 26)
+    TextEditor:Dock(FILL)
+    TextEditor:DockMargin(2, -2, 2, 2)
     TextEditor:SetDrawLanguageID(false)
     TextEditor:SetFont("Log4gMMCConfigFileEditorDefault")
     TextEditor:SetVerticalScrollbarEnabled(true)
@@ -105,7 +119,7 @@ concommand.Add("log4g_mmc", function()
     local function UpdateConfigurationFilePaths()
         SendEmptyMsgToSV("Log4g_CLReq_SVConfigurationFiles")
 
-        net.Receive("Log4g_CLRcv_SVConfigurationFiles", function()
+        netReceive("Log4g_CLRcv_SVConfigurationFiles", function()
             local files = net.ReadData(net.ReadUInt(32))
             if not isstring(files) or #files == 0 then return end
             files = JSONToTable(util.Decompress(files))

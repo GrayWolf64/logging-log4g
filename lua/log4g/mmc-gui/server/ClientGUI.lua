@@ -6,10 +6,14 @@ local NetUtil = include("log4g/core/util/NetUtil.lua")
 local AddNetworkStrsViaTbl, WriteDataSimple = NetUtil.AddNetworkStrsViaTbl, NetUtil.WriteDataSimple
 local GetAllCtx = Log4g.Core.LoggerContext.GetAll
 local pairs = pairs
-local count = table.Count
-local TableToJson = util.TableToJSON
-local file_read = file.Read
-local constraint_gettable = constraint.GetTable
+local tableCount = table.Count
+local tableToJson = util.TableToJSON
+local fileRead = file.Read
+local getConstraintTable = constraint.GetTable
+local netReceive, netStart = net.Receive, net.Start
+local netSend = net.Send
+local netWriteUInt, netWriteBool = net.WriteUInt, net.WriteBool
+local netWriteDouble, netWriteFloat = net.WriteDouble, net.WriteFloat
 
 AddNetworkStrsViaTbl({
     [1] = "Log4g_CLReq_ChkConnected",
@@ -20,33 +24,34 @@ AddNetworkStrsViaTbl({
     [6] = "Log4g_CLRcv_SVConfigurationFiles"
 })
 
-net.Receive("Log4g_CLReq_ChkConnected", function(_, ply)
-    net.Start("Log4g_CLRcv_ChkConnected")
-    net.WriteBool(IsValid(ply) == ply:IsConnected() == true)
-    net.Send(ply)
+netReceive("Log4g_CLReq_ChkConnected", function(_, ply)
+    netStart("Log4g_CLRcv_ChkConnected", true)
+    netWriteBool(IsValid(ply) == ply:IsConnected() == true)
+    netSend(ply)
 end)
 
-net.Receive("Log4g_CLReq_SVSummaryData", function(_, ply)
-    net.Start("Log4g_CLRcv_SVSummaryData")
-    net.WriteFloat(collectgarbage("count"))
-    net.WriteUInt(ents.GetCount(), 14)
-    net.WriteUInt(ents.GetEdictCount(), 13)
-    net.WriteUInt(count(net.Receivers), 12)
-    net.WriteUInt(count(debug.getregistry()), 32)
+netReceive("Log4g_CLReq_SVSummaryData", function(_, ply)
+    netStart("Log4g_CLRcv_SVSummaryData", true)
+    netWriteFloat(collectgarbage("count"))
+    netWriteUInt(ents.GetCount(), 14)
+    netWriteUInt(ents.GetEdictCount(), 13)
+    netWriteUInt(tableCount(net.Receivers), 12)
+    netWriteUInt(tableCount(debug.getregistry()), 32)
     local constraintcount = 0
 
     for _, v in pairs(ents.GetAll()) do
-        constraintcount = constraintcount + count(constraint_gettable(v))
+        constraintcount = constraintcount + tableCount(getConstraintTable(v))
     end
 
-    net.WriteUInt(constraintcount / 2, 16)
-    net.WriteDouble(SysTime())
-    net.WriteUInt(count(_G), 32)
-    net.Send(ply)
+    netWriteUInt(constraintcount / 2, 16)
+    netWriteDouble(SysTime())
+    netWriteUInt(tableCount(_G), 32)
+    netWriteUInt(tableCount(GetAllCtx()), 16)
+    netSend(ply)
 end)
 
-net.Receive("Log4g_CLReq_SVConfigurationFiles", function(_, ply)
-    net.Start("Log4g_CLRcv_SVConfigurationFiles")
+netReceive("Log4g_CLReq_SVConfigurationFiles", function(_, ply)
+    netStart("Log4g_CLRcv_SVConfigurationFiles", true)
     local map = {}
 
     for _, v in pairs(GetAllCtx()) do
@@ -56,11 +61,11 @@ net.Receive("Log4g_CLReq_SVConfigurationFiles", function(_, ply)
             local path = v:GetConfigurationSource().source:sub(2)
 
             if not map[path] then
-                map[path] = file_read(path, "GAME")
+                map[path] = fileRead(path, "GAME")
             end
         end
     end
 
-    WriteDataSimple(TableToJson(map), 32)
-    net.Send(ply)
+    WriteDataSimple(tableToJson(map), 32)
+    netSend(ply)
 end)
