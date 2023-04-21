@@ -2,9 +2,9 @@
 -- @script ClientGUI
 -- @license Apache License 2.0
 -- @copyright GrayWolf64
-local ClientGUIDerma = include("log4g/mmc-gui/client/ClientGUIDerma.lua")
-local CreateDFrame, CreateDPropertySheet = ClientGUIDerma.CreateDFrame, ClientGUIDerma.CreateDPropertySheet
-local CreateDPropRow, GetRowControl = ClientGUIDerma.CreateDPropRow, ClientGUIDerma.GetRowControl
+local MMCDerma = include("log4g/mmc-gui/client/MMCDerma.lua")
+local CreateDFrame, CreateDPropertySheet = MMCDerma.CreateDFrame, MMCDerma.CreateDPropertySheet
+local CreateDPropRow, GetRowControl = MMCDerma.CreateDPropRow, MMCDerma.GetRowControl
 local Frame = nil
 local next = next
 local JSONToTable = util.JSONToTable
