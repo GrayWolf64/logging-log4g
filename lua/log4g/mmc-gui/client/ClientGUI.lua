@@ -9,8 +9,7 @@ local Frame = nil
 local next = next
 local JSONToTable = util.JSONToTable
 local pairs, isstring, tostring = pairs, isstring, tostring
-local netReceive = net.Receive
-local netStart = net.Start
+local netStart, netReceive = net.Start, net.Receive
 local sendToServer = net.SendToServer
 
 concommand.Add("log4g_mmc", function()
@@ -25,6 +24,7 @@ concommand.Add("log4g_mmc", function()
     end
 
     Frame = CreateDFrame(700, 400, "Log4g Monitoring & Management Console" .. " - " .. GetGameInfo(), "icon16/application.png", nil)
+    Frame:SetPos(input.GetCursorPos())
     local MenuBar = vgui.Create("DMenuBar", Frame)
     local ViewMenu = MenuBar:AddMenu("View")
     local Icon = vgui.Create("DImageButton", MenuBar)
@@ -65,7 +65,7 @@ concommand.Add("log4g_mmc", function()
 
     local RowA, RowB, RowC, RowD = CreateSpecialRow("Client", "OS Date"), CreateSpecialRow("Server", "Estimated Tickrate"), CreateSpecialRow("Server", "Floored Lua Dynamic RAM Usage (kB)"), CreateSpecialRow("Server", "Entity Count")
     local RowE, RowF, RowG, RowH = CreateSpecialRow("Server", "Networked Entity (EDICT) Count"), CreateSpecialRow("Server", "Net Receiver Count"), CreateSpecialRow("Server", "Lua Registry Table Element Count"), CreateSpecialRow("Server", "Constraint Count")
-    local RowI, RowJ, RowK = CreateSpecialRow("Server", "Uptime (Seconds)"), CreateSpecialRow("Server", "_G Element Count"), CreateSpecialRow("Logging System", "LoggerContext Count")
+    local RowI, RowJ, RowK, RowL = CreateSpecialRow("Server", "Uptime (Seconds)"), CreateSpecialRow("Server", "_G Element Count"), CreateSpecialRow("Current Logging System", "Implementation Name"), CreateSpecialRow("Current Logging System", "LoggerContext Count")
 
     local function UpdateTime()
         RowA:SetValue(tostring(os.date()))
@@ -88,7 +88,8 @@ concommand.Add("log4g_mmc", function()
             setValue(RowH, net.ReadUInt(16))
             setValue(RowI, net.ReadDouble())
             setValue(RowJ, net.ReadUInt(32))
-            setValue(RowK, net.ReadUInt(16))
+            setValue(RowK, net.ReadString())
+            setValue(RowL, net.ReadUInt(16))
         end)
     end
 

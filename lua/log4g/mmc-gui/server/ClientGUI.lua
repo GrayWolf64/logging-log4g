@@ -14,6 +14,7 @@ local netReceive, netStart = net.Receive, net.Start
 local netSend = net.Send
 local netWriteUInt, netWriteBool = net.WriteUInt, net.WriteBool
 local netWriteDouble, netWriteFloat = net.WriteDouble, net.WriteFloat
+local netWriteString = net.WriteString
 
 AddNetworkStrsViaTbl({
     [1] = "Log4g_CLReq_ChkConnected",
@@ -46,6 +47,7 @@ netReceive("Log4g_CLReq_SVSummaryData", function(_, ply)
     netWriteUInt(constraintcount / 2, 16)
     netWriteDouble(SysTime())
     netWriteUInt(tableCount(_G), 32)
+    netWriteString(Log4g.getCurrentLoggingImpl())
     netWriteUInt(tableCount(GetAllCtx()), 16)
     netSend(ply)
 end)

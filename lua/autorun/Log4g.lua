@@ -2,37 +2,54 @@
 -- @script Log4g
 -- @license Apache License 2.0
 -- @copyright GrayWolf64
+local include = include
+local fileExists = file.Exists
 local MMC = "log4g/mmc-gui/MMC.lua"
 
+local function checkAndInclude(filename, addcslf)
+    if fileExists(filename, "lsv") then
+        include(filename)
+        if addcslf ~= true then return end
+        AddCSLuaFile(filename)
+    end
+end
+
 if SERVER then
-    local Core = "log4g/core/Core.lua"
-    local API = "log4g/api/API.lua"
-    local CoreTest = "log4g/core-test/CoreTest.lua"
+    local isstring = isstring
+    local pairs = pairs
     --- The global table for the logging system.
     -- It provides easy access to some functions for other components of the logging system that require them.
     -- @table Log4g
     -- @field Core
     -- @field Level
     Log4g = Log4g or {}
+    local packages = {}
 
-    if file.Exists(Core, "lsv") then
-        include(Core)
+    function Log4g.RegisterPackage(name, ver)
+        if not isstring(name) or not isstring(ver) then return end
+        packages[name] = ver
     end
 
-    if file.Exists(API, "lsv") then
-        include(API)
+    function Log4g.HasPackage(name)
+        if not isstring(name) then return end
+
+        for k in pairs(packages) do
+            if k == name then return true end
+        end
+
+        return false
     end
 
-    if file.Exists(MMC, "lsv") then
-        include(MMC)
-        AddCSLuaFile(MMC)
+    function Log4g.GetPackageVer(name)
+        if not isstring(name) then return end
+
+        return packages[name]
     end
 
-    if file.Exists(CoreTest, "lsv") then
-        include(CoreTest)
-    end
+    checkAndInclude("log4g/core/Core.lua")
+    checkAndInclude("log4g/api/API.lua")
+    checkAndInclude(MMC, true)
+    checkAndInclude("log4g/core-test/CoreTest.lua")
 elseif CLIENT then
-    if file.Exists(MMC, "lcl") then
-        include(MMC)
-    end
+    checkAndInclude(MMC)
 end
