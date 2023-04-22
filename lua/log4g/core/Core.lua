@@ -8,20 +8,11 @@ Log4g.Core.Config = Log4g.Core.Config or {}
 --- A dictionary for storing LoggerContext objects.
 -- Only one ContextDictionary exists in the logging system.
 -- @local
--- @table CDICT
-local CDICT = CDICT or {}
+-- @table ContextDictionary
+local ContextDictionary = ContextDictionary or {}
 
-function Log4g.Core.GetCDICT()
-    return CDICT
-end
-
---- Custom Logging Levels created by users.
--- @local
--- @table CustomLevel
-local CustomLevel = CustomLevel or {}
-
-function Log4g.Core.GetAllCustomLevel()
-    return CustomLevel
+function Log4g.Core.GetContextDictionary()
+    return ContextDictionary
 end
 
 include("log4g/core/Version.lua")
@@ -31,4 +22,7 @@ include("log4g/core/layout/PatternLayout.lua")
 include("log4g/core/Appender.lua")
 include("log4g/core/appender/ConsoleAppender.lua")
 include("log4g/core/config/DefaultConfiguration.lua")
+include("log4g/core/config/LoggerConfig.lua")
+include("log4g/core/LogEvent.lua")
+include("log4g/core/Logger.lua")
 include("log4g/core/LogEvent.lua")

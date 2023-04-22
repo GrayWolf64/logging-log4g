@@ -4,16 +4,17 @@
 -- @classmod LoggerContext
 -- @license Apache License 2.0
 -- @copyright GrayWolf64
-local _M = {}
-local LifeCycle = include("log4g/core/LifeCycle.lua").GetClass()
-local LoggerContext = LifeCycle:subclass("LoggerContext")
+local _M = _M or {}
+local t = t or 0
+if t >= 1 then return _M end
+t = t + 1
+local LifeCycle = Log4g.Core.LifeCycle.GetClass()
+local LoggerContext = LifeCycle:subclass"LoggerContext"
+local TypeUtil = include"log4g/core/util/TypeUtil.lua"
 local GetDefaultConfiguration = Log4g.Core.Config.GetDefaultConfiguration
-local isstring = isstring
-local pairs = pairs
-local TypeUtil = include("log4g/core/util/TypeUtil.lua")
 local IsLoggerContext, IsConfiguration = TypeUtil.IsLoggerContext, TypeUtil.IsConfiguration
-TypeUtil = nil
-local GetCDICT = Log4g.Core.GetCDICT
+local GetContextDictionary = Log4g.Core.GetContextDictionary
+local pairs, isstring = pairs, isstring
 
 function LoggerContext:Initialize(name)
     LifeCycle.Initialize(self)
@@ -68,7 +69,7 @@ end
 function LoggerContext:Terminate()
     local name = self:GetName()
     self:DestroyPrivateTable()
-    GetCDICT()[name] = nil
+    GetContextDictionary()[name] = nil
 end
 
 --- Determines if the specified Logger exists.
@@ -81,7 +82,7 @@ function LoggerContext:HasLogger(name)
 end
 
 function _M.GetAll()
-    return GetCDICT()
+    return GetContextDictionary()
 end
 
 --- Get the LoggerContext with the right name.
@@ -90,7 +91,7 @@ end
 function _M.Get(name)
     if not isstring(name) then return end
 
-    return GetCDICT()[name]
+    return GetContextDictionary()[name]
 end
 
 --- Register a LoggerContext.
@@ -98,7 +99,8 @@ end
 -- @param withconfig Whether or not come with a DefaultConfiguration, leaving it nil will make it come with one
 -- @return object loggercontext
 function _M.Register(name, withconfig)
-    local ctx = GetCDICT()[name]
+    local ctx = GetContextDictionary()[name]
+
     if ctx and IsLoggerContext(ctx) then return ctx end
     ctx = LoggerContext(name)
 
@@ -106,7 +108,7 @@ function _M.Register(name, withconfig)
         ctx:SetConfiguration(GetDefaultConfiguration())
     end
 
-    GetCDICT()[name] = ctx
+    GetContextDictionary()[name] = ctx
 
     return ctx
 end
@@ -114,7 +116,7 @@ end
 function _M.GetLoggerCount()
     local num, tableCount = 0, table.Count
 
-    for _, v in pairs(GetCDICT()) do
+    for _, v in pairs(GetContextDictionary()) do
         num = num + tableCount(v:GetLoggers())
     end
 

@@ -2,8 +2,8 @@
 -- @script LoggerContextFactory
 Log4g.API.LoggerContextFactory = Log4g.API.LoggerContextFactory or {}
 local RegisterLoggerContext = include("log4g/core/LoggerContext.lua").Register
-local RootLoggerConfigClass = include("log4g/core/config/LoggerConfig.lua").GetRootLoggerConfigClass
-local CreateLogger = include("log4g/core/Logger.lua").Create
+local RootLoggerConfigClass = Log4g.Core.Config.LoggerConfig.GetRootLoggerConfigClass
+local CreateLogger = Log4g.Core.Logger.Create
 
 --- Create a LoggerContext.
 -- This is meant to be used in Programmatic Configuration.
