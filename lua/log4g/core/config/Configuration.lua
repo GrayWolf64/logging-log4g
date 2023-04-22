@@ -4,7 +4,7 @@
 -- @license Apache License 2.0
 -- @copyright GrayWolf64
 Log4g.Core.Config.Configuration = Log4g.Core.Config.Configuration or {}
-local LifeCycle = Log4g.Core.LifeCycle.GetClass()
+local LifeCycle = Log4g.GetPkgClsFuncs("log4g-core", "LifeCycle").getClass()
 local Configuration = LifeCycle:subclass("Configuration")
 local isstring = isstring
 local SysTime = SysTime

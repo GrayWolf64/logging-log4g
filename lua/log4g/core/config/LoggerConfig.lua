@@ -4,7 +4,7 @@
 -- @classmod LoggerConfig
 -- @license Apache License 2.0
 -- @copyright GrayWolf64
-local LifeCycle = Log4g.Core.LifeCycle.GetClass()
+local LifeCycle = Log4g.GetPkgClsFuncs("log4g-core", "LifeCycle").getClass()
 local LoggerConfig = LifeCycle:subclass("LoggerConfig")
 local LoggerContext = Log4g.GetPkgClsFuncs("log4g-core", "LoggerContext")
 local GetCtx, GetAllCtx = LoggerContext.get, LoggerContext.getAll

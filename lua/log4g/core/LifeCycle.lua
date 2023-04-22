@@ -9,7 +9,6 @@
 -- @classmod LifeCycle
 -- @license Apache License 2.0
 -- @copyright GrayWolf64
-Log4g.Core.LifeCycle = Log4g.Core.LifeCycle or {}
 local Object = Log4g.Core.Object.GetClass()
 local LifeCycle = Object:subclass("LifeCycle")
 local isfunction = isfunction
@@ -62,10 +61,15 @@ function LifeCycle:GetState()
     return self:GetPrivateField("state")
 end
 
-function Log4g.Core.LifeCycle.GetAllStates()
+local function GetAllStates()
     return State
 end
 
-function Log4g.Core.LifeCycle.GetClass()
+local function GetClass()
     return LifeCycle
 end
+
+Log4g.RegisterPackageClass("log4g-core", "LifeCycle", {
+    getAllStates = GetAllStates,
+    getClass = GetClass
+})
