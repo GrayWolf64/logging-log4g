@@ -23,11 +23,14 @@ Log4g is an advanced logging framework for Garry's Mod.
 
 (not updated)
 Simply clone this project and extract the project folder into your `garrysmod/addons` folder.
+In addition, the code itself is well documented.
 Then you just have to make sure it loads before your addon, or you can use valid checks:
 
 ```lua
 --- Check the 'Log4g' global table.
 if Log4g then
+   --- Get the `log4g-core` package's `Logger` class's functions.
+   local Logger = Log4g.GetPkgClsFuncs("log4g-core", "Logger")
    --- This will locate / create a proper LoggerContext named 'Foo' with DefaultConfiguration.
    local ctx = Log4g.API.LoggerContextFactory.GetContext("Foo", true)
 
@@ -38,7 +41,7 @@ if Log4g then
    lc:AddAppender(Log4g.Core.Appender.CreateConsoleAppender("CalcOutput", Log4g.Core.Layout.PatternLayout.CreateDefaultLayout("CalcLayout")))
 
    --- This will create a Logger named 'Calculate' using lc and add it to ctx.
-   local logger = Log4g.GetPkgClsFuncs("log4g-core", "Logger").create("Calculate", ctx, lc)
+   local logger = Logger.create("Calculate", ctx, lc)
 
    for i = 1, 100 do
       --- Do something with i, and log messages.
