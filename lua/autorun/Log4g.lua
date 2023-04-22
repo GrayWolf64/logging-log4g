@@ -9,8 +9,12 @@ local MMC = "log4g/mmc-gui/MMC.lua"
 local function checkAndInclude(filename, addcslf)
     if fileExists(filename, "lsv") then
         include(filename)
+        MsgN("Log4g successfully included '" .. filename .. "'.")
         if addcslf ~= true then return end
         AddCSLuaFile(filename)
+        MsgN("Log4g successfully sent '" .. filename .. "' to client.")
+    else
+        MsgN("Log4g tried to include '" .. filename .. "' but failed due to non-existence.")
     end
 end
 
