@@ -3,7 +3,7 @@
 -- Every standard Level has a [Color](https://wiki.facepunch.com/gmod/Color).
 -- Subclassing 'Object'.
 -- @classmod Level
-local Object = Log4g.Core.Object.GetClass()
+local Object = Log4g.GetPkgClsFuncs("log4g-core", "Object").getClass()
 local Level = Object:subclass("Level")
 local isstring, isnumber = isstring, isnumber
 local IsLevel = include("log4g/core/util/TypeUtil.lua").IsLevel

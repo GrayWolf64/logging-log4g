@@ -2,11 +2,10 @@
 -- @classmod Object
 -- @license Apache License 2.0
 -- @copyright GrayWolf64
-Log4g.Core.Object = Log4g.Core.Object or {}
 local SHA256 = util.SHA256
 local tostring, isstring = tostring, isstring
 local ipairs = ipairs
-local insert, concat = table.insert, table.concat
+local tableInsert, tableConcat = table.insert, table.concat
 local StripDotExtension = include("log4g/core/util/StringUtil.lua").StripDotExtension
 local Object = include("log4g/core/impl/MiddleClass.lua")("Object")
 
@@ -51,7 +50,7 @@ function Object:HashCode()
     return SHA256(tostring(self))
 end
 
-function Log4g.Core.Object.GetClass()
+local function GetClass()
     return Object
 end
 
@@ -61,18 +60,23 @@ end
 -- @param name Object's name
 -- @return table ancestors' names in a list-styled table
 -- @return table parent name but with dots removed in a table
-function Log4g.Core.Object.EnumerateAncestors(name)
+local function EnumerateAncestors(name)
     local nodes, ancestors = StripDotExtension(name, false), {}
 
     for k in ipairs(nodes) do
         local ancestor = {}
 
         for i = 1, k do
-            insert(ancestor, nodes[i])
+            tableInsert(ancestor, nodes[i])
         end
 
-        ancestors[concat(ancestor, ".")] = true
+        ancestors[tableConcat(ancestor, ".")] = true
     end
 
     return ancestors, nodes
 end
+
+Log4g.RegisterPackageClass("log4g-core", "Object", {
+    getClass = GetClass,
+    enumerateAncestors = EnumerateAncestors
+})

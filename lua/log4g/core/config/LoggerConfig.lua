@@ -16,7 +16,7 @@ local IsAppender, IsLoggerConfig = TypeUtil.IsAppender, TypeUtil.IsLoggerConfig
 local IsLoggerContext = TypeUtil.IsLoggerContext
 local IsConfiguration, IsLevel = TypeUtil.IsConfiguration, TypeUtil.IsLevel
 local QualifyName = StringUtil.QualifyName
-local EnumerateAncestors = Log4g.Core.Object.EnumerateAncestors
+local EnumerateAncestors = Log4g.GetPkgClsFuncs("log4g-core", "Object").enumerateAncestors
 TypeUtil, StringUtil = nil, nil
 
 cvars.AddChangeCallback(CreateConVar("log4g_rootLogger", "root", FCVAR_NOTIFY):GetName(), function(cvarn)

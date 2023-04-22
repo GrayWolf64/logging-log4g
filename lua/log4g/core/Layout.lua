@@ -1,7 +1,7 @@
 --- The Layout.
 -- @classmod Layout
 Log4g.Core.Layout = Log4g.Core.Layout or {}
-local Object = Log4g.Core.Object.GetClass()
+local Object = Log4g.GetPkgClsFuncs("log4g-core", "Object").getClass()
 local Layout = Object:subclass("Layout")
 
 function Layout:Initialize(name)
