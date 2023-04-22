@@ -1,6 +1,6 @@
 --- The default configuration writes all output to the console using the default logging level.
 -- @classmod DefaultConfiguration
-local Configuration = Log4g.Core.Config.Configuration.GetClass()
+local Configuration = include("log4g/core/config/Configuration.lua").GetClass()
 local DefaultConfiguration = Configuration:subclass("DefaultConfiguration")
 local CreateConsoleAppender, CreatePatternLayout = Log4g.Core.Appender.CreateConsoleAppender, Log4g.Core.Layout.PatternLayout.CreateDefaultLayout
 CreateConVar("log4g_configuration_default_name", "default", FCVAR_NOTIFY):GetString()
