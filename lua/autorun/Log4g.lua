@@ -23,7 +23,7 @@ if SERVER then
     -- @field Core
     -- @field Level
     Log4g = Log4g or {}
-    local packages = {}
+    local packages = packages or {}
 
     function Log4g.RegisterPackage(name, ver)
         if not isstring(name) or not isstring(ver) then return end

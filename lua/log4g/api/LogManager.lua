@@ -9,7 +9,7 @@ function Log4g.API.LogManager.Exists()
     return false
 end
 
-local impl
+local impl = impl or ""
 
 local function setCurrentLoggingImpl(name)
     impl = name
