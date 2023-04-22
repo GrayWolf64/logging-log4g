@@ -5,14 +5,12 @@
 -- @license Apache License 2.0
 -- @copyright GrayWolf64
 local _M = {}
-local LifeCycle = include("log4g/core/LifeCycle.lua").GetClass()
+local LifeCycle = include"log4g/core/LifeCycle.lua".GetClass()
 local LoggerContext = LifeCycle:subclass("LoggerContext")
 local GetDefaultConfiguration = Log4g.Core.Config.GetDefaultConfiguration
-local isstring = isstring
-local pairs = pairs
-local TypeUtil = include("log4g/core/util/TypeUtil.lua")
+local isstring, pairs = isstring, pairs
+local TypeUtil = include"log4g/core/util/TypeUtil.lua"
 local IsLoggerContext, IsConfiguration = TypeUtil.IsLoggerContext, TypeUtil.IsConfiguration
-TypeUtil = nil
 local GetCDICT = Log4g.Core.GetCDICT
 
 function LoggerContext:Initialize(name)
