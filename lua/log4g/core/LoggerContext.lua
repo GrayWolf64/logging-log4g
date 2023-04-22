@@ -4,7 +4,6 @@
 -- @classmod LoggerContext
 -- @license Apache License 2.0
 -- @copyright GrayWolf64
-Log4g.Core.LoggerContext = Log4g.Core.LoggerContext or {}
 local LifeCycle = Log4g.Core.LifeCycle.GetClass()
 local LoggerContext = LifeCycle:subclass("LoggerContext")
 local GetDefaultConfiguration = Log4g.Core.Config.GetDefaultConfiguration
@@ -84,14 +83,14 @@ function LoggerContext:HasLogger(name)
     return false
 end
 
-function Log4g.Core.LoggerContext.GetAll()
+local function GetAll()
     return CDICT
 end
 
 --- Get the LoggerContext with the right name.
 -- @param name String name
 -- @return object loggercontext
-function Log4g.Core.LoggerContext.Get(name)
+local function Get(name)
     if not isstring(name) then return end
 
     return CDICT[name]
@@ -101,7 +100,7 @@ end
 -- @param name The name of the LoggerContext
 -- @param withconfig Whether or not come with a DefaultConfiguration, leaving it nil will make it come with one
 -- @return object loggercontext
-function Log4g.Core.LoggerContext.Register(name, withconfig)
+local function Register(name, withconfig)
     local ctx = CDICT[name]
     if ctx and IsLoggerContext(ctx) then return ctx end
     ctx = LoggerContext(name)
@@ -115,7 +114,7 @@ function Log4g.Core.LoggerContext.Register(name, withconfig)
     return ctx
 end
 
-function Log4g.Core.LoggerContext.GetLoggerCount()
+local function GetLoggerCount()
     local num, tableCount = 0, table.Count
 
     for _, v in pairs(CDICT) do
@@ -125,6 +124,14 @@ function Log4g.Core.LoggerContext.GetLoggerCount()
     return num
 end
 
-function Log4g.Core.LoggerContext.GetClass()
+local function GetClass()
     return LoggerContext
 end
+
+Log4g.RegisterPackageClass("log4g-core", "LoggerContext", {
+    getClass = GetClass,
+    getLoggerCount = GetLoggerCount,
+    register = Register,
+    get = Get,
+    getAll = GetAll
+})

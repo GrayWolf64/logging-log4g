@@ -1,4 +1,5 @@
-local Get = Log4g.Core.LoggerContext.Get
+local LoggerContext = Log4g.GetPackageClassFuncs("log4g-core", "LoggerContext")
+local Get = LoggerContext.get
 local GetContext = Log4g.API.LoggerContextFactory.GetContext
 
 concommand.Add("log4g_coretest_createLoggerContext", function()
@@ -12,5 +13,5 @@ concommand.Add("log4g_coretest_removeLoggerContext", function()
 end)
 
 concommand.Add("log4g_coretest_showAllLoggerContext", function()
-    PrintTable(Log4g.Core.LoggerContext.GetAll())
+    PrintTable(LoggerContext.getAll())
 end)

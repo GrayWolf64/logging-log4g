@@ -1,7 +1,7 @@
 --- A factory that creates LoggerContext objects.
 -- @script LoggerContextFactory
 Log4g.API.LoggerContextFactory = Log4g.API.LoggerContextFactory or {}
-local RegisterLoggerContext = Log4g.Core.LoggerContext.Register
+local RegisterLoggerContext = Log4g.GetPackageClassFuncs("log4g-core", "LoggerContext").register
 local RootLoggerConfigClass = Log4g.Core.Config.LoggerConfig.GetRootLoggerConfigClass
 local CreateLogger = Log4g.Core.Logger.Create
 
