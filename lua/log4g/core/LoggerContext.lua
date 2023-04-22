@@ -9,6 +9,7 @@ local LifeCycle = Log4g.Core.LifeCycle.GetClass()
 local LoggerContext = LifeCycle:subclass("LoggerContext")
 local GetDefaultConfiguration = Log4g.Core.Config.GetDefaultConfiguration
 local isstring = isstring
+local pairs = pairs
 local TypeUtil = include("log4g/core/util/TypeUtil.lua")
 local IsLoggerContext, IsConfiguration = TypeUtil.IsLoggerContext, TypeUtil.IsConfiguration
 TypeUtil = nil
@@ -112,6 +113,16 @@ function Log4g.Core.LoggerContext.Register(name, withconfig)
     CDICT[name] = ctx
 
     return ctx
+end
+
+function Log4g.Core.LoggerContext.GetLoggerCount()
+    local num, tableCount = 0, table.Count
+
+    for _, v in pairs(CDICT) do
+        num = num + tableCount(v:GetLoggers())
+    end
+
+    return num
 end
 
 function Log4g.Core.LoggerContext.GetClass()

@@ -5,6 +5,7 @@
 local NetUtil = include("log4g/core/util/NetUtil.lua")
 local AddNetworkStrsViaTbl, WriteDataSimple = NetUtil.AddNetworkStrsViaTbl, NetUtil.WriteDataSimple
 local GetAllCtx = Log4g.Core.LoggerContext.GetAll
+local GetLoggerCount = Log4g.Core.LoggerContext.GetLoggerCount
 local pairs = pairs
 local tableCount = table.Count
 local tableToJson = util.TableToJSON
@@ -49,6 +50,7 @@ netReceive("Log4g_CLReq_SVSummaryData", function(_, ply)
     netWriteUInt(tableCount(_G), 32)
     netWriteString(Log4g.getCurrentLoggingImpl())
     netWriteUInt(tableCount(GetAllCtx()), 16)
+    netWriteUInt(GetLoggerCount(), 16)
     netSend(ply)
 end)
 

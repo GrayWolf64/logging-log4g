@@ -64,8 +64,9 @@ concommand.Add("log4g_mmc", function()
     end
 
     local RowA, RowB, RowC, RowD = CreateSpecialRow("Client", "OS Date"), CreateSpecialRow("Server", "Estimated Tickrate"), CreateSpecialRow("Server", "Floored Lua Dynamic RAM Usage (kB)"), CreateSpecialRow("Server", "Entity Count")
-    local RowE, RowF, RowG, RowH = CreateSpecialRow("Server", "Networked Entity (EDICT) Count"), CreateSpecialRow("Server", "Net Receiver Count"), CreateSpecialRow("Server", "Lua Registry Table Element Count"), CreateSpecialRow("Server", "Constraint Count")
+    local RowE, RowF, RowG, RowH = CreateSpecialRow("Server", "Networked Entity (EDICT) Count"), CreateSpecialRow("Server", "Net Receiver Count"), CreateSpecialRow("Server", "Lua Registry Table Element Count"), CreateSpecialRow("Server", "Constraint Count (num of pairs)")
     local RowI, RowJ, RowK, RowL = CreateSpecialRow("Server", "Uptime (Seconds)"), CreateSpecialRow("Server", "_G Element Count"), CreateSpecialRow("Current Logging System", "Implementation Name"), CreateSpecialRow("Current Logging System", "LoggerContext Count")
+    local RowM = CreateSpecialRow("Current Logging System", "Logger Count")
 
     local function UpdateTime()
         RowA:SetValue(tostring(os.date()))
@@ -90,6 +91,7 @@ concommand.Add("log4g_mmc", function()
             setValue(RowJ, net.ReadUInt(32))
             setValue(RowK, net.ReadString())
             setValue(RowL, net.ReadUInt(16))
+            setValue(RowM, net.ReadUInt(16))
         end)
     end
 
