@@ -5,7 +5,7 @@
 Log4g.Core.Logger = Log4g.Core.Logger or {}
 local Object = Log4g.Core.Object.GetClass()
 local Logger = Object:subclass("Logger")
-local GetCtx = Log4g.Core.LoggerContext.Get
+local GetCtx = include("log4g/core/LoggerContext.lua").Get
 local TypeUtil, StringUtil = include("log4g/core/util/TypeUtil.lua"), include("log4g/core/util/StringUtil.lua")
 local QualifyName, StripDotExtension = StringUtil.QualifyName, StringUtil.StripDotExtension
 local IsLoggerConfig, IsLoggerContext = TypeUtil.IsLoggerConfig, TypeUtil.IsLoggerContext
