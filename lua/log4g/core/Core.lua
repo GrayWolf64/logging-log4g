@@ -2,7 +2,7 @@
 -- @script Core
 -- @license Apache License 2.0
 -- @copyright GrayWolf64
-Log4g.RegisterPackage("log4g-core", "0.0.5-beta")
+Log4g.RegisterPackage("log4g-core", "0.0.6-beta")
 Log4g.Core = Log4g.Core or {}
 Log4g.Core.Config = Log4g.Core.Config or {}
 include("log4g/core/Version.lua")
