@@ -4,8 +4,8 @@
 -- @copyright GrayWolf64
 local NetUtil = include("log4g/core/util/NetUtil.lua")
 local AddNetworkStrsViaTbl, WriteDataSimple = NetUtil.AddNetworkStrsViaTbl, NetUtil.WriteDataSimple
-local GetAllCtx = include("log4g/core/LoggerContext.lua").GetAll
-local GetLoggerCount = include("log4g/core/LoggerContext.lua").GetLoggerCount
+local GetAllCtx = Log4g.Core.LoggerContext.GetAll
+local GetLoggerCount = Log4g.Core.LoggerContext.GetLoggerCount
 local pairs = pairs
 local tableCount = table.Count
 local tableToJson = util.TableToJSON

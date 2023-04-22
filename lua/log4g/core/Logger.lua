@@ -2,22 +2,19 @@
 -- @classmod Logger
 -- @license Apache License 2.0
 -- @copyright GrayWolf64
-local _M = _M or {}
-local t = t or 0
-if t >= 1 then return _M end
-t = t + 1
+Log4g.Core.Logger = Log4g.Core.Logger or {}
 local Object = Log4g.Core.Object.GetClass()
 local Logger = Object:subclass("Logger")
-local GetCtx = include("log4g/core/LoggerContext.lua").Get
+local GetCtx = Log4g.Core.LoggerContext.Get
 local TypeUtil, StringUtil = include("log4g/core/util/TypeUtil.lua"), include("log4g/core/util/StringUtil.lua")
 local QualifyName, StripDotExtension = StringUtil.QualifyName, StringUtil.StripDotExtension
 local IsLoggerConfig, IsLoggerContext = TypeUtil.IsLoggerConfig, TypeUtil.IsLoggerContext
 local IsLevel, IsLogEvent = TypeUtil.IsLevel, TypeUtil.IsLogEvent
 TypeUtil, StringUtil = nil, nil
-local GetLevel = include("log4g/core/Level.lua").GetLevel
+local GetLevel = Log4g.Level.GetLevel
 local next, pairs = next, pairs
 local isstring, isbool = isstring, isbool
-local HasLoggerConfig = include("log4g/core/config/LoggerConfig.lua").HasLoggerConfig
+local HasLoggerConfig = Log4g.Core.Config.LoggerConfig.HasLoggerConfig
 local EnumerateAncestors = Log4g.Core.Object.EnumerateAncestors
 local LogEventBuilder = Log4g.Core.LogEvent.Builder
 
@@ -154,7 +151,7 @@ function Logger:Fatal(msg)
     LogIfEnabled(self, "FATAL", msg)
 end
 
-function _M.Create(name, context, loggerconfig)
+function Log4g.Core.Logger.Create(name, context, loggerconfig)
     if not IsLoggerContext(context) then return end
     if context:HasLogger(name) or not QualifyName(name) then return end
     local logger, root = Logger(name, context), GetConVar("log4g_rootLogger"):GetString()
@@ -202,8 +199,6 @@ function _M.Create(name, context, loggerconfig)
     return logger
 end
 
-function _M.GetClass()
+function Log4g.Core.Logger.GetClass()
     return Logger
 end
-
-return _M

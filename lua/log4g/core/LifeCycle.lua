@@ -9,10 +9,7 @@
 -- @classmod LifeCycle
 -- @license Apache License 2.0
 -- @copyright GrayWolf64
-local _M = _M or {}
-local t = t or 0
-if t >= 1 then return _M end
-t = t + 1
+Log4g.Core.LifeCycle = Log4g.Core.LifeCycle or {}
 local Object = Log4g.Core.Object.GetClass()
 local LifeCycle = Object:subclass("LifeCycle")
 local isfunction = isfunction
@@ -65,12 +62,10 @@ function LifeCycle:GetState()
     return self:GetPrivateField("state")
 end
 
-function _M.GetAllStates()
+function Log4g.Core.LifeCycle.GetAllStates()
     return State
 end
 
-function _M.GetClass()
+function Log4g.Core.LifeCycle.GetClass()
     return LifeCycle
 end
-
-return _M

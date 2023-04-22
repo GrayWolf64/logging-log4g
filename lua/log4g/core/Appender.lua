@@ -2,7 +2,7 @@
 -- Subclassing `LifeCycle`.
 -- @classmod Appender
 Log4g.Core.Appender = Log4g.Core.Appender or {}
-local LifeCycle = include("log4g/core/LifeCycle.lua").GetClass()
+local LifeCycle = Log4g.Core.LifeCycle.GetClass()
 local Appender = LifeCycle:subclass("Appender")
 
 function Appender:Initialize(name, layout)

@@ -1,4 +1,4 @@
---- Class `Object` is the root of the class hierarchy.
+--- Class Object is the root of the class hierarchy.
 -- @classmod Object
 -- @license Apache License 2.0
 -- @copyright GrayWolf64
@@ -6,7 +6,7 @@ Log4g.Core.Object = Log4g.Core.Object or {}
 local SHA256 = util.SHA256
 local tostring, isstring = tostring, isstring
 local ipairs = ipairs
-local tableInsert, tableConcat = table.insert, table.concat
+local insert, concat = table.insert, table.concat
 local StripDotExtension = include("log4g/core/util/StringUtil.lua").StripDotExtension
 local Object = include("log4g/core/impl/MiddleClass.lua")("Object")
 
@@ -68,10 +68,10 @@ function Log4g.Core.Object.EnumerateAncestors(name)
         local ancestor = {}
 
         for i = 1, k do
-            tableInsert(ancestor, nodes[i])
+            insert(ancestor, nodes[i])
         end
 
-        ancestors[tableConcat(ancestor, ".")] = true
+        ancestors[concat(ancestor, ".")] = true
     end
 
     return ancestors, nodes

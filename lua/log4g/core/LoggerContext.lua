@@ -4,17 +4,20 @@
 -- @classmod LoggerContext
 -- @license Apache License 2.0
 -- @copyright GrayWolf64
-local _M = _M or {}
-local t = t or 0
-if t >= 1 then return _M end
-t = t + 1
-local LifeCycle = include("log4g/core/LifeCycle.lua").GetClass()
-local LoggerContext = LifeCycle:subclass"LoggerContext"
-local TypeUtil = include"log4g/core/util/TypeUtil.lua"
+Log4g.Core.LoggerContext = Log4g.Core.LoggerContext or {}
+local LifeCycle = Log4g.Core.LifeCycle.GetClass()
+local LoggerContext = LifeCycle:subclass("LoggerContext")
 local GetDefaultConfiguration = Log4g.Core.Config.GetDefaultConfiguration
+local isstring = isstring
+local pairs = pairs
+local TypeUtil = include("log4g/core/util/TypeUtil.lua")
 local IsLoggerContext, IsConfiguration = TypeUtil.IsLoggerContext, TypeUtil.IsConfiguration
-local GetContextDictionary = Log4g.Core.GetContextDictionary
-local pairs, isstring = pairs, isstring
+TypeUtil = nil
+--- A dictionary for storing LoggerContext objects.
+-- Only one ContextDictionary exists in the logging system.
+-- @local
+-- @table CDICT
+local CDICT = CDICT or {}
 
 function LoggerContext:Initialize(name)
     LifeCycle.Initialize(self)
@@ -69,7 +72,7 @@ end
 function LoggerContext:Terminate()
     local name = self:GetName()
     self:DestroyPrivateTable()
-    GetContextDictionary()[name] = nil
+    CDICT[name] = nil
 end
 
 --- Determines if the specified Logger exists.
@@ -81,25 +84,25 @@ function LoggerContext:HasLogger(name)
     return false
 end
 
-function _M.GetAll()
-    return GetContextDictionary()
+function Log4g.Core.LoggerContext.GetAll()
+    return CDICT
 end
 
 --- Get the LoggerContext with the right name.
 -- @param name String name
 -- @return object loggercontext
-function _M.Get(name)
+function Log4g.Core.LoggerContext.Get(name)
     if not isstring(name) then return end
 
-    return GetContextDictionary()[name]
+    return CDICT[name]
 end
 
 --- Register a LoggerContext.
 -- @param name The name of the LoggerContext
 -- @param withconfig Whether or not come with a DefaultConfiguration, leaving it nil will make it come with one
 -- @return object loggercontext
-function _M.Register(name, withconfig)
-    local ctx = GetContextDictionary()[name]
+function Log4g.Core.LoggerContext.Register(name, withconfig)
+    local ctx = CDICT[name]
     if ctx and IsLoggerContext(ctx) then return ctx end
     ctx = LoggerContext(name)
 
@@ -107,23 +110,21 @@ function _M.Register(name, withconfig)
         ctx:SetConfiguration(GetDefaultConfiguration())
     end
 
-    GetContextDictionary()[name] = ctx
+    CDICT[name] = ctx
 
     return ctx
 end
 
-function _M.GetLoggerCount()
+function Log4g.Core.LoggerContext.GetLoggerCount()
     local num, tableCount = 0, table.Count
 
-    for _, v in pairs(GetContextDictionary()) do
+    for _, v in pairs(CDICT) do
         num = num + tableCount(v:GetLoggers())
     end
 
     return num
 end
 
-function _M.GetClass()
+function Log4g.Core.LoggerContext.GetClass()
     return LoggerContext
 end
-
-return _M

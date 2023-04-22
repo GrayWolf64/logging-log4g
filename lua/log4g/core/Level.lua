@@ -3,15 +3,11 @@
 -- Every standard Level has a [Color](https://wiki.facepunch.com/gmod/Color).
 -- Subclassing 'Object'.
 -- @classmod Level
-local _M = _M or {}
-local t = t or 0
-if t >= 1 then return _M end
-t = t + 1
+Log4g.Level = Log4g.Level or {}
 local Object = Log4g.Core.Object.GetClass()
 local Level = Object:subclass("Level")
 local isstring, isnumber = isstring, isnumber
 local IsLevel = include("log4g/core/util/TypeUtil.lua").IsLevel
-local GetAllCustomLevel = Log4g.Core.GetAllCustomLevel
 
 function Level:Initialize(name, int, color)
     Object.Initialize(self)
@@ -53,10 +49,15 @@ function Level:IsInRange(minlevel, maxlevel)
     return false
 end
 
+--- Custom Logging Levels created by users.
+-- @local
+-- @table CustomLevel
+local CustomLevel = CustomLevel or {}
+
 --- Get the Custom Levels as a table.
 -- @return table customlevel
-function _M.GetCustomLevel()
-    return GetAllCustomLevel()
+function Log4g.Level.GetCustomLevel()
+    return CustomLevel
 end
 
 --- Standard Int Levels.
@@ -106,7 +107,7 @@ end
 
 --- Get the Standard Levels as a table.
 -- @return table StdLevel
-function _M.GetStdLevel()
+function Log4g.Level.GetStdLevel()
     return StdLevel
 end
 
@@ -114,13 +115,11 @@ end
 -- Return the Level associated with the name or nil if the Level cannot be found.
 -- @param name The Level's name
 -- @return object level
-function _M.GetLevel(name)
-    local customLevels = GetAllCustomLevel()
-
+function Log4g.Level.GetLevel(name)
     if StdLevel[name] then
         return StdLevel[name]
-    elseif customLevels[name] then
-        return customLevels[name]
+    elseif CustomLevel[name] then
+        return CustomLevel[name]
     end
 end
 
@@ -129,21 +128,18 @@ end
 -- @param name The Level's name
 -- @param int The Level's intlevel
 -- @return object level
-function _M.ForName(name, int)
+function Log4g.Level.ForName(name, int)
     if not isstring(name) or not isnumber(int) or StdLevel[name] then return end
     if #name == 0 or int <= 0 then return end
-    local customLevels = GetAllCustomLevel()
 
-    if not customLevels[name] then
+    if not CustomLevel[name] then
         local level = Level(name, int)
-        customLevels[name] = level
+        CustomLevel[name] = level
 
         return level
     else
-        customLevels[name].int = int
+        CustomLevel[name].int = int
 
-        return customLevels[name]
+        return CustomLevel[name]
     end
 end
-
-return _M

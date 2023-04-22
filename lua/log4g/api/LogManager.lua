@@ -1,7 +1,7 @@
 --- The anchor point for the Log4g logging system.
 -- @script LogManager
 Log4g.API.LogManager = Log4g.API.LogManager or {}
-local GetAllContexts = include("log4g/core/LoggerContext.lua").GetAll
+local GetAllContexts = Log4g.Core.LoggerContext.GetAll
 local isstring = isstring
 local next, pairs = next, pairs
 

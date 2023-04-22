@@ -35,13 +35,13 @@ if Log4g then
       local ctx = Log4g.API.LoggerContextFactory.GetContext("Foo", true)
 
       --- This will create a new LoggerConfig named 'Calculator' and it to ctx's Configuration, then set its level to DEBUG.
-      local lc = include("log4g/core/config/LoggerConfig.lua").Create("Calculator", ctx:GetConfiguration(), include("log4g/core/Level.lua").GetLevel("TRACE"))
+      local lc = Log4g.Core.Config.LoggerConfig.Create("Calculator", ctx:GetConfiguration(), Log4g.Level.GetLevel("TRACE"))
 
       --- It will add a ConsoleAppender to lc and set its layout to PatternLayout with default settings.
       lc:AddAppender(Log4g.Core.Appender.CreateConsoleAppender("CalcOutput", Log4g.Core.Layout.PatternLayout.CreateDefaultLayout("CalcLayout")))
 
       --- This will create a Logger named 'Calculate' using lc and add it to ctx.
-      local logger = include("log4g/core/Logger.lua").Create("Calculate", ctx, lc)
+      local logger = Log4g.Core.Logger.Create("Calculate", ctx, lc)
 
       for i = 1, 100 do
          --- Do something with i, and log messages.

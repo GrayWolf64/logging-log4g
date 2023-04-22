@@ -3,11 +3,8 @@
 -- @classmod Configuration
 -- @license Apache License 2.0
 -- @copyright GrayWolf64
-local _M = _M or {}
-local t = t or 0
-if t >= 1 then return _M end
-t = t + 1
-local LifeCycle = include("log4g/core/LifeCycle.lua").GetClass()
+Log4g.Core.Config.Configuration = Log4g.Core.Config.Configuration or {}
+local LifeCycle = Log4g.Core.LifeCycle.GetClass()
 local Configuration = LifeCycle:subclass("Configuration")
 local isstring = isstring
 local SysTime = SysTime
@@ -90,15 +87,13 @@ function Configuration:GetUpTime()
     return SysTime() - self:GetPrivateField("start")
 end
 
-function _M.GetClass()
+function Log4g.Core.Config.Configuration.GetClass()
     return Configuration
 end
 
 --- Create a Configuration.
 -- @param name The name of the Configuration
 -- @return object configuration
-function _M.Create(name)
+function Log4g.Core.Config.Configuration.Create(name)
     return Configuration(name)
 end
-
-return _M
