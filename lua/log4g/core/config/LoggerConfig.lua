@@ -4,8 +4,8 @@
 -- @classmod LoggerConfig
 -- @license Apache License 2.0
 -- @copyright GrayWolf64
-Log4g.Core.Config.LoggerConfig = Log4g.Core.Config.LoggerConfig or {}
-local LifeCycle = Log4g.Core.LifeCycle.GetClass()
+local _M = {}
+local LifeCycle = include("log4g/core/LifeCycle.lua").GetClass()
 local LoggerConfig = LifeCycle:subclass("LoggerConfig")
 local GetCtx, GetAllCtx = include("log4g/core/LoggerContext.lua").Get, include("log4g/core/LoggerContext.lua").GetAll
 local GetLevel = Log4g.Level.GetLevel
@@ -159,7 +159,7 @@ function RootLoggerConfig:GetParent()
     return false
 end
 
-function Log4g.Core.Config.LoggerConfig.GetRootLoggerConfigClass()
+function _M.GetRootLoggerConfigClass()
     return RootLoggerConfig
 end
 
@@ -191,7 +191,7 @@ end
 -- @param config The Configuration
 -- @param level The Logging Level
 -- @return object loggerconfig
-function Log4g.Core.Config.LoggerConfig.Create(name, config, level)
+function _M.Create(name, config, level)
     local root = GetConVar("log4g_rootLogger"):GetString()
     if not IsConfiguration(config) or name == root then return end
     local lc = LoggerConfig(name)
@@ -220,4 +220,6 @@ function Log4g.Core.Config.LoggerConfig.Create(name, config, level)
     return lc
 end
 
-Log4g.Core.Config.LoggerConfig.HasLoggerConfig = HasLoggerConfig
+_M.HasLoggerConfig = HasLoggerConfig
+
+return _M

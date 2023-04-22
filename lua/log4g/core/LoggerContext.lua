@@ -100,6 +100,7 @@ end
 -- @return object loggercontext
 function _M.Register(name, withconfig)
     local ctx = GetContextDictionary()[name]
+
     if ctx and IsLoggerContext(ctx) then return ctx end
     ctx = LoggerContext(name)
 
