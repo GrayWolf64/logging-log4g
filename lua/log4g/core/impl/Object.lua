@@ -22,28 +22,6 @@ function Object:__tostring()
     return "Object: [name:" .. self:GetName() .. "]"
 end
 
-local classes = {}
-
-function Object.static:subclassed(sub)
-    local pclass, cclass, obj = self.name, sub.name, "Object"
-
-    local function initTableField(tbl, key)
-        if tbl[key] then return end
-        tbl[key] = {}
-    end
-
-    initTableField(classes, pclass)
-    initTableField(classes, cclass)
-    classes[pclass][cclass] = true
-    classes[obj][cclass] = true
-    if pclass == obj then return end
-    classes[obj][pclass] = true
-end
-
-function Log4g.Core.Object.GetClassHierarchy()
-    return classes
-end
-
 function Object:SetName(name)
     if not isstring(name) then return end
     PRIVATE[self].name = name
