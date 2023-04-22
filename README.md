@@ -21,6 +21,7 @@ Log4g is an advanced logging framework for Garry's Mod.
 
 ## How to Add It To Your Project / How to Test?
 
+(not updated)
 Simply clone this project and extract the project folder into your `garrysmod/addons` folder.
 Then you just have to make sure it loads before your addon, or you can use valid checks:
 
