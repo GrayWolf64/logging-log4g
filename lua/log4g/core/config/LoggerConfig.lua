@@ -4,11 +4,14 @@
 -- @classmod LoggerConfig
 -- @license Apache License 2.0
 -- @copyright GrayWolf64
-local _M = {}
+local _M = _M or {}
+local t = t or 0
+if t >= 1 then return _M end
+t = t + 1
 local LifeCycle = include("log4g/core/LifeCycle.lua").GetClass()
 local LoggerConfig = LifeCycle:subclass("LoggerConfig")
 local GetCtx, GetAllCtx = include("log4g/core/LoggerContext.lua").Get, include("log4g/core/LoggerContext.lua").GetAll
-local GetLevel = Log4g.Level.GetLevel
+local GetLevel = include("log4g/core/Level.lua").GetLevel
 local pairs, isstring, next = pairs, isstring, next
 local concat = table.concat
 local TypeUtil, StringUtil = include("log4g/core/util/TypeUtil.lua"), include("log4g/core/util/StringUtil.lua")

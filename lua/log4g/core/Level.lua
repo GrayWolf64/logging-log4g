@@ -3,7 +3,10 @@
 -- Every standard Level has a [Color](https://wiki.facepunch.com/gmod/Color).
 -- Subclassing 'Object'.
 -- @classmod Level
-local _M = {}
+local _M = _M or {}
+local t = t or 0
+if t >= 1 then return _M end
+t = t + 1
 local Object = Log4g.Core.Object.GetClass()
 local Level = Object:subclass("Level")
 local isstring, isnumber = isstring, isnumber

@@ -8,7 +8,7 @@ local _M = _M or {}
 local t = t or 0
 if t >= 1 then return _M end
 t = t + 1
-local LifeCycle = Log4g.Core.LifeCycle.GetClass()
+local LifeCycle = include("log4g/core/LifeCycle.lua").GetClass()
 local LoggerContext = LifeCycle:subclass"LoggerContext"
 local TypeUtil = include"log4g/core/util/TypeUtil.lua"
 local GetDefaultConfiguration = Log4g.Core.Config.GetDefaultConfiguration
@@ -100,7 +100,6 @@ end
 -- @return object loggercontext
 function _M.Register(name, withconfig)
     local ctx = GetContextDictionary()[name]
-
     if ctx and IsLoggerContext(ctx) then return ctx end
     ctx = LoggerContext(name)
 

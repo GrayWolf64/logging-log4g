@@ -9,7 +9,10 @@
 -- @classmod LifeCycle
 -- @license Apache License 2.0
 -- @copyright GrayWolf64
-local _M = {}
+local _M = _M or {}
+local t = t or 0
+if t >= 1 then return _M end
+t = t + 1
 local Object = Log4g.Core.Object.GetClass()
 local LifeCycle = Object:subclass("LifeCycle")
 local isfunction = isfunction
