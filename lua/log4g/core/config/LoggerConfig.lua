@@ -5,7 +5,7 @@
 -- @license Apache License 2.0
 -- @copyright GrayWolf64
 local _M = {}
-local LifeCycle = Log4g.Core.LifeCycle.GetClass()
+local LifeCycle = include("log4g/core/LifeCycle.lua").GetClass()
 local LoggerConfig = LifeCycle:subclass("LoggerConfig")
 local GetCtx, GetAllCtx = include("log4g/core/LoggerContext.lua").Get, include("log4g/core/LoggerContext.lua").GetAll
 local GetLevel = include("log4g/core/Level.lua").GetLevel

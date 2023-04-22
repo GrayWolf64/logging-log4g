@@ -5,7 +5,7 @@
 -- @license Apache License 2.0
 -- @copyright GrayWolf64
 local _M = {}
-local LifeCycle = Log4g.Core.LifeCycle.GetClass()
+local LifeCycle = include("log4g/core/LifeCycle.lua").GetClass()
 local LoggerContext = LifeCycle:subclass("LoggerContext")
 local GetDefaultConfiguration = Log4g.Core.Config.GetDefaultConfiguration
 local isstring = isstring
