@@ -6,15 +6,15 @@ local include = include
 local fileExists = file.Exists
 local MMC = "log4g/mmc-gui/MMC.lua"
 
-local function checkAndInclude(filename, addcslf)
+local function checkAndInclude(provider, filename, addcslf)
     if fileExists(filename, "lsv") then
         include(filename)
-        MsgN("Log4g successfully included '" .. filename .. "'.")
+        MsgN(provider .. " successfully included '" .. filename .. "'.")
         if addcslf ~= true then return end
         AddCSLuaFile(filename)
-        MsgN("Log4g successfully sent '" .. filename .. "' to client.")
+        MsgN(provider .. " successfully sent '" .. filename .. "' to client.")
     else
-        MsgN("Log4g tried to include '" .. filename .. "' but failed due to non-existence.")
+        MsgN(provider .. " tried to include '" .. filename .. "' but failed due to non-existence.")
     end
 end
 
@@ -81,10 +81,10 @@ if SERVER then
         return packages
     end
 
-    checkAndInclude("log4g/core/Core.lua")
-    checkAndInclude("log4g/api/API.lua")
-    checkAndInclude(MMC, true)
-    checkAndInclude("log4g/core-test/CoreTest.lua")
+    checkAndInclude("Log4g sv-init", "log4g/core/Core.lua")
+    checkAndInclude("Log4g sv-init", "log4g/api/API.lua")
+    checkAndInclude("Log4g sv-init", MMC, true)
+    checkAndInclude("Log4g sv-init", "log4g/core-test/CoreTest.lua")
 elseif CLIENT then
-    checkAndInclude(MMC)
+    checkAndInclude("Log4g cl-init", MMC)
 end
