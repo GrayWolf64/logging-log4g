@@ -1,4 +1,4 @@
-local LoggerContext = Log4g.GetPackageClassFuncs("log4g-core", "LoggerContext")
+local LoggerContext = Log4g.GetPkgClsFuncs("log4g-core", "LoggerContext")
 local Get = LoggerContext.get
 local GetContext = Log4g.API.LoggerContextFactory.GetContext
 

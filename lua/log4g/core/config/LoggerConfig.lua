@@ -7,9 +7,9 @@
 Log4g.Core.Config.LoggerConfig = Log4g.Core.Config.LoggerConfig or {}
 local LifeCycle = Log4g.Core.LifeCycle.GetClass()
 local LoggerConfig = LifeCycle:subclass("LoggerConfig")
-local LoggerContext = Log4g.GetPackageClassFuncs("log4g-core", "LoggerContext")
+local LoggerContext = Log4g.GetPkgClsFuncs("log4g-core", "LoggerContext")
 local GetCtx, GetAllCtx = LoggerContext.get, LoggerContext.getAll
-local GetLevel = Log4g.Level.GetLevel
+local GetLevel = Log4g.GetPkgClsFuncs("log4g-core", "Level").getLevel
 local pairs, isstring, next = pairs, isstring, next
 local concat = table.concat
 local TypeUtil, StringUtil = include("log4g/core/util/TypeUtil.lua"), include("log4g/core/util/StringUtil.lua")

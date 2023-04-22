@@ -65,7 +65,7 @@ if SERVER then
         return packages[name].version
     end
 
-    function Log4g.GetPackageClassFuncs(pname, cname)
+    function Log4g.GetPkgClsFuncs(pname, cname)
         if not isstring(pname) or not isstring(cname) then return end
         local p = packages[pname]
         if not p then return end

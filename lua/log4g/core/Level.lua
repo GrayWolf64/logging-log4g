@@ -3,7 +3,6 @@
 -- Every standard Level has a [Color](https://wiki.facepunch.com/gmod/Color).
 -- Subclassing 'Object'.
 -- @classmod Level
-Log4g.Level = Log4g.Level or {}
 local Object = Log4g.Core.Object.GetClass()
 local Level = Object:subclass("Level")
 local isstring, isnumber = isstring, isnumber
@@ -56,7 +55,7 @@ local CustomLevel = CustomLevel or {}
 
 --- Get the Custom Levels as a table.
 -- @return table customlevel
-function Log4g.Level.GetCustomLevel()
+local function GetCustomLevel()
     return CustomLevel
 end
 
@@ -107,7 +106,7 @@ end
 
 --- Get the Standard Levels as a table.
 -- @return table StdLevel
-function Log4g.Level.GetStdLevel()
+local function GetStdLevel()
     return StdLevel
 end
 
@@ -115,7 +114,7 @@ end
 -- Return the Level associated with the name or nil if the Level cannot be found.
 -- @param name The Level's name
 -- @return object level
-function Log4g.Level.GetLevel(name)
+local function GetLevel(name)
     if StdLevel[name] then
         return StdLevel[name]
     elseif CustomLevel[name] then
@@ -128,7 +127,7 @@ end
 -- @param name The Level's name
 -- @param int The Level's intlevel
 -- @return object level
-function Log4g.Level.ForName(name, int)
+local function ForName(name, int)
     if not isstring(name) or not isnumber(int) or StdLevel[name] then return end
     if #name == 0 or int <= 0 then return end
 
@@ -143,3 +142,10 @@ function Log4g.Level.ForName(name, int)
         return CustomLevel[name]
     end
 end
+
+Log4g.RegisterPackageClass("log4g-core", "Level", {
+    forName = ForName,
+    getLevel = GetLevel,
+    getStdLevel = GetStdLevel,
+    getCustomLevel = GetCustomLevel
+})

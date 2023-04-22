@@ -5,13 +5,13 @@
 Log4g.Core.Logger = Log4g.Core.Logger or {}
 local Object = Log4g.Core.Object.GetClass()
 local Logger = Object:subclass("Logger")
-local GetCtx = Log4g.GetPackageClassFuncs("log4g-core", "LoggerContext").get
+local GetCtx = Log4g.GetPkgClsFuncs("log4g-core", "LoggerContext").get
 local TypeUtil, StringUtil = include("log4g/core/util/TypeUtil.lua"), include("log4g/core/util/StringUtil.lua")
 local QualifyName, StripDotExtension = StringUtil.QualifyName, StringUtil.StripDotExtension
 local IsLoggerConfig, IsLoggerContext = TypeUtil.IsLoggerConfig, TypeUtil.IsLoggerContext
 local IsLevel, IsLogEvent = TypeUtil.IsLevel, TypeUtil.IsLogEvent
 TypeUtil, StringUtil = nil, nil
-local GetLevel = Log4g.Level.GetLevel
+local GetLevel = Log4g.GetPkgClsFuncs("log4g-core", "Level").getLevel
 local next, pairs = next, pairs
 local isstring, isbool = isstring, isbool
 local HasLoggerConfig = Log4g.Core.Config.LoggerConfig.HasLoggerConfig
