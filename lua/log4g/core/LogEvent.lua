@@ -4,7 +4,7 @@
 Log4g.Core.LogEvent = Log4g.Core.LogEvent or {}
 local Object = Log4g.Core.Object.GetClass()
 local LogEvent = Object:subclass("LogEvent")
-local IsLevel = include"log4g/core/util/TypeUtil.lua".IsLevel
+local IsLevel = include("log4g/core/util/TypeUtil.lua").IsLevel
 local SysTime, debug_getinfo = SysTime, debug.getinfo
 local isstring = isstring
 

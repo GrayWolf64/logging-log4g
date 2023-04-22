@@ -6,8 +6,8 @@
 local _M = {}
 local Object = Log4g.Core.Object.GetClass()
 local Level = Object:subclass("Level")
-local IsLevel = include"log4g/core/util/TypeUtil.lua".IsLevel
 local isstring, isnumber = isstring, isnumber
+local IsLevel = include("log4g/core/util/TypeUtil.lua").IsLevel
 local GetAllCustomLevel = Log4g.Core.GetAllCustomLevel
 
 function Level:Initialize(name, int, color)

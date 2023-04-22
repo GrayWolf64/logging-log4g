@@ -6,9 +6,9 @@
 local _M = {}
 local LifeCycle = include("log4g/core/LifeCycle.lua").GetClass()
 local Configuration = LifeCycle:subclass("Configuration")
-local IsAppender = include"log4g/core/util/TypeUtil.lua".IsAppender
 local isstring = isstring
 local SysTime = SysTime
+local IsAppender = include("log4g/core/util/TypeUtil.lua").IsAppender
 
 function Configuration:Initialize(name)
     LifeCycle.Initialize(self)

@@ -7,8 +7,8 @@ local SHA256 = util.SHA256
 local tostring, isstring = tostring, isstring
 local ipairs = ipairs
 local tableInsert, tableConcat = table.insert, table.concat
-local StripDotExtension = include"log4g/core/util/StringUtil.lua".StripDotExtension
-local Object = include"log4g/core/impl/MiddleClass.lua""Object"
+local StripDotExtension = include("log4g/core/util/StringUtil.lua").StripDotExtension
+local Object = include("log4g/core/impl/MiddleClass.lua")("Object")
 
 local PRIVATE = PRIVATE or setmetatable({}, {
     __mode = "k"

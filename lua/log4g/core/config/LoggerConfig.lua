@@ -5,22 +5,22 @@
 -- @license Apache License 2.0
 -- @copyright GrayWolf64
 local _M = {}
-local LifeCycle = include"log4g/core/LifeCycle.lua".GetClass()
+local LifeCycle = include("log4g/core/LifeCycle.lua").GetClass()
 local LoggerConfig = LifeCycle:subclass("LoggerConfig")
-local LoggerContext = include"log4g/core/LoggerContext.lua"
-local GetLevel = include"log4g/core/Level.lua".GetLevel
-local TypeUtil = include"log4g/core/util/TypeUtil.lua"
-local StringUtil = include"log4g/core/util/StringUtil.lua"
+local GetCtx, GetAllCtx = include("log4g/core/LoggerContext.lua").Get, include("log4g/core/LoggerContext.lua").GetAll
+local GetLevel = include("log4g/core/Level.lua").GetLevel
 local pairs, isstring, next = pairs, isstring, next
 local concat = table.concat
+local TypeUtil, StringUtil = include("log4g/core/util/TypeUtil.lua"), include("log4g/core/util/StringUtil.lua")
 local IsAppender, IsLoggerConfig = TypeUtil.IsAppender, TypeUtil.IsLoggerConfig
 local IsLoggerContext = TypeUtil.IsLoggerContext
 local IsConfiguration, IsLevel = TypeUtil.IsConfiguration, TypeUtil.IsLevel
 local QualifyName = StringUtil.QualifyName
 local EnumerateAncestors = Log4g.Core.Object.EnumerateAncestors
+TypeUtil, StringUtil = nil, nil
 
 cvars.AddChangeCallback(CreateConVar("log4g_rootLogger", "root", FCVAR_NOTIFY):GetName(), function(cvarn)
-    if not QualifyName(newn, false) or next(LoggerContext.GetAll()) then
+    if not QualifyName(newn, false) or next(GetAllCtx()) then
         GetConVar(cvarn):Revert()
     end
 end)
@@ -51,7 +51,7 @@ local function HasLoggerConfig(name, context)
     local getlc = function(ctx, lcn) return ctx:GetConfiguration():GetLoggerConfig(lcn) end
 
     if not context or not IsLoggerContext(context) then
-        for _, v in pairs(LoggerContext.GetAll()) do
+        for _, v in pairs(GetAllCtx()) do
             if getlc(v, name) then return true end
         end
     else
@@ -62,7 +62,7 @@ local function HasLoggerConfig(name, context)
 end
 
 local function GetLoggerConfig(name)
-    for _, v in pairs(LoggerContext.GetAll()) do
+    for _, v in pairs(GetAllCtx()) do
         local lc = v:GetConfiguration():GetLoggerConfig(name)
         if lc then return lc end
     end
@@ -72,7 +72,7 @@ end
 -- @param T LoggerConfig object or LoggerConfig name
 function LoggerConfig:SetParent(T)
     if isstring(T) then
-        if not HasLoggerConfig(T, LoggerContext.Get(self:GetContext())) then return end
+        if not HasLoggerConfig(T, GetCtx(self:GetContext())) then return end
         self:SetPrivateField("parent", T)
     elseif IsLoggerConfig(T) and T:GetContext() == self:GetContext() then
         self:SetPrivateField("parent", T:GetName())
@@ -109,13 +109,13 @@ function LoggerConfig:AddAppender(ap)
     if not IsAppender(ap) then return end
     self:GetAppenderRef()[ap:GetName()] = true
 
-    return LoggerContext.Get(self:GetContext()):GetConfiguration():AddAppender(ap, self:GetName())
+    return GetCtx(self:GetContext()):GetConfiguration():AddAppender(ap, self:GetName())
 end
 
 --- Returns all Appenders configured by this LoggerConfig in a form of table (keys are Appenders, values are booleans).
 -- @return table appenders
 function LoggerConfig:GetAppenders()
-    local appenders, config, apref = {}, LoggerContext.Get(self:GetContext()):GetConfiguration(), self:GetAppenderRef()
+    local appenders, config, apref = {}, GetCtx(self:GetContext()):GetConfiguration(), self:GetAppenderRef()
     if not next(apref) then return end
 
     for k in pairs(apref) do
@@ -127,7 +127,7 @@ end
 
 --- Removes all Appenders configured by this LoggerConfig.
 function LoggerConfig:ClearAppenders()
-    local config, apref = LoggerContext.Get(self:GetContext()):GetConfiguration(), self:GetAppenderRef()
+    local config, apref = GetCtx(self:GetContext()):GetConfiguration(), self:GetAppenderRef()
     if not next(apref) then return end
 
     for k in pairs(apref) do
@@ -172,7 +172,7 @@ local function ValidateAncestors(lc)
     local ancestors, nodes = EnumerateAncestors(lc:GetName())
 
     local function HasEveryLoggerConfig(tbl)
-        local ctx = LoggerContext.Get(lc:GetContext())
+        local ctx = GetCtx(lc:GetContext())
 
         for k in pairs(tbl) do
             if not HasLoggerConfig(k, ctx) then return false end
