@@ -2,7 +2,7 @@ local Get = include("log4g/core/LoggerContext.lua").Get
 local GetContext = Log4g.API.LoggerContextFactory.GetContext
 
 concommand.Add("log4g_coretest_createLoggerContext", function()
-    GetContext("X")
+    GetContext("X", false)
     GetContext("Y", false)
 end)
 
