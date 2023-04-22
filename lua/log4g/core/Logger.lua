@@ -14,7 +14,7 @@ TypeUtil, StringUtil = nil, nil
 local GetLevel = Log4g.GetPkgClsFuncs("log4g-core", "Level").getLevel
 local next, pairs = next, pairs
 local isstring, isbool = isstring, isbool
-local HasLoggerConfig = Log4g.Core.Config.LoggerConfig.HasLoggerConfig
+local HasLoggerConfig = Log4g.GetPkgClsFuncs("log4g-core", "LoggerConfig").hasLoggerConfig
 local EnumerateAncestors = Log4g.Core.Object.EnumerateAncestors
 local LogEventBuilder = Log4g.Core.LogEvent.Builder
 
