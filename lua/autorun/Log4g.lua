@@ -73,6 +73,10 @@ if SERVER then
         return p.classes[cname]
     end
 
+    function Log4g.GetAllPackages()
+        return packages
+    end
+
     checkAndInclude("log4g/core/Core.lua")
     checkAndInclude("log4g/api/API.lua")
     checkAndInclude(MMC, true)

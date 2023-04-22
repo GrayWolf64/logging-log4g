@@ -3,7 +3,6 @@
 -- @classmod Configuration
 -- @license Apache License 2.0
 -- @copyright GrayWolf64
-Log4g.Core.Config.Configuration = Log4g.Core.Config.Configuration or {}
 local LifeCycle = Log4g.GetPkgClsFuncs("log4g-core", "LifeCycle").getClass()
 local Configuration = LifeCycle:subclass("Configuration")
 local isstring = isstring
@@ -87,13 +86,20 @@ function Configuration:GetUpTime()
     return SysTime() - self:GetPrivateField("start")
 end
 
-function Log4g.Core.Config.Configuration.GetClass()
-    return Configuration
-end
-
 --- Create a Configuration.
 -- @param name The name of the Configuration
 -- @return object configuration
-function Log4g.Core.Config.Configuration.Create(name)
+local function Create(name)
+    if not isstring(name) then return end
+
     return Configuration(name)
 end
+
+local function GetClass()
+    return Configuration
+end
+
+Log4g.RegisterPackageClass("log4g-core", "Configuration", {
+    getClass = GetClass,
+    create = Create
+})
