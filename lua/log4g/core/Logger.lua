@@ -2,7 +2,6 @@
 -- @classmod Logger
 -- @license Apache License 2.0
 -- @copyright GrayWolf64
-Log4g.Core.Logger = Log4g.Core.Logger or {}
 local Object = Log4g.Core.Object.GetClass()
 local Logger = Object:subclass("Logger")
 local GetCtx = Log4g.GetPkgClsFuncs("log4g-core", "LoggerContext").get
@@ -151,7 +150,7 @@ function Logger:Fatal(msg)
     LogIfEnabled(self, "FATAL", msg)
 end
 
-function Log4g.Core.Logger.Create(name, context, loggerconfig)
+local function Create(name, context, loggerconfig)
     if not IsLoggerContext(context) then return end
     if context:HasLogger(name) or not QualifyName(name) then return end
     local logger, root = Logger(name, context), GetConVar("log4g_rootLogger"):GetString()
@@ -199,6 +198,11 @@ function Log4g.Core.Logger.Create(name, context, loggerconfig)
     return logger
 end
 
-function Log4g.Core.Logger.GetClass()
+local function GetClass()
     return Logger
 end
+
+Log4g.RegisterPackageClass("log4g-core", "Logger", {
+    getClass = GetClass,
+    create = Create
+})

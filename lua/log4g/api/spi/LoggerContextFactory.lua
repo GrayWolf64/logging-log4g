@@ -3,7 +3,7 @@
 Log4g.API.LoggerContextFactory = Log4g.API.LoggerContextFactory or {}
 local RegisterLoggerContext = Log4g.GetPkgClsFuncs("log4g-core", "LoggerContext").register
 local RootLoggerConfigClass = Log4g.GetPkgClsFuncs("log4g-core", "LoggerConfig").getRootLoggerConfigClass
-local CreateLogger = Log4g.Core.Logger.Create
+local CreateLogger = Log4g.GetPkgClsFuncs("log4g-core", "Logger").create
 
 --- Create a LoggerContext.
 -- This is meant to be used in Programmatic Configuration.

@@ -28,34 +28,25 @@ Then you just have to make sure it loads before your addon, or you can use valid
 ```lua
 --- Check the 'Log4g' global table.
 if Log4g then
+   --- This will locate / create a proper LoggerContext named 'Foo' with DefaultConfiguration.
+   local ctx = Log4g.API.LoggerContextFactory.GetContext("Foo", true)
 
-   --- Do some calculation here.
-   local function Calculate()
+   --- This will create a new LoggerConfig named 'Calculator' and it to ctx's Configuration, then set its level to DEBUG.
+   local lc = Log4g.Core.Config.LoggerConfig.Create("Calculator", ctx:GetConfiguration(), Log4g.Level.GetLevel("TRACE"))
 
-      --- This will locate / create a proper LoggerContext named 'Foo' with DefaultConfiguration.
-      local ctx = Log4g.API.LoggerContextFactory.GetContext("Foo", true)
+   --- It will add a ConsoleAppender to lc and set its layout to PatternLayout with default settings.
+   lc:AddAppender(Log4g.Core.Appender.CreateConsoleAppender("CalcOutput", Log4g.Core.Layout.PatternLayout.CreateDefaultLayout("CalcLayout")))
 
-      --- This will create a new LoggerConfig named 'Calculator' and it to ctx's Configuration, then set its level to DEBUG.
-      local lc = Log4g.Core.Config.LoggerConfig.Create("Calculator", ctx:GetConfiguration(), Log4g.Level.GetLevel("TRACE"))
+   --- This will create a Logger named 'Calculate' using lc and add it to ctx.
+   local logger = Log4g.GetPkgClsFuncs("log4g-core", "Logger").create("Calculate", ctx, lc)
 
-      --- It will add a ConsoleAppender to lc and set its layout to PatternLayout with default settings.
-      lc:AddAppender(Log4g.Core.Appender.CreateConsoleAppender("CalcOutput", Log4g.Core.Layout.PatternLayout.CreateDefaultLayout("CalcLayout")))
+   for i = 1, 100 do
+      --- Do something with i, and log messages.
+      -- Note that when this was written, the logging system isn't finished yet,
+      -- so I just leave it simple here, for now.
 
-      --- This will create a Logger named 'Calculate' using lc and add it to ctx.
-      local logger = Log4g.Core.Logger.Create("Calculate", ctx, lc)
-
-      for i = 1, 100 do
-         --- Do something with i, and log messages.
-         -- Note that when this was written, the logging system isn't finished yet,
-         -- so I just leave it simple here, for now.
-
-         logger:Debug("Calculated: " .. i .. " times.")
-      end
-
+      logger:Debug("Calculated: " .. i .. " times.")
    end
-
-   Calculate()
-
 end
 ```
 
