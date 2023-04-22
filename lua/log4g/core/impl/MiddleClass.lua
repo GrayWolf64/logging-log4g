@@ -1,14 +1,39 @@
---- A simple OOP library for Lua which has inheritance, metamethods, class variables and weak mixin support.
--- @module MiddleClass
--- @license MIT License
--- @copyright Enrique García Cota
-local MiddleClass = {}
-local isstring, istable, isfunction = isstring, istable, isfunction
+local middleclass = {
+    _VERSION = "middleclass v4.1.1",
+    _DESCRIPTION = "Object Orientation for Lua",
+    _URL = "https://github.com/kikito/middleclass",
+    _LICENSE = [[
+      MIT LICENSE
+  
+      Copyright (c) 2011 Enrique García Cota
+  
+      Permission is hereby granted, free of charge, to any person obtaining a
+      copy of this software and associated documentation files (the
+      "Software"), to deal in the Software without restriction, including
+      without limitation the rights to use, copy, modify, merge, publish,
+      distribute, sublicense, and/or sell copies of the Software, and to
+      permit persons to whom the Software is furnished to do so, subject to
+      the following conditions:
+  
+      The above copyright notice and this permission notice shall be included
+      in all copies or substantial portions of the Software.
+  
+      THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+      OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+      MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+      IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
+      CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
+      TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+      SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+    ]]
+}
+
+local assert, type = assert, type
 
 local function _createIndexWrapper(aClass, f)
     if f == nil then
         return aClass.__instanceDict
-    elseif isfunction(f) then
+    elseif type(f) == "function" then
         return function(self, name)
             local value = aClass.__instanceDict[name]
 
@@ -18,7 +43,7 @@ local function _createIndexWrapper(aClass, f)
                 return f(self, name)
             end
         end
-    else
+    else -- if  type(f) == "table" then
         return function(self, name)
             local value = aClass.__instanceDict[name]
 
@@ -57,7 +82,7 @@ local function _tostring(self)
 end
 
 local function _call(self, ...)
-    return self:New(...)
+    return self:new(...)
 end
 
 local function _createClass(name, super)
@@ -71,8 +96,8 @@ local function _createClass(name, super)
         __instanceDict = dict,
         __declaredMethods = {},
         subclasses = setmetatable({}, {
-            __mode = "k",
-        }),
+            __mode = 'k'
+        })
     }
 
     if super then
@@ -82,11 +107,11 @@ local function _createClass(name, super)
                 if result == nil then return super.static[k] end
 
                 return result
-            end,
+            end
         })
     else
         setmetatable(aClass.static, {
-            __index = function(_, k) return rawget(dict, k) end,
+            __index = function(_, k) return rawget(dict, k) end
         })
     end
 
@@ -94,14 +119,14 @@ local function _createClass(name, super)
         __index = aClass.static,
         __tostring = _tostring,
         __call = _call,
-        __newindex = _declareInstanceMethod,
+        __newindex = _declareInstanceMethod
     })
 
     return aClass
 end
 
 local function _includeMixin(aClass, mixin)
-    if not istable(mixin) then return end
+    assert(type(mixin) == "table", "mixin must be a table")
 
     for name, method in pairs(mixin) do
         if name ~= "included" and name ~= "static" then
@@ -113,7 +138,7 @@ local function _includeMixin(aClass, mixin)
         aClass.static[name] = method
     end
 
-    if isfunction(mixin.included) then
+    if type(mixin.included) == "function" then
         mixin:included(aClass)
     end
 
@@ -122,34 +147,35 @@ end
 
 local DefaultMixin = {
     __tostring = function(self) return "instance of " .. tostring(self.class) end,
-    Initialize = function(self, ...) end,
+    initialize = function(self, ...) end,
     isInstanceOf = function(self, aClass) return type(aClass) == "table" and type(self) == "table" and (self.class == aClass or type(self.class) == "table" and type(self.class.isSubclassOf) == "function" and self.class:isSubclassOf(aClass)) end,
     static = {
         allocate = function(self)
-            if not istable(self) then return end
+            assert(type(self) == "table", "Make sure that you are using 'Class:allocate' instead of 'Class.allocate'")
 
             return setmetatable({
-                class = self,
+                class = self
             }, self.__instanceDict)
         end,
-        New = function(self, ...)
-            if not istable(self) then return end
+        new = function(self, ...)
+            assert(type(self) == "table", "Make sure that you are using 'Class:new' instead of 'Class.new'")
             local instance = self:allocate()
-            instance:Initialize(...)
+            instance:initialize(...)
 
             return instance
         end,
         subclass = function(self, name)
-            if not istable(self) or not isstring(name) then return end
+            assert(type(self) == "table", "Make sure that you are using 'Class:subclass' instead of 'Class.subclass'")
+            assert(type(name) == "string", "You must provide a name(string) for your class")
             local subclass = _createClass(name, self)
 
             for methodName, f in pairs(self.__instanceDict) do
-                if not (methodName == "__index" and istable(f)) then
+                if not (methodName == "__index" and type(f) == "table") then
                     _propagateInstanceMethod(subclass, methodName, f)
                 end
             end
 
-            subclass.Initialize = function(instance, ...) return self.Initialize(instance, ...) end
+            subclass.initialize = function(instance, ...) return self.initialize(instance, ...) end
             self.subclasses[subclass] = true
             self:subclassed(subclass)
 
@@ -158,25 +184,25 @@ local DefaultMixin = {
         subclassed = function(self, other) end,
         isSubclassOf = function(self, other) return type(other) == "table" and type(self.super) == "table" and (self.super == other or self.super:isSubclassOf(other)) end,
         include = function(self, ...)
-            if not istable(self) then return end
+            assert(type(self) == "table", "Make sure you that you are using 'Class:include' instead of 'Class.include'")
 
             for _, mixin in ipairs({...}) do
                 _includeMixin(self, mixin)
             end
 
             return self
-        end,
-    },
+        end
+    }
 }
 
-function MiddleClass.class(name, super)
-    if not isstring(name) then return end
+function middleclass.class(name, super)
+    assert(type(name) == "string", "A name (string) is needed for the new class")
 
     return super and super:subclass(name) or _includeMixin(_createClass(name), DefaultMixin)
 end
 
-setmetatable(MiddleClass, {
-    __call = function(_, ...) return MiddleClass.class(...) end,
+setmetatable(middleclass, {
+    __call = function(_, ...) return middleclass.class(...) end
 })
 
-return MiddleClass
+return middleclass
