@@ -15,8 +15,8 @@ TypeUtil = nil
 --- A dictionary for storing LoggerContext objects.
 -- Only one ContextDictionary exists in the logging system.
 -- @local
--- @table CDICT
-local CDICT = CDICT or {}
+-- @table ContextDict
+local ContextDict = ContextDict or {}
 
 function LoggerContext:Initialize(name)
     LifeCycle.Initialize(self)
@@ -71,7 +71,7 @@ end
 function LoggerContext:Terminate()
     local name = self:GetName()
     self:DestroyPrivateTable()
-    CDICT[name] = nil
+    ContextDict[name] = nil
 end
 
 --- Determines if the specified Logger exists.
@@ -84,7 +84,7 @@ function LoggerContext:HasLogger(name)
 end
 
 local function GetAll()
-    return CDICT
+    return ContextDict
 end
 
 --- Get the LoggerContext with the right name.
@@ -93,7 +93,7 @@ end
 local function Get(name)
     if not isstring(name) then return end
 
-    return CDICT[name]
+    return ContextDict[name]
 end
 
 --- Register a LoggerContext.
@@ -101,7 +101,7 @@ end
 -- @param withconfig Whether or not come with a DefaultConfiguration, leaving it nil will make it come with one
 -- @return object loggercontext
 local function Register(name, withconfig)
-    local ctx = CDICT[name]
+    local ctx = ContextDict[name]
     if ctx and IsLoggerContext(ctx) then return ctx end
     ctx = LoggerContext(name)
 
@@ -109,7 +109,7 @@ local function Register(name, withconfig)
         ctx:SetConfiguration(GetDefaultConfiguration())
     end
 
-    CDICT[name] = ctx
+    ContextDict[name] = ctx
 
     return ctx
 end
@@ -117,7 +117,7 @@ end
 local function GetLoggerCount()
     local num, tableCount = 0, table.Count
 
-    for _, v in pairs(CDICT) do
+    for _, v in pairs(ContextDict) do
         num = num + tableCount(v:GetLoggers())
     end
 
