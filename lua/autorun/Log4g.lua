@@ -32,8 +32,8 @@ if SERVER then
     -- Keys are the names of packages, and values are tables that hold the versions and classes for the particular package.
     -- The `classes` table in one package's named table may contain some functions and so on.
     -- @local
-    -- @table packages
-    local packages = packages or {}
+    -- @table Packages
+    local Packages = Packages or {}
 
     --- Register a package for use with Log4g.
     -- @param name The name of the package to register
@@ -41,7 +41,7 @@ if SERVER then
     function Log4g.RegisterPackage(name, ver)
         if not isstring(name) or not isstring(ver) then return end
 
-        packages[name] = {
+        Packages[name] = {
             version = ver,
             classes = {}
         }
@@ -49,14 +49,14 @@ if SERVER then
 
     function Log4g.RegisterPackageClass(pname, cname, tbl)
         if not isstring(pname) or not isstring(cname) or not istable(tbl) then return end
-        if not packages[pname] then return end
-        packages[pname].classes[cname] = tbl
+        if not Packages[pname] then return end
+        Packages[pname].classes[cname] = tbl
     end
 
     function Log4g.HasPackage(name)
         if not isstring(name) then return end
 
-        for k in pairs(packages) do
+        for k in pairs(Packages) do
             if k == name then return true end
         end
 
@@ -66,19 +66,19 @@ if SERVER then
     function Log4g.GetPackageVer(name)
         if not isstring(name) then return end
 
-        return packages[name].version
+        return Packages[name].version
     end
 
     function Log4g.GetPkgClsFuncs(pname, cname)
         if not isstring(pname) or not isstring(cname) then return end
-        local p = packages[pname]
+        local p = Packages[pname]
         if not p then return end
 
         return p.classes[cname]
     end
 
     function Log4g.GetAllPackages()
-        return packages
+        return Packages
     end
 
     checkAndInclude("Log4g sv-init", "log4g/core/Core.lua")

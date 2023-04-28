@@ -7,41 +7,63 @@ local tostring, isstring = tostring, isstring
 local ipairs = ipairs
 local StripDotExtension = include("log4g/core/util/StringUtil.lua").StripDotExtension
 local Object = include("log4g/core/impl/MiddleClass.lua")("Object")
+--- All the `Class` names in Log4g.
+-- @local
+-- @table Classes
+local Classes = Classes or {}
 
-local PRIVATE = PRIVATE or setmetatable({}, {
+--- A table for storing private properties of an object.
+-- @local
+-- @table Private
+local Private = Private or setmetatable({}, {
     __mode = "k"
 })
 
+local function getClassNames()
+    return Classes
+end
+
 function Object:Initialize()
-    PRIVATE[self] = {}
+    Private[self] = {}
 end
 
 function Object:__tostring()
     return "Object: [name:" .. self:GetName() .. "]"
 end
 
+function Object.static:subclassed(subclass)
+    local class = self.name
+    subclass = subclass.name
+
+    if not Classes[class] then
+        Classes[class] = {}
+    end
+
+    Classes.Object[subclass], Classes[class][subclass], Classes[subclass] = true, true, {}
+end
+
 function Object:SetName(name)
     if not isstring(name) then return end
-    PRIVATE[self].name = name
+    Private[self].name = name
 end
 
 function Object:GetName()
-    return PRIVATE[self].name
+    return Private[self].name
 end
 
 function Object:SetPrivateField(key, value)
     if not key or not value then return end
-    PRIVATE[self][key] = value
+    Private[self][key] = value
 end
 
 function Object:GetPrivateField(key)
     if not key then return end
 
-    return PRIVATE[self][key]
+    return Private[self][key]
 end
 
 function Object:DestroyPrivateTable()
-    PRIVATE[self] = nil
+    Private[self] = nil
 end
 
 --- Returns a hash code value for the object.
@@ -77,5 +99,6 @@ end
 
 Log4g.RegisterPackageClass("log4g-core", "Object", {
     getClass = GetClass,
-    enumerateAncestors = EnumerateAncestors
+    enumerateAncestors = EnumerateAncestors,
+    getClassNames = getClassNames
 })
