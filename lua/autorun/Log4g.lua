@@ -20,7 +20,6 @@ end
 
 if SERVER then
     local isstring = isstring
-    local pairs = pairs
     local istable = istable
     --- The global table for the logging system.
     -- It provides easy access to some functions for other components of the logging system that require them.
@@ -55,10 +54,7 @@ if SERVER then
 
     function Log4g.HasPackage(name)
         if not isstring(name) then return end
-
-        for k in pairs(Packages) do
-            if k == name then return true end
-        end
+        if Packages[name] then return true end
 
         return false
     end
