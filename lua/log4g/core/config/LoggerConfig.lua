@@ -5,19 +5,19 @@
 -- @license Apache License 2.0
 -- @copyright GrayWolf64
 local LifeCycle = Log4g.GetPkgClsFuncs("log4g-core", "LifeCycle").getClass()
-local LoggerConfig = LifeCycle:subclass("LoggerConfig")
 local LoggerContext = Log4g.GetPkgClsFuncs("log4g-core", "LoggerContext")
-local GetCtx, GetAllCtx = LoggerContext.get, LoggerContext.getAll
+local EnumerateAncestors = Log4g.GetPkgClsFuncs("log4g-core", "Object").enumerateAncestors
 local GetLevel = Log4g.GetPkgClsFuncs("log4g-core", "Level").getLevel
-local pairs, isstring, next = pairs, isstring, next
-local concat = table.concat
 local TypeUtil, StringUtil = include("log4g/core/util/TypeUtil.lua"), include("log4g/core/util/StringUtil.lua")
+local LoggerConfig = LifeCycle:subclass("LoggerConfig")
 local IsAppender, IsLoggerConfig = TypeUtil.IsAppender, TypeUtil.IsLoggerConfig
 local IsLoggerContext = TypeUtil.IsLoggerContext
 local IsConfiguration, IsLevel = TypeUtil.IsConfiguration, TypeUtil.IsLevel
 local QualifyName = StringUtil.QualifyName
-local EnumerateAncestors = Log4g.GetPkgClsFuncs("log4g-core", "Object").enumerateAncestors
 TypeUtil, StringUtil = nil, nil
+local GetCtx, GetAllCtx = LoggerContext.get, LoggerContext.getAll
+local pairs, isstring, next = pairs, isstring, next
+local concat = table.concat
 
 cvars.AddChangeCallback(CreateConVar("log4g_rootLogger", "root", FCVAR_NOTIFY):GetName(), function(cvarn)
     if not QualifyName(newn, false) or next(GetAllCtx()) then
