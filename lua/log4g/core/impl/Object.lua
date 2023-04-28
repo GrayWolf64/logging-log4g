@@ -5,7 +5,6 @@
 local SHA256 = util.SHA256
 local tostring, isstring = tostring, isstring
 local ipairs = ipairs
-local tableInsert, tableConcat = table.insert, table.concat
 local StripDotExtension = include("log4g/core/util/StringUtil.lua").StripDotExtension
 local Object = include("log4g/core/impl/MiddleClass.lua")("Object")
 
@@ -61,16 +60,16 @@ end
 -- @return table ancestors' names in a list-styled table
 -- @return table parent name but with dots removed in a table
 local function EnumerateAncestors(name)
-    local nodes, ancestors = StripDotExtension(name, false), {}
+    local nodes, ancestors, s = StripDotExtension(name, false), {}, ""
 
-    for k in ipairs(nodes) do
-        local ancestor = {}
-
-        for i = 1, k do
-            tableInsert(ancestor, nodes[i])
+    for k, v in ipairs(nodes) do
+        if k ~= 1 then
+            s = s .. "." .. v
+        else
+            s = s .. v
         end
 
-        ancestors[tableConcat(ancestor, ".")] = true
+        ancestors[s] = true
     end
 
     return ancestors, nodes
