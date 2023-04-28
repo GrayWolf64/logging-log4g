@@ -5,16 +5,16 @@
 local Object = Log4g.GetPkgClsFuncs("log4g-core", "Object").getClass()
 local Logger = Object:subclass("Logger")
 local GetCtx = Log4g.GetPkgClsFuncs("log4g-core", "LoggerContext").get
+local HasLoggerConfig = Log4g.GetPkgClsFuncs("log4g-core", "LoggerConfig").hasLoggerConfig
+local EnumerateAncestors = Log4g.GetPkgClsFuncs("log4g-core", "Object").enumerateAncestors
+local GetLevel = Log4g.GetPkgClsFuncs("log4g-core", "Level").getLevel
 local TypeUtil, StringUtil = include("log4g/core/util/TypeUtil.lua"), include("log4g/core/util/StringUtil.lua")
 local QualifyName, StripDotExtension = StringUtil.QualifyName, StringUtil.StripDotExtension
 local IsLoggerConfig, IsLoggerContext = TypeUtil.IsLoggerConfig, TypeUtil.IsLoggerContext
 local IsLevel, IsLogEvent = TypeUtil.IsLevel, TypeUtil.IsLogEvent
 TypeUtil, StringUtil = nil, nil
-local GetLevel = Log4g.GetPkgClsFuncs("log4g-core", "Level").getLevel
 local next, pairs = next, pairs
 local isstring, isbool = isstring, isbool
-local HasLoggerConfig = Log4g.GetPkgClsFuncs("log4g-core", "LoggerConfig").hasLoggerConfig
-local EnumerateAncestors = Log4g.GetPkgClsFuncs("log4g-core", "Object").enumerateAncestors
 local LogEventBuilder = Log4g.Core.LogEvent.Builder
 
 function Logger:Initialize(name, context)
