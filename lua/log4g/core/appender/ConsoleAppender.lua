@@ -4,6 +4,7 @@
 local Appender = Log4g.Core.Appender.GetClass()
 local ConsoleAppender = Appender:subclass("ConsoleAppender")
 local TypeUtil = include("log4g/core/util/TypeUtil.lua")
+local IsLogEvent, IsLayout = TypeUtil.IsLogEvent, TypeUtil.IsLayout
 local MsgC = MsgC
 
 function ConsoleAppender:Initialize(name, layout)
@@ -11,9 +12,9 @@ function ConsoleAppender:Initialize(name, layout)
 end
 
 function ConsoleAppender:Append(event)
-    if not TypeUtil.IsLogEvent(event) then return end
+    if not IsLogEvent(event) then return end
     local layout = self:GetLayout()
-    if not TypeUtil.IsLayout(layout) then return end
+    if not IsLayout(layout) then return end
     MsgC(layout:Format(event))
 end
 
