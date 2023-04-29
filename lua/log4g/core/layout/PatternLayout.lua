@@ -2,8 +2,7 @@
 -- @classmod PatternLayout
 -- @license Apache License 2.0
 -- @copyright GrayWolf64
-Log4g.Core.Layout.PatternLayout = Log4g.Core.Layout.PatternLayout or {}
-local Layout = Log4g.Core.Layout.GetClass()
+local Layout = Log4g.GetPkgClsFuncs("log4g-core", "Layout").getClass()
 local PatternLayout = Layout:subclass("PatternLayout")
 local IsLogEvent = include("log4g/core/util/TypeUtil.lua").IsLogEvent
 local pairs, ipairs = pairs, ipairs
@@ -130,6 +129,10 @@ function PatternLayout:Format(event)
     return DoFormat(event)
 end
 
-function Log4g.Core.Layout.PatternLayout.CreateDefaultLayout(name)
+local function CreateDefaultLayout(name)
     return PatternLayout(name)
 end
+
+Log4g.RegisterPackageClass("log4g-core", "PatternLayout", {
+    createDefaultLayout = CreateDefaultLayout,
+})

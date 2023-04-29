@@ -1,6 +1,5 @@
 --- The Layout.
 -- @classmod Layout
-Log4g.Core.Layout = Log4g.Core.Layout or {}
 local Object = Log4g.GetPkgClsFuncs("log4g-core", "Object").getClass()
 local Layout = Object:subclass("Layout")
 
@@ -13,6 +12,10 @@ function Layout:__tostring()
     return "Layout: [name:" .. self:GetName() .. "]"
 end
 
-function Log4g.Core.Layout.GetClass()
+local function GetClass()
     return Layout
 end
+
+Log4g.RegisterPackageClass("log4g-core", "Layout", {
+    getClass = GetClass,
+})
