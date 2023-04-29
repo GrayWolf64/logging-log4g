@@ -33,8 +33,6 @@ end
 --- Gets a Logger from the Context.
 -- @name The name of the Logger
 function LoggerContext:GetLogger(name)
-    if type(name) ~= "string" then return end
-
     return self:GetPrivateField"logger"[name]
 end
 
