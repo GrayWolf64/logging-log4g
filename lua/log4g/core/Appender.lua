@@ -20,6 +20,10 @@ function Appender:GetLayout()
     return self:GetPrivateField("layout")
 end
 
+function Appender:Append()
+    return true
+end
+
 function Log4g.Core.Appender.GetClass()
     return Appender
 end
