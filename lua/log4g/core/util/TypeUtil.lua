@@ -63,7 +63,7 @@ local function mkfunc_classcheck(cls, subclss)
     end
 end
 
-print("Log4g-typeutil mkfunc_classcheck finished in ", Log4g.timeit(function()
+print("Log4g typeutil mkfunc_classcheck finished in ", Log4g.timeit(function()
     for k, v in pairs(Classes) do
         TypeUtil["Is" .. k] = mkfunc_classcheck(k, v)
     end
