@@ -8,7 +8,7 @@ local LifeCycle = Log4g.GetPkgClsFuncs("log4g-core", "LifeCycle").getClass()
 local TypeUtil = Log4g.GetPkgClsFuncs("log4g-core", "TypeUtil")
 local IsLoggerContext, IsConfiguration = TypeUtil.IsLoggerContext, TypeUtil.IsConfiguration
 TypeUtil = nil
-local LoggerContext = LifeCycle:subclass("LoggerContext")
+local LoggerContext = LifeCycle:subclass"LoggerContext"
 local GetDefaultConfiguration = Log4g.Core.Config.GetDefaultConfiguration
 local getContextDict = Log4g.Core.getContextDict
 local pairs = pairs
@@ -27,7 +27,7 @@ end
 --- Gets where this LoggerContext is declared.
 -- @return table source
 function LoggerContext:GetConfigurationSource()
-    return self:GetPrivateField("source")
+    return self:GetPrivateField"source"
 end
 
 --- Gets a Logger from the Context.
@@ -35,19 +35,19 @@ end
 function LoggerContext:GetLogger(name)
     if type(name) ~= "string" then return end
 
-    return self:GetPrivateField("logger")[name]
+    return self:GetPrivateField"logger"[name]
 end
 
 --- Gets a table of the current loggers.
 -- @return table loggers
 function LoggerContext:GetLoggers()
-    return self:GetPrivateField("logger")
+    return self:GetPrivateField"logger"
 end
 
 --- Returns the current Configuration of the LoggerContext.
 -- @return object configuration
 function LoggerContext:GetConfiguration()
-    return self:GetPrivateField("config")
+    return self:GetPrivateField"config"
 end
 
 --- Sets the Configuration to be used.
