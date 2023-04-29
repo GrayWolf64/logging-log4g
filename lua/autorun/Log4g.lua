@@ -20,6 +20,7 @@ end
 if SERVER then
     local isstring = isstring
     local istable = istable
+    local isfunction = isfunction
     --- The global table for the logging system.
     -- It provides easy access to some functions for other components of the logging system that require them.
     -- @table Log4g
@@ -74,6 +75,19 @@ if SERVER then
 
     function Log4g.GetAllPackages()
         return Packages
+    end
+
+    --- Execute the given function and see how long it takes.
+    -- @param func Function
+    -- @return number Precise time
+    function Log4g.timeit(func)
+        if not isfunction(func) then return end
+        local SysTime = SysTime
+        local startTime = SysTime()
+        func()
+        local endTime = SysTime()
+
+        return endTime - startTime
     end
 
     checkAndInclude("Log4g sv-init", "log4g/core/Core.lua")

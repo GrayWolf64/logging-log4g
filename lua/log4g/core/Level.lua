@@ -38,12 +38,12 @@ function Level:GetColor()
 end
 
 --- Compares the Level against the Levels passed as arguments and returns true if this level is in between the given levels.
--- @param minlevel The Level with minimal intlevel
--- @param maxlevel The Level with maximal intlevel
+-- @param l1 The Level with a certain intlevel
+-- @param l2 The Level with another intlevel
 -- @return bool isinrange
-function Level:IsInRange(minlevel, maxlevel)
-    if not IsLevel(minlevel) or not IsLevel(maxlevel) then return end
-    if self:IntLevel() >= minlevel:IntLevel() and self:IntLevel() <= maxlevel:IntLevel() then return true end
+function Level:IsInRange(l1, l2)
+    if not IsLevel(l1) or not IsLevel(l2) then return end
+    if (self:IntLevel() >= l1:IntLevel() and self:IntLevel() <= l2:IntLevel()) or (self:IntLevel() <= l1:IntLevel() and self:IntLevel() >= l2:IntLevel()) then return true end
 
     return false
 end
@@ -100,9 +100,11 @@ local StdLevelColor = {
 -- @field OFF No events will be logged.
 local StdLevel = {}
 
-for k, v in pairs(StdIntLevel) do
-    StdLevel[k] = Level(k, v, StdLevelColor[k])
-end
+MsgN("Log4g sv-init set up 'StdLevel' in " .. Log4g.timeit(function()
+    for k, v in pairs(StdIntLevel) do
+        StdLevel[k] = Level(k, v, StdLevelColor[k])
+    end
+end) .. " seconds.")
 
 --- Get the Standard Levels as a table.
 -- @return table StdLevel
