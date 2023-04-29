@@ -4,7 +4,7 @@
 -- @copyright GrayWolf64
 local TypeUtil = {}
 local pairs = pairs
-local istable = istable
+local type = type
 
 --- All the `Class` names in Log4g.
 -- @local
@@ -46,7 +46,7 @@ local Classes = {
 
 local function mkfunc_classcheck(cls, subclss)
     return function(o)
-        if not o or not istable(o) then return false end
+        if not o or type(o) ~= "table" then return false end
         local class = o.class
         if not class then return false end
         local clsname = class.name

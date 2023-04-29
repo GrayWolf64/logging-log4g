@@ -69,10 +69,9 @@ Some functions need to be replaced in order for this to work.
 
 1. `isstring()`
 2. `isbool()`
-3. `istable()`
-4. `Color(r, g, b, a)`
-5. `table.Count()`
-6. ...
+3. `Color(r, g, b, a)`
+4. `table.Count()`
+5. ...
 
 ## Thanks to Third-party Projects Below
 

@@ -19,7 +19,7 @@ end
 
 if SERVER then
     local isstring = isstring
-    local istable = istable
+    local type = type
     local isfunction = isfunction
     --- The global table for the logging system.
     -- It provides easy access to some functions for other components of the logging system that require them.
@@ -47,7 +47,7 @@ if SERVER then
     end
 
     function Log4g.RegisterPackageClass(pname, cname, tbl)
-        if not isstring(pname) or not isstring(cname) or not istable(tbl) then return end
+        if not isstring(pname) or not isstring(cname) or type(tbl) ~= "table" then return end
         if not Packages[pname] then return end
         Packages[pname].classes[cname] = tbl
     end
