@@ -3,19 +3,19 @@
 Log4g.API.LogManager = Log4g.API.LogManager or {}
 local GetAllContexts = Log4g.GetPkgClsFuncs("log4g-core", "LoggerContext").getAll
 local next, pairs = next, pairs
-
-function Log4g.API.LogManager.Exists()
-    return false
-end
-
-local impl = impl or ""
+local currentImpl = currentImpl or ""
 
 local function setCurrentLoggingImpl(name)
-    impl = name
+    if type(name) ~= "string" then return end
+    currentImpl = name
 end
 
 function Log4g.getCurrentLoggingImpl()
-    return impl
+    return currentImpl
+end
+
+function Log4g.API.LogManager.Exists()
+    return false
 end
 
 local core = "log4g-core"
