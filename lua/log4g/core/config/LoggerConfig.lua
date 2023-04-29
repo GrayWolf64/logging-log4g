@@ -9,7 +9,7 @@ local LoggerContext = Log4g.GetPkgClsFuncs("log4g-core", "LoggerContext")
 local EnumerateAncestors = Log4g.GetPkgClsFuncs("log4g-core", "Object").enumerateAncestors
 local GetLevel = Log4g.GetPkgClsFuncs("log4g-core", "Level").getLevel
 local TypeUtil, StringUtil = Log4g.GetPkgClsFuncs("log4g-core", "TypeUtil"), include("log4g/core/util/StringUtil.lua")
-local LoggerConfig = LifeCycle:subclass("LoggerConfig")
+local LoggerConfig = LifeCycle:subclass"LoggerConfig"
 local IsAppender, IsLoggerConfig = TypeUtil.IsAppender, TypeUtil.IsLoggerConfig
 local IsLoggerContext = TypeUtil.IsLoggerContext
 local IsConfiguration, IsLevel = TypeUtil.IsConfiguration, TypeUtil.IsLevel
@@ -40,12 +40,12 @@ end
 -- @param level The Logging Level
 function LoggerConfig:SetLevel(level)
     if not IsLevel(level) then return end
-    if self:GetPrivateField("level") == level then return end
+    if self:GetPrivateField"level" == level then return end
     self:SetPrivateField("level", level)
 end
 
 function LoggerConfig:GetLevel()
-    return self:GetPrivateField("level")
+    return self:GetPrivateField"level"
 end
 
 local function HasLoggerConfig(name, context)
@@ -83,7 +83,7 @@ end
 --- Gets the parent of this LoggerConfig.
 -- @return string lcname
 function LoggerConfig:GetParent()
-    return self:GetPrivateField("parent")
+    return self:GetPrivateField"parent"
 end
 
 --- Sets the Context name for the LoggerConfig.
@@ -94,11 +94,11 @@ function LoggerConfig:SetContext(name)
 end
 
 function LoggerConfig:GetContext()
-    return self:GetPrivateField("ctx")
+    return self:GetPrivateField"ctx"
 end
 
 function LoggerConfig:GetAppenderRef()
-    return self:GetPrivateField("apref")
+    return self:GetPrivateField"apref"
 end
 
 --- Adds an Appender to the LoggerConfig.
@@ -137,11 +137,11 @@ function LoggerConfig:ClearAppenders()
     end
 end
 
-local RootLoggerConfig = LoggerConfig:subclass("LoggerConfig.RootLogger")
+local RootLoggerConfig = LoggerConfig:subclass"LoggerConfig.RootLogger"
 
 function RootLoggerConfig:Initialize()
-    LoggerConfig.Initialize(self, GetConVar("log4g_rootLogger"):GetString())
-    self:SetLevel(GetLevel("INFO"))
+    LoggerConfig.Initialize(self, GetConVar"log4g_rootLogger":GetString())
+    self:SetLevel(GetLevel"INFO")
 end
 
 function RootLoggerConfig:__tostring()
@@ -193,7 +193,7 @@ end
 -- @param level The Logging Level
 -- @return object loggerconfig
 local function Create(name, config, level)
-    local root = GetConVar("log4g_rootLogger"):GetString()
+    local root = GetConVar"log4g_rootLogger":GetString()
     if not IsConfiguration(config) or name == root then return end
     local lc = LoggerConfig(name)
     lc:SetContext(config:GetContext())
@@ -208,7 +208,7 @@ local function Create(name, config, level)
         o:SetParent(p)
     end
 
-    if name:find("%.") then
+    if name:find"%." then
         local valid, parent = ValidateAncestors(lc)
         if not valid then return end
         setlvp(lc, level, GetLoggerConfig(parent):GetLevel(), parent)
