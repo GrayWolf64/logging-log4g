@@ -5,7 +5,6 @@
 local TypeUtil = {}
 local pairs = pairs
 local istable = istable
-local print = print
 
 --- All the `Class` names in Log4g.
 -- @local
@@ -45,26 +44,11 @@ local Classes = {
     ["LoggerConfig.RootLogger"] = {}
 }
 
-function print(...)
-    print("Log4g-userinput:", ...)
-end
-
 local function mkfunc_classcheck(cls, subclss)
     return function(o)
-        if not o or not istable(o) then
-            print("expecting table, got", type(o), ".")
-
-            return false
-        end
-
+        if not o or not istable(o) then return false end
         local class = o.class
-
-        if not class then
-            print("expecting MiddleClass object, got a normal table.")
-
-            return false
-        end
-
+        if not class then return false end
         local clsname = class.name
 
         if subclss then
@@ -74,7 +58,6 @@ local function mkfunc_classcheck(cls, subclss)
         end
 
         if clsname == cls then return true end
-        print(clsname, "is not the expected class or is not its subclass.")
 
         return false
     end
