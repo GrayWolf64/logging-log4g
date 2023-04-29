@@ -18,9 +18,7 @@ local function checkAndInclude(provider, filename, addcslf)
 end
 
 if SERVER then
-    local isstring = isstring
     local type = type
-    local isfunction = isfunction
     --- The global table for the logging system.
     -- It provides easy access to some functions for other components of the logging system that require them.
     -- @table Log4g
@@ -38,7 +36,7 @@ if SERVER then
     -- @param name The name of the package to register
     -- @param ver The version string of the given package
     function Log4g.RegisterPackage(name, ver)
-        if not isstring(name) or not isstring(ver) then return end
+        if type(name) ~= "string" or type(ver) ~= "string" then return end
 
         Packages[name] = {
             version = ver,
@@ -47,26 +45,26 @@ if SERVER then
     end
 
     function Log4g.RegisterPackageClass(pname, cname, tbl)
-        if not isstring(pname) or not isstring(cname) or type(tbl) ~= "table" then return end
+        if type(pname) ~= "string" or type(cname) ~= "string" or type(tbl) ~= "table" then return end
         if not Packages[pname] then return end
         Packages[pname].classes[cname] = tbl
     end
 
     function Log4g.HasPackage(name)
-        if not isstring(name) then return end
+        if type(name) ~= "string" then return end
         if Packages[name] then return true end
 
         return false
     end
 
     function Log4g.GetPackageVer(name)
-        if not isstring(name) then return end
+        if type(name) ~= "string" then return end
 
         return Packages[name].version
     end
 
     function Log4g.GetPkgClsFuncs(pname, cname)
-        if not isstring(pname) or not isstring(cname) then return end
+        if type(pname) ~= "string" or type(cname) ~= "string" then return end
         local p = Packages[pname]
         if not p then return end
 
@@ -81,7 +79,7 @@ if SERVER then
     -- @param func Function
     -- @return number Precise time
     function Log4g.timeit(func)
-        if not isfunction(func) then return end
+        if type(func) ~= "function" then return end
         local SysTime = SysTime
         local startTime = SysTime()
         func()
