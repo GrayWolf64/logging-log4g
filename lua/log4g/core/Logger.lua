@@ -30,7 +30,7 @@ end
 -- @return object ctx
 function Logger:GetContext(ex)
     if not ex or ex == false then
-        return self:GetPrivateField("ctx")
+        return self:GetPrivateField"ctx"
     else
         return GetCtx(self:GetContext())
     end
@@ -47,7 +47,7 @@ function Logger:SetLoggerConfig(name)
 end
 
 function Logger:GetLoggerConfigN()
-    return self:GetPrivateField("lc")
+    return self:GetPrivateField"lc"
 end
 
 --- Get the LoggerConfig of the Logger.
@@ -62,7 +62,7 @@ function Logger:SetAdditive(bool)
 end
 
 function Logger:IsAdditive()
-    return self:GetPrivateField("additive")
+    return self:GetPrivateField"additive"
 end
 
 function Logger:SetLevel(level)
@@ -86,37 +86,37 @@ end
 
 --- Construct a log event that will always be logged.
 function Logger:Always()
-    return LogEventBuilder(self:GetName(), GetLevel("ALL"))
+    return LogEventBuilder(self:GetName(), GetLevel"ALL")
 end
 
 --- Construct a trace log event.
 function Logger:AtTrace()
-    return LogEventBuilder(self:GetName(), GetLevel("TRACE"))
+    return LogEventBuilder(self:GetName(), GetLevel"TRACE")
 end
 
 --- Construct a debug log event.
 function Logger:AtDebug()
-    return LogEventBuilder(self:GetName(), GetLevel("DEBUG"))
+    return LogEventBuilder(self:GetName(), GetLevel"DEBUG")
 end
 
 --- Construct a info log event.
 function Logger:AtInfo()
-    return LogEventBuilder(self:GetName(), GetLevel("INFO"))
+    return LogEventBuilder(self:GetName(), GetLevel"INFO")
 end
 
 --- Construct a warn log event.
 function Logger:AtWarn()
-    return LogEventBuilder(self:GetName(), GetLevel("WARN"))
+    return LogEventBuilder(self:GetName(), GetLevel"WARN")
 end
 
 --- Construct a error log event.
 function Logger:AtError()
-    return LogEventBuilder(self:GetName(), GetLevel("ERROR"))
+    return LogEventBuilder(self:GetName(), GetLevel"ERROR")
 end
 
 --- Construct a fatal log event.
 function Logger:AtFatal()
-    return LogEventBuilder(self:GetName(), GetLevel("FATAL"))
+    return LogEventBuilder(self:GetName(), GetLevel"FATAL")
 end
 
 --- Logs a message if the specified level is active.
@@ -153,9 +153,9 @@ end
 local function Create(name, context, loggerconfig)
     if not IsLoggerContext(context) then return end
     if context:HasLogger(name) or not QualifyName(name) then return end
-    local logger, root = Logger(name, context), GetConVar("log4g_rootLogger"):GetString()
+    local logger, root = Logger(name, context), GetConVar"log4g_rootLogger":GetString()
 
-    if name:find("%.") then
+    if name:find"%." then
         if loggerconfig and IsLoggerConfig(loggerconfig) then
             local lcn = loggerconfig:GetName()
 
@@ -179,7 +179,7 @@ local function Create(name, context, loggerconfig)
 
                 lc = StripDotExtension(lc)
 
-                if not lc:find("%.") and not HasLoggerConfig(lc, context) then
+                if not lc:find"%." and not HasLoggerConfig(lc, context) then
                     logger:SetLoggerConfig(root)
                     break
                 end
