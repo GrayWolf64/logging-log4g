@@ -7,17 +7,17 @@ local PatternLayout = Layout:subclass("PatternLayout")
 local IsLogEvent = include("log4g/core/util/TypeUtil.lua").IsLogEvent
 local pairs, ipairs = pairs, ipairs
 local unpack = unpack
-local color_default = Color(0, 201, 255)
-local insert, remove = table.insert, table.remove
-local CharPos = include("log4g/core/util/StringUtil.lua").CharPos
-local cvar_cp = "log4g_patternlayout_ConversionPattern"
-local cvar_msgc = "log4g_patternlayout_msgcolor"
-local cvar_uptimec = "log4g_patternlayout_uptimecolor"
-local cvar_filec = "log4g_patternlayout_filecolor"
-CreateConVar(cvar_cp, "[%uptime] [%level] @ %file: %msg%endl")
-CreateConVar(cvar_msgc, "135 206 250 255")
-CreateConVar(cvar_uptimec, "135 206 250 255")
-CreateConVar(cvar_filec, "60 179 113 255")
+local defaultColor = Color(0, 201, 255)
+local tableInsert, tableRemove = table.insert, table.remove
+local charPos = include("log4g/core/util/StringUtil.lua").CharPos
+local cvarConversionPattern = "log4g_patternlayout_ConversionPattern"
+local cvarMessageColor = "log4g_patternlayout_msgcolor"
+local cvarUptimeColor = "log4g_patternlayout_uptimecolor"
+local cvarFileColor = "log4g_patternlayout_filecolor"
+CreateConVar(cvarConversionPattern, "[%uptime] [%level] @ %file: %msg%endl")
+CreateConVar(cvarMessageColor, "135 206 250 255")
+CreateConVar(cvarUptimeColor, "135 206 250 255")
+CreateConVar(cvarFileColor, "60 179 113 255")
 
 function PatternLayout:Initialize(name)
     Layout.Initialize(self, name)
@@ -28,8 +28,8 @@ end
 -- @param event LogEvent
 -- @return vararg formatted event in substrs
 local function DoFormat(event)
-    local cp = GetConVar(cvar_cp):GetString()
-    local pos = CharPos(cp, "%")
+    local cp = GetConVar(cvarConversionPattern):GetString()
+    local pos = charPos(cp, "%")
     if pos == true then return cp end
     local substrs = {}
     local headerpos = 1
@@ -52,24 +52,24 @@ local function DoFormat(event)
 
     local lv = event:GetLevel()
 
-    local function getcvarcolor(cvar)
+    local function getCvarColor(cvar)
         return GetConVar(cvar):GetString():ToColor()
     end
 
     local tkmap = {
         ["%msg"] = {
-            color = getcvarcolor(cvar_msgc),
+            color = getCvarColor(cvarMessageColor),
             content = event:GetMsg()
         },
         ["%endl"] = {
             content = "\n"
         },
         ["%uptime"] = {
-            color = getcvarcolor(cvar_uptimec),
+            color = getCvarColor(cvarUptimeColor),
             content = event:GetTime()
         },
         ["%file"] = {
-            color = getcvarcolor(cvar_filec),
+            color = getCvarColor(cvarFileColor),
             content = event:GetSource():GetFileFromFilename()
         },
         ["%level"] = {
@@ -82,9 +82,9 @@ local function DoFormat(event)
         for i, j in ipairs(substrs) do
             if j:find(k, 1, true) then
                 local oldvalue = substrs[i]
-                remove(substrs, i)
-                insert(substrs, i, k)
-                insert(substrs, i + 1, oldvalue:sub(#k + 1, #oldvalue))
+                tableRemove(substrs, i)
+                tableInsert(substrs, i, k)
+                tableInsert(substrs, i + 1, oldvalue:sub(#k + 1, #oldvalue))
             end
         end
     end
@@ -102,12 +102,12 @@ local function DoFormat(event)
                     tbl[k] = content
 
                     if color then
-                        insert(tbl, k, color)
+                        tableInsert(tbl, k, color)
                     else
-                        insert(tbl, k, color_default)
+                        tableInsert(tbl, k, defaultColor)
                     end
 
-                    insert(tbl, k + 2, color_default)
+                    tableInsert(tbl, k + 2, defaultColor)
                 end
             end
         end
