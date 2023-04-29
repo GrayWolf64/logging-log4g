@@ -40,13 +40,13 @@ netReceive("Log4g_CLReq_SVSummaryData", function(_, ply)
     netWriteUInt(ents.GetEdictCount(), 13)
     netWriteUInt(tableCount(net.Receivers), 12)
     netWriteUInt(tableCount(debug.getregistry()), 32)
-    local constraintcount = 0
+    local constraintCount = 0
 
     for _, v in pairs(ents.GetAll()) do
-        constraintcount = constraintcount + tableCount(getConstraintTable(v))
+        constraintCount = constraintCount + tableCount(getConstraintTable(v))
     end
 
-    netWriteUInt(constraintcount / 2, 16)
+    netWriteUInt(constraintCount / 2, 16)
     netWriteDouble(SysTime())
     netWriteUInt(tableCount(_G), 32)
     netWriteString(Log4g.getCurrentLoggingImpl())
