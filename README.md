@@ -49,8 +49,7 @@ if Log4g then
 
    for i = 1, 100 do
       --- Do something with i, and log messages.
-      -- Note that when this was written, the logging system isn't finished yet,
-      -- so I just leave it simple here, for now.
+      -- Note that when this was written, the logging system isn't finished yet.
 
       logger:Debug("Calculated: " .. i .. " times.")
    end
@@ -70,9 +69,10 @@ Some functions need to be replaced in order for this to work.
 
 1. `isstring()`
 2. `isbool()`
-3. `Color(r, g, b, a)`
-4. `table.Count()`
-5. ...
+3. `istable()`
+4. `Color(r, g, b, a)`
+5. `table.Count()`
+6. ...
 
 ## Thanks to Third-party Projects Below
 
