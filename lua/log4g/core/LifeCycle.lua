@@ -10,8 +10,8 @@
 -- @license Apache License 2.0
 -- @copyright GrayWolf64
 local Object = Log4g.GetPkgClsFuncs("log4g-core", "Object").getClass()
-local LifeCycle = Object:subclass("LifeCycle")
-local isfunction = isfunction
+local LifeCycle = Object:subclass"LifeCycle"
+local type = type
 
 --- LifeCycle states.
 -- @table State
@@ -39,7 +39,7 @@ end
 --- Sets the LifeCycle state.
 -- @param state A function in the `State` table which returns a string representing the state
 function LifeCycle:SetState(state)
-    if not isfunction(state) then return end
+    if type(state) ~= "function" then return end
     self:SetPrivateField("state", state)
 end
 
@@ -58,7 +58,7 @@ end
 --- Gets the LifeCycle state.
 -- @return function state
 function LifeCycle:GetState()
-    return self:GetPrivateField("state")
+    return self:GetPrivateField"state"
 end
 
 local function GetAllStates()
