@@ -5,7 +5,7 @@
 -- @classmod Level
 local Object = Log4g.GetPkgClsFuncs("log4g-core", "Object").getClass()
 local IsLevel = Log4g.GetPkgClsFuncs("log4g-core", "TypeUtil").IsLevel
-local Level = Object:subclass("Level")
+local Level = Object:subclass"Level"
 local type = type
 
 function Level:Initialize(name, int, color)
@@ -28,13 +28,13 @@ end
 --- Get the Level's intlevel.
 -- @return int intlevel
 function Level:IntLevel()
-    return self:GetPrivateField("int")
+    return self:GetPrivateField"int"
 end
 
 --- Get the Level's Color.
 -- @return object color
 function Level:GetColor()
-    return self:GetPrivateField("color")
+    return self:GetPrivateField"color"
 end
 
 --- Compares the Level against the Levels passed as arguments and returns true if this level is in between the given levels.
