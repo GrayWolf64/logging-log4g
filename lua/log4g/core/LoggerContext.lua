@@ -10,13 +10,9 @@ local IsLoggerContext, IsConfiguration = TypeUtil.IsLoggerContext, TypeUtil.IsCo
 TypeUtil = nil
 local LoggerContext = LifeCycle:subclass("LoggerContext")
 local GetDefaultConfiguration = Log4g.Core.Config.GetDefaultConfiguration
+local getContextDict = Log4g.Core.getContextDict
 local isstring = isstring
 local pairs = pairs
---- A dictionary for storing LoggerContext objects.
--- Only one ContextDictionary exists in the logging system.
--- @local
--- @table ContextDict
-local ContextDict = ContextDict or {}
 
 function LoggerContext:Initialize(name)
     LifeCycle.Initialize(self)
@@ -71,7 +67,7 @@ end
 function LoggerContext:Terminate()
     local name = self:GetName()
     self:DestroyPrivateTable()
-    ContextDict[name] = nil
+    getContextDict()[name] = nil
 end
 
 --- Determines if the specified Logger exists.
@@ -84,7 +80,7 @@ function LoggerContext:HasLogger(name)
 end
 
 local function GetAll()
-    return ContextDict
+    return getContextDict()
 end
 
 --- Get the LoggerContext with the right name.
@@ -93,7 +89,7 @@ end
 local function Get(name)
     if not isstring(name) then return end
 
-    return ContextDict[name]
+    return getContextDict()[name]
 end
 
 --- Register a LoggerContext.
@@ -101,7 +97,8 @@ end
 -- @param withconfig Whether or not come with a DefaultConfiguration, leaving it nil will make it come with one
 -- @return object loggercontext
 local function Register(name, withconfig)
-    local ctx = ContextDict[name]
+    local ctxdict = getContextDict()
+    local ctx = ctxdict[name]
     if ctx and IsLoggerContext(ctx) then return ctx end
     ctx = LoggerContext(name)
 
@@ -109,7 +106,7 @@ local function Register(name, withconfig)
         ctx:SetConfiguration(GetDefaultConfiguration())
     end
 
-    ContextDict[name] = ctx
+    ctxdict[name] = ctx
 
     return ctx
 end
@@ -117,7 +114,7 @@ end
 local function GetLoggerCount()
     local num, tableCount = 0, table.Count
 
-    for _, v in pairs(ContextDict) do
+    for _, v in pairs(getContextDict()) do
         num = num + tableCount(v:GetLoggers())
     end
 
