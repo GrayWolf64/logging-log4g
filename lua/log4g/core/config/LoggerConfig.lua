@@ -16,8 +16,9 @@ local IsConfiguration, IsLevel = TypeUtil.IsConfiguration, TypeUtil.IsLevel
 local QualifyName = StringUtil.QualifyName
 TypeUtil, StringUtil = nil, nil
 local GetCtx, GetAllCtx = LoggerContext.get, LoggerContext.getAll
-local pairs, isstring, next = pairs, isstring, next
-local concat = table.concat
+local pairs, next = pairs, next
+local tableConcat = table.concat
+local type = type
 
 cvars.AddChangeCallback(CreateConVar("log4g_rootLogger", "root", FCVAR_NOTIFY):GetName(), function(cvarn)
     if not QualifyName(newn, false) or next(GetAllCtx()) then
@@ -71,7 +72,7 @@ end
 --- Sets the parent of this LoggerConfig.
 -- @param T LoggerConfig object or LoggerConfig name
 function LoggerConfig:SetParent(T)
-    if isstring(T) then
+    if type(T) == "string" then
         if not HasLoggerConfig(T, GetCtx(self:GetContext())) then return end
         self:SetPrivateField("parent", T)
     elseif IsLoggerConfig(T) and T:GetContext() == self:GetContext() then
@@ -88,7 +89,7 @@ end
 --- Sets the Context name for the LoggerConfig.
 -- @param ctx LoggerContext object
 function LoggerConfig:SetContext(name)
-    if not isstring(name) then return end
+    if type(name) ~= "string" then return end
     self:SetPrivateField("ctx", name)
 end
 
@@ -181,7 +182,7 @@ local function ValidateAncestors(lc)
         return true
     end
 
-    if HasEveryLoggerConfig(ancestors) then return true, concat(nodes, ".") end
+    if HasEveryLoggerConfig(ancestors) then return true, tableConcat(nodes, ".") end
 
     return false
 end

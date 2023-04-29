@@ -6,7 +6,6 @@
 local LifeCycle = Log4g.GetPkgClsFuncs("log4g-core", "LifeCycle").getClass()
 local IsAppender = include("log4g/core/util/TypeUtil.lua").IsAppender
 local Configuration = LifeCycle:subclass("Configuration")
-local isstring = isstring
 local SysTime = SysTime
 
 function Configuration:Initialize(name)
@@ -67,8 +66,6 @@ end
 -- @param name The Logger name
 -- @return object loggerconfig
 function Configuration:GetLoggerConfig(name)
-    if not isstring(name) then return end
-
     return self:GetPrivateField("lc")[name]
 end
 
@@ -90,7 +87,7 @@ end
 -- @param name The name of the Configuration
 -- @return object configuration
 local function Create(name)
-    if not isstring(name) then return end
+    if type(name) ~= "string" then return end
 
     return Configuration(name)
 end

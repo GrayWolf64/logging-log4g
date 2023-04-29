@@ -11,7 +11,7 @@ local CreateLogger = Log4g.GetPkgClsFuncs("log4g-core", "Logger").create
 -- @param withconfig Whether or not come with a DefaultConfiguration, nil will be treated the same way as true
 -- @return object loggercontext
 function Log4g.API.LoggerContextFactory.GetContext(name, withconfig)
-    if not isstring(name) then return end
+    if type(name) ~= "string" then return end
     local ctx = RegisterLoggerContext(name, withconfig)
 
     if withconfig or withconfig == nil then

@@ -5,8 +5,8 @@
 -- @classmod Level
 local Object = Log4g.GetPkgClsFuncs("log4g-core", "Object").getClass()
 local Level = Object:subclass("Level")
-local isstring, isnumber = isstring, isnumber
 local IsLevel = include("log4g/core/util/TypeUtil.lua").IsLevel
+local type = type
 
 function Level:Initialize(name, int, color)
     Object.Initialize(self)
@@ -130,7 +130,7 @@ end
 -- @param int The Level's intlevel
 -- @return object level
 local function ForName(name, int)
-    if not isstring(name) or not isnumber(int) or StdLevel[name] then return end
+    if type(name) ~= "string" or type(int) ~= "number" or StdLevel[name] then return end
     if #name == 0 or int <= 0 then return end
 
     if not CustomLevel[name] then

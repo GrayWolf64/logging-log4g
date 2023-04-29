@@ -5,7 +5,7 @@
 local StringUtil = {}
 local tableConcat, tableInsert = table.concat, table.insert
 local pairs, ipairs = pairs, ipairs
-local isstring = isstring
+local type = type
 
 --- Optimized version of [string.Explode](https://github.com/Facepunch/garrysmod/blob/master/garrysmod/lua/includes/extensions/string.lua#L87-L104).
 -- @lfunction stringExplode
@@ -38,7 +38,7 @@ end
 -- @param dot If dots are allowed, default is allowed if param not set
 -- @return bool ifvalid
 function StringUtil.QualifyName(str, dot)
-    if not isstring(str) then return false end
+    if type(str) ~= "string" then return false end
 
     if dot == true or dot == nil then
         if str:sub(1, 1) == "." or str:sub(-1) == "." or str:find("[^%a%.]") then return false end
@@ -59,7 +59,7 @@ end
 -- @param doconcat Whether `table.concat` the result
 -- @return string result
 function StringUtil.StripDotExtension(str, doconcat)
-    if not isstring(str) then return end
+    if type(str) ~= "string" then return end
     local result = stringExplode(".", str:sub(1, #str - str:reverse():find("%.")))
 
     if doconcat ~= false then
@@ -74,7 +74,7 @@ end
 -- @param char A Single character to search for
 -- @return table positions or true if not found
 function StringUtil.CharPos(str, char)
-    if not isstring(str) or not isstring(char) or not #char == 1 then return end
+    if type(str) ~= "string" or type(char) ~= "string" or not #char == 1 then return end
     local pos = {}
     char = char:byte()
 

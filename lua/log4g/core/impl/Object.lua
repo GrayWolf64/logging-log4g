@@ -3,7 +3,7 @@
 -- @license Apache License 2.0
 -- @copyright GrayWolf64
 local SHA256 = util.SHA256
-local tostring, isstring = tostring, isstring
+local tostring = tostring
 local ipairs = ipairs
 local StripDotExtension = include("log4g/core/util/StringUtil.lua").StripDotExtension
 local Object = include("log4g/core/impl/MiddleClass.lua")("Object")
@@ -24,7 +24,7 @@ function Object:__tostring()
 end
 
 function Object:SetName(name)
-    if not isstring(name) then return end
+    if type(name) ~= "string" then return end
     Private[self].name = name
 end
 

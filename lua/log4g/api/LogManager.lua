@@ -2,7 +2,6 @@
 -- @script LogManager
 Log4g.API.LogManager = Log4g.API.LogManager or {}
 local GetAllContexts = Log4g.GetPkgClsFuncs("log4g-core", "LoggerContext").getAll
-local isstring = isstring
 local next, pairs = next, pairs
 
 function Log4g.API.LogManager.Exists()
@@ -29,7 +28,7 @@ if Log4g.HasPackage(core) then
     -- @return bool haslogger
     function Log4g.API.LogManager.Exists(name)
         local ctxs = GetAllContexts()
-        if not isstring(name) or not next(ctxs) then return end
+        if type(name) ~= "string" or not next(ctxs) then return end
 
         for _, v in pairs(ctxs) do
             if v:HasLogger(name) then return true end

@@ -14,7 +14,7 @@ local IsLoggerConfig, IsLoggerContext = TypeUtil.IsLoggerConfig, TypeUtil.IsLogg
 local IsLevel, IsLogEvent = TypeUtil.IsLevel, TypeUtil.IsLogEvent
 TypeUtil, StringUtil = nil, nil
 local next, pairs = next, pairs
-local isstring, isbool = isstring, isbool
+local type = type
 local LogEventBuilder = Log4g.Core.LogEvent.Builder
 
 function Logger:Initialize(name, context)
@@ -57,7 +57,7 @@ function Logger:GetLoggerConfig()
 end
 
 function Logger:SetAdditive(bool)
-    if not isbool(bool) then return end
+    if type(bool) ~= "boolean" then return end
     self:SetPrivateField("additive", bool)
 end
 
@@ -122,7 +122,7 @@ end
 --- Logs a message if the specified level is active.
 local function LogIfEnabled(self, level, msg)
     level = GetLevel(level)
-    if not isstring(msg) or self:GetLevel():IntLevel() < level:IntLevel() then return end
+    if type(msg) ~= "string" or self:GetLevel():IntLevel() < level:IntLevel() then return end
     self:CallAppenders(LogEventBuilder(self:GetName(), level, msg))
 end
 

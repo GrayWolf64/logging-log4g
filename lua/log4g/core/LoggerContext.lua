@@ -11,8 +11,8 @@ TypeUtil = nil
 local LoggerContext = LifeCycle:subclass("LoggerContext")
 local GetDefaultConfiguration = Log4g.Core.Config.GetDefaultConfiguration
 local getContextDict = Log4g.Core.getContextDict
-local isstring = isstring
 local pairs = pairs
+local type = type
 
 function LoggerContext:Initialize(name)
     LifeCycle.Initialize(self)
@@ -33,7 +33,7 @@ end
 --- Gets a Logger from the Context.
 -- @name The name of the Logger
 function LoggerContext:GetLogger(name)
-    if not isstring(name) then return end
+    if type(name) ~= "string" then return end
 
     return self:GetPrivateField("logger")[name]
 end
@@ -87,8 +87,6 @@ end
 -- @param name String name
 -- @return object loggercontext
 local function Get(name)
-    if not isstring(name) then return end
-
     return getContextDict()[name]
 end
 
@@ -97,6 +95,7 @@ end
 -- @param withconfig Whether or not come with a DefaultConfiguration, leaving it nil will make it come with one
 -- @return object loggercontext
 local function Register(name, withconfig)
+    if type(name) ~= "string" then return end
     local ctxdict = getContextDict()
     local ctx = ctxdict[name]
     if ctx and IsLoggerContext(ctx) then return ctx end
