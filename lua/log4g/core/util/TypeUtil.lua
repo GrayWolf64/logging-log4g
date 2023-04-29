@@ -4,6 +4,7 @@
 -- @copyright GrayWolf64
 local TypeUtil = {}
 local pairs = pairs
+local istable = istable
 
 --- All the `Class` names in Log4g.
 -- @local
@@ -11,7 +12,7 @@ local pairs = pairs
 local Classes = {
     ["Object"] = {
         ["LifeCycle"] = true,
-        ["RootLoggerConfig"] = true,
+        ["LoggerConfig.RootLogger"] = true,
         ["LoggerConfig"] = true,
         ["LogEvent"] = true,
         ["LoggerContext"] = true,
@@ -28,7 +29,7 @@ local Classes = {
         ["DefaultConfiguration"] = true
     },
     ["LoggerConfig"] = {
-        ["RootLoggerConfig"] = true
+        ["LoggerConfig.RootLogger"] = true
     },
     ["Appender"] = {
         ["ConsoleAppender"] = true
@@ -40,12 +41,12 @@ local Classes = {
     ["Level"] = {},
     ["Logger"] = {},
     ["LogEvent"] = {},
-    ["RootLoggerConfig"] = {}
+    ["LoggerConfig.RootLogger"] = {}
 }
 
 local function mkfunc_classcheck(cls, subclss)
     return function(o)
-        if not o then return false end
+        if not o or not istable(o) then return false end
         local class = o.class
         if not class then return false end
         local clsname = class.name
