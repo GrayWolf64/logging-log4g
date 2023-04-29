@@ -7,10 +7,6 @@ local tostring, isstring = tostring, isstring
 local ipairs = ipairs
 local StripDotExtension = include("log4g/core/util/StringUtil.lua").StripDotExtension
 local Object = include("log4g/core/impl/MiddleClass.lua")("Object")
---- All the `Class` names in Log4g.
--- @local
--- @table Classes
-local Classes = Classes or {}
 
 --- A table for storing private properties of an object.
 -- @local
@@ -19,27 +15,12 @@ local Private = Private or setmetatable({}, {
     __mode = "k"
 })
 
-local function getClassNames()
-    return Classes
-end
-
 function Object:Initialize()
     Private[self] = {}
 end
 
 function Object:__tostring()
     return "Object: [name:" .. self:GetName() .. "]"
-end
-
-function Object.static:subclassed(subclass)
-    local class = self.name
-    subclass = subclass.name
-
-    if not Classes[class] then
-        Classes[class] = {}
-    end
-
-    Classes.Object[subclass], Classes[class][subclass], Classes[subclass] = true, true, {}
 end
 
 function Object:SetName(name)
@@ -99,6 +80,5 @@ end
 
 Log4g.RegisterPackageClass("log4g-core", "Object", {
     getClass = GetClass,
-    enumerateAncestors = EnumerateAncestors,
-    getClassNames = getClassNames
+    enumerateAncestors = EnumerateAncestors
 })

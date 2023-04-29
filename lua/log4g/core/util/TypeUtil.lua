@@ -4,7 +4,44 @@
 -- @copyright GrayWolf64
 local TypeUtil = {}
 local pairs = pairs
-local getClassNames = Log4g.GetPkgClsFuncs("log4g-core", "Object").getClassNames
+
+--- All the `Class` names in Log4g.
+-- @local
+-- @table Classes
+local Classes = {
+    ["Object"] = {
+        ["LifeCycle"] = true,
+        ["RootLoggerConfig"] = true,
+        ["LoggerConfig"] = true,
+        ["LogEvent"] = true,
+        ["LoggerContext"] = true,
+        ["Configuration"] = true,
+        ["Level"] = true,
+        ["Layout"] = true,
+        ["Logger"] = true,
+        ["Appender"] = true,
+        ["DefaultConfiguration"] = true,
+        ["PatternLayout"] = true,
+        ["ConsoleAppender"] = true
+    },
+    ["Configuration"] = {
+        ["DefaultConfiguration"] = true
+    },
+    ["LoggerConfig"] = {
+        ["RootLoggerConfig"] = true
+    },
+    ["Appender"] = {
+        ["ConsoleAppender"] = true
+    },
+    ["Layout"] = {
+        ["PatternLayout"] = true
+    },
+    ["LoggerContext"] = {},
+    ["Level"] = {},
+    ["Logger"] = {},
+    ["LogEvent"] = {},
+    ["RootLoggerConfig"] = {}
+}
 
 local function mkfunc_classcheck(cls, subclss)
     return function(o)
@@ -25,20 +62,8 @@ local function mkfunc_classcheck(cls, subclss)
     end
 end
 
-local function updateFuncs()
-    for k, v in pairs(getClassNames()) do
-        TypeUtil["Is" .. k] = mkfunc_classcheck(k, v)
-    end
+for k, v in pairs(Classes) do
+    TypeUtil["Is" .. k] = mkfunc_classcheck(k, v)
 end
-
-function TypeUtil.__index(t, k)
-    if not t[k] then
-        updateFuncs()
-    end
-
-    return t[k]
-end
-
-updateFuncs()
 
 return TypeUtil
