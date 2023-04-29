@@ -6,8 +6,6 @@ local StringUtil = {}
 local tableConcat, tableInsert = table.concat, table.insert
 local pairs, ipairs = pairs, ipairs
 local isstring = isstring
-local tostring = tostring
-local print = print
 
 --- Optimized version of [string.Explode](https://github.com/Facepunch/garrysmod/blob/master/garrysmod/lua/includes/extensions/string.lua#L87-L104).
 -- @lfunction stringExplode
@@ -40,38 +38,17 @@ end
 -- @param dot If dots are allowed, default is allowed if param not set
 -- @return bool ifvalid
 function StringUtil.QualifyName(str, dot)
-    function print(text)
-        print("Log4g-userinput:", tostring(str), text)
-    end
-
-    if not isstring(str) then
-        print("not a string.")
-
-        return false
-    end
+    if not isstring(str) then return false end
 
     if dot == true or dot == nil then
-        if str:sub(1, 1) == "." or str:sub(-1) == "." or str:find("[^%a%.]") then
-            print("starts with a dot or ends with a dot.")
-
-            return false
-        end
-
+        if str:sub(1, 1) == "." or str:sub(-1) == "." or str:find("[^%a%.]") then return false end
         local chars = stringToTable(str)
 
         for k, v in pairs(chars) do
-            if v == "." and (chars[k - 1] == "." or chars[k + 1] == ".") then
-                print("contains repeating dots.")
-
-                return false
-            end
+            if v == "." and (chars[k - 1] == "." or chars[k + 1] == ".") then return false end
         end
     else
-        if str:find("[^%a]") then
-            print("contains dots.")
-
-            return false
-        end
+        if str:find("[^%a]") then return false end
     end
 
     return true
