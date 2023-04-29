@@ -2,7 +2,6 @@
 -- @script Log4g
 -- @license Apache License 2.0
 -- @copyright GrayWolf64
-local include = include
 local fileExists = file.Exists
 local MMC = "log4g/mmc-gui/MMC.lua"
 
