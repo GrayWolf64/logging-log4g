@@ -100,11 +100,11 @@ local StdLevelColor = {
 -- @field OFF No events will be logged.
 local StdLevel = {}
 
-MsgN("Log4g sv-init set up 'StdLevel' in " .. Log4g.timeit(function()
+print("Log4g sv-init set up 'StdLevel' in", Log4g.timeit(function()
     for k, v in pairs(StdIntLevel) do
         StdLevel[k] = Level(k, v, StdLevelColor[k])
     end
-end) .. " seconds.")
+end), "seconds.")
 
 --- Get the Standard Levels as a table.
 -- @return table StdLevel
