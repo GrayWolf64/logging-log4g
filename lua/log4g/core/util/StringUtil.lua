@@ -51,9 +51,7 @@ function StringUtil.QualifyName(str, dot)
     end
 
     if dot == true or dot == nil then
-        local d = "."
-
-        if str:sub(1, 1) == d or str:sub(-1) == d or str:find("[^%a%.]") then
+        if str:sub(1, 1) == "." or str:sub(-1) == "." or str:find("[^%a%.]") then
             print("starts with a dot or ends with a dot.")
 
             return false
@@ -62,7 +60,7 @@ function StringUtil.QualifyName(str, dot)
         local chars = stringToTable(str)
 
         for k, v in pairs(chars) do
-            if v == d and (chars[k - 1] == d or chars[k + 1] == d) then
+            if v == "." and (chars[k - 1] == "." or chars[k + 1] == ".") then
                 print("contains repeating dots.")
 
                 return false
