@@ -5,11 +5,11 @@
 local Layout = Log4g.GetPkgClsFuncs("log4g-core", "Layout").getClass()
 local PatternLayout = Layout:subclass("PatternLayout")
 local IsLogEvent = include("log4g/core/util/TypeUtil.lua").IsLogEvent
+local charPos = include("log4g/core/util/StringUtil.lua").CharPos
 local pairs, ipairs = pairs, ipairs
 local unpack = unpack
 local defaultColor = Color(0, 201, 255)
 local tableInsert, tableRemove = table.insert, table.remove
-local charPos = include("log4g/core/util/StringUtil.lua").CharPos
 local cvarConversionPattern = "log4g_patternlayout_ConversionPattern"
 local cvarMessageColor = "log4g_patternlayout_msgcolor"
 local cvarUptimeColor = "log4g_patternlayout_uptimecolor"
