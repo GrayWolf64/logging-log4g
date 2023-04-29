@@ -3,7 +3,7 @@
 -- @license Apache License 2.0
 -- @copyright GrayWolf64
 local StringUtil = {}
-local string_explode = string.Explode
+local stringExplode = string.Explode
 local concat, insert = table.concat, table.insert
 local isstring = isstring
 
@@ -29,7 +29,7 @@ end
 -- @return string result
 function StringUtil.StripDotExtension(str, doconcat)
     if not isstring(str) then return end
-    local result = string_explode(".", str:sub(1, #str - str:reverse():find("%.")))
+    local result = stringExplode(".", str:sub(1, #str - str:reverse():find("%.")))
 
     if doconcat ~= false then
         return concat(result, ".")

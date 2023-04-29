@@ -5,7 +5,7 @@ Log4g.Core.LogEvent = Log4g.Core.LogEvent or {}
 local Object = Log4g.GetPkgClsFuncs("log4g-core", "Object").getClass()
 local LogEvent = Object:subclass("LogEvent")
 local IsLevel = include("log4g/core/util/TypeUtil.lua").IsLevel
-local SysTime, debug_getinfo = SysTime, debug.getinfo
+local SysTime, debugGetInfo = SysTime, debug.getinfo
 local isstring = isstring
 
 function LogEvent:Initialize(ln, level, time, msg, src)
@@ -49,5 +49,5 @@ end
 function Log4g.Core.LogEvent.Builder(ln, level, msg)
     if not isstring(ln) or not IsLevel(level) then return end
 
-    return LogEvent(ln, level, SysTime(), msg, debug_getinfo(4, "S").source)
+    return LogEvent(ln, level, SysTime(), msg, debugGetInfo(4, "S").source)
 end
