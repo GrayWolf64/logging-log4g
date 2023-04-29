@@ -48,7 +48,7 @@ concommand.Add("log4g_mmc", function()
 
     Icon:SetKeepAspect(true)
     Icon:SetSize(16, 16)
-    local BaseSheet = CreateDPropertySheet(Frame, FILL, 0, 1, 0, 0, 4)
+    local BaseSheet = CreateDPropertySheet(Frame, FILL, 0, 0, 0, 0, 5)
     local BasePanel = vgui.Create("DPanel", BaseSheet)
     BasePanel.Paint = nil
     local SummaryPanel = vgui.Create("DPanel", BaseSheet)
