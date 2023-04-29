@@ -5,9 +5,9 @@ local function getVersionString()
 
     for k, v in pairs(Log4g.GetAllPackages()) do
         if #verstr == 0 then
-            verstr = k .. " " .. v.version .. ","
+            verstr = k .. " " .. v.version
         else
-            verstr = verstr .. " " .. k .. " " .. v.version .. ","
+            verstr = verstr .. " " .. k .. " " .. v.version
         end
     end
 
@@ -15,13 +15,13 @@ local function getVersionString()
 end
 
 concommand.Add("log4g_version", function()
-    MsgN("Local version:")
-    MsgN(getVersionString())
+    print("local version:")
+    print(getVersionString())
 
     http.Fetch("https://raw.githubusercontent.com/GrayWolf64/gmod-logging-log4g/main/VERSION.txt", function(body)
-        MsgN("Github latest 'VERSION.txt':")
-        MsgN(body)
+        print("github latest 'VERSION.txt':")
+        print(body)
     end, function(msg)
-        MsgN(msg)
+        print(msg)
     end)
 end)
