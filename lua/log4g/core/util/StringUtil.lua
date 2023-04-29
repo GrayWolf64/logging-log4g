@@ -3,9 +3,25 @@
 -- @license Apache License 2.0
 -- @copyright GrayWolf64
 local StringUtil = {}
-local stringExplode = string.Explode
-local concat, insert = table.concat, table.insert
+local tableConcat, tableInsert = table.concat, table.insert
+local ipairs = ipairs
 local isstring = isstring
+
+--- Optimized version of [string.Explode](https://github.com/Facepunch/garrysmod/blob/master/garrysmod/lua/includes/extensions/string.lua#L87-L104).
+-- @lfunction stringExplode
+local function stringExplode(separator, str)
+    local result, currentPos = {}, 1
+
+    for i = 1, #str do
+        local startPos, endPos = str:find(separator, currentPos, true)
+        if not startPos then break end
+        result[i], currentPos = str:sub(currentPos, startPos - 1), endPos + 1
+    end
+
+    result[#result + 1] = str:sub(currentPos)
+
+    return result
+end
 
 --- Qualifies the string name of an object and returns if it's a valid name.
 -- @param str String name
@@ -32,7 +48,7 @@ function StringUtil.StripDotExtension(str, doconcat)
     local result = stringExplode(".", str:sub(1, #str - str:reverse():find("%.")))
 
     if doconcat ~= false then
-        return concat(result, ".")
+        return tableConcat(result, ".")
     else
         return result
     end
@@ -49,7 +65,7 @@ function StringUtil.CharPos(str, char)
 
     for k, v in ipairs({str:byte(1, #str)}) do
         if v == char then
-            insert(pos, k)
+            tableInsert(pos, k)
         end
     end
 
