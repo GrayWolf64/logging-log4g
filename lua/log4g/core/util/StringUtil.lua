@@ -4,8 +4,10 @@
 -- @copyright GrayWolf64
 local StringUtil = {}
 local tableConcat, tableInsert = table.concat, table.insert
-local ipairs = ipairs
+local pairs, ipairs = pairs, ipairs
 local isstring = isstring
+local tostring = tostring
+local print = print
 
 --- Optimized version of [string.Explode](https://github.com/Facepunch/garrysmod/blob/master/garrysmod/lua/includes/extensions/string.lua#L87-L104).
 -- @lfunction stringExplode
@@ -23,17 +25,55 @@ local function stringExplode(separator, str)
     return result
 end
 
+local function stringToTable(str)
+    local result = {}
+
+    for i = 1, #str do
+        result[i] = str:sub(i, i)
+    end
+
+    return result
+end
+
 --- Qualifies the string name of an object and returns if it's a valid name.
 -- @param str String name
 -- @param dot If dots are allowed, default is allowed if param not set
 -- @return bool ifvalid
 function StringUtil.QualifyName(str, dot)
-    if not isstring(str) then return false end
+    function print(text)
+        print("Log4g-userinput:", tostring(str), text)
+    end
+
+    if not isstring(str) then
+        print("not a string.")
+
+        return false
+    end
 
     if dot == true or dot == nil then
-        if str:sub(1, 1) == "." or str:sub(-1) == "." or str:find("[^%a%.]") then return false end
+        local d = "."
+
+        if str:sub(1, 1) == d or str:sub(-1) == d or str:find("[^%a%.]") then
+            print("starts with a dot or ends with a dot.")
+
+            return false
+        end
+
+        local chars = stringToTable(str)
+
+        for k, v in pairs(chars) do
+            if v == d and (chars[k - 1] == d or chars[k + 1] == d) then
+                print("contains repeating dots.")
+
+                return false
+            end
+        end
     else
-        if str:find("[^%a]") then return false end
+        if str:find("[^%a]") then
+            print("contains dots.")
+
+            return false
+        end
     end
 
     return true
