@@ -193,7 +193,7 @@ local function Create(name, context, loggerconfig)
         end
     end
 
-    context:GetLoggers()[name] = logger
+    context:AddLogger(name, logger)
 
     return logger
 end

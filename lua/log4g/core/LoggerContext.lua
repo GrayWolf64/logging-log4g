@@ -44,6 +44,10 @@ function LoggerContext:GetLoggers()
     return self:GetPrivateField"logger"
 end
 
+function LoggerContext:AddLogger(name, logger)
+    self:GetPrivateField"logger"[name] = logger
+end
+
 --- Returns the current Configuration of the LoggerContext.
 -- @return object configuration
 function LoggerContext:GetConfiguration()
