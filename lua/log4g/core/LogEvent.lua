@@ -3,7 +3,7 @@
 -- @classmod LogEvent
 Log4g.Core.LogEvent = Log4g.Core.LogEvent or {}
 local Object = Log4g.GetPkgClsFuncs("log4g-core", "Object").getClass()
-local LogEvent = Object:subclass("LogEvent")
+local LogEvent = Object:subclass"LogEvent"
 local IsLevel = Log4g.GetPkgClsFuncs("log4g-core", "TypeUtil").IsLevel
 local SysTime, debugGetInfo = SysTime, debug.getinfo
 
@@ -17,19 +17,19 @@ function LogEvent:Initialize(ln, level, time, msg, src)
 end
 
 function LogEvent:GetLoggerName()
-    return self:GetPrivateField("ln")
+    return self:GetPrivateField"ln"
 end
 
 function LogEvent:GetLevel()
-    return self:GetPrivateField("lv")
+    return self:GetPrivateField"lv"
 end
 
 function LogEvent:GetSource()
-    return self:GetPrivateField("src")
+    return self:GetPrivateField"src"
 end
 
 function LogEvent:GetMsg()
-    return self:GetPrivateField("msg")
+    return self:GetPrivateField"msg"
 end
 
 function LogEvent:SetMsg(msg)
@@ -38,7 +38,7 @@ function LogEvent:SetMsg(msg)
 end
 
 function LogEvent:GetTime()
-    return self:GetPrivateField("time")
+    return self:GetPrivateField"time"
 end
 
 --- Build a LogEvent.
