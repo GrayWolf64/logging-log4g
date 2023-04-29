@@ -4,8 +4,8 @@
 -- Subclassing 'Object'.
 -- @classmod Level
 local Object = Log4g.GetPkgClsFuncs("log4g-core", "Object").getClass()
+local IsLevel = Log4g.GetPkgClsFuncs("log4g-core", "TypeUtil").IsLevel
 local Level = Object:subclass("Level")
-local IsLevel = include("log4g/core/util/TypeUtil.lua").IsLevel
 local type = type
 
 function Level:Initialize(name, int, color)
@@ -104,7 +104,7 @@ print("Log4g sv-init set up 'StdLevel' in", Log4g.timeit(function()
     for k, v in pairs(StdIntLevel) do
         StdLevel[k] = Level(k, v, StdLevelColor[k])
     end
-end), "seconds.")
+end), "seconds")
 
 --- Get the Standard Levels as a table.
 -- @return table StdLevel

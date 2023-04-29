@@ -8,12 +8,12 @@ local MMC = "log4g/mmc-gui/MMC.lua"
 local function checkAndInclude(provider, filename, addcslf)
     if fileExists(filename, "lsv") then
         include(filename)
-        print(provider, "successfully included", filename, ".")
+        print(provider, "successfully included", filename)
         if addcslf ~= true then return end
         AddCSLuaFile(filename)
-        print(provider, "successfully sent", filename, "to client.")
+        print(provider, "successfully sent", filename, "to client")
     else
-        print(provider, "tried to include", filename, "but failed due to non-existence.")
+        print(provider, "tried to include", filename, "but failed due to non-existence")
     end
 end
 

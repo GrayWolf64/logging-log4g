@@ -4,7 +4,7 @@
 -- @copyright GrayWolf64
 local Layout = Log4g.GetPkgClsFuncs("log4g-core", "Layout").getClass()
 local PatternLayout = Layout:subclass("PatternLayout")
-local IsLogEvent = include("log4g/core/util/TypeUtil.lua").IsLogEvent
+local IsLogEvent = Log4g.GetPkgClsFuncs("log4g-core", "TypeUtil").IsLogEvent
 local charPos = include("log4g/core/util/StringUtil.lua").CharPos
 local pairs, ipairs = pairs, ipairs
 local unpack = unpack

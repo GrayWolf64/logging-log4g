@@ -4,7 +4,7 @@
 Log4g.Core.LogEvent = Log4g.Core.LogEvent or {}
 local Object = Log4g.GetPkgClsFuncs("log4g-core", "Object").getClass()
 local LogEvent = Object:subclass("LogEvent")
-local IsLevel = include("log4g/core/util/TypeUtil.lua").IsLevel
+local IsLevel = Log4g.GetPkgClsFuncs("log4g-core", "TypeUtil").IsLevel
 local SysTime, debugGetInfo = SysTime, debug.getinfo
 
 function LogEvent:Initialize(ln, level, time, msg, src)

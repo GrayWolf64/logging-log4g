@@ -4,7 +4,7 @@
 -- @license Apache License 2.0
 -- @copyright GrayWolf64
 local LifeCycle = Log4g.GetPkgClsFuncs("log4g-core", "LifeCycle").getClass()
-local IsAppender = include("log4g/core/util/TypeUtil.lua").IsAppender
+local IsAppender = Log4g.GetPkgClsFuncs("log4g-core", "TypeUtil").IsAppender
 local Configuration = LifeCycle:subclass("Configuration")
 local SysTime = SysTime
 

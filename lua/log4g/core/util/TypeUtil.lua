@@ -63,8 +63,10 @@ local function mkfunc_classcheck(cls, subclss)
     end
 end
 
-for k, v in pairs(Classes) do
-    TypeUtil["Is" .. k] = mkfunc_classcheck(k, v)
-end
+print("Log4g-typeutil mkfunc_classcheck finished in ", Log4g.timeit(function()
+    for k, v in pairs(Classes) do
+        TypeUtil["Is" .. k] = mkfunc_classcheck(k, v)
+    end
+end), "seconds")
 
-return TypeUtil
+Log4g.RegisterPackageClass("log4g-core", "TypeUtil", TypeUtil)

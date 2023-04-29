@@ -3,7 +3,7 @@
 -- @classmod ConsoleAppender
 local Appender = Log4g.GetPkgClsFuncs("log4g-core", "Appender").getClass()
 local ConsoleAppender = Appender:subclass("ConsoleAppender")
-local TypeUtil = include("log4g/core/util/TypeUtil.lua")
+local TypeUtil = Log4g.GetPkgClsFuncs("log4g-core", "TypeUtil")
 local IsLogEvent, IsLayout = TypeUtil.IsLogEvent, TypeUtil.IsLayout
 local MsgC = MsgC
 

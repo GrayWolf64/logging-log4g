@@ -18,6 +18,7 @@ end
 include("log4g/core/Version.lua")
 include("log4g/core/impl/Object.lua")
 include("log4g/core/LifeCycle.lua")
+include("log4g/core/util/TypeUtil.lua")
 include("log4g/core/Level.lua")
 include("log4g/core/Layout.lua")
 include("log4g/core/layout/PatternLayout.lua")
