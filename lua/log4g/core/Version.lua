@@ -1,7 +1,5 @@
 --- Version handler.
 -- @script Version
-local MsgN, pairs = MsgN, pairs
-
 local function getVersionString()
     local verstr = ""
 
