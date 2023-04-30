@@ -154,7 +154,7 @@ end
 local function Create(loggerName, context, loggerconfig)
     if not IsLoggerContext(context) then return end
     if context:HasLogger(loggerName) or not QualifyName(loggerName) then return end
-    local logger, root = Logger(loggerName, context), PropertiesPlugin.getProperty("log4g_rootLogger", true)
+    local logger, root = Logger(loggerName, context), PropertiesPlugin.getProperty("rootLoggerName", true)
 
     if loggerName:find"%." then
         if IsLoggerConfig(loggerconfig) then

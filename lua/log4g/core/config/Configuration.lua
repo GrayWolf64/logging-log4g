@@ -75,7 +75,7 @@ function Configuration:GetLoggerConfigs()
 end
 
 function Configuration:GetRootLogger()
-    return self:GetPrivateField"lc"[PropertiesPlugin.getProperty("log4g_rootLogger", true)]
+    return self:GetPrivateField"lc"[PropertiesPlugin.getProperty("rootLoggerName", true)]
 end
 
 --- Gets how long since this Configuration initialized.
