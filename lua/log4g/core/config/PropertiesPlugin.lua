@@ -5,6 +5,10 @@
 -- @copyright GrayWolf64
 local IsLoggerContext = Log4g.GetPkgClsFuncs("log4g-core", "TypeUtil").IsLoggerContext
 
+--- Holds all the properties that Configurations use.
+-- It contains 'Shared' and 'Private' two sub tables.
+-- @local
+-- @table Properties
 local Properties = Properties or {
     Shared = {},
     Private = {}
