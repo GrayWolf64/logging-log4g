@@ -11,6 +11,7 @@ local IsLoggerContext, IsConfiguration = TypeUtil.IsLoggerContext, TypeUtil.IsCo
 TypeUtil = nil
 local GetDefaultConfiguration = Log4g.Core.Config.GetDefaultConfiguration
 local getContextDict = Log4g.Core.getContextDict
+local addToContextDict = Log4g.Core.addToContextDict
 local pairs = pairs
 local type = type
 
@@ -21,6 +22,8 @@ function LoggerContext:Initialize(name)
     self:SetName(name)
 end
 
+--- Sets the Configuration source for the LoggerContext.
+-- @param src String source
 function LoggerContext:SetConfigurationSource(src)
     self:SetPrivateField("source", src)
 end
@@ -108,11 +111,13 @@ local function Register(name, withconfig)
         ctx:SetConfiguration(GetDefaultConfiguration())
     end
 
-    ctxdict[name] = ctx
+    addToContextDict(name, ctx)
 
     return ctx
 end
 
+--- Get the number of Loggers across all the LoggerContexts.
+-- @return number count
 local function GetLoggerCount()
     local num, tableCount = 0, table.Count
 

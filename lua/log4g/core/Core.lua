@@ -15,6 +15,11 @@ function Log4g.Core.getContextDict()
     return ContextDict
 end
 
+function Log4g.Core.addToContextDict(key, value)
+    if not key or not value then return end
+    ContextDict[key] = value
+end
+
 include"log4g/core/Version.lua"
 include"log4g/core/impl/Object.lua"
 include"log4g/core/LifeCycle.lua"
