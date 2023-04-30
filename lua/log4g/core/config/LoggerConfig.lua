@@ -15,9 +15,9 @@ local IsLoggerContext = TypeUtil.IsLoggerContext
 local IsConfiguration, IsLevel = TypeUtil.IsConfiguration, TypeUtil.IsLevel
 local QualifyName = StringUtil.QualifyName
 TypeUtil, StringUtil = nil, nil
+local tableConcat = table.concat
 local GetCtx, GetAllCtx = LoggerContext.get, LoggerContext.getAll
 local pairs, next = pairs, next
-local tableConcat = table.concat
 local type = type
 
 cvars.AddChangeCallback(CreateConVar("log4g_rootLogger", "root", FCVAR_NOTIFY):GetName(), function(cvarn)
