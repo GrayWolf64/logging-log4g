@@ -90,6 +90,7 @@ local function buildEvent(o, level)
 end
 
 --- Construct a log event that will always be logged.
+-- @return object LogEvent
 function Logger:Always()
     return buildEvent(self, "ALL")
 end
