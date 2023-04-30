@@ -1,4 +1,5 @@
 --- Handles properties defined in the configuration.
+-- Since every LoggerContext has a Configuration, the grouping of private properties is based on LoggerContext names.
 -- @script PropertiesPlugin
 -- @license Apache License 2.0
 -- @copyright GrayWolf64
