@@ -39,8 +39,8 @@ if SERVER then
         if type(packageName) ~= "string" or type(ver) ~= "string" then return end
 
         Packages[packageName] = {
-            version = ver,
-            classes = {}
+            Version = ver,
+            Classes = {}
         }
     end
 
@@ -51,7 +51,7 @@ if SERVER then
     function Log4g.RegisterPackageClass(packageName, className, functionTable)
         if type(packageName) ~= "string" or type(className) ~= "string" or type(functionTable) ~= "table" then return end
         if not Packages[packageName] then return end
-        Packages[packageName].classes[className] = functionTable
+        Packages[packageName].Classes[className] = functionTable
     end
 
     function Log4g.HasPackage(name)
@@ -64,7 +64,7 @@ if SERVER then
     function Log4g.GetPackageVer(name)
         if type(name) ~= "string" then return end
 
-        return Packages[name].version
+        return Packages[name].Version
     end
 
     function Log4g.GetPkgClsFuncs(packageName, className)
@@ -72,7 +72,7 @@ if SERVER then
         local p = Packages[packageName]
         if not p then return end
 
-        return p.classes[className]
+        return p.Classes[className]
     end
 
     function Log4g.GetAllPackages()
