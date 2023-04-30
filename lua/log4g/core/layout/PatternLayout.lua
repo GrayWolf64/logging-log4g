@@ -26,8 +26,9 @@ end
 --- Format the LogEvent using patterns.
 -- @lfunction DoFormat
 -- @param event LogEvent
+-- @param colored If use `Color`s.
 -- @return vararg formatted event in substrs
-local function DoFormat(event)
+local function DoFormat(event, colored)
     local cp = GetConVar(cvarConversionPattern):GetString()
     local pos = charPos(cp, "%")
     if pos == true then return cp end
@@ -53,6 +54,8 @@ local function DoFormat(event)
     local lv = event:GetLevel()
 
     local function getCvarColor(cvar)
+        if not colored then return end
+
         return GetConVar(cvar):GetString():ToColor()
     end
 
@@ -90,7 +93,7 @@ local function DoFormat(event)
     end
 
     --- Make a function that can replace a table's matching values with replacement content(string),
-    -- and insert a Color before each replaced value.
+    -- and insert a Color before each replaced value. Based on `colored` bool, it will decide if `Color`s will be inserted.
     -- @lfunction mkfunc_precolor
     -- @param token String to search for and to be replaced
     -- @param color Color object to insert before each replaced value
@@ -101,13 +104,15 @@ local function DoFormat(event)
                 if v == token then
                     tbl[k] = content
 
-                    if color then
-                        tableInsert(tbl, k, color)
-                    else
-                        tableInsert(tbl, k, defaultColor)
-                    end
+                    if colored then
+                        if color then
+                            tableInsert(tbl, k, color)
+                        else
+                            tableInsert(tbl, k, defaultColor)
+                        end
 
-                    tableInsert(tbl, k + 2, defaultColor)
+                        tableInsert(tbl, k + 2, defaultColor)
+                    end
                 end
             end
         end
@@ -122,11 +127,12 @@ end
 
 --- Format a LogEvent.
 -- @param event LogEvent
+-- @param colored If use `Color`s.
 -- @return vararg result
-function PatternLayout:Format(event)
+function PatternLayout:Format(event, colored)
     if not IsLogEvent(event) then return end
 
-    return DoFormat(event)
+    return DoFormat(event, colored)
 end
 
 local function CreateDefaultLayout(name)
