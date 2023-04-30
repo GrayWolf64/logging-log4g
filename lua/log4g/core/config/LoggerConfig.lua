@@ -8,23 +8,18 @@ local LifeCycle = Log4g.GetPkgClsFuncs("log4g-core", "LifeCycle").getClass()
 local LoggerContext = Log4g.GetPkgClsFuncs("log4g-core", "LoggerContext")
 local EnumerateAncestors = Log4g.GetPkgClsFuncs("log4g-core", "Object").enumerateAncestors
 local GetLevel = Log4g.GetPkgClsFuncs("log4g-core", "Level").getLevel
-local TypeUtil, StringUtil = Log4g.GetPkgClsFuncs("log4g-core", "TypeUtil"), include("log4g/core/util/StringUtil.lua")
+local TypeUtil = Log4g.GetPkgClsFuncs("log4g-core", "TypeUtil")
+local PropertiesPlugin = Log4g.GetPkgClsFuncs("log4g-core", "PropertiesPlugin")
 local LoggerConfig = LifeCycle:subclass"LoggerConfig"
 local IsAppender, IsLoggerConfig = TypeUtil.IsAppender, TypeUtil.IsLoggerConfig
 local IsLoggerContext = TypeUtil.IsLoggerContext
 local IsConfiguration, IsLevel = TypeUtil.IsConfiguration, TypeUtil.IsLevel
-local QualifyName = StringUtil.QualifyName
 TypeUtil, StringUtil = nil, nil
 local tableConcat = table.concat
 local GetCtx, GetAllCtx = LoggerContext.get, LoggerContext.getAll
 local pairs, next = pairs, next
 local type = type
-
-cvars.AddChangeCallback(CreateConVar("log4g_rootLogger", "root", FCVAR_NOTIFY):GetName(), function(cvarn)
-    if not QualifyName(newn, false) or next(GetAllCtx()) then
-        GetConVar(cvarn):Revert()
-    end
-end)
+PropertiesPlugin.registerProperty("log4g_rootLogger", "root", true)
 
 function LoggerConfig:Initialize(name)
     LifeCycle.Initialize(self)
@@ -140,7 +135,7 @@ end
 local RootLoggerConfig = LoggerConfig:subclass"LoggerConfig.RootLogger"
 
 function RootLoggerConfig:Initialize()
-    LoggerConfig.Initialize(self, GetConVar"log4g_rootLogger":GetString())
+    LoggerConfig.Initialize(self, PropertiesPlugin.getProperty("log4g_rootLogger", true))
     self:SetLevel(GetLevel"INFO")
 end
 
@@ -193,7 +188,7 @@ end
 -- @param level The Logging Level
 -- @return object loggerconfig
 local function Create(name, config, level)
-    local root = GetConVar"log4g_rootLogger":GetString()
+    local root = PropertiesPlugin.getProperty("log4g_rootLogger", true)
     if not IsConfiguration(config) or name == root then return end
     local lc = LoggerConfig(name)
     lc:SetContext(config:GetContext())

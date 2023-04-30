@@ -5,6 +5,7 @@
 -- @copyright GrayWolf64
 local LifeCycle = Log4g.GetPkgClsFuncs("log4g-core", "LifeCycle").getClass()
 local IsAppender = Log4g.GetPkgClsFuncs("log4g-core", "TypeUtil").IsAppender
+local PropertiesPlugin = Log4g.GetPkgClsFuncs("log4g-core", "PropertiesPlugin")
 local Configuration = LifeCycle:subclass"Configuration"
 local SysTime = SysTime
 
@@ -74,7 +75,7 @@ function Configuration:GetLoggerConfigs()
 end
 
 function Configuration:GetRootLogger()
-    return self:GetPrivateField"lc"[GetConVar("log4g_rootLogger"):GetString()]
+    return self:GetPrivateField"lc"[PropertiesPlugin.getProperty("log4g_rootLogger", true)]
 end
 
 --- Gets how long since this Configuration initialized.
