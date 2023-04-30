@@ -41,7 +41,11 @@ concommand.Add("log4g_coretest_loggerLog", function()
     local lc = CreateLoggerConfig("LogTester", ctx:GetConfiguration(), GetLevel("TRACE"))
     lc:AddAppender(CreateConsoleAppender("TestAppender", CreatePatternLayout("TestLayout")))
     local logger = CreateLogger("LogTester", ctx, lc)
-    logger:Trace("Test TRACE message 0123456789.")
+
+    print("output finished in", Log4g.timeit(function()
+        logger:Trace("Test TRACE message 0123456789.")
+    end), "seconds")
+
     print(logger:IsAdditive())
     ctx:Terminate()
 end)
