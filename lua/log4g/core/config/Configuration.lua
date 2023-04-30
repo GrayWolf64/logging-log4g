@@ -86,19 +86,18 @@ local function GetClass()
     return Configuration
 end
 
---- The default configuration writes all output to the console using the default logging level.
 local DefaultConfiguration = Configuration:subclass"DefaultConfiguration"
 local CreateConsoleAppender, CreatePatternLayout = Log4g.GetPkgClsFuncs("log4g-core", "ConsoleAppender").createConsoleAppender, Log4g.GetPkgClsFuncs("log4g-core", "PatternLayout").createDefaultLayout
-CreateConVar("log4g_configuration_default_name", "default", FCVAR_NOTIFY):GetString()
-CreateConVar("log4g_configuration_default_level", "DEBUG", FCVAR_NOTIFY):GetString()
+PropertiesPlugin.registerProperty("configurationDefaultName", "default", true)
+PropertiesPlugin.registerProperty("configurationDefaultLevel", "DEBUG", true)
 
 function DefaultConfiguration:Initialize(name)
     Configuration.Initialize(self, name)
-    self:SetPrivateField("defaultlevel", GetConVar"log4g_configuration_default_level":GetString())
+    self:SetPrivateField("defaultlevel", PropertiesPlugin.getProperty("configurationDefaultLevel", true))
 end
 
 local function GetDefaultConfiguration()
-    local name = GetConVar"log4g_configuration_default_name":GetString()
+    local name = PropertiesPlugin.getProperty("configurationDefaultName", true)
     local configuration = DefaultConfiguration(name)
     configuration:AddAppender(CreateConsoleAppender(name .. "Appender", CreatePatternLayout(name .. "Layout")))
 
