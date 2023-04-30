@@ -1,5 +1,5 @@
 --- Interface that must be implemented to create a Configuration.
--- Subclassing `LifeCycle`.
+-- Subclassing `LifeCycle`, mixin-ing `SetContext()` and `GetContext()`.
 -- @classmod Configuration
 -- @license Apache License 2.0
 -- @copyright GrayWolf64
@@ -7,6 +7,7 @@ local LifeCycle = Log4g.GetPkgClsFuncs("log4g-core", "LifeCycle").getClass()
 local IsAppender = Log4g.GetPkgClsFuncs("log4g-core", "TypeUtil").IsAppender
 local PropertiesPlugin = Log4g.GetPkgClsFuncs("log4g-core", "PropertiesPlugin")
 local Configuration = LifeCycle:subclass"Configuration"
+Configuration:include(Log4g.GetPkgClsFuncs("log4g-core", "Object").contextualMixins)
 local SysTime = SysTime
 
 function Configuration:Initialize(name)
@@ -23,18 +24,6 @@ end
 
 function Configuration:IsConfiguration()
     return true
-end
-
---- Sets the LoggerContext name for the Configuration.
--- This is meant to be used internally when creating a LoggerContext,
--- and associating the DefaultConfiguration with it, then the Configuration will have a string field of the LoggerContext's name.
--- @param name ctxname
-function Configuration:SetContext(name)
-    self:SetPrivateField("ctx", name)
-end
-
-function Configuration:GetContext()
-    return self:GetPrivateField"ctx"
 end
 
 --- Adds a Appender to the Configuration.

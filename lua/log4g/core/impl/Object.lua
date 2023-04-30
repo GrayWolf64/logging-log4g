@@ -78,7 +78,19 @@ local function EnumerateAncestors(name)
     return ancestors, nodes
 end
 
+--- Get and Set Context functions minxin.
+-- @local
+-- @table contextualMixins
+local contextualMixins = {
+    SetContext = function(self, ctx)
+        if type(ctx) ~= "string" then return end
+        self:SetPrivateField("ctx", ctx)
+    end,
+    GetContext = function(self) return self:GetPrivateField"ctx" end
+}
+
 Log4g.RegisterPackageClass("log4g-core", "Object", {
     getClass = GetClass,
-    enumerateAncestors = EnumerateAncestors
+    enumerateAncestors = EnumerateAncestors,
+    contextualMixins = contextualMixins
 })

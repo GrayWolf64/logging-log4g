@@ -1,16 +1,18 @@
 --- The LoggerConfig.
 -- Logger object that is created via configuration.
--- Subclassing `LifeCycle`.
+-- Subclassing `LifeCycle`, mixin-ing `SetContext()` and `GetContext()`.
 -- @classmod LoggerConfig
 -- @license Apache License 2.0
 -- @copyright GrayWolf64
 local LifeCycle = Log4g.GetPkgClsFuncs("log4g-core", "LifeCycle").getClass()
 local LoggerContext = Log4g.GetPkgClsFuncs("log4g-core", "LoggerContext")
-local EnumerateAncestors = Log4g.GetPkgClsFuncs("log4g-core", "Object").enumerateAncestors
+local Object = Log4g.GetPkgClsFuncs("log4g-core", "Object")
 local GetLevel = Log4g.GetPkgClsFuncs("log4g-core", "Level").getLevel
 local TypeUtil = Log4g.GetPkgClsFuncs("log4g-core", "TypeUtil")
 local PropertiesPlugin = Log4g.GetPkgClsFuncs("log4g-core", "PropertiesPlugin")
 local LoggerConfig = LifeCycle:subclass"LoggerConfig"
+local EnumerateAncestors = Object.enumerateAncestors
+LoggerConfig:include(Object.contextualMixins)
 local IsAppender, IsLoggerConfig = TypeUtil.IsAppender, TypeUtil.IsLoggerConfig
 local IsLoggerContext = TypeUtil.IsLoggerContext
 local IsConfiguration, IsLevel = TypeUtil.IsConfiguration, TypeUtil.IsLevel
@@ -79,17 +81,6 @@ end
 -- @return string lcname
 function LoggerConfig:GetParent()
     return self:GetPrivateField"parent"
-end
-
---- Sets the Context name for the LoggerConfig.
--- @param ctx LoggerContext object
-function LoggerConfig:SetContext(name)
-    if type(name) ~= "string" then return end
-    self:SetPrivateField("ctx", name)
-end
-
-function LoggerConfig:GetContext()
-    return self:GetPrivateField"ctx"
 end
 
 function LoggerConfig:GetAppenderRef()
