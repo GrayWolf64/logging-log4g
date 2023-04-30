@@ -5,15 +5,15 @@
 local fileExists = file.Exists
 local MMC = "log4g/mmc-gui/MMC.lua"
 
-local function checkAndInclude(provider, filename, addcslf)
-    if fileExists(filename, "lsv") then
-        include(filename)
-        print(provider, "successfully included", filename)
-        if addcslf ~= true then return end
-        AddCSLuaFile(filename)
-        print(provider, "successfully sent", filename, "to client")
+local function checkAndInclude(provider, fileName, addCSLuaFile)
+    if fileExists(fileName, "lsv") then
+        include(fileName)
+        print(provider, "successfully included", fileName)
+        if addCSLuaFile ~= true then return end
+        AddCSLuaFile(fileName)
+        print(provider, "successfully sent", fileName, "to client")
     else
-        print(provider, "tried to include", filename, "but failed due to non-existence")
+        print(provider, "tried to include", fileName, "but failed due to non-existence")
     end
 end
 
@@ -35,19 +35,23 @@ if SERVER then
     --- Register a package for use with Log4g.
     -- @param name The name of the package to register
     -- @param ver The version string of the given package
-    function Log4g.RegisterPackage(name, ver)
-        if type(name) ~= "string" or type(ver) ~= "string" then return end
+    function Log4g.RegisterPackage(packageName, ver)
+        if type(packageName) ~= "string" or type(ver) ~= "string" then return end
 
-        Packages[name] = {
+        Packages[packageName] = {
             version = ver,
             classes = {}
         }
     end
 
-    function Log4g.RegisterPackageClass(pname, cname, tbl)
-        if type(pname) ~= "string" or type(cname) ~= "string" or type(tbl) ~= "table" then return end
-        if not Packages[pname] then return end
-        Packages[pname].classes[cname] = tbl
+    --- Register a Class which belongs a certain package.
+    -- @param packageName Package name
+    -- @param className Class name
+    -- @param functionTable Function table
+    function Log4g.RegisterPackageClass(packageName, className, functionTable)
+        if type(packageName) ~= "string" or type(className) ~= "string" or type(functionTable) ~= "table" then return end
+        if not Packages[packageName] then return end
+        Packages[packageName].classes[className] = functionTable
     end
 
     function Log4g.HasPackage(name)
@@ -63,12 +67,12 @@ if SERVER then
         return Packages[name].version
     end
 
-    function Log4g.GetPkgClsFuncs(pname, cname)
-        if type(pname) ~= "string" or type(cname) ~= "string" then return end
-        local p = Packages[pname]
+    function Log4g.GetPkgClsFuncs(packageName, className)
+        if type(packageName) ~= "string" or type(className) ~= "string" then return end
+        local p = Packages[packageName]
         if not p then return end
 
-        return p.classes[cname]
+        return p.classes[className]
     end
 
     function Log4g.GetAllPackages()
