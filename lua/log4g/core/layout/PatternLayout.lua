@@ -3,9 +3,9 @@
 -- @license Apache License 2.0
 -- @copyright GrayWolf64
 local Layout = Log4g.GetPkgClsFuncs("log4g-core", "Layout").getClass()
-local PatternLayout = Layout:subclass("PatternLayout")
+local PatternLayout = Layout:subclass"PatternLayout"
 local IsLogEvent = Log4g.GetPkgClsFuncs("log4g-core", "TypeUtil").IsLogEvent
-local charPos = include("log4g/core/util/StringUtil.lua").CharPos
+local charPos = include"log4g/core/util/StringUtil.lua".CharPos
 local pairs, ipairs = pairs, ipairs
 local unpack = unpack
 local defaultColor = Color(0, 201, 255)
