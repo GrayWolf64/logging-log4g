@@ -27,31 +27,29 @@ end
 -- @lfunction DoFormat
 -- @param event LogEvent
 -- @param colored If use `Color`s.
--- @return vararg formatted event in substrs
+-- @return vararg formatted event in sub strings
 local function DoFormat(event, colored)
-    local cp = GetConVar(cvarConversionPattern):GetString()
-    local pos = charPos(cp, "%")
-    if pos == true then return cp end
-    local substrs = {}
-    local headerpos = 1
+    local conversionPattern = GetConVar(cvarConversionPattern):GetString()
+    local pos = charPos(conversionPattern, "%")
+    if pos == true then return conversionPattern end
+    local subStrings = {}
+    local pointerPos = 1
 
     for k, v in ipairs(pos) do
-        local prevpos, nextpos = pos[k - 1], pos[k + 1]
+        local previousPos, nextPos = pos[k - 1], pos[k + 1]
 
-        if prevpos then
-            headerpos = prevpos
+        if previousPos then
+            pointerPos = previousPos
         end
 
         if v - 1 ~= 0 then
-            substrs[k] = cp:sub(headerpos, v - 1)
+            subStrings[k] = conversionPattern:sub(pointerPos, v - 1)
         end
 
-        if not nextpos then
-            substrs[k + 1] = cp:sub(v, #cp)
+        if not nextPos then
+            subStrings[k + 1] = conversionPattern:sub(v, #conversionPattern)
         end
     end
-
-    local lv = event:GetLevel()
 
     local function getCvarColor(cvar)
         if not colored then return end
@@ -59,7 +57,9 @@ local function DoFormat(event, colored)
         return GetConVar(cvar):GetString():ToColor()
     end
 
-    local tkmap = {
+    local eventLevel = event:GetLevel()
+
+    local tokenMap = {
         ["%msg"] = {
             color = getCvarColor(cvarMessageColor),
             content = event:GetMsg()
@@ -76,18 +76,18 @@ local function DoFormat(event, colored)
             content = event:GetSource():GetFileFromFilename()
         },
         ["%level"] = {
-            color = lv:GetColor(),
-            content = lv:GetName()
+            color = eventLevel:GetColor(),
+            content = eventLevel:GetName()
         }
     }
 
-    for k in pairs(tkmap) do
-        for i, j in ipairs(substrs) do
-            if j:find(k, 1, true) then
-                local oldvalue = substrs[i]
-                tableRemove(substrs, i)
-                tableInsert(substrs, i, k)
-                tableInsert(substrs, i + 1, oldvalue:sub(#k + 1, #oldvalue))
+    for tokenName in pairs(tokenMap) do
+        for index, subString in ipairs(subStrings) do
+            if subString:find(tokenName, 1, true) then
+                local previousValue = subStrings[index]
+                tableRemove(subStrings, index)
+                tableInsert(subStrings, index, tokenName)
+                tableInsert(subStrings, index + 1, previousValue:sub(#tokenName + 1, #previousValue))
             end
         end
     end
@@ -95,34 +95,34 @@ local function DoFormat(event, colored)
     --- Make a function that can replace a table's matching values with replacement content(string),
     -- and insert a Color before each replaced value. Based on `colored` bool, it will decide if `Color`s will be inserted.
     -- @lfunction mkfunc_precolor
-    -- @param token String to search for and to be replaced
+    -- @param tokenName String to search for and to be replaced
     -- @param color Color object to insert before each replaced value
     -- @return function output func
-    local function mkfunc_precolor(token, color)
-        return function(tbl, content)
-            for k, v in ipairs(tbl) do
-                if v == token then
-                    tbl[k] = content
+    local function mkfunc_precolor(tokenName, color)
+        return function(subStringTable, content)
+            for index, subString in ipairs(subStringTable) do
+                if subString == tokenName then
+                    subStringTable[index] = content
 
                     if colored then
                         if color then
-                            tableInsert(tbl, k, color)
+                            tableInsert(subStringTable, index, color)
                         else
-                            tableInsert(tbl, k, defaultColor)
+                            tableInsert(subStringTable, index, defaultColor)
                         end
 
-                        tableInsert(tbl, k + 2, defaultColor)
+                        tableInsert(subStringTable, index + 2, defaultColor)
                     end
                 end
             end
         end
     end
 
-    for k, v in pairs(tkmap) do
-        mkfunc_precolor(k, v.color)(substrs, v.content)
+    for tokenName, mappedReplacements in pairs(tokenMap) do
+        mkfunc_precolor(tokenName, mappedReplacements.color)(subStrings, mappedReplacements.content)
     end
 
-    return unpack(substrs)
+    return unpack(subStrings)
 end
 
 --- Format a LogEvent.
