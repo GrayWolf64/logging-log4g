@@ -32,8 +32,8 @@ if Log4g then
    --- Get some classes' functions.
    local Logger = Log4g.GetPkgClsFuncs("log4g-core", "Logger")
    local Appender = Log4g.GetPkgClsFuncs("log4g-core", "Appender")
-   local PatternAppender = Log4g.GetPkgClsFuncs("log4g-core", "PatternAppender")
    local LoggerConfig = Log4g.GetPkgClsFuncs("log4g-core", "LoggerConfig")
+   local PatternAppender = Log4g.GetPkgClsFuncs("log4g-core", "PatternAppender")
 
    --- This will locate / create a proper LoggerContext named 'Foo' with DefaultConfiguration.
    local ctx = Log4g.API.LoggerContextFactory.GetContext("Foo", true)
