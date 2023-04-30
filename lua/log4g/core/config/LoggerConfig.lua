@@ -46,7 +46,7 @@ end
 local function HasLoggerConfig(name, context)
     local getlc = function(ctx, lcn) return ctx:GetConfiguration():GetLoggerConfig(lcn) end
 
-    if not context or not IsLoggerContext(context) then
+    if not IsLoggerContext(context) then
         for _, v in pairs(GetAllCtx()) do
             if getlc(v, name) then return true end
         end
@@ -194,7 +194,7 @@ local function Create(name, config, level)
     lc:SetContext(config:GetContext())
 
     local setlvp = function(o, l1, l2, p)
-        if l1 and IsLevel(l1) then
+        if IsLevel(l1) then
             o:SetLevel(l1)
         else
             o:SetLevel(l2)

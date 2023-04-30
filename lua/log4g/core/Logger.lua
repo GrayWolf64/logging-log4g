@@ -157,7 +157,7 @@ local function Create(name, context, loggerconfig)
     local logger, root = Logger(name, context), PropertiesPlugin.getProperty("log4g_rootLogger", true)
 
     if name:find"%." then
-        if loggerconfig and IsLoggerConfig(loggerconfig) then
+        if IsLoggerConfig(loggerconfig) then
             local lcn = loggerconfig:GetName()
 
             if lcn == name then
@@ -187,7 +187,7 @@ local function Create(name, context, loggerconfig)
             end
         end
     else
-        if loggerconfig and IsLoggerConfig(loggerconfig) and loggerconfig:GetName() == name then
+        if IsLoggerConfig(loggerconfig) and loggerconfig:GetName() == name then
             logger:SetLoggerConfig(name)
         else
             logger:SetLoggerConfig(root)
