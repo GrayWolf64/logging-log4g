@@ -19,7 +19,7 @@ local function registerProperty(name, defaultValue, shared, context)
 
     if shared then
         Properties.Shared[name] = defaultValue
-    elseif context and IsLoggerContext(context) then
+    elseif IsLoggerContext(context) then
         local function ifSubTblNotExistThenCreate(tbl, key)
             if not tbl[key] then
                 tbl[key] = {}
@@ -42,7 +42,7 @@ local function getProperty(name, shared, context)
 
     if shared then
         return Properties.Shared[name]
-    elseif context and IsLoggerContext(context) then
+    elseif IsLoggerContext(context) then
         local contextProperties = Properties.Private[context:GetName()]
         if not contextProperties then return end
 
@@ -59,7 +59,7 @@ local function removeProperty(name, shared, context)
 
     if shared then
         Properties.Shared[name] = nil
-    elseif context and IsLoggerContext(context) then
+    elseif IsLoggerContext(context) then
         local contextName = context:GetName()
         local contextProperties = Properties.Private[contextName]
         if not contextProperties then return end
