@@ -10,7 +10,7 @@ local function setCurrentLoggingImpl(name)
     currentImpl = name
 end
 
-function Log4g.getCurrentLoggingImpl()
+function Log4g.API.getCurrentLoggingImpl()
     return currentImpl
 end
 
