@@ -103,7 +103,7 @@ local function Register(name, withconfig)
     if type(name) ~= "string" then return end
     local ctxdict = getContextDict()
     local ctx = ctxdict[name]
-    if ctx and IsLoggerContext(ctx) then return ctx end
+    if IsLoggerContext(ctx) then return ctx end
     ctx = LoggerContext(name)
 
     if withconfig or withconfig == nil then
