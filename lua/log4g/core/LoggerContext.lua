@@ -18,7 +18,6 @@ local type = type
 function LoggerContext:Initialize(name)
     LifeCycle.Initialize(self)
     self:SetPrivateField("logger", {})
-    self:SetPrivateField("source", "unknown")
     self:SetName(name)
 end
 
