@@ -151,50 +151,50 @@ function Logger:Fatal(msg)
     LogIfEnabled(self, "FATAL", msg)
 end
 
-local function Create(name, context, loggerconfig)
+local function Create(loggerName, context, loggerconfig)
     if not IsLoggerContext(context) then return end
-    if context:HasLogger(name) or not QualifyName(name) then return end
-    local logger, root = Logger(name, context), PropertiesPlugin.getProperty("log4g_rootLogger", true)
+    if context:HasLogger(loggerName) or not QualifyName(loggerName) then return end
+    local logger, root = Logger(loggerName, context), PropertiesPlugin.getProperty("log4g_rootLogger", true)
 
-    if name:find"%." then
+    if loggerName:find"%." then
         if IsLoggerConfig(loggerconfig) then
-            local lcn = loggerconfig:GetName()
+            local loggerconfigName = loggerconfig:GetName()
 
-            if lcn == name then
-                logger:SetLoggerConfig(name)
+            if loggerconfigName == loggerName then
+                logger:SetLoggerConfig(loggerName)
             else
-                if EnumerateAncestors(name)[lcn] then
-                    logger:SetLoggerConfig(lcn)
+                if EnumerateAncestors(loggerName)[loggerconfigName] then
+                    logger:SetLoggerConfig(loggerconfigName)
                 else
                     logger:SetLoggerConfig(root)
                 end
             end
-        else
-            local lc = name
+        else --- Provided 'LoggerConfig' isn't an actual LoggerConfig, automatically assign one.
+            local autoLoggerConfigName = loggerName
 
             while true do
-                if HasLoggerConfig(lc, context) then
-                    logger:SetLoggerConfig(lc)
+                if HasLoggerConfig(autoLoggerConfigName, context) then
+                    logger:SetLoggerConfig(autoLoggerConfigName)
                     break
                 end
 
-                lc = StripDotExtension(lc)
+                autoLoggerConfigName = StripDotExtension(autoLoggerConfigName)
 
-                if not lc:find"%." and not HasLoggerConfig(lc, context) then
+                if not autoLoggerConfigName:find"%." and not HasLoggerConfig(autoLoggerConfigName, context) then
                     logger:SetLoggerConfig(root)
                     break
                 end
             end
         end
     else
-        if IsLoggerConfig(loggerconfig) and loggerconfig:GetName() == name then
-            logger:SetLoggerConfig(name)
+        if IsLoggerConfig(loggerconfig) and loggerconfig:GetName() == loggerName then
+            logger:SetLoggerConfig(loggerName)
         else
             logger:SetLoggerConfig(root)
         end
     end
 
-    context:AddLogger(name, logger)
+    context:AddLogger(loggerName, logger)
 
     return logger
 end
