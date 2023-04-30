@@ -59,8 +59,8 @@ end
 
 local function GetLoggerConfig(name)
     for _, v in pairs(GetAllCtx()) do
-        local lc = v:GetConfiguration():GetLoggerConfig(name)
-        if lc then return lc end
+        local loggerConfig = v:GetConfiguration():GetLoggerConfig(name)
+        if loggerConfig then return loggerConfig end
     end
 end
 
@@ -161,14 +161,14 @@ end
 
 --- Check if a LoggerConfig's ancestors exist and return its desired parent name.
 -- @lfunction ValidateAncestors
--- @param lc LoggerConfig object
+-- @param loggerConfig LoggerConfig object
 -- @return bool valid
 -- @return string parent name
-local function ValidateAncestors(lc)
-    local ancestors, nodes = EnumerateAncestors(lc:GetName())
+local function ValidateAncestors(loggerConfig)
+    local ancestors, nodes = EnumerateAncestors(loggerConfig:GetName())
 
     local function HasEveryLoggerConfig(tbl)
-        local ctx = GetCtx(lc:GetContext())
+        local ctx = GetCtx(loggerConfig:GetContext())
 
         for k in pairs(tbl) do
             if not HasLoggerConfig(k, ctx) then return false end
@@ -190,30 +190,30 @@ end
 local function Create(name, config, level)
     local root = PropertiesPlugin.getProperty("log4g_rootLogger", true)
     if not IsConfiguration(config) or name == root then return end
-    local lc = LoggerConfig(name)
-    lc:SetContext(config:GetContext())
+    local loggerConfig = LoggerConfig(name)
+    loggerConfig:SetContext(config:GetContext())
 
-    local setlvp = function(o, l1, l2, p)
-        if IsLevel(l1) then
-            o:SetLevel(l1)
+    local setLevelAndParent = function(o, level1, level2, parent)
+        if IsLevel(level1) then
+            o:SetLevel(level1)
         else
-            o:SetLevel(l2)
+            o:SetLevel(level2)
         end
 
-        o:SetParent(p)
+        o:SetParent(parent)
     end
 
     if name:find"%." then
-        local valid, parent = ValidateAncestors(lc)
+        local valid, parent = ValidateAncestors(loggerConfig)
         if not valid then return end
-        setlvp(lc, level, GetLoggerConfig(parent):GetLevel(), parent)
+        setLevelAndParent(loggerConfig, level, GetLoggerConfig(parent):GetLevel(), parent)
     else
-        setlvp(lc, level, config:GetRootLogger():GetLevel(), root)
+        setLevelAndParent(loggerConfig, level, config:GetRootLogger():GetLevel(), root)
     end
 
-    config:AddLogger(name, lc)
+    config:AddLogger(name, loggerConfig)
 
-    return lc
+    return loggerConfig
 end
 
 Log4g.RegisterPackageClass("log4g-core", "LoggerConfig", {
