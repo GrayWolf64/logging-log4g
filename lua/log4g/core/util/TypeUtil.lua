@@ -44,20 +44,20 @@ local Classes = {
     ["LoggerConfig.RootLogger"] = {}
 }
 
-local function mkfunc_classcheck(cls, subclss)
+local function mkfunc_classcheck(cls, subClasses)
     return function(o)
         if not o or type(o) ~= "table" then return false end
-        local class = o.class
-        if not class then return false end
-        local clsname = class.name
+        local classTable = o.class
+        if not classTable then return false end
+        local className = classTable.name
 
-        if subclss then
-            for k in pairs(subclss) do
-                if k == clsname then return true end
+        if subClasses then
+            for name in pairs(subClasses) do
+                if name == className then return true end
             end
         end
 
-        if clsname == cls then return true end
+        if className == cls then return true end
 
         return false
     end
