@@ -85,39 +85,43 @@ function Logger:CallAppenders(event)
     end
 end
 
+local function buildEvent(o, level)
+    return LogEventBuilder(o:GetName(), GetLevel(level))
+end
+
 --- Construct a log event that will always be logged.
 function Logger:Always()
-    return LogEventBuilder(self:GetName(), GetLevel"ALL")
+    return buildEvent(self, "ALL")
 end
 
 --- Construct a trace log event.
 function Logger:AtTrace()
-    return LogEventBuilder(self:GetName(), GetLevel"TRACE")
+    return buildEvent(self, "TRACE")
 end
 
 --- Construct a debug log event.
 function Logger:AtDebug()
-    return LogEventBuilder(self:GetName(), GetLevel"DEBUG")
+    return buildEvent(self, "DEBUG")
 end
 
 --- Construct a info log event.
 function Logger:AtInfo()
-    return LogEventBuilder(self:GetName(), GetLevel"INFO")
+    return buildEvent(self, "INFO")
 end
 
 --- Construct a warn log event.
 function Logger:AtWarn()
-    return LogEventBuilder(self:GetName(), GetLevel"WARN")
+    return buildEvent(self, "WARN")
 end
 
 --- Construct a error log event.
 function Logger:AtError()
-    return LogEventBuilder(self:GetName(), GetLevel"ERROR")
+    return buildEvent(self, "ERROR")
 end
 
 --- Construct a fatal log event.
 function Logger:AtFatal()
-    return LogEventBuilder(self:GetName(), GetLevel"FATAL")
+    return buildEvent(self, "FATAL")
 end
 
 --- Logs a message if the specified level is active.
