@@ -19,20 +19,16 @@ local function registerProperty(name, defaultValue, shared, context)
 
     if shared then
         Properties.Shared[name] = defaultValue
-    else
-        if not context or not IsLoggerContext(context) then
-            return
-        else
-            local function ifSubTblNotExistThenCreate(tbl, key)
-                if not tbl[key] then
-                    tbl[key] = {}
-                end
+    elseif context and IsLoggerContext(context) then
+        local function ifSubTblNotExistThenCreate(tbl, key)
+            if not tbl[key] then
+                tbl[key] = {}
             end
-
-            local contextName = context:GetName()
-            ifSubTblNotExistThenCreate(Properties.Private, contextName)
-            Properties.Private[contextName][name] = defaultValue
         end
+
+        local contextName = context:GetName()
+        ifSubTblNotExistThenCreate(Properties.Private, contextName)
+        Properties.Private[contextName][name] = defaultValue
     end
 end
 
@@ -46,15 +42,11 @@ local function getProperty(name, shared, context)
 
     if shared then
         return Properties.Shared[name]
-    else
-        if not context or not IsLoggerContext(context) then
-            return
-        else
-            local contextProperties = Properties.Private[context:GetName()]
-            if not contextProperties then return end
+    elseif context and IsLoggerContext(context) then
+        local contextProperties = Properties.Private[context:GetName()]
+        if not contextProperties then return end
 
-            return contextProperties[name]
-        end
+        return contextProperties[name]
     end
 end
 
@@ -67,18 +59,14 @@ local function removeProperty(name, shared, context)
 
     if shared then
         Properties.Shared[name] = nil
-    else
-        if not context or not IsLoggerContext(context) then
-            return
-        else
-            local contextName = context:GetName()
-            local contextProperties = Properties.Private[contextName]
-            if not contextProperties then return end
-            contextProperties[name] = nil
+    elseif context and IsLoggerContext(context) then
+        local contextName = context:GetName()
+        local contextProperties = Properties.Private[contextName]
+        if not contextProperties then return end
+        contextProperties[name] = nil
 
-            if not next(contextProperties) then
-                Properties.Private[contextName] = nil
-            end
+        if not next(contextProperties) then
+            Properties.Private[contextName] = nil
         end
     end
 end
