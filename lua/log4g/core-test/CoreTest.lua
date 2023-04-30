@@ -21,4 +21,5 @@ concommand.Add("log4g_load_coretest", function()
 
     include"log4g/core-test/TestLoggerContext.lua"
     include"log4g/core-test/TestLogger.lua"
+    include"log4g/core-test/TestProperties.lua"
 end)

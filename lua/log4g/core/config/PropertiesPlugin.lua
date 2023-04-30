@@ -2,8 +2,7 @@
 -- @script PropertiesPlugin
 -- @license Apache License 2.0
 -- @copyright GrayWolf64
-local IsConfiguration = Log4g.GetPkgClsFuncs("log4g-core", "TypeUtil").IsConfiguration
-local pairs = pairs
+local IsLoggerContext = Log4g.GetPkgClsFuncs("log4g-core", "TypeUtil").IsLoggerContext
 
 local Properties = Properties or {
     Shared = {},
@@ -13,15 +12,15 @@ local Properties = Properties or {
 --- Register a property.
 -- @param name Name of the property
 -- @param defaultValue Default value of the property
--- @param shared If this property will be shared with every Configurations
--- @param config Configuration object
-local function registerProperty(name, defaultValue, shared, config)
+-- @param shared If this property will be shared with every LoggerContexts
+-- @param context LoggerContext object
+local function registerProperty(name, defaultValue, shared, context)
     if type(name) ~= "string" or not defaultValue then return end
 
     if shared then
         Properties.Shared[name] = defaultValue
     else
-        if not config or not IsConfiguration(config) then
+        if not context or not IsLoggerContext(context) then
             return
         else
             local function ifSubTblNotExistThenCreate(tbl, key)
@@ -30,9 +29,9 @@ local function registerProperty(name, defaultValue, shared, config)
                 end
             end
 
-            local configName = config:GetName()
-            ifSubTblNotExistThenCreate(Properties.Private, configName)
-            Properties.Private[configName][name] = defaultValue
+            local contextName = context:GetName()
+            ifSubTblNotExistThenCreate(Properties.Private, contextName)
+            Properties.Private[contextName][name] = defaultValue
         end
     end
 end
@@ -40,25 +39,21 @@ end
 --- Gets a property.
 -- @param name Property name
 -- @param shared If the property is shared
--- @param config Configuration object
+-- @param context LoggerContext object
 -- @return anytype value
-local function getProperty(name, shared, config)
+local function getProperty(name, shared, context)
     if type(name) ~= "string" then return end
 
     if shared then
         return Properties.Shared[name]
     else
-        if not config or not IsConfiguration(config) then
-            for _, properties in pairs(Properties.Private) do
-                for propertyName, property in pairs(properties) do
-                    if propertyName == name then return property end
-                end
-            end
+        if not context or not IsLoggerContext(context) then
+            return
         else
-            local configProperties = Properties.Private[config:GetName()]
-            if not configProperties then return end
+            local contextProperties = Properties.Private[context:GetName()]
+            if not contextProperties then return end
 
-            return configProperties[name]
+            return contextProperties[name]
         end
     end
 end
@@ -66,33 +61,24 @@ end
 --- Removes a property.
 -- @param name Property name
 -- @param shared If the property is shared
--- @param config Configuration object
-local function removeProperty(name, shared, config)
+-- @param context LoggerContext object
+local function removeProperty(name, shared, context)
     if type(name) ~= "string" then return end
 
     if shared then
-        Properties[name] = nil
+        Properties.Shared[name] = nil
     else
-        local function ifSubTblEmptyThenRemove(tbl, key)
-            if not next(tbl[key]) then
-                tbl[key] = nil
-            end
-        end
-
-        if not config or not IsConfiguration(config) then
-            for configName, properties in pairs(Properties.Private) do
-                for propertyName, property in pairs(properties) do
-                    if propertyName == name then
-                        Properties.Private[configName][name] = nil
-                        ifSubTblEmptyThenRemove(Properties.Private, configName)
-                    end
-                end
-            end
+        if not context or not IsLoggerContext(context) then
+            return
         else
-            local configProperties = Properties.Private[config:GetName()]
-            if not configProperties then return end
-            configProperties[name] = nil
-            ifSubTblEmptyThenRemove(Properties.Private, configName)
+            local contextName = context:GetName()
+            local contextProperties = Properties.Private[contextName]
+            if not contextProperties then return end
+            contextProperties[name] = nil
+
+            if not next(contextProperties) then
+                Properties.Private[contextName] = nil
+            end
         end
     end
 end
