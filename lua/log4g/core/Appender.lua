@@ -2,7 +2,7 @@
 -- Subclassing `LifeCycle`.
 -- @classmod Appender
 local LifeCycle = Log4g.GetPkgClsFuncs("log4g-core", "LifeCycle").getClass()
-local Appender = LifeCycle:subclass("Appender")
+local Appender = LifeCycle:subclass"Appender"
 
 function Appender:Initialize(name, layout)
     LifeCycle.Initialize(self)
@@ -16,7 +16,7 @@ end
 
 --- Returns the Layout used by this Appender if applicable.
 function Appender:GetLayout()
-    return self:GetPrivateField("layout")
+    return self:GetPrivateField"layout"
 end
 
 function Appender:Append()
