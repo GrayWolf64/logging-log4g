@@ -1,1 +1,2 @@
-Log4g.API.Simple.SimpleLoggerContextFactory = Log4g.API.Simple.SimpleLoggerContextFactory or {}
+--- Simple and stateless LoggerContextFactory.
+-- @script SimpleLoggerContextFactory
