@@ -73,13 +73,13 @@ local function removeProperty(name, shared, config)
     if shared then
         Properties[name] = nil
     else
-        if not config or not IsConfiguration(config) then
-            local function ifSubTblEmptyThenRemove(tbl, key)
-                if not next(tbl[key]) then
-                    tbl[key] = nil
-                end
+        local function ifSubTblEmptyThenRemove(tbl, key)
+            if not next(tbl[key]) then
+                tbl[key] = nil
             end
+        end
 
+        if not config or not IsConfiguration(config) then
             for configName, properties in pairs(Properties.Private) do
                 for propertyName, property in pairs(properties) do
                     if propertyName == name then
@@ -92,6 +92,7 @@ local function removeProperty(name, shared, config)
             local configProperties = Properties.Private[config:GetName()]
             if not configProperties then return end
             configProperties[name] = nil
+            ifSubTblEmptyThenRemove(Properties.Private, configName)
         end
     end
 end
