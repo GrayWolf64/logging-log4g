@@ -16,7 +16,6 @@ local IsLevel, IsLogEvent = TypeUtil.IsLevel, TypeUtil.IsLogEvent
 TypeUtil, StringUtil = nil, nil
 local next, pairs = next, pairs
 local type = type
-local LogEventBuilder = Log4g.Core.LogEvent.Builder
 
 function Logger:Initialize(name, context)
     Object.Initialize(self)
@@ -25,7 +24,70 @@ function Logger:Initialize(name, context)
     self:SetAdditive(true)
 end
 
+--- Provides contextual information about a logged message.
+-- A LogEvent must be Serializable so that it may be transmitted over a network connection.
+-- @type LogEvent
+local LogEvent = Object:subclass"LogEvent"
+local SysTime, debugGetInfo = SysTime, debug.getinfo
+
+--- Initialize the LogEvent.
+-- @param ln Logger name
+-- @param level Level object
+-- @param time Precise time
+-- @param msg Log message
+-- @param src File source path
+function LogEvent:Initialize(ln, level, time, msg, src)
+    Object.Initialize(self)
+    self:SetPrivateField("ln", ln)
+    self:SetPrivateField("lv", level)
+    self:SetPrivateField("time", time)
+    self:SetPrivateField("msg", msg)
+    self:SetPrivateField("src", src)
+end
+
+--- Gets the Logger name.
+function LogEvent:GetLoggerName()
+    return self:GetPrivateField"ln"
+end
+
+--- Gets the Level object.
+function LogEvent:GetLevel()
+    return self:GetPrivateField"lv"
+end
+
+--- Gets the File source path.
+function LogEvent:GetSource()
+    return self:GetPrivateField"src"
+end
+
+--- Gets the log message.
+function LogEvent:GetMsg()
+    return self:GetPrivateField"msg"
+end
+
+--- Sets the log message.
+function LogEvent:SetMsg(msg)
+    if type(msg) ~= "string" then return end
+    self:SetPrivateField("msg", msg)
+end
+
+--- Gets the precise time.
+function LogEvent:GetTime()
+    return self:GetPrivateField"time"
+end
+
+--- Build a LogEvent.
+-- @param ln Logger name
+-- @param level Level object
+-- @param msg String message
+local function LogEventBuilder(ln, level, msg)
+    if type(ln) ~= "string" or not IsLevel(level) then return end
+
+    return LogEvent(ln, level, SysTime(), msg, debugGetInfo(4, "S").source)
+end
+
 --- Gets the LoggerContext of the Logger.
+-- @section end
 -- @param ex True for getting the object, false or nil for getting the name
 -- @return string ctxname
 -- @return object ctx
