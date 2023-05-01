@@ -10,12 +10,12 @@ local tableCount = table.Count
 local tableToJson = util.TableToJSON
 local fileRead = file.Read
 local getConstraintTable = constraint.GetTable
-local netReceive, netStart = net.Receive, net.Start
-local netSend = net.Send
+local netSend, netReceive, netStart = net.Send, net.Receive, net.Start
 local netWriteUInt, netWriteBool = net.WriteUInt, net.WriteBool
 local netWriteDouble, netWriteFloat = net.WriteDouble, net.WriteFloat
-local netWriteString = net.WriteString
+local netWriteString, netWriteData = net.WriteString, net.WriteData
 local AddNetworkString = util.AddNetworkString
+local Compress = util.Compress
 
 for _, v in pairs({
     [1] = "Log4g_CLReq_ChkConnected",
@@ -35,8 +35,8 @@ end
 local function WriteDataSimple(content, bits)
     local bindata = Compress(content)
     local len = #bindata
-    WriteUInt(len, bits)
-    WriteData(bindata, len)
+    netWriteUInt(len, bits)
+    netWriteData(bindata, len)
 end
 
 netReceive("Log4g_CLReq_ChkConnected", function(_, ply)
