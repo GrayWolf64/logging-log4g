@@ -2,7 +2,7 @@
 -- @script Core
 -- @license Apache License 2.0
 -- @copyright GrayWolf64
-Log4g.RegisterPackage("log4g-core", "0.0.6-beta")
+Log4g.RegisterPackage("log4g-core", "0.1.6-beta")
 Log4g.Core = Log4g.Core or {}
 --- A dictionary for storing LoggerContext objects.
 -- Only one ContextDictionary exists in the logging system.
