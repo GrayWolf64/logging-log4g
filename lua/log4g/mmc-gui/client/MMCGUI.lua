@@ -1,5 +1,5 @@
 --- Client GUI (MMC).
--- @script ClientGUI
+-- @script MMCGUI
 -- @license Apache License 2.0
 -- @copyright GrayWolf64
 local MMCDerma = include("log4g/mmc-gui/client/MMCDerma.lua")
