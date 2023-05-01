@@ -10,10 +10,10 @@ Log4g is an advanced logging framework for Garry's Mod.
 
 ## Currently Work-in-Progress
 
-| Con-Commands    | Usage   | Desc.                                        |
-| --------------- | ------- | -------------------------------------------- |
-| "log4g_mmc"     | Console | Monitoring & Management Console (Component)  |
-| "log4g_version" | Console | Check for Log4g's version                    |
+| Con-Commands          | Usage   | Desc.                                        |
+| --------------------- | ------- | -------------------------------------------- |
+| "log4g_mmc"           | Console | Monitoring & Management Console (Component)  |
+| "log4g_load_coretest" | Console | Load server-side unittests for Core          |
 
 ### Component Src Dir
 
@@ -33,7 +33,7 @@ if Log4g then
    local Logger = Log4g.GetPkgClsFuncs("log4g-core", "Logger")
    local Appender = Log4g.GetPkgClsFuncs("log4g-core", "Appender")
    local LoggerConfig = Log4g.GetPkgClsFuncs("log4g-core", "LoggerConfig")
-   local PatternAppender = Log4g.GetPkgClsFuncs("log4g-core", "PatternAppender")
+   local Layout = Log4g.GetPkgClsFuncs("log4g-core", "Layout")
 
    --- This will locate / create a proper LoggerContext named 'Foo' with DefaultConfiguration.
    local ctx = Log4g.API.LoggerContextFactory.GetContext("Foo", true)
@@ -42,7 +42,7 @@ if Log4g then
    local lc = LoggerConfig.create("Calculator", ctx:GetConfiguration(), Log4g.Level.GetLevel("TRACE"))
 
    --- It will add a ConsoleAppender to lc and set its layout to PatternLayout with default settings.
-   lc:AddAppender(Appender.createConsoleAppender("CalcOutput", PatternAppender.createDefaultLayout("CalcLayout")))
+   lc:AddAppender(Appender.createConsoleAppender("CalcOutput", Layout.createDefaultLayout("CalcLayout")))
 
    --- This will create a Logger named 'Calculate' using lc and add it to ctx.
    local logger = Logger.create("Calculate", ctx, lc)
