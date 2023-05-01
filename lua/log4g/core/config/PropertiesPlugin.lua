@@ -1,6 +1,6 @@
 --- Handles properties defined in the configuration.
 -- Since every LoggerContext has a Configuration, the grouping of private properties is based on LoggerContext names.
--- @script PropertiesPlugin
+-- @module PropertiesPlugin
 -- @license Apache License 2.0
 -- @copyright GrayWolf64
 local IsLoggerContext = Log4g.GetPkgClsFuncs("log4g-core", "TypeUtil").IsLoggerContext
@@ -15,6 +15,7 @@ local Properties = Properties or {
 }
 
 --- Register a property.
+-- @function registerProperty
 -- @param name Name of the property
 -- @param defaultValue Default value of the property
 -- @param shared If this property will be shared with every LoggerContexts
@@ -38,6 +39,7 @@ local function registerProperty(name, defaultValue, shared, context)
 end
 
 --- Gets a property.
+-- @function getProperty
 -- @param name Property name
 -- @param shared If the property is shared
 -- @param context LoggerContext object
@@ -56,6 +58,7 @@ local function getProperty(name, shared, context)
 end
 
 --- Removes a property.
+-- @function removeProperty
 -- @param name Property name
 -- @param shared If the property is shared
 -- @param context LoggerContext object
@@ -76,6 +79,8 @@ local function removeProperty(name, shared, context)
     end
 end
 
+--- Get all properties.
+-- @return table properties
 local function getAll()
     return Properties
 end
