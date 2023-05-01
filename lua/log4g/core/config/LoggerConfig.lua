@@ -148,11 +148,11 @@ function RootLoggerConfig:GetParent()
     return false
 end
 
+-- @section end
 local function GetRootLoggerConfigClass()
     return RootLoggerConfig
 end
 
--- @section end
 --- Check if a LoggerConfig's ancestors exist and return its desired parent name.
 -- @lfunction ValidateAncestors
 -- @param loggerConfig LoggerConfig object

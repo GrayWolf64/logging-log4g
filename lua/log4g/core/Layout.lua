@@ -175,7 +175,6 @@ local function CreateDefaultLayout(name)
     return PatternLayout(name)
 end
 
--- @section end
 Log4g.RegisterPackageClass("log4g-core", "Layout", {
     getClass = GetClass,
     createDefaultLayout = CreateDefaultLayout,

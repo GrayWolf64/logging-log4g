@@ -104,7 +104,6 @@ local function GetDefaultConfiguration()
     return configuration
 end
 
--- @section end
 Log4g.RegisterPackageClass("log4g-core", "Configuration", {
     getClass = GetClass,
     create = Create,
