@@ -5,7 +5,8 @@
 local SHA256 = util.SHA256
 local tostring = tostring
 local ipairs = ipairs
-local StripDotExtension = include"log4g/core/util/StringUtil.lua".StripDotExtension
+local tableConcat = table.concat
+local type = type
 local Object = include"log4g/core/impl/MiddleClass.lua""Object"
 
 --- A table for storing private properties of an object.
@@ -68,6 +69,37 @@ local function GetClass()
     return Object
 end
 
+--- Removes the dot extension of a string.
+-- @param str String
+-- @param doconcat Whether `table.concat` the result
+-- @return string result
+local function StripDotExtension(str, doconcat)
+    if type(str) ~= "string" then return end
+
+    --- Optimized version of [string.Explode](https://github.com/Facepunch/garrysmod/blob/master/garrysmod/lua/includes/extensions/string.lua#L87-L104).
+    local function stringExplode(separator, string)
+        local result, currentPos = {}, 1
+
+        for i = 1, #string do
+            local startPos, endPos = string:find(separator, currentPos, true)
+            if not startPos then break end
+            result[i], currentPos = string:sub(currentPos, startPos - 1), endPos + 1
+        end
+
+        result[#result + 1] = string:sub(currentPos)
+
+        return result
+    end
+
+    local result = stringExplode(".", str:sub(1, #str - str:reverse():find("%.")))
+
+    if doconcat ~= false then
+        return tableConcat(result, ".")
+    else
+        return result
+    end
+end
+
 --- Generate all the ancestors' names of a LoggerConfig or something else.
 -- The provided name must follow [Named Hierarchy](https://logging.apache.org/log4j/2.x/manual/architecture.html).
 -- @lfunction EnumerateAncestors
@@ -103,6 +135,7 @@ local contextualMixins = {
 
 Log4g.RegisterPackageClass("log4g-core", "Object", {
     getClass = GetClass,
+    stripDotExtension = StripDotExtension,
     enumerateAncestors = EnumerateAncestors,
     contextualMixins = contextualMixins
 })
