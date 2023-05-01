@@ -155,7 +155,6 @@ local function GetRootLoggerConfigClass()
 end
 
 --- Check if a LoggerConfig's ancestors exist and return its desired parent name.
--- @lfunction ValidateAncestors
 -- @param loggerConfig LoggerConfig object
 -- @return bool valid
 -- @return string parent name
@@ -210,12 +209,6 @@ local function CreateLoggerConfig(name, config, level)
 
     return loggerConfig
 end
-
-Log4g.RegisterPackageClass("log4g-core", "LoggerConfig", {
-    create = CreateLoggerConfig,
-    getRootLoggerConfigClass = GetRootLoggerConfigClass,
-    hasLoggerConfig = HasLoggerConfig
-})
 
 Object = Object.getClass()
 local Logger = Object:subclass("Logger")
@@ -469,11 +462,14 @@ local function CreateLogger(loggerName, context, loggerconfig)
     return logger
 end
 
-local function GetClass()
+local function GetLoggerClass()
     return Logger
 end
 
 Log4g.RegisterPackageClass("log4g-core", "Logger", {
-    getClass = GetClass,
-    create = CreateLogger
+    createLoggerConfig = CreateLoggerConfig,
+    getRootLoggerConfigClass = GetRootLoggerConfigClass,
+    hasLoggerConfig = HasLoggerConfig,
+    getLoggerClass = GetLoggerClass,
+    createLogger = CreateLogger
 })

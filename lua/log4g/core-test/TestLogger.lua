@@ -1,7 +1,8 @@
-local CreateLogger = Log4g.GetPkgClsFuncs("log4g-core", "Logger").create
+local Logger = Log4g.GetPkgClsFuncs("log4g-core", "Logger")
+local CreateLogger = Logger.createLogger
 local GetContext = Log4g.API.LoggerContextFactory.GetContext
 local GetLevel = Log4g.GetPkgClsFuncs("log4g-core", "Level").getLevel
-local CreateLoggerConfig = Log4g.GetPkgClsFuncs("log4g-core", "LoggerConfig").create
+local CreateLoggerConfig = Logger.createLoggerConfig
 local Appender = Log4g.GetPkgClsFuncs("log4g-core", "Appender")
 local CreateConsoleAppender = Appender.createConsoleAppender
 local CreatePatternLayout = Appender.createDefaultPatternLayout
