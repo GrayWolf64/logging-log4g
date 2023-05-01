@@ -22,8 +22,6 @@ if SERVER then
     --- The global table for the logging system.
     -- It provides easy access to some functions for other components of the logging system that require them.
     -- @table Log4g
-    -- @field Core
-    -- @field Level
     Log4g = Log4g or {}
     --- The installed Log4g packages.
     -- Keys are the names of packages, and values are tables that hold the versions and classes for the particular package.
