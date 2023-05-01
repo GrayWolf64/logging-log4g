@@ -2,8 +2,6 @@
 -- @script ClientGUI
 -- @license Apache License 2.0
 -- @copyright GrayWolf64
-local NetUtil = include("log4g/core/util/NetUtil.lua")
-local AddNetworkStrsViaTbl, WriteDataSimple = NetUtil.AddNetworkStrsViaTbl, NetUtil.WriteDataSimple
 local LoggerContext = Log4g.GetPkgClsFuncs("log4g-core", "LoggerContext")
 local GetAllCtx = LoggerContext.getAll
 local GetLoggerCount = LoggerContext.getLoggerCount
@@ -17,15 +15,29 @@ local netSend = net.Send
 local netWriteUInt, netWriteBool = net.WriteUInt, net.WriteBool
 local netWriteDouble, netWriteFloat = net.WriteDouble, net.WriteFloat
 local netWriteString = net.WriteString
+local AddNetworkString = util.AddNetworkString
 
-AddNetworkStrsViaTbl({
+for _, v in pairs({
     [1] = "Log4g_CLReq_ChkConnected",
     [2] = "Log4g_CLRcv_ChkConnected",
     [3] = "Log4g_CLReq_SVSummaryData",
     [4] = "Log4g_CLRcv_SVSummaryData",
     [5] = "Log4g_CLReq_SVConfigurationFiles",
     [6] = "Log4g_CLRcv_SVConfigurationFiles"
-})
+}) do
+    AddNetworkString(v)
+end
+
+--- Write simple compressed data.
+-- Must be used between `net.Start()` and `net.Send...`.
+-- @param content The content to compress
+-- @param bits The number of bits for `net.WriteUInt()` to write the length of compressed binary data
+local function WriteDataSimple(content, bits)
+    local bindata = Compress(content)
+    local len = #bindata
+    WriteUInt(len, bits)
+    WriteData(bindata, len)
+end
 
 netReceive("Log4g_CLReq_ChkConnected", function(_, ply)
     netStart("Log4g_CLRcv_ChkConnected", true)
