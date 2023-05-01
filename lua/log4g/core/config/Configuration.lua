@@ -89,6 +89,8 @@ local CreateConsoleAppender, CreatePatternLayout = Log4g.GetPkgClsFuncs("log4g-c
 PropertiesPlugin.registerProperty("configurationDefaultName", "default", true)
 PropertiesPlugin.registerProperty("configurationDefaultLevel", "DEBUG", true)
 
+--- Initialize the DefaultConfiguration.
+-- @param name String name.
 function DefaultConfiguration:Initialize(name)
     Configuration.Initialize(self, name)
     self:SetPrivateField("defaultlevel", PropertiesPlugin.getProperty("configurationDefaultLevel", true))

@@ -41,6 +41,8 @@ function ConsoleAppender:Initialize(name, layout)
     Appender.Initialize(self, name, layout)
 end
 
+--- Append a LogEvent to Console.
+-- @param event LogEvent
 function ConsoleAppender:Append(event)
     if not IsLogEvent(event) then return end
     local layout = self:GetLayout()
