@@ -1,5 +1,5 @@
 local LoggerContext = Log4g.GetPkgClsFuncs("log4g-core", "LoggerContext")
-local Get = LoggerContext.get
+local Get = LoggerContext.getContext
 local GetContext = Log4g.API.LoggerContextFactory.GetContext
 local randomString = Log4g.CoreTest.randomString
 local print = print
@@ -21,5 +21,5 @@ concommand.Add("log4g_coretest_createLoggerContext", function()
 end)
 
 concommand.Add("log4g_coretest_showAllLoggerContext", function()
-    PrintTable(LoggerContext.getAll())
+    PrintTable(LoggerContext.getAllContexts())
 end)

@@ -6,10 +6,114 @@
 -- @copyright GrayWolf64
 local LifeCycle = Log4g.GetPkgClsFuncs("log4g-core", "LifeCycle").getClass()
 local TypeUtil = Log4g.GetPkgClsFuncs("log4g-core", "TypeUtil")
+local IsAppender = TypeUtil.IsAppender
+local PropertiesPlugin = Log4g.GetPkgClsFuncs("log4g-core", "PropertiesPlugin")
+--- Interface that must be implemented to create a Configuration.
+-- @type Configuration
+local Configuration = LifeCycle:subclass"Configuration"
+Configuration:include(Log4g.GetPkgClsFuncs("log4g-core", "Object").contextualMixins)
+local SysTime = SysTime
+
+function Configuration:Initialize(name)
+    LifeCycle.Initialize(self)
+    self:SetPrivateField("ap", {})
+    self:SetPrivateField("lc", {})
+    self:SetPrivateField("start", SysTime())
+    self:SetName(name)
+end
+
+function Configuration:__tostring()
+    return "Configuration: [name:" .. self:GetName() .. "]"
+end
+
+--- Adds a Appender to the Configuration.
+-- @param ap The Appender to add
+-- @return bool ifsuccessfullyadded
+function Configuration:AddAppender(ap)
+    if not IsAppender(ap) then return end
+    if self:GetPrivateField"ap"[ap:GetName()] then return false end
+    self:GetPrivateField"ap"[ap:GetName()] = ap
+
+    return true
+end
+
+function Configuration:RemoveAppender(name)
+    self:GetPrivateField"ap"[name] = nil
+end
+
+--- Gets all the Appenders in the Configuration.
+-- Keys are the names of Appenders and values are the Appenders themselves.
+-- @return table appenders
+function Configuration:GetAppenders()
+    return self:GetPrivateField"ap"
+end
+
+function Configuration:AddLogger(name, lc)
+    self:GetPrivateField"lc"[name] = lc
+end
+
+--- Locates the appropriate LoggerConfig name for a Logger name.
+-- @param name The Logger name
+-- @return object loggerconfig
+function Configuration:GetLoggerConfig(name)
+    return self:GetPrivateField"lc"[name]
+end
+
+function Configuration:GetLoggerConfigs()
+    return self:GetPrivateField"lc"
+end
+
+function Configuration:GetRootLogger()
+    return self:GetPrivateField"lc"[PropertiesPlugin.getProperty("rootLoggerName", true)]
+end
+
+--- Gets how long since this Configuration initialized.
+-- @return int uptime
+function Configuration:GetUpTime()
+    return SysTime() - self:GetPrivateField"start"
+end
+
+--- Create a Configuration.
+-- @param name The name of the Configuration
+-- @return object configuration
+local function CreateConfiguration(name)
+    if type(name) ~= "string" then return end
+
+    return Configuration(name)
+end
+
+local function GetConfigurationClass()
+    return Configuration
+end
+
+--- The default configuration writes all output to the Console using the default logging level.
+-- @type DefaultConfiguration
+local DefaultConfiguration = Configuration:subclass"DefaultConfiguration"
+local Appender = Log4g.GetPkgClsFuncs("log4g-core", "Appender")
+local CreateConsoleAppender, CreatePatternLayout = Appender.createConsoleAppender, Appender.createDefaultPatternLayout
+PropertiesPlugin.registerProperty("configurationDefaultName", "default", true)
+PropertiesPlugin.registerProperty("configurationDefaultLevel", "DEBUG", true)
+
+--- Initialize the DefaultConfiguration.
+-- @param name String name.
+function DefaultConfiguration:Initialize(name)
+    Configuration.Initialize(self, name)
+    self:SetPrivateField("defaultlevel", PropertiesPlugin.getProperty("configurationDefaultLevel", true))
+end
+
+--- Gets a DefaultConfiguration.
+-- @section end
+local function GetDefaultConfiguration()
+    local name = PropertiesPlugin.getProperty("configurationDefaultName", true)
+    local configuration = DefaultConfiguration(name)
+    configuration:AddAppender(CreateConsoleAppender(name .. "Appender", CreatePatternLayout(name .. "Layout")))
+
+    return configuration
+end
+
 local LoggerContext = LifeCycle:subclass"LoggerContext"
 local IsLoggerContext, IsConfiguration = TypeUtil.IsLoggerContext, TypeUtil.IsConfiguration
 TypeUtil = nil
-local GetDefaultConfiguration = Log4g.GetPkgClsFuncs("log4g-core", "Configuration").getDefaultConfiguration
 local getContextDict = Log4g.Core.getContextDict
 local addToContextDict = Log4g.Core.addToContextDict
 local pairs = pairs
@@ -85,16 +189,14 @@ function LoggerContext:HasLogger(name)
 end
 
 --- Get all LoggerContexts.
--- @lfunction GetAll
-local function GetAll()
+local function GetAllContexts()
     return getContextDict()
 end
 
 --- Get the LoggerContext with the right name.
--- @lfunction Get
 -- @param name String name
 -- @return object loggercontext
-local function Get(name)
+local function GetContext(name)
     return getContextDict()[name]
 end
 
@@ -103,7 +205,7 @@ end
 -- @param name The name of the LoggerContext
 -- @param withconfig Whether or not come with a DefaultConfiguration, leaving it nil will make it come with one
 -- @return object loggercontext
-local function Register(name, withconfig)
+local function RegisterContext(name, withconfig)
     if type(name) ~= "string" then return end
     local ctxdict = getContextDict()
     local ctx = ctxdict[name]
@@ -134,14 +236,17 @@ end
 
 --- Get LoggerContext class.
 -- @lfunction GetClass
-local function GetClass()
+local function GetLoggerContextClass()
     return LoggerContext
 end
 
 Log4g.RegisterPackageClass("log4g-core", "LoggerContext", {
-    getClass = GetClass,
+    getConfigurationClass = GetConfigurationClass,
+    getLoggerContextClass = GetLoggerContextClass,
+    createConfiguration = CreateConfiguration,
+    getDefaultConfiguration = GetDefaultConfiguration,
     getLoggerCount = GetLoggerCount,
-    register = Register,
-    get = Get,
-    getAll = GetAll
+    register = RegisterContext,
+    getContext = GetContext,
+    getAllContexts = GetAllContexts
 })
