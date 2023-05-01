@@ -22,10 +22,6 @@ function Configuration:__tostring()
     return "Configuration: [name:" .. self:GetName() .. "]"
 end
 
-function Configuration:IsConfiguration()
-    return true
-end
-
 --- Adds a Appender to the Configuration.
 -- @param ap The Appender to add
 -- @return bool ifsuccessfullyadded
