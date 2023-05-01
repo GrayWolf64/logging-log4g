@@ -34,7 +34,7 @@ function LoggerContext:GetConfigurationSource()
 end
 
 --- Gets a Logger from the Context.
--- @name The name of the Logger
+-- @param name The name of the Logger
 function LoggerContext:GetLogger(name)
     return self:GetPrivateField"logger"[name]
 end
@@ -84,11 +84,14 @@ function LoggerContext:HasLogger(name)
     return false
 end
 
+--- Get all LoggerContexts.
+-- @lfunction GetAll
 local function GetAll()
     return getContextDict()
 end
 
 --- Get the LoggerContext with the right name.
+-- @lfunction Get
 -- @param name String name
 -- @return object loggercontext
 local function Get(name)
@@ -96,6 +99,7 @@ local function Get(name)
 end
 
 --- Register a LoggerContext.
+-- @lfunction Register
 -- @param name The name of the LoggerContext
 -- @param withconfig Whether or not come with a DefaultConfiguration, leaving it nil will make it come with one
 -- @return object loggercontext
@@ -116,6 +120,7 @@ local function Register(name, withconfig)
 end
 
 --- Get the number of Loggers across all the LoggerContexts.
+-- @lfunction GetLoggerCount
 -- @return number count
 local function GetLoggerCount()
     local num, tableCount = 0, table.Count
@@ -127,6 +132,8 @@ local function GetLoggerCount()
     return num
 end
 
+--- Get LoggerContext class.
+-- @lfunction GetClass
 local function GetClass()
     return LoggerContext
 end
