@@ -90,6 +90,22 @@ if SERVER then
         return endTime - startTime
     end
 
+    --- Gets the Log4g version string.
+    -- @return string version
+    function Log4g.getVersionString()
+        local versionString = ""
+
+        for packageName, packageTable in pairs(Log4g.GetAllPackages()) do
+            if #versionString == 0 then
+                versionString = packageName .. " " .. packageTable.Version
+            else
+                versionString = versionString .. " " .. packageName .. " " .. packageTable.Version
+            end
+        end
+
+        return versionString
+    end
+
     checkAndInclude("Log4g sv-init", "log4g/core/Core.lua")
     checkAndInclude("Log4g sv-init", "log4g/api/API.lua")
     checkAndInclude("Log4g sv-init", MMC, true)

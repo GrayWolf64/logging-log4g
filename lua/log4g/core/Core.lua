@@ -19,7 +19,6 @@ function Log4g.Core.addToContextDict(key, value)
     ContextDict[key] = value
 end
 
-include"log4g/core/Version.lua"
 include"log4g/core/impl/Object.lua"
 include"log4g/core/LifeCycle.lua"
 include"log4g/core/util/TypeUtil.lua"
