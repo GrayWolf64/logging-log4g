@@ -90,7 +90,7 @@ end
 --- Adds an Appender to the LoggerConfig.
 -- It adds the Appender name to the LoggerConfig's private `apref` table field,
 -- then adds the Appender object to the Configuration's(the only one which owns this LoggerConfig) private `appender` table field.
--- @param appender Appender object
+-- @param ap Appender object
 -- @return bool ifadded
 function LoggerConfig:AddAppender(ap)
     if not IsAppender(ap) then return end
@@ -123,6 +123,8 @@ function LoggerConfig:ClearAppenders()
     end
 end
 
+--- The root LoggerConfig.
+-- @type LoggerConfig.RootLogger
 local RootLoggerConfig = LoggerConfig:subclass"LoggerConfig.RootLogger"
 
 function RootLoggerConfig:Initialize()
@@ -150,6 +152,7 @@ local function GetRootLoggerConfigClass()
     return RootLoggerConfig
 end
 
+-- @section end
 --- Check if a LoggerConfig's ancestors exist and return its desired parent name.
 -- @lfunction ValidateAncestors
 -- @param loggerConfig LoggerConfig object

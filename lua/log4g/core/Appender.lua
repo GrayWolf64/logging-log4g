@@ -1,4 +1,4 @@
---- The Appender.
+--- Appends LogEvents. An Appender can contain a Layout if applicable.
 -- Subclassing `LifeCycle`.
 -- @classmod Appender
 local LifeCycle = Log4g.GetPkgClsFuncs("log4g-core", "LifeCycle").getClass()
@@ -15,6 +15,7 @@ function Appender:__tostring()
 end
 
 --- Returns the Layout used by this Appender if applicable.
+-- @return object Layout
 function Appender:GetLayout()
     return self:GetPrivateField"layout"
 end
@@ -23,13 +24,15 @@ function Appender:Append()
     return true
 end
 
+--- Get Appender class.
+-- @lfunction GetClass
 local function GetClass()
     return Appender
 end
 
 --- Appends log events to console using a layout specified by the user.
 -- @type ConsoleAppender
-local ConsoleAppender = Appender:subclass("ConsoleAppender")
+local ConsoleAppender = Appender:subclass"ConsoleAppender"
 local TypeUtil = Log4g.GetPkgClsFuncs("log4g-core", "TypeUtil")
 local IsLogEvent, IsLayout = TypeUtil.IsLogEvent, TypeUtil.IsLayout
 local print = print
@@ -50,6 +53,8 @@ function ConsoleAppender:Append(event)
     end
 end
 
+--- Create a default ConsoleAppender.
+-- @lfunction CreateConsoleAppender
 local function CreateConsoleAppender(name, layout)
     return ConsoleAppender(name, layout)
 end

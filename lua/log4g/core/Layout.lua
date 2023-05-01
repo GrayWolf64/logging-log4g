@@ -12,6 +12,8 @@ function Layout:__tostring()
     return "Layout: [name:" .. self:GetName() .. "]"
 end
 
+--- Get Layout class.
+-- @lfunction GetClass
 local function GetClass()
     return Layout
 end
@@ -155,6 +157,7 @@ local function CreateDefaultLayout(name)
     return PatternLayout(name)
 end
 
+-- @section end
 Log4g.RegisterPackageClass("log4g-core", "Layout", {
     getClass = GetClass,
     createDefaultLayout = CreateDefaultLayout,

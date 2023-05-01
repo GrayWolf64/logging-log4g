@@ -27,8 +27,8 @@ function Configuration:IsConfiguration()
 end
 
 --- Adds a Appender to the Configuration.
--- @param appender The Appender to add
--- @bool ifsuccessfullyadded
+-- @param ap The Appender to add
+-- @return bool ifsuccessfullyadded
 function Configuration:AddAppender(ap)
     if not IsAppender(ap) then return end
     if self:GetPrivateField"ap"[ap:GetName()] then return false end
@@ -106,6 +106,7 @@ local function GetDefaultConfiguration()
     return configuration
 end
 
+-- @section end
 Log4g.RegisterPackageClass("log4g-core", "Configuration", {
     getClass = GetClass,
     create = Create,

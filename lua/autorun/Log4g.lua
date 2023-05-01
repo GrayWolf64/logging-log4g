@@ -33,7 +33,7 @@ if SERVER then
     local Packages = Packages or {}
 
     --- Register a package for use with Log4g.
-    -- @param name The name of the package to register
+    -- @param packageName The name of the package to register
     -- @param ver The version string of the given package
     function Log4g.RegisterPackage(packageName, ver)
         if type(packageName) ~= "string" or type(ver) ~= "string" then return end

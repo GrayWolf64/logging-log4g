@@ -76,7 +76,7 @@ function LoggerContext:Terminate()
 end
 
 --- Determines if the specified Logger exists.
--- @param The name of the Logger to check
+-- @param name The name of the Logger to check
 -- @return bool haslogger
 function LoggerContext:HasLogger(name)
     if self:GetLogger(name) then return true end
