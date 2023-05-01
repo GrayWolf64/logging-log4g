@@ -26,10 +26,10 @@ local pairs, ipairs = pairs, ipairs
 local unpack = unpack
 local defaultColor = Color(0, 201, 255)
 local tableInsert, tableRemove = table.insert, table.remove
-local propertyConversionPattern = "log4g_patternlayout_ConversionPattern"
-local propertyMessageColor = "log4g_patternlayout_msgcolor"
-local propertyUptimeColor = "log4g_patternlayout_uptimecolor"
-local propertyFileColor = "log4g_patternlayout_filecolor"
+local propertyConversionPattern = "patternlayoutConversionPattern"
+local propertyMessageColor = "patternlayoutMessageColor"
+local propertyUptimeColor = "patternlayoutUptimeColor"
+local propertyFileColor = "patternlayoutFileColor"
 PropertiesPlugin.registerProperty(propertyConversionPattern, "[%uptime] [%level] @ %file: %msg%endl", true)
 PropertiesPlugin.registerProperty(propertyMessageColor, "135 206 250 255", true)
 PropertiesPlugin.registerProperty(propertyUptimeColor, "135 206 250 255", true)
