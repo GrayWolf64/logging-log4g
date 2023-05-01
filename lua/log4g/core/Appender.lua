@@ -27,7 +27,8 @@ local function GetClass()
     return Appender
 end
 
---- The ConsoleAppender.
+--- Appends log events to console using a layout specified by the user.
+-- @type ConsoleAppender
 local ConsoleAppender = Appender:subclass("ConsoleAppender")
 local TypeUtil = Log4g.GetPkgClsFuncs("log4g-core", "TypeUtil")
 local IsLogEvent, IsLayout = TypeUtil.IsLogEvent, TypeUtil.IsLayout

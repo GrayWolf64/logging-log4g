@@ -87,8 +87,9 @@ local function GetClass()
 end
 
 --- The default configuration writes all output to the Console using the default logging level.
+-- @type DefaultConfiguration
 local DefaultConfiguration = Configuration:subclass"DefaultConfiguration"
-local CreateConsoleAppender, CreatePatternLayout = Log4g.GetPkgClsFuncs("log4g-core", "Appender").createConsoleAppender, Log4g.GetPkgClsFuncs("log4g-core", "PatternLayout").createDefaultLayout
+local CreateConsoleAppender, CreatePatternLayout = Log4g.GetPkgClsFuncs("log4g-core", "Appender").createConsoleAppender, Log4g.GetPkgClsFuncs("log4g-core", "Layout").createDefaultLayout
 PropertiesPlugin.registerProperty("configurationDefaultName", "default", true)
 PropertiesPlugin.registerProperty("configurationDefaultLevel", "DEBUG", true)
 
