@@ -15,6 +15,7 @@ local Private = Private or setmetatable({}, {
     __mode = "k"
 })
 
+--- When an Object is initialized, a private field(sub table) in the `PRIVATE` table will be dedicated to it based on `self` key.
 function Object:Initialize()
     Private[self] = {}
 end
@@ -23,26 +24,37 @@ function Object:__tostring()
     return "Object: [name:" .. self:GetName() .. "]"
 end
 
+--- Sets the name of the Object.
+-- @param name String name
 function Object:SetName(name)
     if type(name) ~= "string" then return end
     Private[self].name = name
 end
 
+--- Gets the name of the Object.
+-- @return string name
 function Object:GetName()
     return Private[self].name
 end
 
+--- Sets a private field for the Object.
+-- @param key Of any type except nil
+-- @param value Of any type except nil
 function Object:SetPrivateField(key, value)
     if not key or not value then return end
     Private[self][key] = value
 end
 
+--- Gets a private field of the Object.
+-- @param key Of any type except nil
+-- @return anytype private value
 function Object:GetPrivateField(key)
     if not key then return end
 
     return Private[self][key]
 end
 
+--- Destroys its private table.
 function Object:DestroyPrivateTable()
     Private[self] = nil
 end
