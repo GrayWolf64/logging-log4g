@@ -3,8 +3,8 @@
 -- @license Apache License 2.0
 -- @copyright GrayWolf64
 local StringUtil = {}
-local tableConcat, tableInsert = table.concat, table.insert
-local pairs, ipairs = pairs, ipairs
+local tableConcat = table.concat
+local pairs = pairs
 local type = type
 
 --- Optimized version of [string.Explode](https://github.com/Facepunch/garrysmod/blob/master/garrysmod/lua/includes/extensions/string.lua#L87-L104).
@@ -67,24 +67,6 @@ function StringUtil.StripDotExtension(str, doconcat)
     else
         return result
     end
-end
-
---- Get all the positions of a char in a string.
--- @param str String to search in
--- @param char A Single character to search for
--- @return table positions or true if not found
-function StringUtil.CharPos(str, char)
-    if type(str) ~= "string" or type(char) ~= "string" or not #char == 1 then return end
-    local pos = {}
-    char = char:byte()
-
-    for k, v in ipairs({str:byte(1, #str)}) do
-        if v == char then
-            tableInsert(pos, k)
-        end
-    end
-
-    return not #pos or pos
 end
 
 return StringUtil

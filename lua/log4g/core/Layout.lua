@@ -22,7 +22,6 @@ end
 -- @type PatternLayout
 local PatternLayout = Layout:subclass"PatternLayout"
 local IsLogEvent = Log4g.GetPkgClsFuncs("log4g-core", "TypeUtil").IsLogEvent
-local charPos = include"log4g/core/util/StringUtil.lua".CharPos
 local PropertiesPlugin = Log4g.GetPkgClsFuncs("log4g-core", "PropertiesPlugin")
 local pairs, ipairs = pairs, ipairs
 local unpack = unpack
@@ -48,6 +47,25 @@ end
 -- @return vararg formatted event in sub strings
 local function DoFormat(event, colored)
     local conversionPattern = PropertiesPlugin.getProperty(propertyConversionPattern, true)
+
+    --- Get all the positions of a char in a string.
+    -- @param str String to search in
+    -- @param char A Single character to search for
+    -- @return table positions or true if not found
+    local function charPos(str, char)
+        if type(str) ~= "string" or type(char) ~= "string" or not #char == 1 then return end
+        local pos = {}
+        char = char:byte()
+
+        for k, v in ipairs({str:byte(1, #str)}) do
+            if v == char then
+                tableInsert(pos, k)
+            end
+        end
+
+        return not #pos or pos
+    end
+
     local pos = charPos(conversionPattern, "%")
     if pos == true then return conversionPattern end
     local subStrings = {}
