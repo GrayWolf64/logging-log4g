@@ -11,7 +11,7 @@ local PropertiesPlugin = Log4g.GetPkgClsFuncs("log4g-core", "PropertiesPlugin")
 local LifeCycle = Log4g.GetPkgClsFuncs("log4g-core", "LifeCycle").getClass()
 local GetCtx, GetAllCtx = LoggerContext.get, LoggerContext.getAll
 local EnumerateAncestors = Object.enumerateAncestors
-local QualifyName, StripDotExtension = StringUtil.QualifyName, StringUtil.StripDotExtension
+local StripDotExtension = StringUtil.StripDotExtension
 local IsLoggerConfig, IsLoggerContext = TypeUtil.IsLoggerConfig, TypeUtil.IsLoggerContext
 local IsAppender, IsConfiguration = TypeUtil.IsAppender, TypeUtil.IsConfiguration
 local IsLevel, IsLogEvent = TypeUtil.IsLevel, TypeUtil.IsLogEvent
@@ -412,6 +412,31 @@ end
 
 function Logger:Fatal(msg)
     LogIfEnabled(self, "FATAL", msg)
+end
+
+--- Qualifies the string name of an object and returns if it's a valid name.
+-- @param str String name
+-- @param dot If dots are allowed, default is allowed if param not set
+-- @return bool ifvalid
+local function QualifyName(str, dot)
+    if type(str) ~= "string" then return false end
+
+    if dot == true or dot == nil then
+        if str:sub(1, 1) == "." or str:sub(-1) == "." or str:find("[^%a%.]") then return false end
+        local chars = {}
+
+        for i = 1, #str do
+            chars[i] = str:sub(i, i)
+        end
+
+        for k, v in pairs(chars) do
+            if v == "." and (chars[k - 1] == "." or chars[k + 1] == ".") then return false end
+        end
+    else
+        if str:find("[^%a]") then return false end
+    end
+
+    return true
 end
 
 local function CreateLogger(loggerName, context, loggerconfig)
