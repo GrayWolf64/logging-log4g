@@ -42,7 +42,7 @@ if Log4g then
    local lc = LoggerConfig.create("Calculator", ctx:GetConfiguration(), Log4g.Level.GetLevel("TRACE"))
 
    --- It will add a ConsoleAppender to lc and set its layout to PatternLayout with default settings.
-   lc:AddAppender(Appender.createConsoleAppender("CalcOutput", Layout.createDefaultLayout("CalcLayout")))
+   lc:AddAppender(Appender.createConsoleAppender("CalcOutput", Layout.CreateDefaultPatternLayout("CalcLayout")))
 
    --- This will create a Logger named 'Calculate' using lc and add it to ctx.
    local logger = Logger.create("Calculate", ctx, lc)
