@@ -686,7 +686,6 @@ local function initAppender()
 
         --- Make a function that can replace a table's matching values with replacement content(string),
         -- and insert a Color before each replaced value. Based on `colored` bool, it will decide if `Color`s will be inserted.
-        -- @lfunction mkfunc_precolor
         -- @param tokenName String to search for and to be replaced
         -- @param color Color object to insert before each replaced value
         -- @return function output func
@@ -879,6 +878,8 @@ local function initLoggerContext()
         return configuration
     end
 
+    --- The LoggerContext is the anchor for the logging system. It maintains a list of all the loggers requested by applications and a reference to the Configuration.
+    -- @type LoggerContext
     local LoggerContext = LifeCycle:subclass("LoggerContext")
 
     function LoggerContext:Initialize(name)
@@ -951,7 +952,6 @@ local function initLoggerContext()
     end
 
     --- Register a LoggerContext.
-    -- @lfunction Register
     -- @param name The name of the LoggerContext
     -- @param withconfig Whether or not come with a DefaultConfiguration, leaving it nil will make it come with one
     -- @return object loggercontext
@@ -988,6 +988,8 @@ end
 local createConfiguration, getDefaultConfiguration, getLoggerCount, registerContext = initLoggerContext()
 
 local function initLevel()
+    --- Levels used for identifying the severity of an event.
+    -- @type Level
     local IsLevel = TypeUtil.IsLevel
     local Level = Object:subclass("Level")
 
@@ -1384,7 +1386,6 @@ local function initLogger()
     end
 
     --- Gets the LoggerContext of the Logger.
-    -- @section end
     -- @param ex True for getting the object, false or nil for getting the name
     -- @return string ctxname
     -- @return object ctx
