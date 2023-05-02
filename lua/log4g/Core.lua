@@ -493,7 +493,6 @@ local function initPropertiesPlugin()
 		end
 	end
 	--[[
-
 --- Removes a property.
 -- @function removeProperty
 -- @param name Property name
@@ -514,12 +513,6 @@ local function removeProperty(name, shared, context)
             Properties.Private[contextName] = nil
         end
     end
-end
-
---- Get all properties.
--- @return table properties
-local function getAll()
-    return Properties
 end
 --]]
 
@@ -1198,13 +1191,13 @@ local function initLevel()
 			return CustomLevel[name]
 		end
 	end
-	--[[
+
 	--- Retrieves an existing CustomLevel or creates one if it didn't previously exist.
 	-- If the CustomLevel matching the provided name already exists, it's intlevel will be overrode.
 	-- @param name The Level's name
 	-- @param int The Level's intlevel
 	-- @return object level
-	local function ForName(name, int)
+	local function createLevel(name, int)
 		if type(name) ~= "string" or type(int) ~= "number" or StdLevel[name] then
 			return
 		end
@@ -1222,10 +1215,12 @@ local function initLevel()
 
 			return CustomLevel[name]
 		end
-	end--]]
+	end
 
-	return getLevel
+	return getLevel, createLevel
 end
+
+local getLevel, createLevel = initLevel()
 
 local function initLogger()
 	local IsLoggerConfig, IsLoggerContext = TypeUtil.IsLoggerConfig, TypeUtil.IsLoggerContext
@@ -1751,3 +1746,12 @@ local function initLogger()
 	end
 	return createLoggerConfig, createLogger
 end
+
+local createLoggerConfig, createLogger = initLogger()
+
+return {
+	createLoggerConfig = createLoggerConfig,
+	createLogger = createLogger,
+	getLevel = getLevel,
+	createLevel = createLevel,
+}
