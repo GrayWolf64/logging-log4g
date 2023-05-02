@@ -1,11 +1,12 @@
 --- Implementation of Log4l.
 -- @module Core
--- @license Apache License 2.0
+-- @license Apache License 2.0, MIT License
 -- @copyright GrayWolf64
 local type = type
 local pairs, ipairs = pairs, ipairs
 local next = next
 local tonumber = tonumber
+local osClock = os.clock
 local tableConcat = table.concat
 
 --- A simple OOP library for Lua which has inheritance, metamethods, class variables and weak mixin support.
@@ -799,7 +800,7 @@ local function initLoggerContext()
         LifeCycle.Initialize(self)
         self:SetPrivateField("ap", {})
         self:SetPrivateField("lc", {})
-        self:SetPrivateField("start", SysTime())
+        self:SetPrivateField("start", osClock())
         self:SetName(name)
     end
 
@@ -851,7 +852,7 @@ local function initLoggerContext()
     --- Gets how long since this Configuration initialized.
     -- @return int uptime
     function Configuration:GetUpTime()
-        return SysTime() - self:GetPrivateField("start")
+        return osClock() - self:GetPrivateField("start")
     end
 
     --- Create a Configuration.
@@ -1385,7 +1386,7 @@ local function initLogger()
     local function LogEventBuilder(ln, level, msg)
         if type(ln) ~= "string" or not IsLevel(level) then return end
 
-        return LogEvent(ln, level, SysTime(), msg, debugGetInfo(4, "S").source)
+        return LogEvent(ln, level, osClock(), msg, debugGetInfo(4, "S").source)
     end
 
     --- The core implementation of the Logger interface.
