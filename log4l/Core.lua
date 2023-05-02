@@ -81,22 +81,26 @@ local function initMiddleClass()
             __instanceDict = dict,
             __declaredMethods = {},
             subclasses = setmetatable({}, {
-                __mode = "k",
-            }),
+                __mode = "k"
+            })
         }
 
         if super then
             setmetatable(aClass.static, {
                 __index = function(_, k)
                     local result = rawget(dict, k)
-                    if result == nil then return super.static[k] end
+                    if result == nil then
+                        return super.static[k]
+                    end
 
                     return result
-                end,
+                end
             })
         else
             setmetatable(aClass.static, {
-                __index = function(_, k) return rawget(dict, k) end,
+                __index = function(_, k)
+                    return rawget(dict, k)
+                end
             })
         end
 
@@ -104,14 +108,16 @@ local function initMiddleClass()
             __index = aClass.static,
             __tostring = _tostring,
             __call = _call,
-            __newindex = _declareInstanceMethod,
+            __newindex = _declareInstanceMethod
         })
 
         return aClass
     end
 
     local function _includeMixin(aClass, mixin)
-        if type(mixin) ~= "table" then return end
+        if type(mixin) ~= "table" then
+            return
+        end
 
         for name, method in pairs(mixin) do
             if name ~= "included" and name ~= "static" then
@@ -131,26 +137,39 @@ local function initMiddleClass()
     end
 
     local DefaultMixin = {
-        __tostring = function(self) return "instance of " .. tostring(self.class) end,
-        Initialize = function(self, ...) end,
-        isInstanceOf = function(self, aClass) return type(aClass) == "table" and type(self) == "table" and (self.class == aClass or type(self.class) == "table" and type(self.class.isSubclassOf) == "function" and self.class:isSubclassOf(aClass)) end,
+        __tostring = function(self)
+            return "instance of " .. tostring(self.class)
+        end,
+        Initialize = function(self, ...)
+        end,
+        isInstanceOf = function(self, aClass)
+            return type(aClass) == "table" and type(self) == "table" and
+                       (self.class == aClass or type(self.class) == "table" and type(self.class.isSubclassOf) ==
+                           "function" and self.class:isSubclassOf(aClass))
+        end,
         static = {
             allocate = function(self)
-                if type(self) ~= "table" then return end
+                if type(self) ~= "table" then
+                    return
+                end
 
                 return setmetatable({
-                    class = self,
+                    class = self
                 }, self.__instanceDict)
             end,
             New = function(self, ...)
-                if type(self) ~= "table" then return end
+                if type(self) ~= "table" then
+                    return
+                end
                 local instance = self:allocate()
                 instance:Initialize(...)
 
                 return instance
             end,
             subclass = function(self, name)
-                if type(self) ~= "table" or type(name) ~= "string" then return end
+                if type(self) ~= "table" or type(name) ~= "string" then
+                    return
+                end
                 local subclass = _createClass(name, self)
 
                 for methodName, f in pairs(self.__instanceDict) do
@@ -159,34 +178,46 @@ local function initMiddleClass()
                     end
                 end
 
-                subclass.Initialize = function(instance, ...) return self.Initialize(instance, ...) end
+                subclass.Initialize = function(instance, ...)
+                    return self.Initialize(instance, ...)
+                end
                 self.subclasses[subclass] = true
                 self:subclassed(subclass)
 
                 return subclass
             end,
-            subclassed = function(self, other) end,
-            isSubclassOf = function(self, other) return type(other) == "table" and type(self.super) == "table" and (self.super == other or self.super:isSubclassOf(other)) end,
+            subclassed = function(self, other)
+            end,
+            isSubclassOf = function(self, other)
+                return type(other) == "table" and type(self.super) == "table" and
+                           (self.super == other or self.super:isSubclassOf(other))
+            end,
             include = function(self, ...)
-                if type(self) ~= "table" then return end
+                if type(self) ~= "table" then
+                    return
+                end
 
                 for _, mixin in ipairs({...}) do
                     _includeMixin(self, mixin)
                 end
 
                 return self
-            end,
-        },
+            end
+        }
     }
 
     function MiddleClass.class(name, super)
-        if type(name) ~= "string" then return end
+        if type(name) ~= "string" then
+            return
+        end
 
         return super and super:subclass(name) or _includeMixin(_createClass(name), DefaultMixin)
     end
 
     setmetatable(MiddleClass, {
-        __call = function(_, ...) return MiddleClass.class(...) end,
+        __call = function(_, ...)
+            return MiddleClass.class(...)
+        end
     })
 
     return MiddleClass
@@ -203,7 +234,7 @@ local function initObject()
     -- @local
     -- @table _privateAttr
     local _privateAttr = _privateAttr or setmetatable({}, {
-        __mode = "k",
+        __mode = "k"
     })
 
     --- When an Object is initialized, a private field(sub table) in the `PRIVATE` table will be dedicated to it based on `self` key.
@@ -218,7 +249,9 @@ local function initObject()
     --- Sets the name of the Object.
     -- @param name String name
     function Object:SetName(name)
-        if type(name) ~= "string" then return end
+        if type(name) ~= "string" then
+            return
+        end
         _privateAttr[self].name = name
     end
 
@@ -232,7 +265,9 @@ local function initObject()
     -- @param key Of any type except nil
     -- @param value Of any type except nil
     function Object:SetPrivateField(key, value)
-        if not key or not value then return end
+        if not key or not value then
+            return
+        end
         _privateAttr[self][key] = value
     end
 
@@ -240,7 +275,9 @@ local function initObject()
     -- @param key Of any type except nil
     -- @return anytype private value
     function Object:GetPrivateField(key)
-        if not key then return end
+        if not key then
+            return
+        end
 
         return _privateAttr[self][key]
     end
@@ -256,13 +293,17 @@ local function initObject()
     -- @param doconcat Whether `table.concat` the result
     -- @return string result
     local function stripDotExtension(str, doconcat)
-        if type(str) ~= "string" then return end
+        if type(str) ~= "string" then
+            return
+        end
         str = str:sub(1, #str - str:reverse():find("%."))
         local result, currentPos = {}, 1
 
         for i = 1, #str do
             local startPos, endPos = str:find(".", currentPos, true)
-            if not startPos then break end
+            if not startPos then
+                break
+            end
             result[i], currentPos = str:sub(currentPos, startPos - 1), endPos + 1
         end
 
@@ -301,10 +342,14 @@ local function initObject()
     -- @table contextualMixins
     local contextualMixins = {
         SetContext = function(self, ctx)
-            if type(ctx) ~= "string" then return end
+            if type(ctx) ~= "string" then
+                return
+            end
             self:SetPrivateField("ctx", ctx)
         end,
-        GetContext = function(self) return self:GetPrivateField("ctx") end,
+        GetContext = function(self)
+            return self:GetPrivateField("ctx")
+        end
     }
 
     return Object, stripDotExtension, enumerateAncestors, contextualMixins
@@ -333,41 +378,49 @@ local function initTypeUtil()
             ["Appender"] = true,
             ["DefaultConfiguration"] = true,
             ["PatternLayout"] = true,
-            ["ConsoleAppender"] = true,
+            ["ConsoleAppender"] = true
         },
         ["Configuration"] = {
-            ["DefaultConfiguration"] = true,
+            ["DefaultConfiguration"] = true
         },
         ["LoggerConfig"] = {
-            ["LoggerConfig.RootLogger"] = true,
+            ["LoggerConfig.RootLogger"] = true
         },
         ["Appender"] = {
-            ["ConsoleAppender"] = true,
+            ["ConsoleAppender"] = true
         },
         ["Layout"] = {
-            ["PatternLayout"] = true,
+            ["PatternLayout"] = true
         },
         ["LoggerContext"] = {},
         ["Level"] = {},
         ["Logger"] = {},
         ["LogEvent"] = {},
-        ["LoggerConfig.RootLogger"] = {},
+        ["LoggerConfig.RootLogger"] = {}
     }
 
     local function mkfunc_classcheck(cls, subClasses)
         return function(o)
-            if not o or type(o) ~= "table" then return false end
+            if not o or type(o) ~= "table" then
+                return false
+            end
             local classTable = o.class
-            if not classTable then return false end
+            if not classTable then
+                return false
+            end
             local className = classTable.name
 
             if subClasses then
                 for name in pairs(subClasses) do
-                    if name == className then return true end
+                    if name == className then
+                        return true
+                    end
                 end
             end
 
-            if className == cls then return true end
+            if className == cls then
+                return true
+            end
 
             return false
         end
@@ -396,7 +449,7 @@ local function initPropertiesPlugin()
     -- @table _properties
     local _properties = _properties or {
         _sh = {},
-        _pvt = {},
+        _pvt = {}
     }
 
     --- Register a property.
@@ -405,7 +458,9 @@ local function initPropertiesPlugin()
     -- @param shared If this property will be shared with every LoggerContexts
     -- @param context LoggerContext object
     local function registerProperty(name, defaultValue, shared, context)
-        if type(name) ~= "string" or not defaultValue then return end
+        if type(name) ~= "string" or not defaultValue then
+            return
+        end
 
         if shared then
             _properties._sh[name] = defaultValue
@@ -428,13 +483,17 @@ local function initPropertiesPlugin()
     -- @param context LoggerContext object
     -- @return anytype value
     local function getProperty(name, shared, context)
-        if type(name) ~= "string" then return end
+        if type(name) ~= "string" then
+            return
+        end
 
         if shared then
             return _properties._sh[name]
         elseif TypeUtil.IsLoggerContext(context) then
             local contextProperties = _properties._pvt[context:GetName()]
-            if not contextProperties then return end
+            if not contextProperties then
+                return
+            end
 
             return contextProperties[name]
         end
@@ -445,14 +504,18 @@ local function initPropertiesPlugin()
     -- @param shared If the property is shared
     -- @param context LoggerContext object
     local function removeProperty(name, shared, context)
-        if type(name) ~= "string" then return end
+        if type(name) ~= "string" then
+            return
+        end
 
         if shared then
             _properties._sh[name] = nil
         elseif IsLoggerContext(context) then
             local contextName = context:GetName()
             local contextProperties = _properties._pvt[contextName]
-            if not contextProperties then return end
+            if not contextProperties then
+                return
+            end
             contextProperties[name] = nil
 
             if not next(contextProperties) then
@@ -492,12 +555,24 @@ local function initLifeCycle()
     -- @field STOPPING Stopping is in progress.
     -- @field STOPPED Has stopped.
     local State = {
-        INITIALIZING = function() return 100 end,
-        INITIALIZED = function() return 200 end,
-        STARTING = function() return 300 end,
-        STARTED = function() return 400 end,
-        STOPPING = function() return 500 end,
-        STOPPED = function() return 600 end,
+        INITIALIZING = function()
+            return 100
+        end,
+        INITIALIZED = function()
+            return 200
+        end,
+        STARTING = function()
+            return 300
+        end,
+        STARTED = function()
+            return 400
+        end,
+        STOPPING = function()
+            return 500
+        end,
+        STOPPED = function()
+            return 600
+        end
     }
 
     function LifeCycle:Initialize()
@@ -508,7 +583,9 @@ local function initLifeCycle()
     --- Sets the LifeCycle state.
     -- @param state A function in the `State` table which returns a string representing the state
     function LifeCycle:SetState(state)
-        if type(state) ~= "function" then return end
+        if type(state) ~= "function" then
+            return
+        end
         self:SetPrivateField("state", state)
     end
 
@@ -537,6 +614,24 @@ local function initLifeCycle()
 end
 
 local LifeCycle = initLifeCycle()
+
+--- A `Color` abstraction layer, and we still use this constructor when GMod's `Color()` is available so it won't be recognized as a color by `IsColor()`.
+-- GMod uses `Color` in a similar way, see [garrysmod/lua/includes/util/color.lua](https://github.com/Facepunch/garrysmod/blob/master/garrysmod/lua/includes/util/color.lua).
+-- @param r red
+-- @param g green
+-- @param b blue
+-- @param a alpha, default is 255
+-- @return table {r = int, g = int, b = int, a = int}
+local function mkColor(r, g, b, a)
+    a = a or 255
+
+    return {
+        r = r,
+        g = g,
+        b = b,
+        a = a
+    }
+end
 
 local function initAppender()
     --- Lays out a LogEvent in different formats.
@@ -607,7 +702,9 @@ local function initAppender()
         -- @param char A Single character to search for
         -- @return table positions or true if not found
         local function charPos(str, char)
-            if type(str) ~= "string" or type(char) ~= "string" or not #char == 1 then return end
+            if type(str) ~= "string" or type(char) ~= "string" or not #char == 1 then
+                return
+            end
             local charPoses = {}
             char = char:byte()
 
@@ -621,7 +718,9 @@ local function initAppender()
         end
 
         local charPoses = charPos(conversionPattern, "%")
-        if charPoses == true then return conversionPattern end
+        if charPoses == true then
+            return conversionPattern
+        end
         local subStrings, pointerPos = {}, 1
 
         for index, pos in ipairs(charPoses) do
@@ -640,29 +739,13 @@ local function initAppender()
             end
         end
 
-        --- A `Color` abstraction layer, and we still use this constructor when GMod's `Color()` is available so it won't be recognized as a color by `IsColor()`.
-        -- GMod uses `Color` in a similar way, see [garrysmod/lua/includes/util/color.lua](https://github.com/Facepunch/garrysmod/blob/master/garrysmod/lua/includes/util/color.lua).
-        -- @param r red
-        -- @param g green
-        -- @param b blue
-        -- @param a alpha, default is 255
-        -- @return table {r = int, g = int, b = int, a = int}
-        local function mkColor(r, g, b, a)
-            a = a or 255
-
-            return {
-                r = r,
-                g = g,
-                b = b,
-                a = a
-            }
-        end
-
         local defaultColor = mkColor(0, 201, 255)
 
         local function getPropertyColor(cvar)
-            if not colored then return end
-            local r, g, b, a = getProperty(cvar, true):match"(%d+) (%d+) (%d+) (%d+)"
+            if not colored then
+                return
+            end
+            local r, g, b, a = getProperty(cvar, true):match "(%d+) (%d+) (%d+) (%d+)"
 
             return mkColor(tonumber(r) or 255, tonumber(g) or 255, tonumber(b) or 255, tonumber(a) or 255)
         end
@@ -672,23 +755,23 @@ local function initAppender()
         local tokenMap = {
             ["%msg"] = {
                 color = getPropertyColor(propertyMessageColor),
-                content = event:GetMsg(),
+                content = event:GetMsg()
             },
             ["%endl"] = {
-                content = "\n",
+                content = "\n"
             },
             ["%uptime"] = {
                 color = getPropertyColor(propertyUptimeColor),
-                content = event:GetTime(),
+                content = event:GetTime()
             },
             ["%file"] = {
                 color = getPropertyColor(propertyFileColor),
-                content = event:GetSource():GetFileFromFilename(),
+                content = event:GetSource():GetFileFromFilename()
             },
             ["%level"] = {
                 color = eventLevel:GetColor(),
-                content = eventLevel:GetName(),
-            },
+                content = eventLevel:GetName()
+            }
         }
 
         for tokenName in pairs(tokenMap) do
@@ -742,7 +825,9 @@ local function initAppender()
     -- @param colored If use `Color`s.
     -- @return vararg result
     function PatternLayout:Format(event, colored)
-        if not IsLogEvent(event) then return end
+        if not IsLogEvent(event) then
+            return
+        end
 
         return DoFormat(event, colored)
     end
@@ -766,9 +851,13 @@ local function initAppender()
     -- @param outputFunc A function which takes in vararg and output them to any kinds of console
     -- @param useColors Tells the ConsoleAppender's Layout whether or not use `Color` tables returned by `mkColor`. Notice that `outputFunc` should support colored outputs.
     function ConsoleAppender:Append(event, outputFunc, useColors)
-        if not IsLogEvent(event) or type(outputFunc) ~= "function" then return end
+        if not IsLogEvent(event) or type(outputFunc) ~= "function" then
+            return
+        end
         local layout = self:GetLayout()
-        if not IsLayout(layout) then return end
+        if not IsLayout(layout) then
+            return
+        end
         outputFunc(layout:Format(event, useColors))
     end
 
@@ -812,8 +901,12 @@ local function initLoggerContext()
     -- @param ap The Appender to add
     -- @return bool ifsuccessfullyadded
     function Configuration:AddAppender(ap)
-        if not IsAppender(ap) then return end
-        if self:GetPrivateField("ap")[ap:GetName()] then return false end
+        if not IsAppender(ap) then
+            return
+        end
+        if self:GetPrivateField("ap")[ap:GetName()] then
+            return false
+        end
         self:GetPrivateField("ap")[ap:GetName()] = ap
 
         return true
@@ -859,7 +952,9 @@ local function initLoggerContext()
     -- @param name The name of the Configuration
     -- @return object configuration
     local function createConfiguration(name)
-        if type(name) ~= "string" then return end
+        if type(name) ~= "string" then
+            return
+        end
 
         return Configuration(name)
     end
@@ -882,7 +977,8 @@ local function initLoggerContext()
     local function getDefaultConfiguration()
         local name = getProperty("configurationDefaultName", true)
         local configuration = DefaultConfiguration(name)
-        configuration:AddAppender(createConsoleAppender(name .. "Appender", createDefaultPatternLayout(name .. "Layout")))
+        configuration:AddAppender(
+            createConsoleAppender(name .. "Appender", createDefaultPatternLayout(name .. "Layout")))
 
         return configuration
     end
@@ -934,8 +1030,12 @@ local function initLoggerContext()
     --- Sets the Configuration to be used.
     -- @param config Configuration
     function LoggerContext:SetConfiguration(config)
-        if not IsConfiguration(config) then return end
-        if self:GetConfiguration() == config then return end
+        if not IsConfiguration(config) then
+            return
+        end
+        if self:GetConfiguration() == config then
+            return
+        end
         config:SetContext(self:GetName())
         self:SetPrivateField("config", config)
     end
@@ -955,7 +1055,9 @@ local function initLoggerContext()
     -- @param name The name of the Logger to check
     -- @return bool haslogger
     function LoggerContext:HasLogger(name)
-        if self:GetLogger(name) then return true end
+        if self:GetLogger(name) then
+            return true
+        end
 
         return false
     end
@@ -965,9 +1067,13 @@ local function initLoggerContext()
     -- @param withconfig Whether or not come with a DefaultConfiguration, leaving it nil will make it come with one
     -- @return object loggercontext
     local function registerContext(name, withconfig)
-        if type(name) ~= "string" then return end
+        if type(name) ~= "string" then
+            return
+        end
         local ctx = _contextDict[name]
-        if IsLoggerContext(ctx) then return ctx end
+        if IsLoggerContext(ctx) then
+            return ctx
+        end
         ctx = LoggerContext(name)
 
         if withconfig or withconfig == nil then
@@ -1017,11 +1123,14 @@ local function initLevel()
     end
 
     function Level:__tostring()
-        return "Level: [name:" .. self:GetName() .. "]" .. "[int:" .. self:IntLevel() .. "]" .. "[color:" .. self:GetColor():__tostring() .. "]"
+        return "Level: [name:" .. self:GetName() .. "]" .. "[int:" .. self:IntLevel() .. "]" .. "[color:" ..
+                   self:GetColor():__tostring() .. "]"
     end
 
     function Level:__eq(lhs, rhs)
-        if not IsLevel(lhs) or not IsLevel(rhs) then return false end
+        if not IsLevel(lhs) or not IsLevel(rhs) then
+            return false
+        end
 
         return lhs:IntLevel() == rhs:IntLevel() and lhs:GetColor() == rhs:GetColor()
     end
@@ -1043,8 +1152,13 @@ local function initLevel()
     -- @param l2 The Level with another intlevel
     -- @return bool isinrange
     function Level:IsInRange(l1, l2)
-        if not IsLevel(l1) or not IsLevel(l2) then return end
-        if (self:IntLevel() >= l1:IntLevel() and self:IntLevel() <= l2:IntLevel()) or (self:IntLevel() <= l1:IntLevel() and self:IntLevel() >= l2:IntLevel()) then return true end
+        if not IsLevel(l1) or not IsLevel(l2) then
+            return
+        end
+        if (self:IntLevel() >= l1:IntLevel() and self:IntLevel() <= l2:IntLevel()) or
+            (self:IntLevel() <= l1:IntLevel() and self:IntLevel() >= l2:IntLevel()) then
+            return true
+        end
 
         return false
     end
@@ -1065,21 +1179,21 @@ local function initLevel()
         WARN = 300,
         ERROR = 200,
         FATAL = 100,
-        OFF = 0,
+        OFF = 0
     }
 
     --- Standard Level Colors.
     -- @local
     -- @table StdLevelColor
     local StdLevelColor = {
-        ALL = color_white,
-        TRACE = Color(54, 54, 54),
-        DEBUG = Color(0, 255, 255),
-        INFO = Color(0, 255, 0),
-        WARN = Color(255, 255, 0),
-        ERROR = Color(255, 0, 0),
-        FATAL = Color(255, 48, 48),
-        OFF = color_white,
+        ALL = mkColor(255, 255, 255),
+        TRACE = mkColor(54, 54, 54),
+        DEBUG = mkColor(0, 255, 255),
+        INFO = mkColor(0, 255, 0),
+        WARN = mkColor(255, 255, 0),
+        ERROR = mkColor(255, 0, 0),
+        FATAL = mkColor(255, 48, 48),
+        OFF = mkColor(255, 255, 255)
     }
 
     --- Standard Logging Levels as a table.
@@ -1117,8 +1231,12 @@ local function initLevel()
     -- @param int The Level's intlevel
     -- @return object level
     local function createLevel(name, int)
-        if type(name) ~= "string" or type(int) ~= "number" or StdLevel[name] then return end
-        if #name == 0 or int <= 0 then return end
+        if type(name) ~= "string" or type(int) ~= "number" or StdLevel[name] then
+            return
+        end
+        if #name == 0 or int <= 0 then
+            return
+        end
 
         if not CustomLevel[name] then
             local level = Level(name, int)
@@ -1158,8 +1276,12 @@ local function initLogger()
     --- Sets the log Level.
     -- @param level The Logging Level
     function LoggerConfig:SetLevel(level)
-        if not IsLevel(level) then return end
-        if self:GetPrivateField("level") == level then return end
+        if not IsLevel(level) then
+            return
+        end
+        if self:GetPrivateField("level") == level then
+            return
+        end
         self:SetPrivateField("level", level)
     end
 
@@ -1168,14 +1290,20 @@ local function initLogger()
     end
 
     local function hasLoggerConfig(name, context)
-        local getLoggerConfig = function(ctx, lcn) return ctx:GetConfiguration():GetLoggerConfig(lcn) end
+        local getLoggerConfig = function(ctx, lcn)
+            return ctx:GetConfiguration():GetLoggerConfig(lcn)
+        end
 
         if not IsLoggerContext(context) then
             for _, v in pairs(_contextDict) do
-                if getLoggerConfig(v, name) then return true end
+                if getLoggerConfig(v, name) then
+                    return true
+                end
             end
         else
-            if getLoggerConfig(context, name) then return true end
+            if getLoggerConfig(context, name) then
+                return true
+            end
         end
 
         return false
@@ -1184,7 +1312,9 @@ local function initLogger()
     local function GetLoggerConfig(name)
         for _, v in pairs(_contextDict) do
             local loggerConfig = v:GetConfiguration():GetLoggerConfig(name)
-            if loggerConfig then return loggerConfig end
+            if loggerConfig then
+                return loggerConfig
+            end
         end
     end
 
@@ -1192,7 +1322,9 @@ local function initLogger()
     -- @param T LoggerConfig object or LoggerConfig name
     function LoggerConfig:SetParent(T)
         if type(T) == "string" then
-            if not hasLoggerConfig(T, _contextDict[self:GetContext()]) then return end
+            if not hasLoggerConfig(T, _contextDict[self:GetContext()]) then
+                return
+            end
             self:SetPrivateField("parent", T)
         elseif IsLoggerConfig(T) and T:GetContext() == self:GetContext() then
             self:SetPrivateField("parent", T:GetName())
@@ -1215,7 +1347,9 @@ local function initLogger()
     -- @param ap Appender object
     -- @return bool ifadded
     function LoggerConfig:AddAppender(ap)
-        if not IsAppender(ap) then return end
+        if not IsAppender(ap) then
+            return
+        end
         self:GetAppenderRef()[ap:GetName()] = true
 
         return _contextDict[self:GetContext()]:GetConfiguration():AddAppender(ap, self:GetName())
@@ -1225,7 +1359,9 @@ local function initLogger()
     -- @return table appenders
     function LoggerConfig:GetAppenders()
         local appenders, config, apref = {}, _contextDict[self:GetContext()]:GetConfiguration(), self:GetAppenderRef()
-        if not next(apref) then return end
+        if not next(apref) then
+            return
+        end
 
         for appenderName in pairs(apref) do
             appenders[config:GetAppenders()[appenderName]] = true
@@ -1237,7 +1373,9 @@ local function initLogger()
     --- Removes all Appenders configured by this LoggerConfig.
     function LoggerConfig:ClearAppenders()
         local config, apref = _contextDict[self:GetContext()]:GetConfiguration(), self:GetAppenderRef()
-        if not next(apref) then return end
+        if not next(apref) then
+            return
+        end
 
         for appenderName in pairs(apref) do
             config:RemoveAppender(appenderName)
@@ -1282,13 +1420,17 @@ local function initLogger()
             local ctx = _contextDict[loggerConfig:GetContext()]
 
             for k in pairs(tbl) do
-                if not hasLoggerConfig(k, ctx) then return false end
+                if not hasLoggerConfig(k, ctx) then
+                    return false
+                end
             end
 
             return true
         end
 
-        if HasEveryLoggerConfig(ancestors) then return true, tableConcat(nodes, ".") end
+        if HasEveryLoggerConfig(ancestors) then
+            return true, tableConcat(nodes, ".")
+        end
 
         return false
     end
@@ -1300,7 +1442,9 @@ local function initLogger()
     -- @return object loggerconfig
     local function createLoggerConfig(name, config, level)
         local root = getProperty("rootLoggerName", true)
-        if not IsConfiguration(config) or name == root then return end
+        if not IsConfiguration(config) or name == root then
+            return
+        end
         local loggerConfig = LoggerConfig(name)
         loggerConfig:SetContext(config:GetContext())
 
@@ -1316,7 +1460,9 @@ local function initLogger()
 
         if name:find("%.") then
             local valid, parent = ValidateAncestors(loggerConfig)
-            if not valid then return end
+            if not valid then
+                return
+            end
             setLevelAndParent(loggerConfig, level, GetLoggerConfig(parent):GetLevel(), parent)
         else
             setLevelAndParent(loggerConfig, level, config:GetRootLogger():GetLevel(), root)
@@ -1370,7 +1516,9 @@ local function initLogger()
 
     --- Sets the log message.
     function LogEvent:SetMsg(msg)
-        if type(msg) ~= "string" then return end
+        if type(msg) ~= "string" then
+            return
+        end
         self:SetPrivateField("msg", msg)
     end
 
@@ -1384,7 +1532,9 @@ local function initLogger()
     -- @param level Level object
     -- @param msg String message
     local function LogEventBuilder(ln, level, msg)
-        if type(ln) ~= "string" or not IsLevel(level) then return end
+        if type(ln) ~= "string" or not IsLevel(level) then
+            return
+        end
 
         return LogEvent(ln, level, osClock(), msg, debugGetInfo(4, "S").source)
     end
@@ -1433,7 +1583,9 @@ local function initLogger()
     end
 
     function Logger:SetAdditive(bool)
-        if type(bool) ~= "boolean" then return end
+        if type(bool) ~= "boolean" then
+            return
+        end
         self:SetPrivateField("additive", bool)
     end
 
@@ -1442,7 +1594,9 @@ local function initLogger()
     end
 
     function Logger:SetLevel(level)
-        if not IsLevel(level) then return end
+        if not IsLevel(level) then
+            return
+        end
         self:GetLoggerConfig():SetLevel(level)
     end
 
@@ -1451,9 +1605,13 @@ local function initLogger()
     end
 
     function Logger:CallAppenders(event, ...)
-        if not IsLogEvent(event) then return end
+        if not IsLogEvent(event) then
+            return
+        end
         local appenders = self:GetLoggerConfig():GetAppenders()
-        if not next(appenders) then return end
+        if not next(appenders) then
+            return
+        end
 
         for appender in pairs(appenders) do
             appender:Append(event, ...)
@@ -1503,7 +1661,9 @@ local function initLogger()
     --- Logs a message if the specified level is active.
     local function LogIfEnabled(self, level, msg, ...)
         level = getLevel(level)
-        if type(msg) ~= "string" or self:GetLevel():IntLevel() < level:IntLevel() then return end
+        if type(msg) ~= "string" or self:GetLevel():IntLevel() < level:IntLevel() then
+            return
+        end
         self:CallAppenders(LogEventBuilder(self:GetName(), level, msg), ...)
     end
 
@@ -1554,10 +1714,14 @@ local function initLogger()
     -- @param dot If dots are allowed, default is allowed if param not set
     -- @return bool ifvalid
     local function qualifyName(str, dot)
-        if type(str) ~= "string" then return false end
+        if type(str) ~= "string" then
+            return false
+        end
 
         if dot == true or dot == nil then
-            if str:sub(1, 1) == "." or str:sub(-1) == "." or str:find("[^%a%.]") then return false end
+            if str:sub(1, 1) == "." or str:sub(-1) == "." or str:find("[^%a%.]") then
+                return false
+            end
             local chars = {}
 
             for i = 1, #str do
@@ -1565,18 +1729,26 @@ local function initLogger()
             end
 
             for k, v in pairs(chars) do
-                if v == "." and (chars[k - 1] == "." or chars[k + 1] == ".") then return false end
+                if v == "." and (chars[k - 1] == "." or chars[k + 1] == ".") then
+                    return false
+                end
             end
         else
-            if str:find("[^%a]") then return false end
+            if str:find("[^%a]") then
+                return false
+            end
         end
 
         return true
     end
 
     local function createLogger(loggerName, context, loggerconfig)
-        if not IsLoggerContext(context) then return end
-        if context:HasLogger(loggerName) or not qualifyName(loggerName) then return end
+        if not IsLoggerContext(context) then
+            return
+        end
+        if context:HasLogger(loggerName) or not qualifyName(loggerName) then
+            return
+        end
         local logger, root = Logger(loggerName, context), getProperty("rootLoggerName", true)
 
         if loggerName:find("%.") then
@@ -1643,14 +1815,20 @@ return {
     getLoggerCount = getLoggerCount,
     registerContext = registerContext,
     getContext = function(name)
-        if type(name) ~= "string" then return end
+        if type(name) ~= "string" then
+            return
+        end
 
         return _contextDict[name]
     end,
-    getContextDict = function() return _contextDict end,
+    getContextDict = function()
+        return _contextDict
+    end,
     LogManager = {
         getContext = function(name, withconfig)
-            if type(name) ~= "string" then return end
+            if type(name) ~= "string" then
+                return
+            end
             local ctx = registerContext(name, withconfig)
 
             if withconfig or withconfig == nil then
