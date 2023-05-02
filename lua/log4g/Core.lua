@@ -920,7 +920,7 @@ local function initLoggerContext()
 	--- Create a Configuration.
 	-- @param name The name of the Configuration
 	-- @return object configuration
-	local function CreateConfiguration(name)
+	local function createConfiguration(name)
 		if type(name) ~= "string" then
 			return
 		end
@@ -943,7 +943,7 @@ local function initLoggerContext()
 
 	--- Gets a DefaultConfiguration.
 	-- @section end
-	local function GetDefaultConfiguration()
+	local function getDefaultConfiguration()
 		local name = getProperty("configurationDefaultName", true)
 		local configuration = DefaultConfiguration(name)
 		configuration:AddAppender(
@@ -1036,7 +1036,7 @@ local function initLoggerContext()
 	-- @param name The name of the LoggerContext
 	-- @param withconfig Whether or not come with a DefaultConfiguration, leaving it nil will make it come with one
 	-- @return object loggercontext
-	local function RegisterContext(name, withconfig)
+	local function registerContext(name, withconfig)
 		if type(name) ~= "string" then
 			return
 		end
@@ -1047,7 +1047,7 @@ local function initLoggerContext()
 		ctx = LoggerContext(name)
 
 		if withconfig or withconfig == nil then
-			ctx:SetConfiguration(GetDefaultConfiguration())
+			ctx:SetConfiguration(getDefaultConfiguration())
 		end
 		ContextDict[name] = ctx
 
@@ -1055,9 +1055,8 @@ local function initLoggerContext()
 	end
 
 	--- Get the number of Loggers across all the LoggerContexts.
-	-- @lfunction GetLoggerCount
 	-- @return number count
-	local function GetLoggerCount()
+	local function getLoggerCount()
 		local num, tableCount = 0, table.Count
 
 		for _, v in pairs(ContextDict) do
@@ -1067,8 +1066,10 @@ local function initLoggerContext()
 		return num
 	end
 
-	return CreateConfiguration, GetDefaultConfiguration, GetLoggerCount, RegisterContext
+	return createConfiguration, getDefaultConfiguration, getLoggerCount, registerContext
 end
+
+local createConfiguration, getDefaultConfiguration, getLoggerCount, registerContext = initLoggerContext()
 
 local function initLevel()
 	local IsLevel = TypeUtil.IsLevel
@@ -1754,4 +1755,8 @@ return {
 	createLogger = createLogger,
 	getLevel = getLevel,
 	createLevel = createLevel,
+	createConfiguration = createConfiguration,
+	getDefaultConfiguration = getDefaultConfiguration,
+	getLoggerCount = getLoggerCount,
+	registerContext = registerContext,
 }
