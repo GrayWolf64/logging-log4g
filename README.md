@@ -1,19 +1,19 @@
-# [Log4g](https://github.com/GrayWolf64/gmod-logging-log4g/wiki)
+# [Log4l](https://github.com/GrayWolf64/logging-log4l/wiki)
 
-[![Repository Size](https://img.shields.io/github/repo-size/GrayWolf64/gmod-logging-log4g?label=Repository%20Size&style=flat-square)](https://github.com/GrayWolf64/gmod-logging-log4g/)
-[![Commit Activity](https://img.shields.io/github/commit-activity/m/GrayWolf64/gmod-logging-log4g?label=Commit%20Activity&style=flat-square)](https://github.com/GrayWolf64/gmod-logging-log4g/graphs/commit-activity)
-[![Issues](https://img.shields.io/github/issues/GrayWolf64/gmod-logging-log4g?style=flat-square)](https://github.com/GrayWolf64/gmod-logging-log4g/issues)
+[![Repository Size](https://img.shields.io/github/repo-size/GrayWolf64/logging-log4l?label=Repository%20Size&style=flat-square)](https://github.com/GrayWolf64/logging-log4l/)
+[![Commit Activity](https://img.shields.io/github/commit-activity/m/GrayWolf64/logging-log4l?label=Commit%20Activity&style=flat-square)](https://github.com/GrayWolf64/logging-log4l/graphs/commit-activity)
+[![Issues](https://img.shields.io/github/issues/GrayWolf64/logging-log4l?style=flat-square)](https://github.com/GrayWolf64/logging-log4l/issues)
 
-[![Last Commit](https://img.shields.io/github/last-commit/GrayWolf64/gmod-logging-log4g)](https://github.com/GrayWolf64/gmod-logging-log4g/)
+[![Last Commit](https://img.shields.io/github/last-commit/GrayWolf64/logging-log4l)](https://github.com/GrayWolf64/logging-log4l/)
 
-Log4g is an advanced logging framework for Lua.
+Log4l is an advanced logging framework for Lua.
 Originally designed to work with Garry's Mod.
 
 ## Currently Work-in-Progress
 
 ### Component Src Dir
 
-[lua/log4g](https://github.com/GrayWolf64/gmod-logging-log4g/tree/main/lua/log4g)
+[lua/log4g](https://github.com/GrayWolf64/logging-log4l/tree/main/lua/log4g)
 
 ## How to Add It To Your Project / How to Test?
 
@@ -24,7 +24,7 @@ In addition, the code itself is well documented, so feel free to browse the code
 
 ## Documentation
 
-The Log4g Documentation is available [here](https://github.com/GrayWolf64/Log4g/wiki).
+The Log4l Documentation is available [here](https://github.com/GrayWolf64/logging-log4l/wiki).
 You can build docs using `ldoc-generate.bat` in repo dir as well.
 
 ## Thanks to Third-party Projects Below
