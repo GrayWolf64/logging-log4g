@@ -1,6 +1,5 @@
 if not SERVER then return end
 local Log4g = include("log4g/Core.lua")
-PrintTable(Log4g)
 
 local function randomString(len)
     local res = ""
