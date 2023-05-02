@@ -2,11 +2,14 @@
 -- @license Apache License 2.0
 -- @copyright GrayWolf64
 local tableConcat = table.concat
+local type = type
+local pairs = pairs
+local ipairs = ipairs
+local next = next
 
 --- A simple OOP library for Lua which has inheritance, metamethods, class variables and weak mixin support.
 local function initMiddleClass()
     local MiddleClass = {}
-    local type = type
 
     local function _createIndexWrapper(aClass, f)
         if f == nil then
@@ -187,8 +190,9 @@ end
 
 local MiddleClass = initMiddleClass()
 
---- Class Object is the root of the class hierarchy.
 local function initObject()
+    --- Class Object is the root of the class hierarchy.
+    -- @type Object
     local Object = MiddleClass("Object")
 
     --- A table for storing private properties of an object.
@@ -380,6 +384,8 @@ end
 
 local TypeUtil = initTypeUtil()
 local IsLoggerContext = TypeUtil.IsLoggerContext
+local IsAppender = TypeUtil.IsAppender
+local IsConfiguration = TypeUtil.IsConfiguration
 
 --- Handles properties defined in the configuration.
 -- Since every LoggerContext has a Configuration, the grouping of private properties is based on LoggerContext names.
@@ -467,14 +473,15 @@ end
 
 local registerProperty, getProperty, removeProperty, getAllProperties = initPropertiesPlugin()
 
---- In Log4g, the main interface for handling the life cycle context of an object is this one.
--- An object first starts in the LifeCycle.State.INITIALIZED state by default to indicate the class has been loaded.
--- From here, calling the `Start()` method will change this state to LifeCycle.State.STARTING.
--- After successfully being started, this state is changed to LifeCycle.State.STARTED.
--- When the `Stop()` is called, this goes into the LifeCycle.State.STOPPING state.
--- After successfully being stopped, this goes into the LifeCycle.State.STOPPED state.
--- In most circumstances, implementation classes should store their LifeCycle.State in a volatile field dependent on synchronization and concurrency requirements.
 local function initLifeCycle()
+    --- In Log4g, the main interface for handling the life cycle context of an object is this one.
+    -- An object first starts in the LifeCycle.State.INITIALIZED state by default to indicate the class has been loaded.
+    -- From here, calling the `Start()` method will change this state to LifeCycle.State.STARTING.
+    -- After successfully being started, this state is changed to LifeCycle.State.STARTED.
+    -- When the `Stop()` is called, this goes into the LifeCycle.State.STOPPING state.
+    -- After successfully being stopped, this goes into the LifeCycle.State.STOPPED state.
+    -- In most circumstances, implementation classes should store their LifeCycle.State in a volatile field dependent on synchronization and concurrency requirements.
+    -- @type LifeCycle
     local LifeCycle = Object:subclass("LifeCycle")
 
     --- LifeCycle states.
@@ -531,6 +538,8 @@ end
 local LifeCycle = initLifeCycle()
 
 local function initAppender()
+    --- Lays out a LogEvent in different formats.
+    -- @type Layout
     local Layout = Object:subclass("Layout")
 
     --- Initialize the Layout.
@@ -773,7 +782,6 @@ local function getContext(name)
 end
 
 local function initLoggerContext()
-    local IsAppender = TypeUtil.IsAppender
     --- Interface that must be implemented to create a Configuration.
     -- @type Configuration
     local Configuration = LifeCycle:subclass("Configuration")
@@ -871,7 +879,6 @@ local function initLoggerContext()
     end
 
     local LoggerContext = LifeCycle:subclass("LoggerContext")
-    local IsConfiguration = TypeUtil.IsConfiguration
 
     function LoggerContext:Initialize(name)
         LifeCycle.Initialize(self)
@@ -1113,7 +1120,6 @@ local getLevel, createLevel = initLevel()
 
 local function initLogger()
     local IsLoggerConfig = TypeUtil.IsLoggerConfig
-    local IsAppender, IsConfiguration = TypeUtil.IsAppender, TypeUtil.IsConfiguration
     local IsLevel, IsLogEvent = TypeUtil.IsLevel, TypeUtil.IsLogEvent
     registerProperty("rootLoggerName", "root", true)
     --- Logger object that is created via configuration.
