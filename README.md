@@ -20,9 +20,6 @@ Log4g is an advanced logging framework for Garry's Mod.
 Simply clone this project and extract the project folder into your `garrysmod/addons` folder.
 In addition, the code itself is well documented, so feel free to browse the code itself and read the docs or build the docs yourself.
 
-so that you won't experience errors if your addon is loaded before the logging system.
-However, your addon won't successfully log any messages until the logging system is loaded.
-
 ## Documentation
 
 The Log4g Documentation is available [here](https://github.com/GrayWolf64/Log4g/wiki).
