@@ -250,13 +250,13 @@ local function initObject()
     end
 
     --- Removes the dot extension of a string.
+    -- Internally uses an optimized version of [string.Explode](https://github.com/Facepunch/garrysmod/blob/master/garrysmod/lua/includes/extensions/string.lua#L87-L104).
     -- @param str String
     -- @param doconcat Whether `table.concat` the result
     -- @return string result
     local function stripDotExtension(str, doconcat)
         if type(str) ~= "string" then return end
         str = str:sub(1, #str - str:reverse():find("%."))
-        --- Optimized version of [string.Explode](https://github.com/Facepunch/garrysmod/blob/master/garrysmod/lua/includes/extensions/string.lua#L87-L104).
         local result, currentPos = {}, 1
 
         for i = 1, #str do
@@ -763,7 +763,7 @@ local function initAppender()
     --- Append a LogEvent to Console.
     -- @param event LogEvent
     -- @param outputFunc A function which takes in vararg and output them to any kinds of console
-    -- @param useColors Tells the ConsoleAppender's Layout whether or not use `Color` tables returned by @{\\mkColor}. Notice that `outputFunc` should support colored outputs.
+    -- @param useColors Tells the ConsoleAppender's Layout whether or not use `Color` tables returned by `mkColor`. Notice that `outputFunc` should support colored outputs.
     function ConsoleAppender:Append(event, outputFunc, useColors)
         if not IsLogEvent(event) or type(outputFunc) ~= "function" then return end
         local layout = self:GetLayout()
