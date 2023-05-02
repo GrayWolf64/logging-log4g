@@ -1,115 +1,93 @@
---- Initialization of Log4g on server and client.
--- @script Log4g
--- @license Apache License 2.0
--- @copyright GrayWolf64
-local fileExists = file.Exists
-local MMC = "log4g/mmc-gui/MMC.lua"
+if not SERVER then return end
+local Log4g = include("log4g/Core.lua")
+PrintTable(Log4g)
 
-local function checkAndInclude(provider, fileName, addCSLuaFile)
-    if fileExists(fileName, "lsv") then
-        include(fileName)
-        print(provider, "successfully included", fileName)
-        if addCSLuaFile ~= true then return end
-        AddCSLuaFile(fileName)
-        print(provider, "successfully sent", fileName, "to client")
-    else
-        print(provider, "tried to include", fileName, "but failed due to non-existence")
+local function randomString(len)
+    local res = ""
+
+    for i = 1, len do
+        res = res .. string.char(math.random(97, 122))
+    end
+
+    return res
+end
+
+concommand.Add("log4g_coretest_propertiesPlugin", function()
+    local sharedPropertyName, sharedPropertyValue = randomString(10), randomString(10)
+    print("creating shared:", sharedPropertyName)
+    Log4g.registerProperty(sharedPropertyName, sharedPropertyValue, true)
+    PrintTable(Log4g.getAllProperties())
+    print("deleting shared:", sharedPropertyName)
+    Log4g.removeProperty(sharedPropertyName, true)
+    PrintTable(Log4g.getAllProperties())
+    print("\n")
+    local contextName = randomString(10)
+    local privatePropertyName, privatePropertyValue = randomString(10), randomString(10)
+    Log4g.registerContext(contextName)
+    local context = Log4g.getContext(contextName)
+    print("creating private:", privatePropertyName)
+    Log4g.registerProperty(privatePropertyName, privatePropertyValue, false, context)
+    PrintTable(Log4g.getAllProperties())
+    print("deleting private:", privatePropertyName)
+    Log4g.removeProperty(privatePropertyName, false, context)
+    PrintTable(Log4g.getAllProperties())
+    Log4g.getContextDict()[contextName]:Terminate()
+end)
+
+local function PrintLoggerInfo(...)
+    print("Logger", "Assigned LC", "LC Parent", "Level")
+
+    for _, v in pairs({...}) do
+        print(v:GetName(), v:GetLoggerConfig():GetName(), tostring(v:GetLoggerConfig():GetParent()), v:GetLevel():GetName())
     end
 end
 
-if SERVER then
-    local type = type
-    --- The global table for the logging system.
-    -- It provides easy access to some functions for other components of the logging system that require them.
-    -- @table Log4g
-    Log4g = Log4g or {}
-    --- The installed Log4g packages.
-    -- Keys are the names of packages, and values are tables that hold the versions and classes for the particular package.
-    -- The `classes` table in one package's named table may contain some functions and so on.
-    -- @local
-    -- @table Packages
-    local Packages = Packages or {}
+local getContext = Log4g.LogManager.getContext
+local createLogger = Log4g.createLogger
+local createLoggerConfig = Log4g.createLoggerConfig
+local getLevel = Log4g.getLevel
 
-    --- Register a package for use with Log4g.
-    -- @param packageName The name of the package to register
-    -- @param ver The version string of the given package
-    function Log4g.RegisterPackage(packageName, ver)
-        if type(packageName) ~= "string" or type(ver) ~= "string" then return end
+concommand.Add("log4g_coretest_LoggerConfig_Inheritance", function()
+    local ctx = getContext("TestLCInheritance", true)
 
-        Packages[packageName] = {
-            Version = ver,
-            Classes = {}
-        }
+    local function renew()
+        ctx:Terminate()
+        ctx = getContext("TestLCInheritance", true)
     end
 
-    --- Register a Class which belongs a certain package.
-    -- @param packageName Package name
-    -- @param className Class name
-    -- @param functionTable Function table
-    function Log4g.RegisterPackageClass(packageName, className, functionTable)
-        if type(packageName) ~= "string" or type(className) ~= "string" or type(functionTable) ~= "table" then return end
-        if not Packages[packageName] then return end
-        Packages[packageName].Classes[className] = functionTable
+    PrintLoggerInfo(createLogger("X", ctx), createLogger("X.Y", ctx), createLogger("X.Y.Z", ctx))
+    renew()
+    PrintLoggerInfo(createLogger("X", ctx, createLoggerConfig("X", ctx:GetConfiguration(), getLevel("ERROR"))), createLogger("X.Y", ctx, createLoggerConfig("X.Y", ctx:GetConfiguration(), getLevel("INFO"))), createLogger("X.Y.Z", ctx, createLoggerConfig("X.Y.Z", ctx:GetConfiguration(), getLevel("WARN"))))
+    renew()
+    PrintLoggerInfo(createLogger("X", ctx, createLoggerConfig("X", ctx:GetConfiguration(), getLevel("ERROR"))), createLogger("X.Y", ctx), createLogger("X.Y.Z", ctx, createLoggerConfig("X.Y.Z", ctx:GetConfiguration(), getLevel("WARN"))))
+    renew()
+    PrintLoggerInfo(createLogger("X", ctx, createLoggerConfig("X", ctx:GetConfiguration(), getLevel("ERROR"))), createLogger("X.Y", ctx), createLogger("X.Y.Z", ctx))
+    renew()
+    PrintLoggerInfo(createLogger("X", ctx, createLoggerConfig("X", ctx:GetConfiguration(), getLevel("ERROR"))), createLogger("X.Y", ctx, createLoggerConfig("X.Y", ctx:GetConfiguration(), getLevel("INFO"))), createLogger("X.YZ", ctx))
+    renew()
+    PrintLoggerInfo(createLogger("X", ctx, createLoggerConfig("X", ctx:GetConfiguration(), getLevel("ERROR"))), createLogger("X.Y", ctx, createLoggerConfig("X.Y", ctx:GetConfiguration())), createLogger("X.Y.Z", ctx))
+    ctx:Terminate()
+end)
+
+concommand.Add("log4g_coretest_loggerLog", function()
+    local ctx = getContext("TestLoggerLogContext", true)
+    local lc = createLoggerConfig("LogTester", ctx:GetConfiguration(), getLevel("TRACE"))
+    lc:AddAppender(Log4g.createConsoleAppender("TestAppender", Log4g.createDefaultPatternLayout("TestLayout")))
+    local logger = createLogger("LogTester", ctx, lc)
+    logger:Trace("Test TRACE message 0123456789.")
+    print(logger:IsAdditive())
+    ctx:Terminate()
+end)
+
+local names = {}
+
+concommand.Add("log4g_coretest_createLoggerContext", function()
+    for i = 1, 10 do
+        local name = randomString(10)
+        names[i] = name
+        local ctx = getContext(name)
+        print("i = ", i, "created", name)
+        ctx:Terminate()
+        print("terminated", name)
     end
-
-    function Log4g.HasPackage(name)
-        if type(name) ~= "string" then return end
-        if Packages[name] then return true end
-
-        return false
-    end
-
-    function Log4g.GetPackageVer(name)
-        if type(name) ~= "string" then return end
-
-        return Packages[name].Version
-    end
-
-    function Log4g.GetPkgClsFuncs(packageName, className)
-        if type(packageName) ~= "string" or type(className) ~= "string" then return end
-        local p = Packages[packageName]
-        if not p then return end
-
-        return p.Classes[className]
-    end
-
-    function Log4g.GetAllPackages()
-        return Packages
-    end
-
-    --- Execute the given function and see how long it takes.
-    -- @param func Function
-    -- @return number Precise time
-    function Log4g.timeit(func)
-        if type(func) ~= "function" then return end
-        local SysTime = SysTime
-        local startTime = SysTime()
-        func()
-        local endTime = SysTime()
-
-        return endTime - startTime
-    end
-
-    --- Gets the Log4g version string.
-    -- @return string version
-    function Log4g.getVersionString()
-        local versionString = ""
-
-        for packageName, packageTable in pairs(Log4g.GetAllPackages()) do
-            if #versionString == 0 then
-                versionString = packageName .. " " .. packageTable.Version
-            else
-                versionString = versionString .. " " .. packageName .. " " .. packageTable.Version
-            end
-        end
-
-        return versionString
-    end
-
-    checkAndInclude("Log4g sv-init", "log4g/core/Core.lua")
-    checkAndInclude("Log4g sv-init", "log4g/api/API.lua")
-    checkAndInclude("Log4g sv-init", MMC, true)
-    checkAndInclude("Log4g sv-init", "log4g/core-test/CoreTest.lua")
-elseif CLIENT then
-    checkAndInclude("Log4g cl-init", MMC)
-end
+end)
