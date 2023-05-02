@@ -2,17 +2,17 @@ if not SERVER then return end
 local Log4g = include("log4g/Core.lua")
 PrintTable(Log4g)
 
-concommand.Add("log4g_coretest_propertiesPlugin", function()
-    local function randomString(len)
-        local res = ""
+local function randomString(len)
+    local res = ""
 
-        for i = 1, len do
-            res = res .. string.char(math.random(97, 122))
-        end
-
-        return res
+    for i = 1, len do
+        res = res .. string.char(math.random(97, 122))
     end
 
+    return res
+end
+
+concommand.Add("log4g_coretest_propertiesPlugin", function()
     local sharedPropertyName, sharedPropertyValue = randomString(10), randomString(10)
     print("creating shared:", sharedPropertyName)
     Log4g.registerProperty(sharedPropertyName, sharedPropertyValue, true)
@@ -77,4 +77,17 @@ concommand.Add("log4g_coretest_loggerLog", function()
     logger:Trace("Test TRACE message 0123456789.")
     print(logger:IsAdditive())
     ctx:Terminate()
+end)
+
+local names = {}
+
+concommand.Add("log4g_coretest_createLoggerContext", function()
+    for i = 1, 10 do
+        local name = randomString(10)
+        names[i] = name
+        local ctx = getContext(name)
+        print("i = ", i, "created", name)
+        ctx:Terminate()
+        print("terminated", name)
+    end
 end)
