@@ -1595,6 +1595,8 @@ return {
     createLevel = createLevel,
     createConfiguration = createConfiguration,
     getDefaultConfiguration = getDefaultConfiguration,
+    createDefaultPatternLayout = createDefaultPatternLayout,
+    createConsoleAppender = createConsoleAppender,
     getLoggerCount = getLoggerCount,
     registerContext = registerContext,
     getContext = getContext,

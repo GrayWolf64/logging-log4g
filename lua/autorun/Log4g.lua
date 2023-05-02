@@ -42,12 +42,13 @@ local function PrintLoggerInfo(...)
     end
 end
 
+local getContext = Log4g.LogManager.getContext
+local createLogger = Log4g.createLogger
+local createLoggerConfig = Log4g.createLoggerConfig
+local getLevel = Log4g.getLevel
+
 concommand.Add("log4g_coretest_LoggerConfig_Inheritance", function()
-    local getContext = Log4g.LogManager.getContext
     local ctx = getContext("TestLCInheritance", true)
-    local createLogger = Log4g.createLogger
-    local createLoggerConfig = Log4g.createLoggerConfig
-    local getLevel = Log4g.getLevel
 
     local function renew()
         ctx:Terminate()
@@ -69,15 +70,11 @@ concommand.Add("log4g_coretest_LoggerConfig_Inheritance", function()
 end)
 
 concommand.Add("log4g_coretest_loggerLog", function()
-    local ctx = GetContext("TestLoggerLogContext", true)
+    local ctx = getContext("TestLoggerLogContext", true)
     local lc = createLoggerConfig("LogTester", ctx:GetConfiguration(), getLevel("TRACE"))
-    lc:AddAppender(CreateConsoleAppender("TestAppender", CreatePatternLayout("TestLayout")))
+    lc:AddAppender(Log4g.createConsoleAppender("TestAppender", Log4g.createDefaultPatternLayout("TestLayout")))
     local logger = createLogger("LogTester", ctx, lc)
-
-    print("output finished in", Log4g.timeit(function()
-        logger:Trace("Test TRACE message 0123456789.")
-    end), "seconds")
-
+    logger:Trace("Test TRACE message 0123456789.")
     print(logger:IsAdditive())
     ctx:Terminate()
 end)
