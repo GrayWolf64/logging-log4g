@@ -1151,14 +1151,14 @@ local function initLogger()
     end
 
     local function hasLoggerConfig(name, context)
-        local getlc = function(ctx, lcn) return ctx:GetConfiguration():GetLoggerConfig(lcn) end
+        local getLoggerConfig = function(ctx, lcn) return ctx:GetConfiguration():GetLoggerConfig(lcn) end
 
         if not IsLoggerContext(context) then
             for _, v in pairs(ContextDict) do
-                if getlc(v, name) then return true end
+                if getLoggerConfig(v, name) then return true end
             end
         else
-            if getlc(context, name) then return true end
+            if getLoggerConfig(context, name) then return true end
         end
 
         return false
@@ -1310,6 +1310,8 @@ local function initLogger()
         return loggerConfig
     end
 
+    --- The core implementation of the Logger interface.
+    -- @type Logger
     local Logger = Object:subclass("Logger")
 
     function Logger:Initialize(name, context)
@@ -1434,11 +1436,11 @@ local function initLogger()
 
     function Logger:CallAppenders(event)
         if not IsLogEvent(event) then return end
-        local aps = self:GetLoggerConfig():GetAppenders()
-        if not next(aps) then return end
+        local appenders = self:GetLoggerConfig():GetAppenders()
+        if not next(appenders) then return end
 
-        for k in pairs(aps) do
-            k:Append(event)
+        for appender in pairs(appenders) do
+            appender:Append(event)
         end
     end
 
