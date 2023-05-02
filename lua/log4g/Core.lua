@@ -5,11 +5,12 @@ local type = type
 local pairs = pairs
 local ipairs = ipairs
 local next = next
-local setmetatable = setmetatable
 local tableConcat = table.concat
 
 --- A simple OOP library for Lua which has inheritance, metamethods, class variables and weak mixin support.
 local function initMiddleClass()
+    local setmetatable = setmetatable
+    local rawget = rawget
     local MiddleClass = {}
 
     local function _createIndexWrapper(aClass, f)
@@ -388,6 +389,7 @@ local IsLoggerContext = TypeUtil.IsLoggerContext
 local IsAppender = TypeUtil.IsAppender
 local IsConfiguration = TypeUtil.IsConfiguration
 local IsLogEvent = TypeUtil.IsLogEvent
+local IsLevel = TypeUtil.IsLevel
 
 --- Handles properties defined in the configuration.
 -- Since every LoggerContext has a Configuration, the grouping of private properties is based on LoggerContext names.
@@ -402,7 +404,6 @@ local function initPropertiesPlugin()
     }
 
     --- Register a property.
-    -- @function registerProperty
     -- @param name Name of the property
     -- @param defaultValue Default value of the property
     -- @param shared If this property will be shared with every LoggerContexts
@@ -426,7 +427,6 @@ local function initPropertiesPlugin()
     end
 
     --- Gets a property.
-    -- @function getProperty
     -- @param name Property name
     -- @param shared If the property is shared
     -- @param context LoggerContext object
@@ -445,7 +445,6 @@ local function initPropertiesPlugin()
     end
 
     --- Removes a property.
-    -- @function removeProperty
     -- @param name Property name
     -- @param shared If the property is shared
     -- @param context LoggerContext object
@@ -487,8 +486,8 @@ local function initLifeCycle()
     local LifeCycle = Object:subclass("LifeCycle")
 
     --- LifeCycle states.
-    -- @table State
     -- @local
+    -- @table State
     -- @field INITIALIZING Object is in its initial state and not yet initialized.
     -- @field INITIALIZED Initialized but not yet started.
     -- @field STARTING In the process of starting.
@@ -516,14 +515,17 @@ local function initLifeCycle()
         self:SetPrivateField("state", state)
     end
 
+    --- Sets the `START` state.
     function LifeCycle:Start()
         self:SetState(State.STARTED)
     end
 
+    --- Sets the `STOPPING` state.
     function LifeCycle:SetStopping()
         self:SetState(State.STOPPING)
     end
 
+    --- Sets the `STOPPED` state.
     function LifeCycle:SetStopped()
         self:SetState(State.STOPPED)
     end
@@ -544,8 +546,6 @@ local function initAppender()
     -- @type Layout
     local Layout = Object:subclass("Layout")
 
-    --- Initialize the Layout.
-    -- @param name String name
     function Layout:Initialize(name)
         Object.Initialize(self)
         self:SetName(name)
@@ -575,6 +575,8 @@ local function initAppender()
         return self:GetPrivateField("layout")
     end
 
+    --- Prototype function for other types of Appenders to override.
+    -- @return bool true
     function Appender:Append()
         return true
     end
@@ -610,36 +612,35 @@ local function initAppender()
         -- @return table positions or true if not found
         local function charPos(str, char)
             if type(str) ~= "string" or type(char) ~= "string" or not #char == 1 then return end
-            local pos = {}
+            local charPoses = {}
             char = char:byte()
 
-            for k, v in ipairs({str:byte(1, #str)}) do
-                if v == char then
-                    tableInsert(pos, k)
+            for pos, asciiCode in ipairs({str:byte(1, #str)}) do
+                if asciiCode == char then
+                    tableInsert(charPoses, pos)
                 end
             end
 
-            return not #pos or pos
+            return not #charPoses or charPoses
         end
 
-        local pos = charPos(conversionPattern, "%")
-        if pos == true then return conversionPattern end
-        local subStrings = {}
-        local pointerPos = 1
+        local charPoses = charPos(conversionPattern, "%")
+        if charPoses == true then return conversionPattern end
+        local subStrings, pointerPos = {}, 1
 
-        for k, v in ipairs(pos) do
-            local previousPos, nextPos = pos[k - 1], pos[k + 1]
+        for index, pos in ipairs(charPoses) do
+            local previousPos, nextPos = charPoses[index - 1], charPoses[index + 1]
 
             if previousPos then
                 pointerPos = previousPos
             end
 
-            if v - 1 ~= 0 then
-                subStrings[k] = conversionPattern:sub(pointerPos, v - 1)
+            if pos - 1 ~= 0 then
+                subStrings[index] = conversionPattern:sub(pointerPos, pos - 1)
             end
 
             if not nextPos then
-                subStrings[k + 1] = conversionPattern:sub(v, #conversionPattern)
+                subStrings[index + 1] = conversionPattern:sub(pos, #conversionPattern)
             end
         end
 
@@ -772,14 +773,6 @@ local createConsoleAppender, createDefaultPatternLayout = initAppender()
 -- @local
 -- @table ContextDict
 local ContextDict = ContextDict or {}
-
-local function getContextDict()
-    return ContextDict
-end
-
-local function getContext(name)
-    return ContextDict[name]
-end
 
 local function initLoggerContext()
     --- Interface that must be implemented to create a Configuration.
@@ -990,7 +983,6 @@ local createConfiguration, getDefaultConfiguration, getLoggerCount, registerCont
 local function initLevel()
     --- Levels used for identifying the severity of an event.
     -- @type Level
-    local IsLevel = TypeUtil.IsLevel
     local Level = Object:subclass("Level")
 
     function Level:Initialize(name, int, color)
@@ -1123,7 +1115,6 @@ local getLevel, createLevel = initLevel()
 
 local function initLogger()
     local IsLoggerConfig = TypeUtil.IsLoggerConfig
-    local IsLevel = TypeUtil.IsLevel
     registerProperty("rootLoggerName", "root", true)
     --- Logger object that is created via configuration.
     -- @type LoggerConfig
@@ -1312,17 +1303,6 @@ local function initLogger()
         return loggerConfig
     end
 
-    --- The core implementation of the Logger interface.
-    -- @type Logger
-    local Logger = Object:subclass("Logger")
-
-    function Logger:Initialize(name, context)
-        Object.Initialize(self)
-        self:SetPrivateField("ctx", context:GetName())
-        self:SetName(name)
-        self:SetAdditive(true)
-    end
-
     --- Provides contextual information about a logged message.
     -- A LogEvent must be Serializable so that it may be transmitted over a network connection.
     -- @type LogEvent
@@ -1383,6 +1363,17 @@ local function initLogger()
         if type(ln) ~= "string" or not IsLevel(level) then return end
 
         return LogEvent(ln, level, SysTime(), msg, debugGetInfo(4, "S").source)
+    end
+
+    --- The core implementation of the Logger interface.
+    -- @type Logger
+    local Logger = Object:subclass("Logger")
+
+    function Logger:Initialize(name, context)
+        Object.Initialize(self)
+        self:SetName(name)
+        self:SetPrivateField("ctx", context:GetName())
+        self:SetAdditive(true)
     end
 
     --- Gets the LoggerContext of the Logger.
@@ -1609,8 +1600,12 @@ return {
     createConsoleAppender = createConsoleAppender,
     getLoggerCount = getLoggerCount,
     registerContext = registerContext,
-    getContext = getContext,
-    getContextDict = getContextDict,
+    getContext = function(name)
+        if type(name) ~= "string" then return end
+
+        return ContextDict[name]
+    end,
+    getContextDict = function() return ContextDict end,
     LogManager = {
         getContext = function(name, withconfig)
             if type(name) ~= "string" then return end
