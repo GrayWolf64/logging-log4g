@@ -17,9 +17,7 @@ Originally designed to work with Garry's Mod.
 
 ## How to Add It To Your Project / How to Test?
 
-### Test it in Garry's Mod
-
-Simply clone this project and extract the project folder into your `garrysmod/addons` folder.
+Simply clone this project and extract the project wherever you like and require it.
 In addition, the code itself is well documented, so feel free to browse the code itself and read the docs or build the docs yourself.
 
 ## Documentation
