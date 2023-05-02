@@ -1,11 +1,12 @@
 --- Implementation of Log4g.
 -- @license Apache License 2.0
 -- @copyright GrayWolf64
-local tableConcat = table.concat
 local type = type
 local pairs = pairs
 local ipairs = ipairs
 local next = next
+local setmetatable = setmetatable
+local tableConcat = table.concat
 
 --- A simple OOP library for Lua which has inheritance, metamethods, class variables and weak mixin support.
 local function initMiddleClass()
@@ -386,6 +387,7 @@ local TypeUtil = initTypeUtil()
 local IsLoggerContext = TypeUtil.IsLoggerContext
 local IsAppender = TypeUtil.IsAppender
 local IsConfiguration = TypeUtil.IsConfiguration
+local IsLogEvent = TypeUtil.IsLogEvent
 
 --- Handles properties defined in the configuration.
 -- Since every LoggerContext has a Configuration, the grouping of private properties is based on LoggerContext names.
@@ -580,7 +582,6 @@ local function initAppender()
     --- The goal of this class is to format a LogEvent and return the results. The format of the result depends on the conversion pattern.
     -- @type PatternLayout
     local PatternLayout = Layout:subclass("PatternLayout")
-    local IsLogEvent = TypeUtil.IsLogEvent
     local defaultColor = Color(0, 201, 255)
     local tableInsert, tableRemove = table.insert, table.remove
     local propertyConversionPattern = "patternlayoutConversionPattern"
@@ -1120,7 +1121,7 @@ local getLevel, createLevel = initLevel()
 
 local function initLogger()
     local IsLoggerConfig = TypeUtil.IsLoggerConfig
-    local IsLevel, IsLogEvent = TypeUtil.IsLevel, TypeUtil.IsLogEvent
+    local IsLevel = TypeUtil.IsLevel
     registerProperty("rootLoggerName", "root", true)
     --- Logger object that is created via configuration.
     -- @type LoggerConfig
