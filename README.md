@@ -10,11 +10,6 @@ Log4g is an advanced logging framework for Garry's Mod.
 
 ## Currently Work-in-Progress
 
-| Con-Commands          | Usage   | Desc.                                        |
-| --------------------- | ------- | -------------------------------------------- |
-| "log4g_mmc"           | Console | Monitoring & Management Console (Component)  |
-| "log4g_load_coretest" | Console | Load server-side unittests for Core          |
-
 ### Component Src Dir
 
 [lua/log4g](https://github.com/GrayWolf64/gmod-logging-log4g/tree/main/lua/log4g)
@@ -23,37 +18,7 @@ Log4g is an advanced logging framework for Garry's Mod.
 
 (not updated)
 Simply clone this project and extract the project folder into your `garrysmod/addons` folder.
-In addition, the code itself is well documented.
-Then you just have to make sure it loads before your addon, or you can use valid checks:
-
-```lua
---- Check the 'Log4g' global table.
-if Log4g then
-   --- Get some classes' functions.
-   local Level = Log4g.GetPkgClsFuncs("log4g-core", "Level")
-   local Logger = Log4g.GetPkgClsFuncs("log4g-core", "Logger")
-   local Appender = Log4g.GetPkgClsFuncs("log4g-core", "Appender")
-
-   --- This will locate / create a proper LoggerContext named 'Foo' with DefaultConfiguration.
-   local ctx = Log4g.API.LoggerContextFactory.GetContext("Foo", true)
-
-   --- This will create a new LoggerConfig named 'Calculator' and it to ctx's Configuration, then set its level to DEBUG.
-   local lc = Logger.createLoggerConfig("Calculator", ctx:GetConfiguration(), Level.getLevel("TRACE"))
-
-   --- It will add a ConsoleAppender to lc and set its layout to PatternLayout with default settings.
-   lc:AddAppender(Appender.createConsoleAppender("CalcOutput", Appender.createDefaultPatternLayout("CalcLayout")))
-
-   --- This will create a Logger named 'Calculate' using lc and add it to ctx.
-   local logger = Logger.createLogger("Calculate", ctx, lc)
-
-   for i = 1, 100 do
-      --- Do something with i, and log messages.
-      -- Note that when this was written, the logging system isn't finished yet.
-
-      logger:Debug("Calculated: " .. i .. " times.")
-   end
-end
-```
+In addition, the code itself is well documented, so feel free to browse the code itself and read the docs or build the docs yourself.
 
 so that you won't experience errors if your addon is loaded before the logging system.
 However, your addon won't successfully log any messages until the logging system is loaded.
