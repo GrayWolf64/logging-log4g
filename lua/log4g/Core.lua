@@ -1,7 +1,7 @@
 --- Implementation of Log4g.
 -- @license Apache License 2.0
 -- @copyright GrayWolf64
-
+local tableConcat = table.concat
 --- A simple OOP library for Lua which has inheritance, metamethods, class variables and weak mixin support.
 local function initMiddleClass()
 	local MiddleClass = {}
@@ -222,7 +222,6 @@ end
 local MiddleClass = initMiddleClass()
 --- Class Object is the root of the class hierarchy.
 local function initObject()
-	local tableConcat = table.concat
 	local Object = MiddleClass("Object")
 
 	--- A table for storing private properties of an object.
@@ -528,3 +527,9 @@ end
 end
 
 local registerProperty, getProperty = initPropertiesPlugin()
+
+--- A dictionary for storing LoggerContext objects.
+-- Only one ContextDictionary exists in the logging system.
+-- @local
+-- @table ContextDict
+local ContextDict = ContextDict or {}
