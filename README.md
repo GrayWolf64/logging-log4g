@@ -6,7 +6,8 @@
 
 [![Last Commit](https://img.shields.io/github/last-commit/GrayWolf64/gmod-logging-log4g)](https://github.com/GrayWolf64/gmod-logging-log4g/)
 
-Log4g is an advanced logging framework for Garry's Mod.
+Log4g is an advanced logging framework for Lua.
+Originally designed to work with Garry's Mod.
 
 ## Currently Work-in-Progress
 
@@ -31,8 +32,7 @@ Some functions need to be replaced in order for this to work.
 1. `isstring()`
 2. `isbool()`
 3. `Color(r, g, b, a)`
-4. `table.Count()`
-5. ...
+4. ...
 
 ## Thanks to Third-party Projects Below
 

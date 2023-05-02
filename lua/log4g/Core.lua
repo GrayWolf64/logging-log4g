@@ -1,4 +1,5 @@
 --- Implementation of Log4g.
+-- @module Core
 -- @license Apache License 2.0
 -- @copyright GrayWolf64
 local type = type
@@ -199,14 +200,14 @@ local function initObject()
 
     --- A table for storing private properties of an object.
     -- @local
-    -- @table Private
-    local Private = Private or setmetatable({}, {
+    -- @table _privateAttr
+    local _privateAttr = _privateAttr or setmetatable({}, {
         __mode = "k",
     })
 
     --- When an Object is initialized, a private field(sub table) in the `PRIVATE` table will be dedicated to it based on `self` key.
     function Object:Initialize()
-        Private[self] = {}
+        _privateAttr[self] = {}
     end
 
     function Object:__tostring()
@@ -217,13 +218,13 @@ local function initObject()
     -- @param name String name
     function Object:SetName(name)
         if type(name) ~= "string" then return end
-        Private[self].name = name
+        _privateAttr[self].name = name
     end
 
     --- Gets the name of the Object.
     -- @return string name
     function Object:GetName()
-        return Private[self].name
+        return _privateAttr[self].name
     end
 
     --- Sets a private field for the Object.
@@ -231,7 +232,7 @@ local function initObject()
     -- @param value Of any type except nil
     function Object:SetPrivateField(key, value)
         if not key or not value then return end
-        Private[self][key] = value
+        _privateAttr[self][key] = value
     end
 
     --- Gets a private field of the Object.
@@ -240,12 +241,12 @@ local function initObject()
     function Object:GetPrivateField(key)
         if not key then return end
 
-        return Private[self][key]
+        return _privateAttr[self][key]
     end
 
     --- Destroys its private table.
     function Object:DestroyPrivateTable()
-        Private[self] = nil
+        _privateAttr[self] = nil
     end
 
     --- Removes the dot extension of a string.
@@ -395,12 +396,12 @@ local IsLevel = TypeUtil.IsLevel
 -- Since every LoggerContext has a Configuration, the grouping of private properties is based on LoggerContext names.
 local function initPropertiesPlugin()
     --- Holds all the properties that Configurations use.
-    -- It contains 'Shared' and 'Private' two sub tables.
+    -- It contains '_sh' and '_pvt' two sub tables.
     -- @local
-    -- @table Properties
-    local Properties = Properties or {
-        Shared = {},
-        Private = {},
+    -- @table _properties
+    local _properties = _properties or {
+        _sh = {},
+        _pvt = {},
     }
 
     --- Register a property.
@@ -412,7 +413,7 @@ local function initPropertiesPlugin()
         if type(name) ~= "string" or not defaultValue then return end
 
         if shared then
-            Properties.Shared[name] = defaultValue
+            _properties._sh[name] = defaultValue
         elseif TypeUtil.IsLoggerContext(context) then
             local function ifSubTblNotExistThenCreate(tbl, key)
                 if not tbl[key] then
@@ -421,8 +422,8 @@ local function initPropertiesPlugin()
             end
 
             local contextName = context:GetName()
-            ifSubTblNotExistThenCreate(Properties.Private, contextName)
-            Properties.Private[contextName][name] = defaultValue
+            ifSubTblNotExistThenCreate(_properties._pvt, contextName)
+            _properties._pvt[contextName][name] = defaultValue
         end
     end
 
@@ -435,9 +436,9 @@ local function initPropertiesPlugin()
         if type(name) ~= "string" then return end
 
         if shared then
-            return Properties.Shared[name]
+            return _properties._sh[name]
         elseif TypeUtil.IsLoggerContext(context) then
-            local contextProperties = Properties.Private[context:GetName()]
+            local contextProperties = _properties._pvt[context:GetName()]
             if not contextProperties then return end
 
             return contextProperties[name]
@@ -452,21 +453,21 @@ local function initPropertiesPlugin()
         if type(name) ~= "string" then return end
 
         if shared then
-            Properties.Shared[name] = nil
+            _properties._sh[name] = nil
         elseif IsLoggerContext(context) then
             local contextName = context:GetName()
-            local contextProperties = Properties.Private[contextName]
+            local contextProperties = _properties._pvt[contextName]
             if not contextProperties then return end
             contextProperties[name] = nil
 
             if not next(contextProperties) then
-                Properties.Private[contextName] = nil
+                _properties._pvt[contextName] = nil
             end
         end
     end
 
     local function getAllProperties()
-        return Properties
+        return _properties
     end
 
     return registerProperty, getProperty, removeProperty, getAllProperties
@@ -771,8 +772,8 @@ local createConsoleAppender, createDefaultPatternLayout = initAppender()
 --- A dictionary for storing LoggerContext objects.
 -- Only one ContextDictionary exists in the logging system.
 -- @local
--- @table ContextDict
-local ContextDict = ContextDict or {}
+-- @table _contextDict
+local _contextDict = _contextDict or {}
 
 local function initLoggerContext()
     --- Interface that must be implemented to create a Configuration.
@@ -932,7 +933,7 @@ local function initLoggerContext()
     function LoggerContext:Terminate()
         local name = self:GetName()
         self:DestroyPrivateTable()
-        ContextDict[name] = nil
+        _contextDict[name] = nil
     end
 
     --- Determines if the specified Logger exists.
@@ -950,7 +951,7 @@ local function initLoggerContext()
     -- @return object loggercontext
     local function registerContext(name, withconfig)
         if type(name) ~= "string" then return end
-        local ctx = ContextDict[name]
+        local ctx = _contextDict[name]
         if IsLoggerContext(ctx) then return ctx end
         ctx = LoggerContext(name)
 
@@ -958,7 +959,7 @@ local function initLoggerContext()
             ctx:SetConfiguration(getDefaultConfiguration())
         end
 
-        ContextDict[name] = ctx
+        _contextDict[name] = ctx
 
         return ctx
     end
@@ -966,10 +967,18 @@ local function initLoggerContext()
     --- Get the number of Loggers across all the LoggerContexts.
     -- @return number count
     local function getLoggerCount()
-        local num, tableCount = 0, table.Count
+        local num, count = 0, function(t)
+            local i = 0
 
-        for _, v in pairs(ContextDict) do
-            num = num + tableCount(v:GetLoggers())
+            for _ in pairs(t) do
+                i = i + 1
+            end
+
+            return i
+        end
+
+        for _, v in pairs(_contextDict) do
+            num = num + count(v:GetLoggers())
         end
 
         return num
@@ -1147,7 +1156,7 @@ local function initLogger()
         local getLoggerConfig = function(ctx, lcn) return ctx:GetConfiguration():GetLoggerConfig(lcn) end
 
         if not IsLoggerContext(context) then
-            for _, v in pairs(ContextDict) do
+            for _, v in pairs(_contextDict) do
                 if getLoggerConfig(v, name) then return true end
             end
         else
@@ -1158,7 +1167,7 @@ local function initLogger()
     end
 
     local function GetLoggerConfig(name)
-        for _, v in pairs(ContextDict) do
+        for _, v in pairs(_contextDict) do
             local loggerConfig = v:GetConfiguration():GetLoggerConfig(name)
             if loggerConfig then return loggerConfig end
         end
@@ -1168,7 +1177,7 @@ local function initLogger()
     -- @param T LoggerConfig object or LoggerConfig name
     function LoggerConfig:SetParent(T)
         if type(T) == "string" then
-            if not hasLoggerConfig(T, ContextDict[self:GetContext()]) then return end
+            if not hasLoggerConfig(T, _contextDict[self:GetContext()]) then return end
             self:SetPrivateField("parent", T)
         elseif IsLoggerConfig(T) and T:GetContext() == self:GetContext() then
             self:SetPrivateField("parent", T:GetName())
@@ -1194,13 +1203,13 @@ local function initLogger()
         if not IsAppender(ap) then return end
         self:GetAppenderRef()[ap:GetName()] = true
 
-        return ContextDict[self:GetContext()]:GetConfiguration():AddAppender(ap, self:GetName())
+        return _contextDict[self:GetContext()]:GetConfiguration():AddAppender(ap, self:GetName())
     end
 
     --- Returns all Appenders configured by this LoggerConfig in a form of table (keys are Appenders, values are booleans).
     -- @return table appenders
     function LoggerConfig:GetAppenders()
-        local appenders, config, apref = {}, ContextDict[self:GetContext()]:GetConfiguration(), self:GetAppenderRef()
+        local appenders, config, apref = {}, _contextDict[self:GetContext()]:GetConfiguration(), self:GetAppenderRef()
         if not next(apref) then return end
 
         for appenderName in pairs(apref) do
@@ -1212,7 +1221,7 @@ local function initLogger()
 
     --- Removes all Appenders configured by this LoggerConfig.
     function LoggerConfig:ClearAppenders()
-        local config, apref = ContextDict[self:GetContext()]:GetConfiguration(), self:GetAppenderRef()
+        local config, apref = _contextDict[self:GetContext()]:GetConfiguration(), self:GetAppenderRef()
         if not next(apref) then return end
 
         for appenderName in pairs(apref) do
@@ -1255,7 +1264,7 @@ local function initLogger()
         local ancestors, nodes = enumerateAncestors(loggerConfig:GetName())
 
         local function HasEveryLoggerConfig(tbl)
-            local ctx = ContextDict[loggerConfig:GetContext()]
+            local ctx = _contextDict[loggerConfig:GetContext()]
 
             for k in pairs(tbl) do
                 if not hasLoggerConfig(k, ctx) then return false end
@@ -1384,7 +1393,7 @@ local function initLogger()
         if not ex or ex == false then
             return self:GetPrivateField("ctx")
         else
-            return ContextDict[self:GetContext()]
+            return _contextDict[self:GetContext()]
         end
     end
 
@@ -1511,7 +1520,7 @@ local function initLogger()
     -- @param str String name
     -- @param dot If dots are allowed, default is allowed if param not set
     -- @return bool ifvalid
-    local function QualifyName(str, dot)
+    local function qualifyName(str, dot)
         if type(str) ~= "string" then return false end
 
         if dot == true or dot == nil then
@@ -1534,7 +1543,7 @@ local function initLogger()
 
     local function createLogger(loggerName, context, loggerconfig)
         if not IsLoggerContext(context) then return end
-        if context:HasLogger(loggerName) or not QualifyName(loggerName) then return end
+        if context:HasLogger(loggerName) or not qualifyName(loggerName) then return end
         local logger, root = Logger(loggerName, context), getProperty("rootLoggerName", true)
 
         if loggerName:find("%.") then
@@ -1603,9 +1612,9 @@ return {
     getContext = function(name)
         if type(name) ~= "string" then return end
 
-        return ContextDict[name]
+        return _contextDict[name]
     end,
-    getContextDict = function() return ContextDict end,
+    getContextDict = function() return _contextDict end,
     LogManager = {
         getContext = function(name, withconfig)
             if type(name) ~= "string" then return end
