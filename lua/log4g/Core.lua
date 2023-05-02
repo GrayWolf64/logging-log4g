@@ -3,9 +3,9 @@
 -- @license Apache License 2.0
 -- @copyright GrayWolf64
 local type = type
-local pairs = pairs
-local ipairs = ipairs
+local pairs, ipairs = pairs, ipairs
 local next = next
+local tonumber = tonumber
 local tableConcat = table.concat
 
 --- A simple OOP library for Lua which has inheritance, metamethods, class variables and weak mixin support.
@@ -255,23 +255,17 @@ local function initObject()
     -- @return string result
     local function stripDotExtension(str, doconcat)
         if type(str) ~= "string" then return end
-
+        str = str:sub(1, #str - str:reverse():find("%."))
         --- Optimized version of [string.Explode](https://github.com/Facepunch/garrysmod/blob/master/garrysmod/lua/includes/extensions/string.lua#L87-L104).
-        local function stringExplode(separator, string)
-            local result, currentPos = {}, 1
+        local result, currentPos = {}, 1
 
-            for i = 1, #string do
-                local startPos, endPos = string:find(separator, currentPos, true)
-                if not startPos then break end
-                result[i], currentPos = string:sub(currentPos, startPos - 1), endPos + 1
-            end
-
-            result[#result + 1] = string:sub(currentPos)
-
-            return result
+        for i = 1, #str do
+            local startPos, endPos = str:find(".", currentPos, true)
+            if not startPos then break end
+            result[i], currentPos = str:sub(currentPos, startPos - 1), endPos + 1
         end
 
-        local result = stringExplode(".", str:sub(1, #str - str:reverse():find("%.")))
+        result[#result + 1] = str:sub(currentPos)
 
         if doconcat ~= false then
             return tableConcat(result, ".")
@@ -396,7 +390,7 @@ local IsLevel = TypeUtil.IsLevel
 -- Since every LoggerContext has a Configuration, the grouping of private properties is based on LoggerContext names.
 local function initPropertiesPlugin()
     --- Holds all the properties that Configurations use.
-    -- It contains '_sh' and '_pvt' two sub tables.
+    -- It contains '_sh' and '_pvt' two sub tables, standing for 'Shared' and 'Private'.
     -- @local
     -- @table _properties
     local _properties = _properties or {
@@ -466,6 +460,7 @@ local function initPropertiesPlugin()
         end
     end
 
+    --- Gets all the properties registered in `PropertiesPlugin`.
     local function getAllProperties()
         return _properties
     end
@@ -585,7 +580,6 @@ local function initAppender()
     --- The goal of this class is to format a LogEvent and return the results. The format of the result depends on the conversion pattern.
     -- @type PatternLayout
     local PatternLayout = Layout:subclass("PatternLayout")
-    local defaultColor = Color(0, 201, 255)
     local tableInsert, tableRemove = table.insert, table.remove
     local propertyConversionPattern = "patternlayoutConversionPattern"
     local propertyMessageColor = "patternlayoutMessageColor"
@@ -645,10 +639,31 @@ local function initAppender()
             end
         end
 
+        --- A `Color` abstraction layer, and we still use this constructor when GMod's `Color()` is available so it won't be recognized as a color by `IsColor()`.
+        -- GMod uses `Color` in a similar way, see [garrysmod/lua/includes/util/color.lua](https://github.com/Facepunch/garrysmod/blob/master/garrysmod/lua/includes/util/color.lua).
+        -- @param r red
+        -- @param g green
+        -- @param b blue
+        -- @param a alpha, default is 255
+        -- @return table {r = int, g = int, b = int, a = int}
+        local function mkColor(r, g, b, a)
+            a = a or 255
+
+            return {
+                r = r,
+                g = g,
+                b = b,
+                a = a
+            }
+        end
+
+        local defaultColor = mkColor(0, 201, 255)
+
         local function getPropertyColor(cvar)
             if not colored then return end
+            local r, g, b, a = getProperty(cvar, true):match"(%d+) (%d+) (%d+) (%d+)"
 
-            return getProperty(cvar, true):ToColor()
+            return mkColor(tonumber(r) or 255, tonumber(g) or 255, tonumber(b) or 255, tonumber(a) or 255)
         end
 
         local eventLevel = event:GetLevel()
@@ -740,7 +755,6 @@ local function initAppender()
     -- @type ConsoleAppender
     local ConsoleAppender = Appender:subclass("ConsoleAppender")
     local IsLayout = TypeUtil.IsLayout
-    local print = print
 
     function ConsoleAppender:Initialize(name, layout)
         Appender.Initialize(self, name, layout)
@@ -748,19 +762,19 @@ local function initAppender()
 
     --- Append a LogEvent to Console.
     -- @param event LogEvent
-    function ConsoleAppender:Append(event)
-        if not IsLogEvent(event) then return end
+    -- @param outputFunc A function which takes in vararg and output them to any kinds of console
+    -- @param useColors Tells the ConsoleAppender's Layout whether or not use `Color` tables returned by @{\\mkColor}. Notice that `outputFunc` should support colored outputs.
+    function ConsoleAppender:Append(event, outputFunc, useColors)
+        if not IsLogEvent(event) or type(outputFunc) ~= "function" then return end
         local layout = self:GetLayout()
         if not IsLayout(layout) then return end
-
-        if gmod then
-            MsgC(layout:Format(event, true))
-        else
-            print(layout:Format(event, false))
-        end
+        outputFunc(layout:Format(event, useColors))
     end
 
     --- Create a default ConsoleAppender.
+    -- @param name String name for the ConsoleAppender
+    -- @param layout Layout object
+    -- @return object ConsoleAppender
     local function createConsoleAppender(name, layout)
         return ConsoleAppender(name, layout)
     end
@@ -1435,13 +1449,13 @@ local function initLogger()
         return self:GetLoggerConfig():GetLevel()
     end
 
-    function Logger:CallAppenders(event)
+    function Logger:CallAppenders(event, ...)
         if not IsLogEvent(event) then return end
         local appenders = self:GetLoggerConfig():GetAppenders()
         if not next(appenders) then return end
 
         for appender in pairs(appenders) do
-            appender:Append(event)
+            appender:Append(event, ...)
         end
     end
 
@@ -1486,34 +1500,52 @@ local function initLogger()
     end
 
     --- Logs a message if the specified level is active.
-    local function LogIfEnabled(self, level, msg)
+    local function LogIfEnabled(self, level, msg, ...)
         level = getLevel(level)
         if type(msg) ~= "string" or self:GetLevel():IntLevel() < level:IntLevel() then return end
-        self:CallAppenders(LogEventBuilder(self:GetName(), level, msg))
+        self:CallAppenders(LogEventBuilder(self:GetName(), level, msg), ...)
     end
 
-    function Logger:Trace(msg)
-        LogIfEnabled(self, "TRACE", msg)
+    --- Logs a message with the TRACE level.
+    -- @param msg String log message
+    -- @param ... Optional vararg to pass to Appender's `Append` method
+    function Logger:Trace(msg, ...)
+        LogIfEnabled(self, "TRACE", msg, ...)
     end
 
-    function Logger:Debug(msg)
-        LogIfEnabled(self, "DEBUG", msg)
+    --- Logs a message with the DEBUG level.
+    -- @param msg String log message
+    -- @param ... Optional vararg to pass to Appender's `Append` method
+    function Logger:Debug(msg, ...)
+        LogIfEnabled(self, "DEBUG", msg, ...)
     end
 
-    function Logger:Info(msg)
-        LogIfEnabled(self, "INFO", msg)
+    --- Logs a message with the INFO level.
+    -- @param msg String log message
+    -- @param ... Optional vararg to pass to Appender's `Append` method
+    function Logger:Info(msg, ...)
+        LogIfEnabled(self, "INFO", msg, ...)
     end
 
-    function Logger:Warn(msg)
-        LogIfEnabled(self, "WARN", msg)
+    --- Logs a message with the WARN level.
+    -- @param msg String log message
+    -- @param ... Optional vararg to pass to Appender's `Append` method
+    function Logger:Warn(msg, ...)
+        LogIfEnabled(self, "WARN", msg, ...)
     end
 
-    function Logger:Error(msg)
-        LogIfEnabled(self, "ERROR", msg)
+    --- Logs a message with the ERROR level.
+    -- @param msg String log message
+    -- @param ... Optional vararg to pass to Appender's `Append` method
+    function Logger:Error(msg, ...)
+        LogIfEnabled(self, "ERROR", msg, ...)
     end
 
-    function Logger:Fatal(msg)
-        LogIfEnabled(self, "FATAL", msg)
+    --- Logs a message with the FATAL level.
+    -- @param msg String log message
+    -- @param ... Optional vararg to pass to Appender's `Append` method
+    function Logger:Fatal(msg, ...)
+        LogIfEnabled(self, "FATAL", msg, ...)
     end
 
     --- Qualifies the string name of an object and returns if it's a valid name.
