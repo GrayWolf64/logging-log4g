@@ -24,15 +24,7 @@ In addition, the code itself is well documented, so feel free to browse the code
 ## Documentation
 
 The Log4g Documentation is available [here](https://github.com/GrayWolf64/Log4g/wiki).
-
-## Compatibility With Non-GMOD Projects
-
-Some functions need to be replaced in order for this to work.
-
-1. `isstring()`
-2. `isbool()`
-3. `Color(r, g, b, a)`
-4. ...
+You can build docs using `ldoc-generate.bat` in repo dir as well.
 
 ## Thanks to Third-party Projects Below
 
