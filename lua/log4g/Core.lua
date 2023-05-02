@@ -612,11 +612,6 @@ local function initAppender()
 		return "Layout: [name:" .. self:GetName() .. "]"
 	end
 
-	--- Gets Layout class.
-	local function GetLayoutClass()
-		return Layout
-	end
-
 	--- An Appender can contain a Layout if applicable.
 	-- @type Appender
 	local Appender = LifeCycle:subclass("Appender")
@@ -761,19 +756,22 @@ local function initAppender()
 		-- @return function output func
 		local function mkfunc_precolor(tokenName, color)
 			return function(subStringTable, content)
+				local function insertColor(index)
+					if colored then
+						if color then
+							tableInsert(subStringTable, index, color)
+						else
+							tableInsert(subStringTable, index, defaultColor)
+						end
+
+						tableInsert(subStringTable, index + 2, defaultColor)
+					end
+				end
 				for index, subString in ipairs(subStringTable) do
 					if subString == tokenName then
 						subStringTable[index] = content
 
-						if colored then
-							if color then
-								tableInsert(subStringTable, index, color)
-							else
-								tableInsert(subStringTable, index, defaultColor)
-							end
-
-							tableInsert(subStringTable, index + 2, defaultColor)
-						end
+						insertColor(index)
 					end
 				end
 			end
