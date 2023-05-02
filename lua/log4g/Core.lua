@@ -379,6 +379,7 @@ local function initTypeUtil()
 end
 
 local TypeUtil = initTypeUtil()
+local IsLoggerContext = TypeUtil.IsLoggerContext
 
 --- Handles properties defined in the configuration.
 -- Since every LoggerContext has a Configuration, the grouping of private properties is based on LoggerContext names.
@@ -434,34 +435,37 @@ local function initPropertiesPlugin()
             return contextProperties[name]
         end
     end
-    --[[
---- Removes a property.
--- @function removeProperty
--- @param name Property name
--- @param shared If the property is shared
--- @param context LoggerContext object
-local function removeProperty(name, shared, context)
-    if type(name) ~= "string" then return end
 
-    if shared then
-        Properties.Shared[name] = nil
-    elseif IsLoggerContext(context) then
-        local contextName = context:GetName()
-        local contextProperties = Properties.Private[contextName]
-        if not contextProperties then return end
-        contextProperties[name] = nil
+    --- Removes a property.
+    -- @function removeProperty
+    -- @param name Property name
+    -- @param shared If the property is shared
+    -- @param context LoggerContext object
+    local function removeProperty(name, shared, context)
+        if type(name) ~= "string" then return end
 
-        if not next(contextProperties) then
-            Properties.Private[contextName] = nil
+        if shared then
+            Properties.Shared[name] = nil
+        elseif IsLoggerContext(context) then
+            local contextName = context:GetName()
+            local contextProperties = Properties.Private[contextName]
+            if not contextProperties then return end
+            contextProperties[name] = nil
+
+            if not next(contextProperties) then
+                Properties.Private[contextName] = nil
+            end
         end
     end
-end
---]]
 
-    return registerProperty, getProperty
+    local function getAllProperties()
+        return Properties
+    end
+
+    return registerProperty, getProperty, removeProperty, getAllProperties
 end
 
-local registerProperty, getProperty = initPropertiesPlugin()
+local registerProperty, getProperty, removeProperty, getAllProperties = initPropertiesPlugin()
 
 --- In Log4g, the main interface for handling the life cycle context of an object is this one.
 -- An object first starts in the LifeCycle.State.INITIALIZED state by default to indicate the class has been loaded.
@@ -760,6 +764,14 @@ local createConsoleAppender, createDefaultPatternLayout = initAppender()
 -- @table ContextDict
 local ContextDict = ContextDict or {}
 
+local function getContextDict()
+    return ContextDict
+end
+
+local function getContext(name)
+    return ContextDict[name]
+end
+
 local function initLoggerContext()
     local IsAppender = TypeUtil.IsAppender
     --- Interface that must be implemented to create a Configuration.
@@ -859,7 +871,7 @@ local function initLoggerContext()
     end
 
     local LoggerContext = LifeCycle:subclass("LoggerContext")
-    local IsLoggerContext, IsConfiguration = TypeUtil.IsLoggerContext, TypeUtil.IsConfiguration
+    local IsConfiguration = TypeUtil.IsConfiguration
 
     function LoggerContext:Initialize(name)
         LifeCycle.Initialize(self)
@@ -1100,7 +1112,7 @@ end
 local getLevel, createLevel = initLevel()
 
 local function initLogger()
-    local IsLoggerConfig, IsLoggerContext = TypeUtil.IsLoggerConfig, TypeUtil.IsLoggerContext
+    local IsLoggerConfig = TypeUtil.IsLoggerConfig
     local IsAppender, IsConfiguration = TypeUtil.IsAppender, TypeUtil.IsConfiguration
     local IsLevel, IsLogEvent = TypeUtil.IsLevel, TypeUtil.IsLogEvent
     registerProperty("rootLoggerName", "root", true)
@@ -1573,6 +1585,10 @@ end
 local createLoggerConfig, createLogger = initLogger()
 
 return {
+    registerProperty = registerProperty,
+    getProperty = getProperty,
+    getAllProperties = getAllProperties,
+    removeProperty = removeProperty,
     createLoggerConfig = createLoggerConfig,
     createLogger = createLogger,
     getLevel = getLevel,
@@ -1581,4 +1597,6 @@ return {
     getDefaultConfiguration = getDefaultConfiguration,
     getLoggerCount = getLoggerCount,
     registerContext = registerContext,
+    getContext = getContext,
+    getContextDict = getContextDict
 }
