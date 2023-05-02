@@ -1579,10 +1579,10 @@ local function initLogger()
         return logger
     end
 
-    return createLoggerConfig, createLogger
+    return createLoggerConfig, createLogger, RootLoggerConfig
 end
 
-local createLoggerConfig, createLogger = initLogger()
+local createLoggerConfig, createLogger, rootLoggerConfig = initLogger()
 
 return {
     registerProperty = registerProperty,
@@ -1598,5 +1598,20 @@ return {
     getLoggerCount = getLoggerCount,
     registerContext = registerContext,
     getContext = getContext,
-    getContextDict = getContextDict
+    getContextDict = getContextDict,
+    LogManager = {
+        getContext = function(name, withconfig)
+            if type(name) ~= "string" then return end
+            local ctx = registerContext(name, withconfig)
+
+            if withconfig or withconfig == nil then
+                ctx:SetConfigurationSource(debug.getinfo(2, "S"))
+                local rootlc = rootLoggerConfig()
+                ctx:GetConfiguration():AddLogger(rootlc:GetName(), rootlc)
+                createLogger(rootlc:GetName(), ctx, rootlc)
+            end
+
+            return ctx
+        end
+    }
 }

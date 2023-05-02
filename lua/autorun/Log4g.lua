@@ -33,3 +33,51 @@ concommand.Add("log4g_coretest_propertiesPlugin", function()
     PrintTable(Log4g.getAllProperties())
     Log4g.getContextDict()[contextName]:Terminate()
 end)
+
+local function PrintLoggerInfo(...)
+    print("Logger", "Assigned LC", "LC Parent", "Level")
+
+    for _, v in pairs({...}) do
+        print(v:GetName(), v:GetLoggerConfig():GetName(), tostring(v:GetLoggerConfig():GetParent()), v:GetLevel():GetName())
+    end
+end
+
+concommand.Add("log4g_coretest_LoggerConfig_Inheritance", function()
+    local getContext = Log4g.LogManager.getContext
+    local ctx = getContext("TestLCInheritance", true)
+    local createLogger = Log4g.createLogger
+    local createLoggerConfig = Log4g.createLoggerConfig
+    local getLevel = Log4g.getLevel
+
+    local function renew()
+        ctx:Terminate()
+        ctx = getContext("TestLCInheritance", true)
+    end
+
+    PrintLoggerInfo(createLogger("X", ctx), createLogger("X.Y", ctx), createLogger("X.Y.Z", ctx))
+    renew()
+    PrintLoggerInfo(createLogger("X", ctx, createLoggerConfig("X", ctx:GetConfiguration(), getLevel("ERROR"))), createLogger("X.Y", ctx, createLoggerConfig("X.Y", ctx:GetConfiguration(), getLevel("INFO"))), createLogger("X.Y.Z", ctx, createLoggerConfig("X.Y.Z", ctx:GetConfiguration(), getLevel("WARN"))))
+    renew()
+    PrintLoggerInfo(createLogger("X", ctx, createLoggerConfig("X", ctx:GetConfiguration(), getLevel("ERROR"))), createLogger("X.Y", ctx), createLogger("X.Y.Z", ctx, createLoggerConfig("X.Y.Z", ctx:GetConfiguration(), getLevel("WARN"))))
+    renew()
+    PrintLoggerInfo(createLogger("X", ctx, createLoggerConfig("X", ctx:GetConfiguration(), getLevel("ERROR"))), createLogger("X.Y", ctx), createLogger("X.Y.Z", ctx))
+    renew()
+    PrintLoggerInfo(createLogger("X", ctx, createLoggerConfig("X", ctx:GetConfiguration(), getLevel("ERROR"))), createLogger("X.Y", ctx, createLoggerConfig("X.Y", ctx:GetConfiguration(), getLevel("INFO"))), createLogger("X.YZ", ctx))
+    renew()
+    PrintLoggerInfo(createLogger("X", ctx, createLoggerConfig("X", ctx:GetConfiguration(), getLevel("ERROR"))), createLogger("X.Y", ctx, createLoggerConfig("X.Y", ctx:GetConfiguration())), createLogger("X.Y.Z", ctx))
+    ctx:Terminate()
+end)
+
+concommand.Add("log4g_coretest_loggerLog", function()
+    local ctx = GetContext("TestLoggerLogContext", true)
+    local lc = createLoggerConfig("LogTester", ctx:GetConfiguration(), getLevel("TRACE"))
+    lc:AddAppender(CreateConsoleAppender("TestAppender", CreatePatternLayout("TestLayout")))
+    local logger = createLogger("LogTester", ctx, lc)
+
+    print("output finished in", Log4g.timeit(function()
+        logger:Trace("Test TRACE message 0123456789.")
+    end), "seconds")
+
+    print(logger:IsAdditive())
+    ctx:Terminate()
+end)
