@@ -1,4 +1,4 @@
-# Contributing to Log4g
+# Contributing to Log4l
 
 Contributions are always welcome. For example, you have found a bug or that something can be improved, then you may want to submit an issue or fork the repo to create a pull request.
 

@@ -1,4 +1,4 @@
---- Implementation of Log4g.
+--- Implementation of Log4l.
 -- @module Core
 -- @license Apache License 2.0
 -- @copyright GrayWolf64
@@ -315,7 +315,7 @@ local Object, stripDotExtension, enumerateAncestors, contextualMixins = initObje
 local function initTypeUtil()
     local TypeUtil = {}
 
-    --- All the `Class` names in Log4g.
+    --- All the `Class` names in Log4l.
     -- @local
     -- @table Classes
     local Classes = {
@@ -471,7 +471,7 @@ end
 local registerProperty, getProperty, removeProperty, getAllProperties = initPropertiesPlugin()
 
 local function initLifeCycle()
-    --- In Log4g, the main interface for handling the life cycle context of an object is this one.
+    --- In Log4l, the main interface for handling the life cycle context of an object is this one.
     -- An object first starts in the LifeCycle.State.INITIALIZED state by default to indicate the class has been loaded.
     -- From here, calling the `Start()` method will change this state to LifeCycle.State.STARTING.
     -- After successfully being started, this state is changed to LifeCycle.State.STARTED.
