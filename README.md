@@ -13,7 +13,7 @@ Originally designed to work with Garry's Mod.
 
 ### Component Src Dir
 
-[lua/log4g](https://github.com/GrayWolf64/logging-log4l/tree/main/lua/log4g)
+[log4l/](https://github.com/GrayWolf64/logging-log4l/tree/main/log4l)
 
 ## How to Add It To Your Project / How to Test?
 
