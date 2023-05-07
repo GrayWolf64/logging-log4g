@@ -1,4 +1,4 @@
-# [Log4l](https://github.com/GrayWolf64/logging-log4l/wiki)
+# [Log4gm](https://github.com/GrayWolf64/logging-log4l/wiki)
 
 [![Repository Size](https://img.shields.io/github/repo-size/GrayWolf64/logging-log4l?label=Repository%20Size&style=flat-square)](https://github.com/GrayWolf64/logging-log4l/)
 [![Commit Activity](https://img.shields.io/github/commit-activity/m/GrayWolf64/logging-log4l?label=Commit%20Activity&style=flat-square)](https://github.com/GrayWolf64/logging-log4l/graphs/commit-activity)
