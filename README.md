@@ -6,8 +6,7 @@
 
 [![Last Commit](https://img.shields.io/github/last-commit/GrayWolf64/logging-log4l)](https://github.com/GrayWolf64/logging-log4l/)
 
-Log4l is an advanced logging framework for Lua.
-Originally designed to work with Garry's Mod.
+Log4gm is an advanced logging framework for Garry's Mod.
 
 ## Currently Work-in-Progress
 
