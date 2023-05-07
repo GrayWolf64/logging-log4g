@@ -1,4 +1,4 @@
---- Implementation of Log4l.
+--- Implementation of allf.
 -- @module Core
 -- @license Apache License 2.0, MIT License
 -- @copyright GrayWolf64
