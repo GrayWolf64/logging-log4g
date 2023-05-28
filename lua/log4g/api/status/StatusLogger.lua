@@ -1,0 +1,4 @@
+--- Simple Status Logging which is meant to be used internally.
+-- It logs events that occur in the logging system.
+-- Subclassing SimpleLogger.
+-- @classmod StatusLogger

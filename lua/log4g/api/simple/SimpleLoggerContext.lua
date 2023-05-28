@@ -1,0 +1,2 @@
+--- A simple LoggerContext implementation.
+-- @classmod SimpleLoggerContext

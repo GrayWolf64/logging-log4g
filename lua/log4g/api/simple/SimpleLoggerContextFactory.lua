@@ -1,0 +1,2 @@
+--- Simple and stateless LoggerContextFactory.
+-- @script SimpleLoggerContextFactory
