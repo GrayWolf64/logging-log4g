@@ -1,8 +1,8 @@
-# allf - another lua logging framework
+# gmod-logging-log4g
 
-[![Repository Size](https://img.shields.io/github/repo-size/GrayWolf64/allf?label=Repository%20Size&style=flat-square)](https://github.com/GrayWolf64/allf/)
+[![Repository Size](https://img.shields.io/github/repo-size/GrayWolf64/allf?label=Repository%20Size&style=flat-square)](https://github.com/GrayWolf64/gmod-logging-log4g/)
 
-[![Last Commit](https://img.shields.io/github/last-commit/GrayWolf64/allf)](https://github.com/GrayWolf64/allf/)
+[![Last Commit](https://img.shields.io/github/last-commit/GrayWolf64/allf)](https://github.com/GrayWolf64/gmod-logging-log4g/)
 
 ## Currently Work-in-Progress
 
@@ -13,7 +13,7 @@ In addition, the code itself is well documented, so feel free to browse the code
 
 ## Documentation
 
-The Log4l Documentation is available [here](https://github.com/GrayWolf64/allf/wiki).
+The Log4l Documentation is available [here](https://github.com/GrayWolf64/gmod-logging-log4g/wiki).
 You can build docs using `ldoc-generate.bat` in repo dir as well.
 
 ## Thanks to Third-party Projects Below
