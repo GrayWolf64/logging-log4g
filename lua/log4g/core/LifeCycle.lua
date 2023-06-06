@@ -9,7 +9,7 @@
 -- @classmod LifeCycle
 -- @license Apache License 2.0
 -- @copyright GrayWolf64
-local Object = Log4g.GetPkgClsFuncs("log4g-core", "Object").getClass()
+local Object = Log4g.Object.getClass()
 local LifeCycle = Object:subclass"LifeCycle"
 local type = type
 

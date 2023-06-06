@@ -6,7 +6,7 @@
 -- @copyright GrayWolf64
 local LifeCycle = Log4g.GetPkgClsFuncs("log4g-core", "LifeCycle").getClass()
 local LoggerContext = Log4g.GetPkgClsFuncs("log4g-core", "LoggerContext")
-local Object = Log4g.GetPkgClsFuncs("log4g-core", "Object")
+local Object = Log4g.Object
 local GetLevel = Log4g.GetPkgClsFuncs("log4g-core", "Level").getLevel
 local TypeUtil = Log4g.GetPkgClsFuncs("log4g-core", "TypeUtil")
 local PropertiesPlugin = Log4g.GetPkgClsFuncs("log4g-core", "PropertiesPlugin")

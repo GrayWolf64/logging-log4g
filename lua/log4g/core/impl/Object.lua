@@ -72,7 +72,7 @@ local function EnumerateAncestors(name)
     return ancestors, nodes
 end
 
-Log4g.RegisterPackageClass("log4g-core", "Object", {
+Log4g.Object = {
     getClass = GetClass,
     enumerateAncestors = EnumerateAncestors,
     contextualMixins = {
@@ -82,4 +82,4 @@ Log4g.RegisterPackageClass("log4g-core", "Object", {
         end,
         GetContext = function(self) return self:GetPrivateField"ctx" end
     }
-})
+}

@@ -2,7 +2,7 @@
 -- A LogEvent must be Serializable so that it may be transmitted over a network connection.
 -- @classmod LogEvent
 Log4g.Core.LogEvent = Log4g.Core.LogEvent or {}
-local Object = Log4g.GetPkgClsFuncs("log4g-core", "Object").getClass()
+local Object = Log4g.Object.getClass()
 local LogEvent = Object:subclass"LogEvent"
 local IsLevel = Log4g.GetPkgClsFuncs("log4g-core", "TypeUtil").IsLevel
 local SysTime, debugGetInfo = SysTime, debug.getinfo
