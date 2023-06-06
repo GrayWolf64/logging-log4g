@@ -2,7 +2,6 @@
 -- @classmod Object
 -- @license Apache License 2.0
 -- @copyright GrayWolf64
-local SHA256 = util.SHA256
 local tostring = tostring
 local ipairs = ipairs
 local StripDotExtension = include("log4g/core/util/StringUtil.lua").StripDotExtension
@@ -47,11 +46,6 @@ function Object:DestroyPrivateTable()
     Private[self] = nil
 end
 
---- Returns a hash code value for the object.
-function Object:HashCode()
-    return SHA256(tostring(self))
-end
-
 local function GetClass()
     return Object
 end
@@ -78,19 +72,14 @@ local function EnumerateAncestors(name)
     return ancestors, nodes
 end
 
---- Get and Set Context functions minxin.
--- @local
--- @table contextualMixins
-local contextualMixins = {
-    SetContext = function(self, ctx)
-        if type(ctx) ~= "string" then return end
-        self:SetPrivateField("ctx", ctx)
-    end,
-    GetContext = function(self) return self:GetPrivateField"ctx" end
-}
-
 Log4g.RegisterPackageClass("log4g-core", "Object", {
     getClass = GetClass,
     enumerateAncestors = EnumerateAncestors,
-    contextualMixins = contextualMixins
+    contextualMixins = {
+        SetContext = function(self, ctx)
+            if type(ctx) ~= "string" then return end
+            self:SetPrivateField("ctx", ctx)
+        end,
+        GetContext = function(self) return self:GetPrivateField"ctx" end
+    }
 })
