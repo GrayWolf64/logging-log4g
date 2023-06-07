@@ -9,36 +9,36 @@ local SysTime, debugGetInfo = SysTime, debug.getinfo
 
 function LogEvent:Initialize(ln, level, time, msg, src)
     Object.Initialize(self)
-    self:SetPrivateField("ln", ln)
-    self:SetPrivateField("lv", level)
-    self:SetPrivateField("time", time)
-    self:SetPrivateField("msg", msg)
-    self:SetPrivateField("src", src)
+    self:SetPrivateField(0x001A, ln)
+    self:SetPrivateField(0x001B, level)
+    self:SetPrivateField(0x001C, time)
+    self:SetPrivateField(0x001D, msg)
+    self:SetPrivateField(0x001E, src)
 end
 
 function LogEvent:GetLoggerName()
-    return self:GetPrivateField"ln"
+    return self:GetPrivateField(0x001A)
 end
 
 function LogEvent:GetLevel()
-    return self:GetPrivateField"lv"
+    return self:GetPrivateField(0x001B)
 end
 
 function LogEvent:GetSource()
-    return self:GetPrivateField"src"
+    return self:GetPrivateField(0x001E)
 end
 
 function LogEvent:GetMsg()
-    return self:GetPrivateField"msg"
+    return self:GetPrivateField(0x001D)
 end
 
 function LogEvent:SetMsg(msg)
     if type(msg) ~= "string" then return end
-    self:SetPrivateField("msg", msg)
+    self:SetPrivateField(0x001D, msg)
 end
 
 function LogEvent:GetTime()
-    return self:GetPrivateField"time"
+    return self:GetPrivateField(0x001C)
 end
 
 --- Build a LogEvent.

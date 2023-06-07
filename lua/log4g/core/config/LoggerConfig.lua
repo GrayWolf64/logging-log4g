@@ -25,7 +25,7 @@ PropertiesPlugin.registerProperty("rootLoggerName", "root", true)
 
 function LoggerConfig:Initialize(name)
     LifeCycle.Initialize(self)
-    self:SetPrivateField("apref", {})
+    self:SetPrivateField(0x00D3, {})
     self:SetName(name)
 end
 
@@ -37,12 +37,12 @@ end
 -- @param level The Logging Level
 function LoggerConfig:SetLevel(level)
     if not IsLevel(level) then return end
-    if self:GetPrivateField"level" == level then return end
-    self:SetPrivateField("level", level)
+    if self:GetPrivateField(0x0016) == level then return end
+    self:SetPrivateField(0x0016, level)
 end
 
 function LoggerConfig:GetLevel()
-    return self:GetPrivateField"level"
+    return self:GetPrivateField(0x0016)
 end
 
 local function HasLoggerConfig(name, context)
@@ -71,20 +71,20 @@ end
 function LoggerConfig:SetParent(T)
     if type(T) == "string" then
         if not HasLoggerConfig(T, GetCtx(self:GetContext())) then return end
-        self:SetPrivateField("parent", T)
+        self:SetPrivateField(0x0012, T)
     elseif IsLoggerConfig(T) and T:GetContext() == self:GetContext() then
-        self:SetPrivateField("parent", T:GetName())
+        self:SetPrivateField(0x0012, T:GetName())
     end
 end
 
 --- Gets the parent of this LoggerConfig.
 -- @return string lcname
 function LoggerConfig:GetParent()
-    return self:GetPrivateField"parent"
+    return self:GetPrivateField(0x0012)
 end
 
 function LoggerConfig:GetAppenderRef()
-    return self:GetPrivateField"apref"
+    return self:GetPrivateField(0x00D3)
 end
 
 --- Adds an Appender to the LoggerConfig.

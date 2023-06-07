@@ -17,7 +17,7 @@ local type = type
 
 function LoggerContext:Initialize(name)
     LifeCycle.Initialize(self)
-    self:SetPrivateField("logger", {})
+    self:SetPrivateField(0x0014, {})
     self:SetName(name)
 end
 
@@ -36,23 +36,23 @@ end
 --- Gets a Logger from the Context.
 -- @name The name of the Logger
 function LoggerContext:GetLogger(name)
-    return self:GetPrivateField"logger"[name]
+    return self:GetPrivateField(0x0014)[name]
 end
 
 --- Gets a table of the current loggers.
 -- @return table loggers
 function LoggerContext:GetLoggers()
-    return self:GetPrivateField"logger"
+    return self:GetPrivateField(0x0014)
 end
 
 function LoggerContext:AddLogger(name, logger)
-    self:GetPrivateField"logger"[name] = logger
+    self:GetPrivateField(0x0014)[name] = logger
 end
 
 --- Returns the current Configuration of the LoggerContext.
 -- @return object configuration
 function LoggerContext:GetConfiguration()
-    return self:GetPrivateField"config"
+    return self:GetPrivateField(0x0011)
 end
 
 --- Sets the Configuration to be used.
@@ -61,7 +61,7 @@ function LoggerContext:SetConfiguration(config)
     if not IsConfiguration(config) then return end
     if self:GetConfiguration() == config then return end
     config:SetContext(self:GetName())
-    self:SetPrivateField("config", config)
+    self:SetPrivateField(0x0011, config)
 end
 
 function LoggerContext:__tostring()

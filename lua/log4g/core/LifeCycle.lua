@@ -40,7 +40,7 @@ end
 -- @param state A function in the `State` table which returns a string representing the state
 function LifeCycle:SetState(state)
     if type(state) ~= "function" then return end
-    self:SetPrivateField("state", state)
+    self:SetPrivateField(0x0018, state)
 end
 
 function LifeCycle:Start()
@@ -58,7 +58,7 @@ end
 --- Gets the LifeCycle state.
 -- @return function state
 function LifeCycle:GetState()
-    return self:GetPrivateField"state"
+    return self:GetPrivateField(0x0018)
 end
 
 local function GetAllStates()

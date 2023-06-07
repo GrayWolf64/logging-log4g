@@ -20,7 +20,7 @@ local LogEventBuilder = Log4g.Core.LogEvent.Builder
 
 function Logger:Initialize(name, context)
     Object.Initialize(self)
-    self:SetPrivateField("ctx", context:GetName())
+    self:SetPrivateField(0x0010, context:GetName())
     self:SetName(name)
     self:SetAdditive(true)
 end
@@ -31,7 +31,7 @@ end
 -- @return object ctx
 function Logger:GetContext(ex)
     if not ex or ex == false then
-        return self:GetPrivateField"ctx"
+        return self:GetPrivateField(0x0010)
     else
         return GetCtx(self:GetContext())
     end
@@ -44,11 +44,11 @@ end
 --- Sets the LoggerConfig name for the Logger.
 -- @param name String name
 function Logger:SetLoggerConfig(name)
-    self:SetPrivateField("lc", name)
+    self:SetPrivateField(0x0013, name)
 end
 
 function Logger:GetLoggerConfigN()
-    return self:GetPrivateField"lc"
+    return self:GetPrivateField(0x0013)
 end
 
 --- Get the LoggerConfig of the Logger.
@@ -59,11 +59,11 @@ end
 
 function Logger:SetAdditive(bool)
     if type(bool) ~= "boolean" then return end
-    self:SetPrivateField("additive", bool)
+    self:SetPrivateField(0x00C9, bool)
 end
 
 function Logger:IsAdditive()
-    return self:GetPrivateField"additive"
+    return self:GetPrivateField(0x00C9)
 end
 
 function Logger:SetLevel(level)

@@ -8,7 +8,7 @@ CreateConVar("log4g_configuration_default_level", "DEBUG", FCVAR_NOTIFY):GetStri
 
 function DefaultConfiguration:Initialize(name)
     Configuration.Initialize(self, name)
-    self:SetPrivateField("defaultlevel", GetConVar"log4g_configuration_default_level":GetString())
+    -- self:SetPrivateField("defaultlevel", GetConVar"log4g_configuration_default_level":GetString())
 end
 
 function Log4g.Core.Config.GetDefaultConfiguration()

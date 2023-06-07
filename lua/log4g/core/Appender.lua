@@ -6,7 +6,7 @@ local Appender = LifeCycle:subclass"Appender"
 
 function Appender:Initialize(name, layout)
     LifeCycle.Initialize(self)
-    self:SetPrivateField("layout", layout)
+    self:SetPrivateField(0x0017, layout)
     self:SetName(name)
 end
 
@@ -16,7 +16,7 @@ end
 
 --- Returns the Layout used by this Appender if applicable.
 function Appender:GetLayout()
-    return self:GetPrivateField"layout"
+    return self:GetPrivateField(0x0017)
 end
 
 function Appender:Append()

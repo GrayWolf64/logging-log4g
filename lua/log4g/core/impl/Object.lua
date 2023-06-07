@@ -78,8 +78,8 @@ Log4g.Object = {
     contextualMixins = {
         SetContext = function(self, ctx)
             if type(ctx) ~= "string" then return end
-            self:SetPrivateField("ctx", ctx)
+            self:SetPrivateField(0x0010, ctx)
         end,
-        GetContext = function(self) return self:GetPrivateField"ctx" end
+        GetContext = function(self) return self:GetPrivateField(0x0010) end
     }
 }
