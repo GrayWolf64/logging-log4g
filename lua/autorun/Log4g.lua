@@ -42,19 +42,9 @@ if SERVER then
         if type(packageName) ~= "string" or type(ver) ~= "string" then return end
 
         Packages[packageName] = {
-            Version = ver,
+            _ver = ver,
             Classes = {}
         }
-    end
-
-    --- Register a Class which belongs a certain package.
-    -- @param packageName Package name
-    -- @param className Class name
-    -- @param functionTable Function table
-    function Log4g.RegisterPackageClass(packageName, className, functionTable)
-        if type(packageName) ~= "string" or type(className) ~= "string" or type(functionTable) ~= "table" then return end
-        if not Packages[packageName] then return end
-        Packages[packageName].Classes[className] = functionTable
     end
 
     function Log4g.HasPackage(name)
@@ -67,19 +57,7 @@ if SERVER then
     function Log4g.GetPackageVer(name)
         if type(name) ~= "string" then return end
 
-        return Packages[name].Version
-    end
-
-    function Log4g.GetPkgClsFuncs(packageName, className)
-        if type(packageName) ~= "string" or type(className) ~= "string" then return end
-        local p = Packages[packageName]
-        if not p then return end
-
-        return p.Classes[className]
-    end
-
-    function Log4g.GetAllPackages()
-        return Packages
+        return Packages[name]._ver
     end
 
     --- Execute the given function and see how long it takes.
