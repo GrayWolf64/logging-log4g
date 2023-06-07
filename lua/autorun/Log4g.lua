@@ -1,4 +1,5 @@
 --- Initialization of Log4g on server and client.
+-- This bootstrap can't execute if `gmod` table doesn't exist.
 -- @script Log4g
 -- @license Apache License 2.0
 -- @copyright GrayWolf64
@@ -16,6 +17,8 @@ local function checkAndInclude(provider, fileName, addCSLuaFile)
         print(provider, "tried to include", fileName, "but failed due to non-existence")
     end
 end
+
+if not gmod then return end
 
 if SERVER then
     local type = type
