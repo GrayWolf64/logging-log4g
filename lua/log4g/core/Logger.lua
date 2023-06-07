@@ -206,7 +206,7 @@ local function GetClass()
     return Logger
 end
 
-Log4g.RegisterPackageClass("log4g-core", "Logger", {
+Log4g.Core.Logger = {
     getClass = GetClass,
     create = Create
-})
+}

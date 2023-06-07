@@ -1,4 +1,4 @@
-local CreateLogger = Log4g.GetPkgClsFuncs("log4g-core", "Logger").create
+local CreateLogger = Log4g.Core.Logger.create
 local GetContext = Log4g.API.LoggerContextFactory.GetContext
 local GetLevel = Log4g.Core.Level.getLevel
 local CreateLoggerConfig = Log4g.GetPkgClsFuncs("log4g-core", "LoggerConfig").create

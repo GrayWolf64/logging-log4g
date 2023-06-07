@@ -28,8 +28,7 @@ Then you just have to make sure it loads before your addon, or you can use valid
 ```lua
 --- Check the 'Log4g' global table.
 if Log4g then
-   --- Get some classes' functions.
-   local Logger = Log4g.GetPkgClsFuncs("log4g-core", "Logger")
+   local Logger = Log4g.Core.Logger
    local Appender = Log4g.GetPkgClsFuncs("log4g-core", "Appender")
    local LoggerConfig = Log4g.GetPkgClsFuncs("log4g-core", "LoggerConfig")
    local PatternAppender = Log4g.GetPkgClsFuncs("log4g-core", "PatternAppender")
