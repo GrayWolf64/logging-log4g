@@ -8,15 +8,12 @@ local LifeCycle = Log4g.Core.LifeCycle.getClass()
 local LoggerContext = Log4g.GetPkgClsFuncs("log4g-core", "LoggerContext")
 local Object = Log4g.Core.Object
 local GetLevel = Log4g.GetPkgClsFuncs("log4g-core", "Level").getLevel
-local TypeUtil = Log4g.GetPkgClsFuncs("log4g-core", "TypeUtil")
+local checkClass = include("log4g/core/util/TypeUtil.lua").checkClass
 local PropertiesPlugin = Log4g.GetPkgClsFuncs("log4g-core", "PropertiesPlugin")
 local LoggerConfig = LifeCycle:subclass"LoggerConfig"
 local EnumerateAncestors = Object.enumerateAncestors
 LoggerConfig:include(Object.contextualMixins)
-local IsAppender, IsLoggerConfig = TypeUtil.IsAppender, TypeUtil.IsLoggerConfig
-local IsLoggerContext = TypeUtil.IsLoggerContext
-local IsConfiguration, IsLevel = TypeUtil.IsConfiguration, TypeUtil.IsLevel
-TypeUtil, StringUtil = nil, nil
+StringUtil = nil
 local tableConcat = table.concat
 local GetCtx, GetAllCtx = LoggerContext.get, LoggerContext.getAll
 local pairs, next = pairs, next
@@ -36,7 +33,7 @@ end
 --- Sets the log Level.
 -- @param level The Logging Level
 function LoggerConfig:SetLevel(level)
-    if not IsLevel(level) then return end
+    if not checkClass(level, "Level") then return end
     if self:GetPrivateField(0x0016) == level then return end
     self:SetPrivateField(0x0016, level)
 end
@@ -48,7 +45,7 @@ end
 local function HasLoggerConfig(name, context)
     local getlc = function(ctx, lcn) return ctx:GetConfiguration():GetLoggerConfig(lcn) end
 
-    if not IsLoggerContext(context) then
+    if not checkClass(context, "LoggerContext") then
         for _, v in pairs(GetAllCtx()) do
             if getlc(v, name) then return true end
         end
@@ -72,7 +69,7 @@ function LoggerConfig:SetParent(T)
     if type(T) == "string" then
         if not HasLoggerConfig(T, GetCtx(self:GetContext())) then return end
         self:SetPrivateField(0x0012, T)
-    elseif IsLoggerConfig(T) and T:GetContext() == self:GetContext() then
+    elseif checkClass(T, "LoggerConfig") and T:GetContext() == self:GetContext() then
         self:SetPrivateField(0x0012, T:GetName())
     end
 end
@@ -93,7 +90,7 @@ end
 -- @param appender Appender object
 -- @return bool ifadded
 function LoggerConfig:AddAppender(ap)
-    if not IsAppender(ap) then return end
+    if not checkClass(ap, "Appender") then return end
     self:GetAppenderRef()[ap:GetName()] = true
 
     return GetCtx(self:GetContext()):GetConfiguration():AddAppender(ap, self:GetName())
@@ -180,12 +177,12 @@ end
 -- @return object loggerconfig
 local function Create(name, config, level)
     local root = PropertiesPlugin.getProperty("rootLoggerName", true)
-    if not IsConfiguration(config) or name == root then return end
+    if not checkClass(config, "Configuration") or name == root then return end
     local loggerConfig = LoggerConfig(name)
     loggerConfig:SetContext(config:GetContext())
 
     local setLevelAndParent = function(o, level1, level2, parent)
-        if IsLevel(level1) then
+        if checkClass(level1, "Level") then
             o:SetLevel(level1)
         else
             o:SetLevel(level2)

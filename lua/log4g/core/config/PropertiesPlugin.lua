@@ -3,7 +3,7 @@
 -- @script PropertiesPlugin
 -- @license Apache License 2.0
 -- @copyright GrayWolf64
-local IsLoggerContext = Log4g.GetPkgClsFuncs("log4g-core", "TypeUtil").IsLoggerContext
+local checkClass = include("log4g/core/util/TypeUtil.lua").checkClass
 
 --- Holds all the properties that Configurations use.
 -- It contains 'Shared' and 'Private' two sub tables.
@@ -24,7 +24,7 @@ local function registerProperty(name, defaultValue, shared, context)
 
     if shared then
         Properties.Shared[name] = defaultValue
-    elseif IsLoggerContext(context) then
+    elseif checkClass(context, "LoggerContext") then
         local function ifSubTblNotExistThenCreate(tbl, key)
             if not tbl[key] then
                 tbl[key] = {}
@@ -47,7 +47,7 @@ local function getProperty(name, shared, context)
 
     if shared then
         return Properties.Shared[name]
-    elseif IsLoggerContext(context) then
+    elseif checkClass(context, "LoggerContext") then
         local contextProperties = Properties.Private[context:GetName()]
         if not contextProperties then return end
 
@@ -64,7 +64,7 @@ local function removeProperty(name, shared, context)
 
     if shared then
         Properties.Shared[name] = nil
-    elseif IsLoggerContext(context) then
+    elseif checkClass(context, "LoggerContext") then
         local contextName = context:GetName()
         local contextProperties = Properties.Private[contextName]
         if not contextProperties then return end

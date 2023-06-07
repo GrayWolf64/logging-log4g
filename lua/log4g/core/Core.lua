@@ -22,7 +22,6 @@ end
 
 include"log4g/core/impl/Object.lua"
 include"log4g/core/LifeCycle.lua"
-include"log4g/core/util/TypeUtil.lua"
 include"log4g/core/config/PropertiesPlugin.lua"
 include"log4g/core/Level.lua"
 include"log4g/core/Layout.lua"

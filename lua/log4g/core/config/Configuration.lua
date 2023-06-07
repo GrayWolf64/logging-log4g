@@ -4,7 +4,7 @@
 -- @license Apache License 2.0
 -- @copyright GrayWolf64
 local LifeCycle = Log4g.Core.LifeCycle.getClass()
-local IsAppender = Log4g.GetPkgClsFuncs("log4g-core", "TypeUtil").IsAppender
+local checkClass = include("log4g/core/util/TypeUtil.lua").checkClass
 local PropertiesPlugin = Log4g.GetPkgClsFuncs("log4g-core", "PropertiesPlugin")
 local Configuration = LifeCycle:subclass"Configuration"
 Configuration:include(Log4g.Core.Object.contextualMixins)
@@ -22,15 +22,11 @@ function Configuration:__tostring()
     return "Configuration: [name:" .. self:GetName() .. "]"
 end
 
-function Configuration:IsConfiguration()
-    return true
-end
-
 --- Adds a Appender to the Configuration.
 -- @param appender The Appender to add
 -- @bool ifsuccessfullyadded
 function Configuration:AddAppender(ap)
-    if not IsAppender(ap) then return end
+    if not checkClass(ap, "Appender") then return end
     if self:GetPrivateField(0x0015)[ap:GetName()] then return false end
     self:GetPrivateField(0x0015)[ap:GetName()] = ap
 

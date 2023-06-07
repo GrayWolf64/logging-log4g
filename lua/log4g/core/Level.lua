@@ -4,7 +4,7 @@
 -- Subclassing 'Object'.
 -- @classmod Level
 local Object = Log4g.Core.Object.getClass()
-local IsLevel = Log4g.GetPkgClsFuncs("log4g-core", "TypeUtil").IsLevel
+local checkClass = include("log4g/core/util/TypeUtil.lua").checkClass
 local Level = Object:subclass"Level"
 local type = type
 
@@ -17,12 +17,6 @@ end
 
 function Level:__tostring()
     return "Level: [name:" .. self:GetName() .. "]" .. "[int:" .. self:IntLevel() .. "]" .. "[color:" .. self:GetColor():__tostring() .. "]"
-end
-
-function Level:__eq(lhs, rhs)
-    if not IsLevel(lhs) or not IsLevel(rhs) then return false end
-
-    return lhs:IntLevel() == rhs:IntLevel() and lhs:GetColor() == rhs:GetColor()
 end
 
 --- Get the Level's intlevel.
@@ -42,7 +36,7 @@ end
 -- @param l2 The Level with another intlevel
 -- @return bool isinrange
 function Level:IsInRange(l1, l2)
-    if not IsLevel(l1) or not IsLevel(l2) then return end
+    if not checkClass(l1, "Level") or not checkClass(l2, "Level") then return end
     if (self:IntLevel() >= l1:IntLevel() and self:IntLevel() <= l2:IntLevel()) or (self:IntLevel() <= l1:IntLevel() and self:IntLevel() >= l2:IntLevel()) then return true end
 
     return false

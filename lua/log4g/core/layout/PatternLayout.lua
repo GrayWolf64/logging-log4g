@@ -4,7 +4,7 @@
 -- @copyright GrayWolf64
 local Layout = Log4g.GetPkgClsFuncs("log4g-core", "Layout").getClass()
 local PatternLayout = Layout:subclass"PatternLayout"
-local IsLogEvent = Log4g.GetPkgClsFuncs("log4g-core", "TypeUtil").IsLogEvent
+local checkClass = include("log4g/core/util/TypeUtil.lua").checkClass
 local charPos = include"log4g/core/util/StringUtil.lua".CharPos
 local pairs, ipairs = pairs, ipairs
 local unpack = unpack
@@ -130,7 +130,7 @@ end
 -- @param colored If use `Color`s.
 -- @return vararg result
 function PatternLayout:Format(event, colored)
-    if not IsLogEvent(event) then return end
+    if not checkClass(event, "LogEvent") then return end
 
     return DoFormat(event, colored)
 end

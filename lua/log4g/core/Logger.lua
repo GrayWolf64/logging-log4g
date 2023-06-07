@@ -8,12 +8,11 @@ local GetCtx = Log4g.GetPkgClsFuncs("log4g-core", "LoggerContext").get
 local HasLoggerConfig = Log4g.GetPkgClsFuncs("log4g-core", "LoggerConfig").hasLoggerConfig
 local EnumerateAncestors = Log4g.Core.Object.enumerateAncestors
 local GetLevel = Log4g.GetPkgClsFuncs("log4g-core", "Level").getLevel
-local TypeUtil, StringUtil = Log4g.GetPkgClsFuncs("log4g-core", "TypeUtil"), include("log4g/core/util/StringUtil.lua")
+local checkClass = include("log4g/core/util/TypeUtil.lua").checkClass
+local StringUtil = include("log4g/core/util/StringUtil.lua")
 local PropertiesPlugin = Log4g.GetPkgClsFuncs("log4g-core", "PropertiesPlugin")
 local QualifyName, StripDotExtension = StringUtil.QualifyName, StringUtil.StripDotExtension
-local IsLoggerConfig, IsLoggerContext = TypeUtil.IsLoggerConfig, TypeUtil.IsLoggerContext
-local IsLevel, IsLogEvent = TypeUtil.IsLevel, TypeUtil.IsLogEvent
-TypeUtil, StringUtil = nil, nil
+StringUtil = nil
 local next, pairs = next, pairs
 local type = type
 local LogEventBuilder = Log4g.Core.LogEvent.Builder
@@ -67,7 +66,7 @@ function Logger:IsAdditive()
 end
 
 function Logger:SetLevel(level)
-    if not IsLevel(level) then return end
+    if not checkClass(level, "Level") then return end
     self:GetLoggerConfig():SetLevel(level)
 end
 
@@ -76,7 +75,7 @@ function Logger:GetLevel()
 end
 
 function Logger:CallAppenders(event)
-    if not IsLogEvent(event) then return end
+    if not checkClass(event, "LogEvent") then return end
     local aps = self:GetLoggerConfig():GetAppenders()
     if not next(aps) then return end
 
@@ -157,12 +156,12 @@ function Logger:Fatal(msg)
 end
 
 local function Create(loggerName, context, loggerconfig)
-    if not IsLoggerContext(context) then return end
+    if not checkClass(context, "LoggerContext") then return end
     if context:HasLogger(loggerName) or not QualifyName(loggerName) then return end
     local logger, root = Logger(loggerName, context), PropertiesPlugin.getProperty("rootLoggerName", true)
 
     if loggerName:find"%." then
-        if IsLoggerConfig(loggerconfig) then
+        if checkClass(loggerconfig, "LoggerConfig") then
             local loggerconfigName = loggerconfig:GetName()
 
             if loggerconfigName == loggerName then
@@ -192,7 +191,7 @@ local function Create(loggerName, context, loggerconfig)
             end
         end
     else
-        if IsLoggerConfig(loggerconfig) and loggerconfig:GetName() == loggerName then
+        if checkClass(loggerconfig, "LoggerConfig") and loggerconfig:GetName() == loggerName then
             logger:SetLoggerConfig(loggerName)
         else
             logger:SetLoggerConfig(root)

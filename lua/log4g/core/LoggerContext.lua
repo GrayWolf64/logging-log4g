@@ -5,10 +5,8 @@
 -- @license Apache License 2.0
 -- @copyright GrayWolf64
 local LifeCycle = Log4g.Core.LifeCycle.getClass()
-local TypeUtil = Log4g.GetPkgClsFuncs("log4g-core", "TypeUtil")
+local checkClass = include("log4g/core/util/TypeUtil.lua").checkClass
 local LoggerContext = LifeCycle:subclass"LoggerContext"
-local IsLoggerContext, IsConfiguration = TypeUtil.IsLoggerContext, TypeUtil.IsConfiguration
-TypeUtil = nil
 local GetDefaultConfiguration = Log4g.Core.Config.GetDefaultConfiguration
 local getContextDict = Log4g.Core.getContextDict
 local addToContextDict = Log4g.Core.addToContextDict
@@ -58,7 +56,7 @@ end
 --- Sets the Configuration to be used.
 -- @param config Configuration
 function LoggerContext:SetConfiguration(config)
-    if not IsConfiguration(config) then return end
+    if not checkClass(config, "Configuration") then return end
     if self:GetConfiguration() == config then return end
     config:SetContext(self:GetName())
     self:SetPrivateField(0x0011, config)
@@ -103,7 +101,7 @@ local function Register(name, withconfig)
     if type(name) ~= "string" then return end
     local ctxdict = getContextDict()
     local ctx = ctxdict[name]
-    if IsLoggerContext(ctx) then return ctx end
+    if checkClass(ctx, "LoggerContext") then return ctx end
     ctx = LoggerContext(name)
 
     if withconfig or withconfig == nil then
