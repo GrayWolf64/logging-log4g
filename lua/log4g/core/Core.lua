@@ -20,7 +20,7 @@ function Log4g.Core.addToContextDict(key, value)
     ContextDict[key] = value
 end
 
-CreateConVar("log4g_rootLoggerName", "root")
+CreateConVar("log4g_rootLoggerName", "root", 4194304)
 
 include"log4g/core/impl/Object.lua"
 include"log4g/core/LifeCycle.lua"
