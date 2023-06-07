@@ -27,6 +27,6 @@ local function GetClass()
     return Appender
 end
 
-Log4g.RegisterPackageClass("log4g-core", "Appender", {
-    getClass = GetClass,
-})
+Log4g.Core.Appender = {
+    getClass = GetClass
+}

@@ -2,7 +2,7 @@
 -- @script LoggerContextFactory
 Log4g.API.LoggerContextFactory = Log4g.API.LoggerContextFactory or {}
 local RegisterLoggerContext = Log4g.Core.LoggerContext.register
-local RootLoggerConfigClass = Log4g.GetPkgClsFuncs("log4g-core", "LoggerConfig").getRootLoggerConfigClass
+local RootLoggerConfigClass = Log4g.Core.Config.LoggerConfig.getRootLoggerConfigClass
 local CreateLogger = Log4g.Core.Logger.create
 
 --- Create a LoggerContext.

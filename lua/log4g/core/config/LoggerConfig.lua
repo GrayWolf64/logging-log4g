@@ -202,8 +202,8 @@ local function Create(name, config, level)
     return loggerConfig
 end
 
-Log4g.RegisterPackageClass("log4g-core", "LoggerConfig", {
+Log4g.Core.Config.LoggerConfig = {
     create = Create,
     getRootLoggerConfigClass = GetRootLoggerConfigClass,
     hasLoggerConfig = HasLoggerConfig
-})
+}

@@ -29,8 +29,8 @@ Then you just have to make sure it loads before your addon, or you can use valid
 --- Check the 'Log4g' global table.
 if Log4g then
    local Logger = Log4g.Core.Logger
-   local Appender = Log4g.GetPkgClsFuncs("log4g-core", "Appender")
-   local LoggerConfig = Log4g.GetPkgClsFuncs("log4g-core", "LoggerConfig")
+   local Appender = Log4g.Core.Appender
+   local LoggerConfig = Log4g.Core.Config.LoggerConfig
    local PatternAppender = Log4g.GetPkgClsFuncs("log4g-core", "PatternAppender")
 
    --- This will locate / create a proper LoggerContext named 'Foo' with DefaultConfiguration.

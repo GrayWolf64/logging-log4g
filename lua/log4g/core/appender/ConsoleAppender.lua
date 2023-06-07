@@ -1,7 +1,7 @@
 --- Appends log events to engine console using a layout specified by the user.
 -- Subclassing `Appender`.
 -- @classmod ConsoleAppender
-local Appender = Log4g.GetPkgClsFuncs("log4g-core", "Appender").getClass()
+local Appender = Log4g.Core.Appender.getClass()
 local ConsoleAppender = Appender:subclass("ConsoleAppender")
 local checkClass = include("log4g/core/util/TypeUtil.lua").checkClass
 local MsgC = MsgC
