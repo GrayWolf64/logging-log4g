@@ -54,6 +54,7 @@ local function GetCustomLevel()
 end
 
 --- Standard Int Levels.
+-- `ALL` has a intlevel of `math.huge`.
 -- @local
 -- @table StdIntLevel
 local StdIntLevel = {
