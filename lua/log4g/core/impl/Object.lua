@@ -72,7 +72,7 @@ local function EnumerateAncestors(name)
     return ancestors, nodes
 end
 
-Log4g.Object = {
+Log4g.Core.Object = {
     getClass = GetClass,
     enumerateAncestors = EnumerateAncestors,
     contextualMixins = {

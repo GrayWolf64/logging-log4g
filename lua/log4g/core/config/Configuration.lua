@@ -3,11 +3,11 @@
 -- @classmod Configuration
 -- @license Apache License 2.0
 -- @copyright GrayWolf64
-local LifeCycle = Log4g.LifeCycle.getClass()
+local LifeCycle = Log4g.Core.LifeCycle.getClass()
 local IsAppender = Log4g.GetPkgClsFuncs("log4g-core", "TypeUtil").IsAppender
 local PropertiesPlugin = Log4g.GetPkgClsFuncs("log4g-core", "PropertiesPlugin")
 local Configuration = LifeCycle:subclass"Configuration"
-Configuration:include(Log4g.Object.contextualMixins)
+Configuration:include(Log4g.Core.Object.contextualMixins)
 local SysTime = SysTime
 
 function Configuration:Initialize(name)

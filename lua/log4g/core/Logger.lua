@@ -2,11 +2,11 @@
 -- @classmod Logger
 -- @license Apache License 2.0
 -- @copyright GrayWolf64
-local Object = Log4g.Object.getClass()
+local Object = Log4g.Core.Object.getClass()
 local Logger = Object:subclass("Logger")
 local GetCtx = Log4g.GetPkgClsFuncs("log4g-core", "LoggerContext").get
 local HasLoggerConfig = Log4g.GetPkgClsFuncs("log4g-core", "LoggerConfig").hasLoggerConfig
-local EnumerateAncestors = Log4g.Object.enumerateAncestors
+local EnumerateAncestors = Log4g.Core.Object.enumerateAncestors
 local GetLevel = Log4g.GetPkgClsFuncs("log4g-core", "Level").getLevel
 local TypeUtil, StringUtil = Log4g.GetPkgClsFuncs("log4g-core", "TypeUtil"), include("log4g/core/util/StringUtil.lua")
 local PropertiesPlugin = Log4g.GetPkgClsFuncs("log4g-core", "PropertiesPlugin")

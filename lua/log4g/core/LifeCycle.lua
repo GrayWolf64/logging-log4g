@@ -9,7 +9,7 @@
 -- @classmod LifeCycle
 -- @license Apache License 2.0
 -- @copyright GrayWolf64
-local Object = Log4g.Object.getClass()
+local Object = Log4g.Core.Object.getClass()
 local LifeCycle = Object:subclass"LifeCycle"
 local type = type
 
@@ -69,7 +69,7 @@ local function GetClass()
     return LifeCycle
 end
 
-Log4g.LifeCycle = {
+Log4g.Core.LifeCycle = {
     getAllStates = GetAllStates,
     getClass = GetClass
 }
