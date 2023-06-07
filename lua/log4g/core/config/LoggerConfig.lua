@@ -9,7 +9,6 @@ local LoggerContext = Log4g.Core.LoggerContext
 local Object = Log4g.Core.Object
 local GetLevel = Log4g.Core.Level.getLevel
 local checkClass = include("log4g/core/util/TypeUtil.lua").checkClass
-local PropertiesPlugin = Log4g.GetPkgClsFuncs("log4g-core", "PropertiesPlugin")
 local LoggerConfig = LifeCycle:subclass"LoggerConfig"
 local EnumerateAncestors = Object.enumerateAncestors
 LoggerConfig:include(Object.contextualMixins)
@@ -18,7 +17,6 @@ local tableConcat = table.concat
 local GetCtx, GetAllCtx = LoggerContext.get, LoggerContext.getAll
 local pairs, next = pairs, next
 local type = type
-PropertiesPlugin.registerProperty("rootLoggerName", "root", true)
 
 function LoggerConfig:Initialize(name)
     LifeCycle.Initialize(self)
@@ -123,7 +121,7 @@ end
 local RootLoggerConfig = LoggerConfig:subclass"LoggerConfig.RootLogger"
 
 function RootLoggerConfig:Initialize()
-    LoggerConfig.Initialize(self, PropertiesPlugin.getProperty("rootLoggerName", true))
+    LoggerConfig.Initialize(self, GetConVar("log4g_rootLoggerName"):GetString())
     self:SetLevel(GetLevel"INFO")
 end
 
@@ -176,7 +174,7 @@ end
 -- @param level The Logging Level
 -- @return object loggerconfig
 local function Create(name, config, level)
-    local root = PropertiesPlugin.getProperty("rootLoggerName", true)
+    local root = GetConVar("log4g_rootLoggerName"):GetString()
     if not checkClass(config, "Configuration") or name == root then return end
     local loggerConfig = LoggerConfig(name)
     loggerConfig:SetContext(config:GetContext())

@@ -10,7 +10,6 @@ local EnumerateAncestors = Log4g.Core.Object.enumerateAncestors
 local GetLevel = Log4g.Core.Level.getLevel
 local checkClass = include("log4g/core/util/TypeUtil.lua").checkClass
 local StringUtil = include("log4g/core/util/StringUtil.lua")
-local PropertiesPlugin = Log4g.GetPkgClsFuncs("log4g-core", "PropertiesPlugin")
 local QualifyName, StripDotExtension = StringUtil.QualifyName, StringUtil.StripDotExtension
 StringUtil = nil
 local next, pairs = next, pairs
@@ -158,7 +157,7 @@ end
 local function Create(loggerName, context, loggerconfig)
     if not checkClass(context, "LoggerContext") then return end
     if context:HasLogger(loggerName) or not QualifyName(loggerName) then return end
-    local logger, root = Logger(loggerName, context), PropertiesPlugin.getProperty("rootLoggerName", true)
+    local logger, root = Logger(loggerName, context), GetConVar("log4g_rootLoggerName"):GetString()
 
     if loggerName:find"%." then
         if checkClass(loggerconfig, "LoggerConfig") then

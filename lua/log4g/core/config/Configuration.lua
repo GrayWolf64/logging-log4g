@@ -5,7 +5,6 @@
 -- @copyright GrayWolf64
 local LifeCycle = Log4g.Core.LifeCycle.getClass()
 local checkClass = include("log4g/core/util/TypeUtil.lua").checkClass
-local PropertiesPlugin = Log4g.GetPkgClsFuncs("log4g-core", "PropertiesPlugin")
 local Configuration = LifeCycle:subclass"Configuration"
 Configuration:include(Log4g.Core.Object.contextualMixins)
 local SysTime = SysTime
@@ -60,7 +59,7 @@ function Configuration:GetLoggerConfigs()
 end
 
 function Configuration:GetRootLogger()
-    return self:GetPrivateField(0x0013)[PropertiesPlugin.getProperty("rootLoggerName", true)]
+    return self:GetPrivateField(0x0013)[GetConVar("log4g_rootLoggerName"):GetString()]
 end
 
 --- Gets how long since this Configuration initialized.
