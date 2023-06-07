@@ -38,7 +38,7 @@ if Log4g then
    local ctx = Log4g.API.LoggerContextFactory.GetContext("Foo", true)
 
    --- This will create a new LoggerConfig named 'Calculator' and it to ctx's Configuration, then set its level to DEBUG.
-   local lc = LoggerConfig.create("Calculator", ctx:GetConfiguration(), Log4g.Level.GetLevel("TRACE"))
+   local lc = LoggerConfig.create("Calculator", ctx:GetConfiguration(), Log4g.Core.Level.GetLevel("TRACE"))
 
    --- It will add a ConsoleAppender to lc and set its layout to PatternLayout with default settings.
    lc:AddAppender(Appender.createConsoleAppender("CalcOutput", PatternAppender.createDefaultLayout("CalcLayout")))
