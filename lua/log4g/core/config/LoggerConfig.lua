@@ -5,7 +5,7 @@
 -- @license Apache License 2.0
 -- @copyright GrayWolf64
 local LifeCycle = Log4g.Core.LifeCycle.getClass()
-local LoggerContext = Log4g.GetPkgClsFuncs("log4g-core", "LoggerContext")
+local LoggerContext = Log4g.Core.LoggerContext
 local Object = Log4g.Core.Object
 local GetLevel = Log4g.Core.Level.getLevel
 local checkClass = include("log4g/core/util/TypeUtil.lua").checkClass

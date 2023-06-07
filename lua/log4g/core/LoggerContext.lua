@@ -129,10 +129,10 @@ local function GetClass()
     return LoggerContext
 end
 
-Log4g.RegisterPackageClass("log4g-core", "LoggerContext", {
+Log4g.Core.LoggerContext = {
     getClass = GetClass,
     getLoggerCount = GetLoggerCount,
     register = Register,
     get = Get,
     getAll = GetAll
-})
+}

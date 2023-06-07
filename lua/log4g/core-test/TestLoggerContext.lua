@@ -1,4 +1,4 @@
-local LoggerContext = Log4g.GetPkgClsFuncs("log4g-core", "LoggerContext")
+local LoggerContext = Log4g.Core.LoggerContext
 local Get = LoggerContext.get
 local GetContext = Log4g.API.LoggerContextFactory.GetContext
 local randomString = Log4g.CoreTest.randomString

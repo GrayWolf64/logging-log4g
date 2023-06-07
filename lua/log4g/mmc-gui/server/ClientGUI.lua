@@ -4,7 +4,7 @@
 -- @copyright GrayWolf64
 local NetUtil = include("log4g/core/util/NetUtil.lua")
 local AddNetworkStrsViaTbl, WriteDataSimple = NetUtil.AddNetworkStrsViaTbl, NetUtil.WriteDataSimple
-local LoggerContext = Log4g.GetPkgClsFuncs("log4g-core", "LoggerContext")
+local LoggerContext = Log4g.Core.LoggerContext
 local GetAllCtx = LoggerContext.getAll
 local GetLoggerCount = LoggerContext.getLoggerCount
 local pairs = pairs

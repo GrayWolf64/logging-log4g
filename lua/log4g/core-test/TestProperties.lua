@@ -1,5 +1,5 @@
 local PropertiesPlugin = Log4g.GetPkgClsFuncs("log4g-core", "PropertiesPlugin")
-local Get = Log4g.GetPkgClsFuncs("log4g-core", "LoggerContext").get
+local Get = Log4g.Core.LoggerContext.get
 local randomString = Log4g.CoreTest.randomString
 local GetContext = Log4g.API.LoggerContextFactory.GetContext
 

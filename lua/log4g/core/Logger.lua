@@ -4,7 +4,7 @@
 -- @copyright GrayWolf64
 local Object = Log4g.Core.Object.getClass()
 local Logger = Object:subclass("Logger")
-local GetCtx = Log4g.GetPkgClsFuncs("log4g-core", "LoggerContext").get
+local GetCtx = Log4g.Core.LoggerContext.get
 local HasLoggerConfig = Log4g.GetPkgClsFuncs("log4g-core", "LoggerConfig").hasLoggerConfig
 local EnumerateAncestors = Log4g.Core.Object.enumerateAncestors
 local GetLevel = Log4g.Core.Level.getLevel
