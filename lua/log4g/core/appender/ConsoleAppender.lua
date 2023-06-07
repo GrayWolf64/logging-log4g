@@ -21,6 +21,6 @@ local function CreateConsoleAppender(name, layout)
     return ConsoleAppender(name, layout)
 end
 
-Log4g.RegisterPackageClass("log4g-core", "ConsoleAppender", {
-    createConsoleAppender = CreateConsoleAppender,
-})
+Log4g.Core.Appender.ConsoleAppender = {
+    createConsoleAppender = CreateConsoleAppender
+}
