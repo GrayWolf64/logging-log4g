@@ -2,7 +2,7 @@
 -- @classmod DefaultConfiguration
 local Configuration = Log4g.Core.Config.Configuration.getClass()
 local DefaultConfiguration = Configuration:subclass"DefaultConfiguration"
-local CreateConsoleAppender, CreatePatternLayout = Log4g.Core.Appender.ConsoleAppender.createConsoleAppender, Log4g.GetPkgClsFuncs("log4g-core", "PatternLayout").createDefaultLayout
+local CreateConsoleAppender, CreatePatternLayout = Log4g.Core.Appender.ConsoleAppender.createConsoleAppender, Log4g.Core.Layout.PatternLayout.createDefaultLayout
 CreateConVar("log4g_configuration_default_name", "default", FCVAR_NOTIFY):GetString()
 CreateConVar("log4g_configuration_default_level", "DEBUG", FCVAR_NOTIFY):GetString()
 

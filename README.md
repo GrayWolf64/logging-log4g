@@ -31,7 +31,7 @@ if Log4g then
    local Logger = Log4g.Core.Logger
    local Appender = Log4g.Core.Appender
    local LoggerConfig = Log4g.Core.Config.LoggerConfig
-   local PatternAppender = Log4g.GetPkgClsFuncs("log4g-core", "PatternAppender")
+   local PatternLayout = Log4g.Core.Layout.PatternLayout
 
    --- This will locate / create a proper LoggerContext named 'Foo' with DefaultConfiguration.
    local ctx = Log4g.API.LoggerContextFactory.GetContext("Foo", true)
@@ -40,7 +40,7 @@ if Log4g then
    local lc = LoggerConfig.create("Calculator", ctx:GetConfiguration(), Log4g.Core.Level.GetLevel("TRACE"))
 
    --- It will add a ConsoleAppender to lc and set its layout to PatternLayout with default settings.
-   lc:AddAppender(Appender.createConsoleAppender("CalcOutput", PatternAppender.createDefaultLayout("CalcLayout")))
+   lc:AddAppender(Appender.createConsoleAppender("CalcOutput", PatternLayout.createDefaultLayout("CalcLayout")))
 
    --- This will create a Logger named 'Calculate' using lc and add it to ctx.
    local logger = Logger.create("Calculate", ctx, lc)

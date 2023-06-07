@@ -139,6 +139,6 @@ local function CreateDefaultLayout(name)
     return PatternLayout(name)
 end
 
-Log4g.RegisterPackageClass("log4g-core", "PatternLayout", {
-    createDefaultLayout = CreateDefaultLayout,
-})
+Log4g.Core.Layout.PatternLayout = {
+    createDefaultLayout = CreateDefaultLayout
+}

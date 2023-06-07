@@ -3,7 +3,7 @@ local GetContext = Log4g.API.LoggerContextFactory.GetContext
 local GetLevel = Log4g.Core.Level.getLevel
 local CreateLoggerConfig = Log4g.Core.Config.LoggerConfig.create
 local CreateConsoleAppender = Log4g.Core.Appender.ConsoleAppender.createConsoleAppender
-local CreatePatternLayout = Log4g.GetPkgClsFuncs("log4g-core", "PatternLayout").createDefaultLayout
+local CreatePatternLayout = Log4g.Core.Layout.PatternLayout.createDefaultLayout
 local print = print
 
 local function PrintLoggerInfo(...)
