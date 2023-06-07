@@ -2,11 +2,7 @@
 name: Build Docs
 on:
   pull_request:
-    branches:
-    - master
   push:
-    branches:
-    - master
 jobs:
   build:
     name: Build docs
