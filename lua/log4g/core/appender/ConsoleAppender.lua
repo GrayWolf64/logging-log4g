@@ -5,7 +5,6 @@ local Appender = Log4g.GetPkgClsFuncs("log4g-core", "Appender").getClass()
 local ConsoleAppender = Appender:subclass("ConsoleAppender")
 local checkClass = include("log4g/core/util/TypeUtil.lua").checkClass
 local MsgC = MsgC
-local print = print
 
 function ConsoleAppender:Initialize(name, layout)
     Appender.Initialize(self, name, layout)

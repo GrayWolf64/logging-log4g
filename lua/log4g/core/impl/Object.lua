@@ -2,7 +2,6 @@
 -- @classmod Object
 -- @license Apache License 2.0
 -- @copyright GrayWolf64
-local tostring = tostring
 local ipairs = ipairs
 local StripDotExtension = include("log4g/core/util/StringUtil.lua").StripDotExtension
 local Object = include("log4g/core/impl/MiddleClass.lua")("Object")
