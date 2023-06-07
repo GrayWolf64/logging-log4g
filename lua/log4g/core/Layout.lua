@@ -16,6 +16,6 @@ local function GetClass()
     return Layout
 end
 
-Log4g.RegisterPackageClass("log4g-core", "Layout", {
-    getClass = GetClass,
-})
+Log4g.Core.Layout = {
+    getClass = GetClass
+}

@@ -2,7 +2,7 @@
 -- @classmod PatternLayout
 -- @license Apache License 2.0
 -- @copyright GrayWolf64
-local Layout = Log4g.GetPkgClsFuncs("log4g-core", "Layout").getClass()
+local Layout = Log4g.Core.Layout.getClass()
 local PatternLayout = Layout:subclass"PatternLayout"
 local checkClass = include("log4g/core/util/TypeUtil.lua").checkClass
 local charPos = include"log4g/core/util/StringUtil.lua".CharPos
