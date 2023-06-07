@@ -139,9 +139,9 @@ local function ForName(name, int)
     end
 end
 
-Log4g.RegisterPackageClass("log4g-core", "Level", {
+Log4g.Core.Level = {
     forName = ForName,
     getLevel = GetLevel,
     getStdLevel = GetStdLevel,
     getCustomLevel = GetCustomLevel
-})
+}
