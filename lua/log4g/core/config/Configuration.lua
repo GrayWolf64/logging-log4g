@@ -81,7 +81,7 @@ local function GetClass()
     return Configuration
 end
 
-Log4g.RegisterPackageClass("log4g-core", "Configuration", {
+Log4g.Core.Config.Configuration = {
     getClass = GetClass,
     create = Create
-})
+}
