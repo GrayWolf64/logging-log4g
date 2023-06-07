@@ -69,7 +69,7 @@ local function GetClass()
     return LifeCycle
 end
 
-Log4g.RegisterPackageClass("log4g-core", "LifeCycle", {
+Log4g.LifeCycle = {
     getAllStates = GetAllStates,
     getClass = GetClass
-})
+}

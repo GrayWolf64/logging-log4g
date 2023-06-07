@@ -3,7 +3,7 @@
 -- @classmod Configuration
 -- @license Apache License 2.0
 -- @copyright GrayWolf64
-local LifeCycle = Log4g.GetPkgClsFuncs("log4g-core", "LifeCycle").getClass()
+local LifeCycle = Log4g.LifeCycle.getClass()
 local IsAppender = Log4g.GetPkgClsFuncs("log4g-core", "TypeUtil").IsAppender
 local PropertiesPlugin = Log4g.GetPkgClsFuncs("log4g-core", "PropertiesPlugin")
 local Configuration = LifeCycle:subclass"Configuration"
