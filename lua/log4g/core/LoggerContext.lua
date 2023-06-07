@@ -24,13 +24,13 @@ end
 --- Sets the Configuration source for the LoggerContext.
 -- @param src String source
 function LoggerContext:SetConfigurationSource(src)
-    self:SetPrivateField("source", src)
+    self:SetPrivateField(0x00A1, src)
 end
 
 --- Gets where this LoggerContext is declared.
 -- @return table source
 function LoggerContext:GetConfigurationSource()
-    return self:GetPrivateField"source"
+    return self:GetPrivateField(0x00A1)
 end
 
 --- Gets a Logger from the Context.
