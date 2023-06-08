@@ -172,7 +172,7 @@ local function Create(loggerName, context, loggerconfig)
                     logger:SetLoggerConfig(root)
                 end
             end
-        else --- Provided 'LoggerConfig' isn't an actual LoggerConfig, automatically assign one.
+        else -- Provided 'LoggerConfig' isn't an actual LoggerConfig, automatically assign one.
             local autoLoggerConfigName = loggerName
 
             while true do
