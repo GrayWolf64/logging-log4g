@@ -4,6 +4,7 @@
 -- @classmod LoggerContext
 -- @license Apache License 2.0
 -- @copyright GrayWolf64
+Log4g.Core.LoggerContext = Log4g.Core.LoggerContext or {}
 local LifeCycle = Log4g.Core.LifeCycle.getClass()
 local checkClass = include("log4g/core/util/TypeUtil.lua").checkClass
 local LoggerContext = LifeCycle:subclass"LoggerContext"
@@ -82,14 +83,14 @@ function LoggerContext:HasLogger(name)
     return false
 end
 
-function Log4g.Core.LoggerContext.GetAll()
+function Log4g.Core.LoggerContext.getAll()
     return getContextDict()
 end
 
 --- Get the LoggerContext with the right name.
 -- @param name String name
 -- @return object loggercontext
-function Log4g.Core.LoggerContext.Get(name)
+function Log4g.Core.LoggerContext.get(name)
     return getContextDict()[name]
 end
 
@@ -97,7 +98,7 @@ end
 -- @param name The name of the LoggerContext
 -- @param withconfig Whether or not come with a DefaultConfiguration, leaving it nil will make it come with one
 -- @return object loggercontext
-function Log4g.Core.LoggerContext.Register(name, withconfig)
+function Log4g.Core.LoggerContext.register(name, withconfig)
     if type(name) ~= "string" then return end
     local ctxdict = getContextDict()
     local ctx = ctxdict[name]
@@ -115,7 +116,7 @@ end
 
 --- Get the number of Loggers across all the LoggerContexts.
 -- @return number count
-function Log4g.Core.LoggerContext.GetLoggerCount()
+function Log4g.Core.LoggerContext.getLoggerCount()
     local num, tableCount = 0, table.Count
 
     for _, v in pairs(getContextDict()) do
