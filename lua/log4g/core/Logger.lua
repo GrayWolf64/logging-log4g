@@ -2,6 +2,7 @@
 -- @classmod Logger
 -- @license Apache License 2.0
 -- @copyright GrayWolf64
+Log4g.Core.Logger = Log4g.Core.Logger or {}
 local Object = Log4g.Core.Object.getClass()
 local Logger = Object:subclass("Logger")
 local GetCtx = Log4g.Core.LoggerContext.get
@@ -10,7 +11,7 @@ local EnumerateAncestors = Log4g.Core.Object.enumerateAncestors
 local GetLevel = Log4g.Core.Level.getLevel
 local checkClass = include("log4g/core/util/TypeUtil.lua").checkClass
 local StringUtil = include("log4g/core/util/StringUtil.lua")
-local QualifyName, StripDotExtension = StringUtil.QualifyName, StringUtil.StripDotExtension
+local checkName, StripDotExtension = StringUtil.checkName, StringUtil.StripDotExtension
 StringUtil = nil
 local next, pairs = next, pairs
 local type = type
@@ -154,9 +155,9 @@ function Logger:Fatal(msg)
     LogIfEnabled(self, "FATAL", msg)
 end
 
-local function Create(loggerName, context, loggerconfig)
+function Log4g.Core.Logger.create(loggerName, context, loggerconfig)
     if not checkClass(context, "LoggerContext") then return end
-    if context:HasLogger(loggerName) or not QualifyName(loggerName) then return end
+    if context:HasLogger(loggerName) or not checkName(loggerName) then return end
     local logger, root = Logger(loggerName, context), GetConVar("log4g_rootLoggerName"):GetString()
 
     if loggerName:find"%." then
@@ -202,11 +203,6 @@ local function Create(loggerName, context, loggerconfig)
     return logger
 end
 
-local function GetClass()
+function Log4g.Core.Logger.getClass()
     return Logger
 end
-
-Log4g.Core.Logger = {
-    getClass = GetClass,
-    create = Create
-}

@@ -37,7 +37,7 @@ end
 -- @param str String name
 -- @param dot If dots are allowed, default is allowed if param not set
 -- @return bool ifvalid
-function StringUtil.QualifyName(str, dot)
+function StringUtil.checkName(str, dot)
     if type(str) ~= "string" then return false end
 
     if dot == true or dot == nil then
