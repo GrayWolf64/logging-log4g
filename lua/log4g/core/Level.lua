@@ -45,13 +45,13 @@ end
 
 --- Custom Logging Levels created by users.
 -- @local
--- @table CustomLevel
-local CustomLevel = CustomLevel or {}
+-- @table customLevel
+local customLevel = customLevel or {}
 
 --- Get the Custom Levels as a table.
--- @return table customlevel
-local function GetCustomLevel()
-    return CustomLevel
+-- @return table customLevel
+function Log4g.Core.Level.getCustomLevel()
+    return customLevel
 end
 
 --- Standard Int Levels.
@@ -115,8 +115,8 @@ end
 function Log4g.Core.Level.getLevel(name)
     if StdLevel[name] then
         return StdLevel[name]
-    elseif CustomLevel[name] then
-        return CustomLevel[name]
+    elseif customLevel[name] then
+        return customLevel[name]
     end
 end
 
@@ -129,14 +129,14 @@ function Log4g.Core.Level.forName(name, int)
     if type(name) ~= "string" or type(int) ~= "number" or StdLevel[name] then return end
     if #name == 0 or int <= 0 then return end
 
-    if not CustomLevel[name] then
+    if not customLevel[name] then
         local level = Level(name, int)
-        CustomLevel[name] = level
+        customLevel[name] = level
 
         return level
     else
-        CustomLevel[name].int = int
+        customLevel[name].int = int
 
-        return CustomLevel[name]
+        return customLevel[name]
     end
 end
