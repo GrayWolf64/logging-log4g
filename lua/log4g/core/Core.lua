@@ -8,16 +8,16 @@ Log4g.Core.Config = Log4g.Core.Config or {}
 --- A dictionary for storing LoggerContext objects.
 -- Only one ContextDictionary exists in the logging system.
 -- @local
--- @table ContextDict
-local ContextDict = ContextDict or {}
+-- @table contextDict
+local contextDict = contextDict or {}
 
 function Log4g.Core.getContextDict()
-    return ContextDict
+    return contextDict
 end
 
 function Log4g.Core.addToContextDict(key, value)
     if not key or not value then return end
-    ContextDict[key] = value
+    contextDict[key] = value
 end
 
 CreateConVar("log4g_rootLoggerName", "root", 4194304)

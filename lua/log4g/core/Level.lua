@@ -103,7 +103,7 @@ end), "seconds")
 
 --- Get the Standard Levels as a table.
 -- @return table StdLevel
-local function GetStdLevel()
+function Log4g.Core.Level.getStdLevel()
     return StdLevel
 end
 
@@ -111,7 +111,7 @@ end
 -- Return the Level associated with the name or nil if the Level cannot be found.
 -- @param name The Level's name
 -- @return object level
-local function GetLevel(name)
+function Log4g.Core.Level.getLevel(name)
     if StdLevel[name] then
         return StdLevel[name]
     elseif CustomLevel[name] then
@@ -124,7 +124,7 @@ end
 -- @param name The Level's name
 -- @param int The Level's intlevel
 -- @return object level
-local function ForName(name, int)
+function Log4g.Core.Level.forName(name, int)
     if type(name) ~= "string" or type(int) ~= "number" or StdLevel[name] then return end
     if #name == 0 or int <= 0 then return end
 
@@ -139,10 +139,3 @@ local function ForName(name, int)
         return CustomLevel[name]
     end
 end
-
-Log4g.Core.Level = {
-    forName = ForName,
-    getLevel = GetLevel,
-    getStdLevel = GetStdLevel,
-    getCustomLevel = GetCustomLevel
-}
