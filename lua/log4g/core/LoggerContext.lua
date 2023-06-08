@@ -82,14 +82,14 @@ function LoggerContext:HasLogger(name)
     return false
 end
 
-local function GetAll()
+function Log4g.Core.LoggerContext.GetAll()
     return getContextDict()
 end
 
 --- Get the LoggerContext with the right name.
 -- @param name String name
 -- @return object loggercontext
-local function Get(name)
+function Log4g.Core.LoggerContext.Get(name)
     return getContextDict()[name]
 end
 
@@ -97,7 +97,7 @@ end
 -- @param name The name of the LoggerContext
 -- @param withconfig Whether or not come with a DefaultConfiguration, leaving it nil will make it come with one
 -- @return object loggercontext
-local function Register(name, withconfig)
+function Log4g.Core.LoggerContext.Register(name, withconfig)
     if type(name) ~= "string" then return end
     local ctxdict = getContextDict()
     local ctx = ctxdict[name]
@@ -115,7 +115,7 @@ end
 
 --- Get the number of Loggers across all the LoggerContexts.
 -- @return number count
-local function GetLoggerCount()
+function Log4g.Core.LoggerContext.GetLoggerCount()
     local num, tableCount = 0, table.Count
 
     for _, v in pairs(getContextDict()) do
@@ -125,14 +125,6 @@ local function GetLoggerCount()
     return num
 end
 
-local function GetClass()
+function Log4g.Core.LoggerContext.GetClass()
     return LoggerContext
 end
-
-Log4g.Core.LoggerContext = {
-    getClass = GetClass,
-    getLoggerCount = GetLoggerCount,
-    register = Register,
-    get = Get,
-    getAll = GetAll
-}
