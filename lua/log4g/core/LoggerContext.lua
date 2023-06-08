@@ -69,8 +69,10 @@ end
 
 --- Terminate the LoggerContext.
 function LoggerContext:Terminate()
+    self:SetStopping()
     local name = self:GetName()
     self:DestroyPrivateTable()
+    self:SetStopped()
     getContextDict()[name] = nil
 end
 
