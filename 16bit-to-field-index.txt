@@ -22,3 +22,12 @@
 0x001E logeventSrc 30
 
 This is used in objects' private fields.
+
+0x0640   INITIALIZING 1600
+0x0C80   INITIALIZED  3200
+0x12C0   STARTING     4800
+0x1900   STARTED      6400
+0x1F40   STOPPING     8000
+0x2580   STOPPED      9600
+
+This is used in LifeCycle states.

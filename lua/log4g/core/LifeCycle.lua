@@ -9,6 +9,7 @@
 -- @classmod LifeCycle
 -- @license Apache License 2.0
 -- @copyright GrayWolf64
+Log4g.Core.LifeCycle = Log4g.Core.LifeCycle or {}
 local Object = Log4g.Core.Object.getClass()
 local LifeCycle = Object:subclass"LifeCycle"
 local type = type
@@ -23,12 +24,12 @@ local type = type
 -- @field STOPPING Stopping is in progress.
 -- @field STOPPED Has stopped.
 local State = {
-    INITIALIZING = function() return 100 end,
-    INITIALIZED = function() return 200 end,
-    STARTING = function() return 300 end,
-    STARTED = function() return 400 end,
-    STOPPING = function() return 500 end,
-    STOPPED = function() return 600 end,
+    INITIALIZING = 0x0640,
+    INITIALIZED = 0x0C80,
+    STARTING = 0x12C0,
+    STARTED = 0x1900,
+    STOPPING = 0x1F40,
+    STOPPED = 0x2580
 }
 
 function LifeCycle:Initialize()
@@ -39,7 +40,8 @@ end
 --- Sets the LifeCycle state.
 -- @param state A function in the `State` table which returns a string representing the state
 function LifeCycle:SetState(state)
-    if type(state) ~= "function" then return end
+    if state ~= 0x0640 and state ~= 0x0C80 and state ~= 0x12C0
+    and state ~= 0x1900 and state ~= 0x1F40 and state ~= 0x2580 then return end
     self:SetPrivateField(0x0018, state)
 end
 
@@ -61,15 +63,10 @@ function LifeCycle:GetState()
     return self:GetPrivateField(0x0018)
 end
 
-local function GetAllStates()
+function Log4g.Core.LifeCycle.getAllStates()
     return State
 end
 
-local function GetClass()
+function Log4g.Core.LifeCycle.getClass()
     return LifeCycle
 end
-
-Log4g.Core.LifeCycle = {
-    getAllStates = GetAllStates,
-    getClass = GetClass
-}
