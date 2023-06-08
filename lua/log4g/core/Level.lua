@@ -11,8 +11,8 @@ local type = type
 
 function Level:Initialize(name, int, color)
     Object.Initialize(self)
-    self:SetPrivateField("int", int)
-    self:SetPrivateField("color", color)
+    self:SetPrivateField(0x00DD, int)
+    self:SetPrivateField(0x00DE, color)
     self:SetName(name)
 end
 
@@ -23,13 +23,13 @@ end
 --- Get the Level's intlevel.
 -- @return int intlevel
 function Level:IntLevel()
-    return self:GetPrivateField"int"
+    return self:GetPrivateField(0x00DD)
 end
 
 --- Get the Level's Color.
 -- @return object color
 function Level:GetColor()
-    return self:GetPrivateField"color"
+    return self:GetPrivateField(0x00DE)
 end
 
 --- Compares the Level against the Levels passed as arguments and returns true if this level is in between the given levels.
