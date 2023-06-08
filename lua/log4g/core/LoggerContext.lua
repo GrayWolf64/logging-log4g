@@ -32,7 +32,7 @@ function LoggerContext:GetConfigurationSource()
 end
 
 --- Gets a Logger from the Context.
--- @name The name of the Logger
+-- @param name The name of the Logger
 function LoggerContext:GetLogger(name)
     return self:GetPrivateField(0x0014)[name]
 end
