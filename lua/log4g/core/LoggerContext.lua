@@ -6,7 +6,6 @@
 -- @copyright GrayWolf64
 local LifeCycle = Log4g.Core.LifeCycle.getClass()
 local checkClass = include("log4g/core/util/TypeUtil.lua").checkClass
--- @type LoggerContext
 local LoggerContext = LifeCycle:subclass"LoggerContext"
 local GetDefaultConfiguration = Log4g.Core.Config.GetDefaultConfiguration
 local getContextDict = Log4g.Core.getContextDict
