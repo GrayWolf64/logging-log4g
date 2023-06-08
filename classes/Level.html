@@ -1,0 +1,499 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<head>
+    <title>Reference</title>
+    <link rel="stylesheet" href="../ldoc.css" type="text/css" />
+</head>
+<body>
+
+<div id="container">
+
+<div id="product">
+	<div id="product_logo"></div>
+	<div id="product_name"><big><b></b></big></div>
+	<div id="product_description"></div>
+</div> <!-- id="product" -->
+
+
+<div id="main">
+
+
+<!-- Menu -->
+
+<div id="navigation">
+<br/>
+<h1>logging-log4g</h1>
+
+
+<ul>
+  <li><a href="../index.html">Index</a></li>
+</ul>
+
+<h2>Contents</h2>
+<ul>
+<li><a href="#Tables">Tables</a></li>
+<li><a href="#Local_Functions">Local Functions</a></li>
+<li><a href="#Methods">Methods</a></li>
+</ul>
+
+
+<h2>Classes</h2>
+<ul class="nowrap">
+  <li><a href="../classes/Appender.html">Appender</a></li>
+  <li><a href="../classes/Layout.html">Layout</a></li>
+  <li><strong>Level</strong></li>
+  <li><a href="../classes/LifeCycle.html">LifeCycle</a></li>
+  <li><a href="../classes/LogEvent.html">LogEvent</a></li>
+  <li><a href="../classes/Logger.html">Logger</a></li>
+  <li><a href="../classes/LoggerContext.html">LoggerContext</a></li>
+  <li><a href="../classes/ConsoleAppender.html">ConsoleAppender</a></li>
+  <li><a href="../classes/Configuration.html">Configuration</a></li>
+  <li><a href="../classes/DefaultConfiguration.html">DefaultConfiguration</a></li>
+  <li><a href="../classes/LoggerConfig.html">LoggerConfig</a></li>
+  <li><a href="../classes/Object.html">Object</a></li>
+  <li><a href="../classes/PatternLayout.html">PatternLayout</a></li>
+</ul>
+<h2>Modules</h2>
+<ul class="nowrap">
+  <li><a href="../modules/MiddleClass.html">MiddleClass</a></li>
+  <li><a href="../modules/NetUtil.html">NetUtil</a></li>
+  <li><a href="../modules/StringUtil.html">StringUtil</a></li>
+  <li><a href="../modules/TypeUtil.html">TypeUtil</a></li>
+</ul>
+<h2>Scripts</h2>
+<ul class="nowrap">
+  <li><a href="../scripts/Log4g.html">Log4g</a></li>
+  <li><a href="../scripts/API.html">API</a></li>
+  <li><a href="../scripts/LogManager.html">LogManager</a></li>
+  <li><a href="../scripts/LoggerContextFactory.html">LoggerContextFactory</a></li>
+  <li><a href="../scripts/CoreTest.html">CoreTest</a></li>
+  <li><a href="../scripts/Core.html">Core</a></li>
+  <li><a href="../scripts/MMC.html">MMC</a></li>
+  <li><a href="../scripts/ClientGUI.html">ClientGUI</a></li>
+  <li><a href="../scripts/MMCGUI.html">MMCGUI</a></li>
+  <li><a href="../scripts/ClientGUI.html">ClientGUI</a></li>
+</ul>
+
+</div>
+
+<div id="content">
+
+<h1>Class <code>Level</code></h1>
+<p>The Level (Log Level).</p>
+<p> Levels used for identifying the severity of an event.
+ Every standard Level has a <a href="https://wiki.facepunch.com/gmod/Color">Color</a>.
+ Subclassing 'Object'.</p>
+
+
+<h2><a href="#Tables">Tables</a></h2>
+<table class="function_list">
+	<tr>
+	<td class="name" nowrap><a href="#level.CustomLevel">level.CustomLevel</a></td>
+	<td class="summary">Custom Logging Levels created by users.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#level.StdIntLevel">level.StdIntLevel</a></td>
+	<td class="summary">Standard Int Levels.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#level.StdLevelColor">level.StdLevelColor</a></td>
+	<td class="summary">Standard Level Colors.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#level.StdLevel">level.StdLevel</a></td>
+	<td class="summary">Standard Logging Levels as a table.</td>
+	</tr>
+</table>
+<h2><a href="#Local_Functions">Local Functions</a></h2>
+<table class="function_list">
+	<tr>
+	<td class="name" nowrap><a href="#level.GetCustomLevel">level.GetCustomLevel ()</a></td>
+	<td class="summary">Get the Custom Levels as a table.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#level.GetStdLevel">level.GetStdLevel ()</a></td>
+	<td class="summary">Get the Standard Levels as a table.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#level.GetLevel">level.GetLevel (name)</a></td>
+	<td class="summary">Get the Level.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#level.ForName">level.ForName (name, int)</a></td>
+	<td class="summary">Retrieves an existing CustomLevel or creates one if it didn't previously exist.</td>
+	</tr>
+</table>
+<h2><a href="#Methods">Methods</a></h2>
+<table class="function_list">
+	<tr>
+	<td class="name" nowrap><a href="#level:IntLevel">level:IntLevel ()</a></td>
+	<td class="summary">Get the Level's intlevel.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#level:GetColor">level:GetColor ()</a></td>
+	<td class="summary">Get the Level's Color.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#level:IsInRange">level:IsInRange (l1, l2)</a></td>
+	<td class="summary">Compares the Level against the Levels passed as arguments and returns true if this level is in between the given levels.</td>
+	</tr>
+</table>
+
+<br/>
+<br/>
+
+
+    <h2 class="section-header "><a name="Tables"></a>Tables</h2>
+
+    <dl class="function">
+    <dt>
+    <a name = "level.CustomLevel"></a>
+    <strong>level.CustomLevel</strong>
+    </dt>
+    <dd>
+    Custom Logging Levels created by users.
+
+
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "level.StdIntLevel"></a>
+    <strong>level.StdIntLevel</strong>
+    </dt>
+    <dd>
+    Standard Int Levels.
+ <code>ALL</code> has a intlevel of <a href="https://www.lua.org/manual/5.4/manual.html#pdf-math.huge">math.huge</a>.
+
+
+    <h3>Fields:</h3>
+    <ul>
+        <li><span class="parameter">ALL</span>
+
+
+
+        </li>
+        <li><span class="parameter">TRACE</span>
+
+
+
+        </li>
+        <li><span class="parameter">DEBUG</span>
+
+
+
+        </li>
+        <li><span class="parameter">INFO</span>
+
+
+
+        </li>
+        <li><span class="parameter">WARN</span>
+
+
+
+        </li>
+        <li><span class="parameter">ERROR</span>
+
+
+
+        </li>
+        <li><span class="parameter">FATAL</span>
+
+
+
+        </li>
+        <li><span class="parameter">OFF</span>
+
+
+
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "level.StdLevelColor"></a>
+    <strong>level.StdLevelColor</strong>
+    </dt>
+    <dd>
+    Standard Level Colors.
+
+
+    <h3>Fields:</h3>
+    <ul>
+        <li><span class="parameter">ALL</span>
+
+
+
+        </li>
+        <li><span class="parameter">TRACE</span>
+
+
+
+        </li>
+        <li><span class="parameter">DEBUG</span>
+
+
+
+        </li>
+        <li><span class="parameter">INFO</span>
+
+
+
+        </li>
+        <li><span class="parameter">WARN</span>
+
+
+
+        </li>
+        <li><span class="parameter">ERROR</span>
+
+
+
+        </li>
+        <li><span class="parameter">FATAL</span>
+
+
+
+        </li>
+        <li><span class="parameter">OFF</span>
+
+
+
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "level.StdLevel"></a>
+    <strong>level.StdLevel</strong>
+    </dt>
+    <dd>
+    Standard Logging Levels as a table.
+
+
+    <h3>Fields:</h3>
+    <ul>
+        <li><span class="parameter">ALL</span>
+         All events should be logged.
+        </li>
+        <li><span class="parameter">TRACE</span>
+         A fine-grained debug message, typically capturing the flow through the game.
+        </li>
+        <li><span class="parameter">DEBUG</span>
+         A general debugging event.
+        </li>
+        <li><span class="parameter">INFO</span>
+         An event for informational purposes.
+        </li>
+        <li><span class="parameter">WARN</span>
+         An event that might possible lead to an error.
+        </li>
+        <li><span class="parameter">ERROR</span>
+         An error in game, possibly recoverable.
+        </li>
+        <li><span class="parameter">FATAL</span>
+         A severe error that will prevent the game from continuing.
+        </li>
+        <li><span class="parameter">OFF</span>
+         No events will be logged.
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+</dl>
+    <h2 class="section-header "><a name="Local_Functions"></a>Local Functions</h2>
+
+    <dl class="function">
+    <dt>
+    <a name = "level.GetCustomLevel"></a>
+    <strong>level.GetCustomLevel ()</strong>
+    </dt>
+    <dd>
+    Get the Custom Levels as a table.
+
+
+
+    <h3>Returns:</h3>
+    <ol>
+
+        table customlevel
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "level.GetStdLevel"></a>
+    <strong>level.GetStdLevel ()</strong>
+    </dt>
+    <dd>
+    Get the Standard Levels as a table.
+
+
+
+    <h3>Returns:</h3>
+    <ol>
+
+        table StdLevel
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "level.GetLevel"></a>
+    <strong>level.GetLevel (name)</strong>
+    </dt>
+    <dd>
+    Get the Level.
+ Return the Level associated with the name or nil if the Level cannot be found.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">name</span>
+         The Level's name
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+        object level
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "level.ForName"></a>
+    <strong>level.ForName (name, int)</strong>
+    </dt>
+    <dd>
+    Retrieves an existing CustomLevel or creates one if it didn't previously exist.
+ If the CustomLevel matching the provided name already exists, it's intlevel will be overrode.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">name</span>
+         The Level's name
+        </li>
+        <li><span class="parameter">int</span>
+         The Level's intlevel
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+        object level
+    </ol>
+
+
+
+
+</dd>
+</dl>
+    <h2 class="section-header "><a name="Methods"></a>Methods</h2>
+
+    <dl class="function">
+    <dt>
+    <a name = "level:IntLevel"></a>
+    <strong>level:IntLevel ()</strong>
+    </dt>
+    <dd>
+    Get the Level's intlevel.
+
+
+
+    <h3>Returns:</h3>
+    <ol>
+
+        int intlevel
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "level:GetColor"></a>
+    <strong>level:GetColor ()</strong>
+    </dt>
+    <dd>
+    Get the Level's Color.
+
+
+
+    <h3>Returns:</h3>
+    <ol>
+
+        object color
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "level:IsInRange"></a>
+    <strong>level:IsInRange (l1, l2)</strong>
+    </dt>
+    <dd>
+    Compares the Level against the Levels passed as arguments and returns true if this level is in between the given levels.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">l1</span>
+         The Level with a certain intlevel
+        </li>
+        <li><span class="parameter">l2</span>
+         The Level with another intlevel
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+        bool isinrange
+    </ol>
+
+
+
+
+</dd>
+</dl>
+
+
+</div> <!-- id="content" -->
+</div> <!-- id="main" -->
+<div id="about">
+<i>generated by <a href="http://github.com/lunarmodules/LDoc">LDoc 1.5.0</a></i>
+<i style="float:right;">Last updated 2023-06-08 01:22:59 </i>
+</div> <!-- id="about" -->
+</div> <!-- id="container" -->
+</body>
+</html>

@@ -1,0 +1,256 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<head>
+    <title>Reference</title>
+    <link rel="stylesheet" href="../ldoc.css" type="text/css" />
+</head>
+<body>
+
+<div id="container">
+
+<div id="product">
+	<div id="product_logo"></div>
+	<div id="product_name"><big><b></b></big></div>
+	<div id="product_description"></div>
+</div> <!-- id="product" -->
+
+
+<div id="main">
+
+
+<!-- Menu -->
+
+<div id="navigation">
+<br/>
+<h1>logging-log4g</h1>
+
+
+<ul>
+  <li><a href="../index.html">Index</a></li>
+</ul>
+
+<h2>Contents</h2>
+<ul>
+<li><a href="#Local_Functions">Local Functions</a></li>
+<li><a href="#Methods">Methods</a></li>
+</ul>
+
+
+<h2>Classes</h2>
+<ul class="nowrap">
+  <li><a href="../classes/Appender.html">Appender</a></li>
+  <li><a href="../classes/Layout.html">Layout</a></li>
+  <li><a href="../classes/Level.html">Level</a></li>
+  <li><a href="../classes/LifeCycle.html">LifeCycle</a></li>
+  <li><a href="../classes/LogEvent.html">LogEvent</a></li>
+  <li><a href="../classes/Logger.html">Logger</a></li>
+  <li><a href="../classes/LoggerContext.html">LoggerContext</a></li>
+  <li><a href="../classes/ConsoleAppender.html">ConsoleAppender</a></li>
+  <li><strong>Configuration</strong></li>
+  <li><a href="../classes/DefaultConfiguration.html">DefaultConfiguration</a></li>
+  <li><a href="../classes/LoggerConfig.html">LoggerConfig</a></li>
+  <li><a href="../classes/Object.html">Object</a></li>
+  <li><a href="../classes/PatternLayout.html">PatternLayout</a></li>
+</ul>
+<h2>Modules</h2>
+<ul class="nowrap">
+  <li><a href="../modules/MiddleClass.html">MiddleClass</a></li>
+  <li><a href="../modules/NetUtil.html">NetUtil</a></li>
+  <li><a href="../modules/StringUtil.html">StringUtil</a></li>
+  <li><a href="../modules/TypeUtil.html">TypeUtil</a></li>
+</ul>
+<h2>Scripts</h2>
+<ul class="nowrap">
+  <li><a href="../scripts/Log4g.html">Log4g</a></li>
+  <li><a href="../scripts/API.html">API</a></li>
+  <li><a href="../scripts/LogManager.html">LogManager</a></li>
+  <li><a href="../scripts/LoggerContextFactory.html">LoggerContextFactory</a></li>
+  <li><a href="../scripts/CoreTest.html">CoreTest</a></li>
+  <li><a href="../scripts/Core.html">Core</a></li>
+  <li><a href="../scripts/MMC.html">MMC</a></li>
+  <li><a href="../scripts/ClientGUI.html">ClientGUI</a></li>
+  <li><a href="../scripts/MMCGUI.html">MMCGUI</a></li>
+  <li><a href="../scripts/ClientGUI.html">ClientGUI</a></li>
+</ul>
+
+</div>
+
+<div id="content">
+
+<h1>Class <code>Configuration</code></h1>
+<p>Interface that must be implemented to create a Configuration.</p>
+<p> Subclassing <a href="../classes/LifeCycle.html#">LifeCycle</a>, mixin-ing <code>SetContext()</code> and <code>GetContext()</code>.</p>
+    <h3>Info:</h3>
+    <ul>
+        <li><strong>Copyright</strong>: GrayWolf64</li>
+        <li><strong>License</strong>: Apache License 2.0</li>
+    </ul>
+
+
+<h2><a href="#Local_Functions">Local Functions</a></h2>
+<table class="function_list">
+	<tr>
+	<td class="name" nowrap><a href="#configuration.Create">configuration.Create (name)</a></td>
+	<td class="summary">Create a Configuration.</td>
+	</tr>
+</table>
+<h2><a href="#Methods">Methods</a></h2>
+<table class="function_list">
+	<tr>
+	<td class="name" nowrap><a href="#configuration:AddAppender">configuration:AddAppender (appender, ifsuccessfullyadded)</a></td>
+	<td class="summary">Adds a Appender to the Configuration.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#configuration:GetAppenders">configuration:GetAppenders ()</a></td>
+	<td class="summary">Gets all the Appenders in the Configuration.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#configuration:GetLoggerConfig">configuration:GetLoggerConfig (name)</a></td>
+	<td class="summary">Locates the appropriate LoggerConfig name for a Logger name.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#configuration:GetUpTime">configuration:GetUpTime ()</a></td>
+	<td class="summary">Gets how long since this Configuration initialized.</td>
+	</tr>
+</table>
+
+<br/>
+<br/>
+
+
+    <h2 class="section-header "><a name="Local_Functions"></a>Local Functions</h2>
+
+    <dl class="function">
+    <dt>
+    <a name = "configuration.Create"></a>
+    <strong>configuration.Create (name)</strong>
+    </dt>
+    <dd>
+    Create a Configuration.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">name</span>
+         The name of the Configuration
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+        object configuration
+    </ol>
+
+
+
+
+</dd>
+</dl>
+    <h2 class="section-header "><a name="Methods"></a>Methods</h2>
+
+    <dl class="function">
+    <dt>
+    <a name = "configuration:AddAppender"></a>
+    <strong>configuration:AddAppender (appender, ifsuccessfullyadded)</strong>
+    </dt>
+    <dd>
+    Adds a Appender to the Configuration.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">appender</span>
+         The Appender to add
+        </li>
+        <li><span class="parameter">ifsuccessfullyadded</span>
+            <span class="types"><span class="type">boolean</span></span>
+
+
+
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "configuration:GetAppenders"></a>
+    <strong>configuration:GetAppenders ()</strong>
+    </dt>
+    <dd>
+    Gets all the Appenders in the Configuration.
+ Keys are the names of Appenders and values are the Appenders themselves.
+
+
+
+    <h3>Returns:</h3>
+    <ol>
+
+        table appenders
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "configuration:GetLoggerConfig"></a>
+    <strong>configuration:GetLoggerConfig (name)</strong>
+    </dt>
+    <dd>
+    Locates the appropriate LoggerConfig name for a Logger name.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">name</span>
+         The Logger name
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+        object loggerconfig
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "configuration:GetUpTime"></a>
+    <strong>configuration:GetUpTime ()</strong>
+    </dt>
+    <dd>
+    Gets how long since this Configuration initialized.
+
+
+
+    <h3>Returns:</h3>
+    <ol>
+
+        int uptime
+    </ol>
+
+
+
+
+</dd>
+</dl>
+
+
+</div> <!-- id="content" -->
+</div> <!-- id="main" -->
+<div id="about">
+<i>generated by <a href="http://github.com/lunarmodules/LDoc">LDoc 1.5.0</a></i>
+<i style="float:right;">Last updated 2023-06-08 01:22:59 </i>
+</div> <!-- id="about" -->
+</div> <!-- id="container" -->
+</body>
+</html>

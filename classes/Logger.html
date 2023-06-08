@@ -1,0 +1,394 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<head>
+    <title>Reference</title>
+    <link rel="stylesheet" href="../ldoc.css" type="text/css" />
+</head>
+<body>
+
+<div id="container">
+
+<div id="product">
+	<div id="product_logo"></div>
+	<div id="product_name"><big><b></b></big></div>
+	<div id="product_description"></div>
+</div> <!-- id="product" -->
+
+
+<div id="main">
+
+
+<!-- Menu -->
+
+<div id="navigation">
+<br/>
+<h1>logging-log4g</h1>
+
+
+<ul>
+  <li><a href="../index.html">Index</a></li>
+</ul>
+
+<h2>Contents</h2>
+<ul>
+<li><a href="#Fields">Fields</a></li>
+<li><a href="#Local_Functions">Local Functions</a></li>
+<li><a href="#Methods">Methods</a></li>
+</ul>
+
+
+<h2>Classes</h2>
+<ul class="nowrap">
+  <li><a href="../classes/Appender.html">Appender</a></li>
+  <li><a href="../classes/Layout.html">Layout</a></li>
+  <li><a href="../classes/Level.html">Level</a></li>
+  <li><a href="../classes/LifeCycle.html">LifeCycle</a></li>
+  <li><a href="../classes/LogEvent.html">LogEvent</a></li>
+  <li><strong>Logger</strong></li>
+  <li><a href="../classes/LoggerContext.html">LoggerContext</a></li>
+  <li><a href="../classes/ConsoleAppender.html">ConsoleAppender</a></li>
+  <li><a href="../classes/Configuration.html">Configuration</a></li>
+  <li><a href="../classes/DefaultConfiguration.html">DefaultConfiguration</a></li>
+  <li><a href="../classes/LoggerConfig.html">LoggerConfig</a></li>
+  <li><a href="../classes/Object.html">Object</a></li>
+  <li><a href="../classes/PatternLayout.html">PatternLayout</a></li>
+</ul>
+<h2>Modules</h2>
+<ul class="nowrap">
+  <li><a href="../modules/MiddleClass.html">MiddleClass</a></li>
+  <li><a href="../modules/NetUtil.html">NetUtil</a></li>
+  <li><a href="../modules/StringUtil.html">StringUtil</a></li>
+  <li><a href="../modules/TypeUtil.html">TypeUtil</a></li>
+</ul>
+<h2>Scripts</h2>
+<ul class="nowrap">
+  <li><a href="../scripts/Log4g.html">Log4g</a></li>
+  <li><a href="../scripts/API.html">API</a></li>
+  <li><a href="../scripts/LogManager.html">LogManager</a></li>
+  <li><a href="../scripts/LoggerContextFactory.html">LoggerContextFactory</a></li>
+  <li><a href="../scripts/CoreTest.html">CoreTest</a></li>
+  <li><a href="../scripts/Core.html">Core</a></li>
+  <li><a href="../scripts/MMC.html">MMC</a></li>
+  <li><a href="../scripts/ClientGUI.html">ClientGUI</a></li>
+  <li><a href="../scripts/MMCGUI.html">MMCGUI</a></li>
+  <li><a href="../scripts/ClientGUI.html">ClientGUI</a></li>
+</ul>
+
+</div>
+
+<div id="content">
+
+<h1>Class <code>Logger</code></h1>
+<p>The core implementation of the Logger interface.</p>
+<p>
+
+</p>
+    <h3>Info:</h3>
+    <ul>
+        <li><strong>Copyright</strong>: GrayWolf64</li>
+        <li><strong>License</strong>: Apache License 2.0</li>
+    </ul>
+
+
+<h2><a href="#Fields">Fields</a></h2>
+<table class="function_list">
+	<tr>
+	<td class="name" nowrap><a href="#logger.autoLoggerConfigName">logger.autoLoggerConfigName</a></td>
+	<td class="summary">Provided 'LoggerConfig' isn't an actual LoggerConfig, automatically assign one.</td>
+	</tr>
+</table>
+<h2><a href="#Local_Functions">Local Functions</a></h2>
+<table class="function_list">
+	<tr>
+	<td class="name" nowrap><a href="#logger.LogIfEnabled">logger.LogIfEnabled (self, level, msg)</a></td>
+	<td class="summary">Logs a message if the specified level is active.</td>
+	</tr>
+</table>
+<h2><a href="#Methods">Methods</a></h2>
+<table class="function_list">
+	<tr>
+	<td class="name" nowrap><a href="#logger:GetContext">logger:GetContext (ex)</a></td>
+	<td class="summary">Gets the LoggerContext of the Logger.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#logger:SetLoggerConfig">logger:SetLoggerConfig (name)</a></td>
+	<td class="summary">Sets the LoggerConfig name for the Logger.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#logger:GetLoggerConfig">logger:GetLoggerConfig ()</a></td>
+	<td class="summary">Get the LoggerConfig of the Logger.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#logger:Always">logger:Always ()</a></td>
+	<td class="summary">Construct a log event that will always be logged.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#logger:AtTrace">logger:AtTrace ()</a></td>
+	<td class="summary">Construct a trace log event.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#logger:AtDebug">logger:AtDebug ()</a></td>
+	<td class="summary">Construct a debug log event.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#logger:AtInfo">logger:AtInfo ()</a></td>
+	<td class="summary">Construct a info log event.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#logger:AtWarn">logger:AtWarn ()</a></td>
+	<td class="summary">Construct a warn log event.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#logger:AtError">logger:AtError ()</a></td>
+	<td class="summary">Construct a error log event.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#logger:AtFatal">logger:AtFatal ()</a></td>
+	<td class="summary">Construct a fatal log event.</td>
+	</tr>
+</table>
+
+<br/>
+<br/>
+
+
+    <h2 class="section-header "><a name="Fields"></a>Fields</h2>
+
+    <dl class="function">
+    <dt>
+    <a name = "logger.autoLoggerConfigName"></a>
+    <strong>logger.autoLoggerConfigName</strong>
+    </dt>
+    <dd>
+    Provided 'LoggerConfig' isn't an actual LoggerConfig, automatically assign one.
+
+
+
+
+
+
+
+</dd>
+</dl>
+    <h2 class="section-header "><a name="Local_Functions"></a>Local Functions</h2>
+
+    <dl class="function">
+    <dt>
+    <a name = "logger.LogIfEnabled"></a>
+    <strong>logger.LogIfEnabled (self, level, msg)</strong>
+    </dt>
+    <dd>
+    Logs a message if the specified level is active.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">self</span>
+
+
+
+        </li>
+        <li><span class="parameter">level</span>
+
+
+
+        </li>
+        <li><span class="parameter">msg</span>
+
+
+
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+</dl>
+    <h2 class="section-header "><a name="Methods"></a>Methods</h2>
+
+    <dl class="function">
+    <dt>
+    <a name = "logger:GetContext"></a>
+    <strong>logger:GetContext (ex)</strong>
+    </dt>
+    <dd>
+    Gets the LoggerContext of the Logger.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">ex</span>
+         True for getting the object, false or nil for getting the name
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+        <li>
+        string ctxname</li>
+        <li>
+        object ctx</li>
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "logger:SetLoggerConfig"></a>
+    <strong>logger:SetLoggerConfig (name)</strong>
+    </dt>
+    <dd>
+    Sets the LoggerConfig name for the Logger.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">name</span>
+         String name
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "logger:GetLoggerConfig"></a>
+    <strong>logger:GetLoggerConfig ()</strong>
+    </dt>
+    <dd>
+    Get the LoggerConfig of the Logger.
+
+
+
+    <h3>Returns:</h3>
+    <ol>
+
+        object loggerconfig
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "logger:Always"></a>
+    <strong>logger:Always ()</strong>
+    </dt>
+    <dd>
+    Construct a log event that will always be logged.
+
+
+
+    <h3>Returns:</h3>
+    <ol>
+
+        object LogEvent
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "logger:AtTrace"></a>
+    <strong>logger:AtTrace ()</strong>
+    </dt>
+    <dd>
+    Construct a trace log event.
+
+
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "logger:AtDebug"></a>
+    <strong>logger:AtDebug ()</strong>
+    </dt>
+    <dd>
+    Construct a debug log event.
+
+
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "logger:AtInfo"></a>
+    <strong>logger:AtInfo ()</strong>
+    </dt>
+    <dd>
+    Construct a info log event.
+
+
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "logger:AtWarn"></a>
+    <strong>logger:AtWarn ()</strong>
+    </dt>
+    <dd>
+    Construct a warn log event.
+
+
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "logger:AtError"></a>
+    <strong>logger:AtError ()</strong>
+    </dt>
+    <dd>
+    Construct a error log event.
+
+
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "logger:AtFatal"></a>
+    <strong>logger:AtFatal ()</strong>
+    </dt>
+    <dd>
+    Construct a fatal log event.
+
+
+
+
+
+
+
+</dd>
+</dl>
+
+
+</div> <!-- id="content" -->
+</div> <!-- id="main" -->
+<div id="about">
+<i>generated by <a href="http://github.com/lunarmodules/LDoc">LDoc 1.5.0</a></i>
+<i style="float:right;">Last updated 2023-06-08 01:22:59 </i>
+</div> <!-- id="about" -->
+</div> <!-- id="container" -->
+</body>
+</html>

@@ -1,0 +1,229 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<head>
+    <title>Reference</title>
+    <link rel="stylesheet" href="../ldoc.css" type="text/css" />
+</head>
+<body>
+
+<div id="container">
+
+<div id="product">
+	<div id="product_logo"></div>
+	<div id="product_name"><big><b></b></big></div>
+	<div id="product_description"></div>
+</div> <!-- id="product" -->
+
+
+<div id="main">
+
+
+<!-- Menu -->
+
+<div id="navigation">
+<br/>
+<h1>logging-log4g</h1>
+
+
+<ul>
+  <li><a href="../index.html">Index</a></li>
+</ul>
+
+<h2>Contents</h2>
+<ul>
+<li><a href="#Functions">Functions</a></li>
+<li><a href="#Tables">Tables</a></li>
+</ul>
+
+
+<h2>Scripts</h2>
+<ul class="nowrap">
+  <li><strong>Log4g</strong></li>
+  <li><a href="../scripts/API.html">API</a></li>
+  <li><a href="../scripts/LogManager.html">LogManager</a></li>
+  <li><a href="../scripts/LoggerContextFactory.html">LoggerContextFactory</a></li>
+  <li><a href="../scripts/CoreTest.html">CoreTest</a></li>
+  <li><a href="../scripts/Core.html">Core</a></li>
+  <li><a href="../scripts/MMC.html">MMC</a></li>
+  <li><a href="../scripts/ClientGUI.html">ClientGUI</a></li>
+  <li><a href="../scripts/MMCGUI.html">MMCGUI</a></li>
+  <li><a href="../scripts/ClientGUI.html">ClientGUI</a></li>
+</ul>
+<h2>Modules</h2>
+<ul class="nowrap">
+  <li><a href="../modules/MiddleClass.html">MiddleClass</a></li>
+  <li><a href="../modules/NetUtil.html">NetUtil</a></li>
+  <li><a href="../modules/StringUtil.html">StringUtil</a></li>
+  <li><a href="../modules/TypeUtil.html">TypeUtil</a></li>
+</ul>
+<h2>Classes</h2>
+<ul class="nowrap">
+  <li><a href="../classes/Appender.html">Appender</a></li>
+  <li><a href="../classes/Layout.html">Layout</a></li>
+  <li><a href="../classes/Level.html">Level</a></li>
+  <li><a href="../classes/LifeCycle.html">LifeCycle</a></li>
+  <li><a href="../classes/LogEvent.html">LogEvent</a></li>
+  <li><a href="../classes/Logger.html">Logger</a></li>
+  <li><a href="../classes/LoggerContext.html">LoggerContext</a></li>
+  <li><a href="../classes/ConsoleAppender.html">ConsoleAppender</a></li>
+  <li><a href="../classes/Configuration.html">Configuration</a></li>
+  <li><a href="../classes/DefaultConfiguration.html">DefaultConfiguration</a></li>
+  <li><a href="../classes/LoggerConfig.html">LoggerConfig</a></li>
+  <li><a href="../classes/Object.html">Object</a></li>
+  <li><a href="../classes/PatternLayout.html">PatternLayout</a></li>
+</ul>
+
+</div>
+
+<div id="content">
+
+<h1>Script <code>Log4g</code></h1>
+<p>Initialization of Log4g on server and client.</p>
+<p> This bootstrap can't execute if <code>gmod</code> table doesn't exist.</p>
+    <h3>Info:</h3>
+    <ul>
+        <li><strong>Copyright</strong>: GrayWolf64</li>
+        <li><strong>License</strong>: Apache License 2.0</li>
+    </ul>
+
+
+<h2><a href="#Functions">Functions</a></h2>
+<table class="function_list">
+	<tr>
+	<td class="name" nowrap><a href="#RegisterPackage">RegisterPackage (name, ver)</a></td>
+	<td class="summary">Register a package for use with Log4g.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#timeit">timeit (func)</a></td>
+	<td class="summary">Execute the given function and see how long it takes.</td>
+	</tr>
+</table>
+<h2><a href="#Tables">Tables</a></h2>
+<table class="function_list">
+	<tr>
+	<td class="name" nowrap><a href="#Log4g">Log4g</a></td>
+	<td class="summary">The global table for the logging system.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#Packages">Packages</a></td>
+	<td class="summary">The installed Log4g packages.</td>
+	</tr>
+</table>
+
+<br/>
+<br/>
+
+
+    <h2 class="section-header "><a name="Functions"></a>Functions</h2>
+
+    <dl class="function">
+    <dt>
+    <a name = "RegisterPackage"></a>
+    <strong>RegisterPackage (name, ver)</strong>
+    </dt>
+    <dd>
+    Register a package for use with Log4g.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">name</span>
+         The name of the package to register
+        </li>
+        <li><span class="parameter">ver</span>
+         The version string of the given package
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "timeit"></a>
+    <strong>timeit (func)</strong>
+    </dt>
+    <dd>
+    Execute the given function and see how long it takes.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">func</span>
+         Function
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+        number Precise time
+    </ol>
+
+
+
+
+</dd>
+</dl>
+    <h2 class="section-header "><a name="Tables"></a>Tables</h2>
+
+    <dl class="function">
+    <dt>
+    <a name = "Log4g"></a>
+    <strong>Log4g</strong>
+    </dt>
+    <dd>
+    The global table for the logging system.
+ It provides easy access to some functions for other components of the logging system that require them.
+
+
+    <h3>Fields:</h3>
+    <ul>
+        <li><span class="parameter">Core</span>
+
+
+
+        </li>
+        <li><span class="parameter">Level</span>
+
+
+
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "Packages"></a>
+    <strong>Packages</strong>
+    </dt>
+    <dd>
+    The installed Log4g packages.
+ Keys are the names of packages, and values are tables that hold the versions and classes for the particular package.
+ The <code>classes</code> table in one package's named table may contain some functions and so on.
+
+
+
+
+
+
+
+</dd>
+</dl>
+
+
+</div> <!-- id="content" -->
+</div> <!-- id="main" -->
+<div id="about">
+<i>generated by <a href="http://github.com/lunarmodules/LDoc">LDoc 1.5.0</a></i>
+<i style="float:right;">Last updated 2023-06-08 01:22:59 </i>
+</div> <!-- id="about" -->
+</div> <!-- id="container" -->
+</body>
+</html>

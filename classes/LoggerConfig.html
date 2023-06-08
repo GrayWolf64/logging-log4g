@@ -1,0 +1,378 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<head>
+    <title>Reference</title>
+    <link rel="stylesheet" href="../ldoc.css" type="text/css" />
+</head>
+<body>
+
+<div id="container">
+
+<div id="product">
+	<div id="product_logo"></div>
+	<div id="product_name"><big><b></b></big></div>
+	<div id="product_description"></div>
+</div> <!-- id="product" -->
+
+
+<div id="main">
+
+
+<!-- Menu -->
+
+<div id="navigation">
+<br/>
+<h1>logging-log4g</h1>
+
+
+<ul>
+  <li><a href="../index.html">Index</a></li>
+</ul>
+
+<h2>Contents</h2>
+<ul>
+<li><a href="#Functions">Functions</a></li>
+<li><a href="#Local_Functions">Local Functions</a></li>
+<li><a href="#Methods">Methods</a></li>
+</ul>
+
+
+<h2>Classes</h2>
+<ul class="nowrap">
+  <li><a href="../classes/Appender.html">Appender</a></li>
+  <li><a href="../classes/Layout.html">Layout</a></li>
+  <li><a href="../classes/Level.html">Level</a></li>
+  <li><a href="../classes/LifeCycle.html">LifeCycle</a></li>
+  <li><a href="../classes/LogEvent.html">LogEvent</a></li>
+  <li><a href="../classes/Logger.html">Logger</a></li>
+  <li><a href="../classes/LoggerContext.html">LoggerContext</a></li>
+  <li><a href="../classes/ConsoleAppender.html">ConsoleAppender</a></li>
+  <li><a href="../classes/Configuration.html">Configuration</a></li>
+  <li><a href="../classes/DefaultConfiguration.html">DefaultConfiguration</a></li>
+  <li><strong>LoggerConfig</strong></li>
+  <li><a href="../classes/Object.html">Object</a></li>
+  <li><a href="../classes/PatternLayout.html">PatternLayout</a></li>
+</ul>
+<h2>Modules</h2>
+<ul class="nowrap">
+  <li><a href="../modules/MiddleClass.html">MiddleClass</a></li>
+  <li><a href="../modules/NetUtil.html">NetUtil</a></li>
+  <li><a href="../modules/StringUtil.html">StringUtil</a></li>
+  <li><a href="../modules/TypeUtil.html">TypeUtil</a></li>
+</ul>
+<h2>Scripts</h2>
+<ul class="nowrap">
+  <li><a href="../scripts/Log4g.html">Log4g</a></li>
+  <li><a href="../scripts/API.html">API</a></li>
+  <li><a href="../scripts/LogManager.html">LogManager</a></li>
+  <li><a href="../scripts/LoggerContextFactory.html">LoggerContextFactory</a></li>
+  <li><a href="../scripts/CoreTest.html">CoreTest</a></li>
+  <li><a href="../scripts/Core.html">Core</a></li>
+  <li><a href="../scripts/MMC.html">MMC</a></li>
+  <li><a href="../scripts/ClientGUI.html">ClientGUI</a></li>
+  <li><a href="../scripts/MMCGUI.html">MMCGUI</a></li>
+  <li><a href="../scripts/ClientGUI.html">ClientGUI</a></li>
+</ul>
+
+</div>
+
+<div id="content">
+
+<h1>Class <code>LoggerConfig</code></h1>
+<p>The LoggerConfig.</p>
+<p> Logger object that is created via configuration.
+ Subclassing <a href="../classes/LifeCycle.html#">LifeCycle</a>, mixin-ing <code>SetContext()</code> and <code>GetContext()</code>.</p>
+    <h3>Info:</h3>
+    <ul>
+        <li><strong>Copyright</strong>: GrayWolf64</li>
+        <li><strong>License</strong>: Apache License 2.0</li>
+    </ul>
+
+
+<h2><a href="#Functions">Functions</a></h2>
+<table class="function_list">
+	<tr>
+	<td class="name" nowrap><a href="#RootLoggerConfig:SetParent">RootLoggerConfig:SetParent ()</a></td>
+	<td class="summary">Overrides <code>LoggerConfig:SetParent()</code>.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#RootLoggerConfig:GetParent">RootLoggerConfig:GetParent ()</a></td>
+	<td class="summary">Overrides <code>LoggerConfig:GetParent()</code>.</td>
+	</tr>
+</table>
+<h2><a href="#Local_Functions">Local Functions</a></h2>
+<table class="function_list">
+	<tr>
+	<td class="name" nowrap><a href="#loggerconfig.ValidateAncestors">loggerconfig.ValidateAncestors (loggerConfig)</a></td>
+	<td class="summary">Check if a LoggerConfig's ancestors exist and return its desired parent name.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#loggerconfig.Create">loggerconfig.Create (name, config, level)</a></td>
+	<td class="summary">Factory method to create a LoggerConfig.</td>
+	</tr>
+</table>
+<h2><a href="#Methods">Methods</a></h2>
+<table class="function_list">
+	<tr>
+	<td class="name" nowrap><a href="#loggerconfig:SetLevel">loggerconfig:SetLevel (level)</a></td>
+	<td class="summary">Sets the log Level.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#loggerconfig:SetParent">loggerconfig:SetParent (T)</a></td>
+	<td class="summary">Sets the parent of this LoggerConfig.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#loggerconfig:GetParent">loggerconfig:GetParent ()</a></td>
+	<td class="summary">Gets the parent of this LoggerConfig.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#loggerconfig:AddAppender">loggerconfig:AddAppender (appender)</a></td>
+	<td class="summary">Adds an Appender to the LoggerConfig.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#loggerconfig:GetAppenders">loggerconfig:GetAppenders ()</a></td>
+	<td class="summary">Returns all Appenders configured by this LoggerConfig in a form of table (keys are Appenders, values are booleans).</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#loggerconfig:ClearAppenders">loggerconfig:ClearAppenders ()</a></td>
+	<td class="summary">Removes all Appenders configured by this LoggerConfig.</td>
+	</tr>
+</table>
+
+<br/>
+<br/>
+
+
+    <h2 class="section-header "><a name="Functions"></a>Functions</h2>
+
+    <dl class="function">
+    <dt>
+    <a name = "RootLoggerConfig:SetParent"></a>
+    <strong>RootLoggerConfig:SetParent ()</strong>
+    </dt>
+    <dd>
+    Overrides <code>LoggerConfig:SetParent()</code>.
+
+
+
+    <h3>Returns:</h3>
+    <ol>
+
+        bool false
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "RootLoggerConfig:GetParent"></a>
+    <strong>RootLoggerConfig:GetParent ()</strong>
+    </dt>
+    <dd>
+    Overrides <code>LoggerConfig:GetParent()</code>.
+
+
+
+    <h3>Returns:</h3>
+    <ol>
+
+        bool false
+    </ol>
+
+
+
+
+</dd>
+</dl>
+    <h2 class="section-header "><a name="Local_Functions"></a>Local Functions</h2>
+
+    <dl class="function">
+    <dt>
+    <a name = "loggerconfig.ValidateAncestors"></a>
+    <strong>loggerconfig.ValidateAncestors (loggerConfig)</strong>
+    </dt>
+    <dd>
+    Check if a LoggerConfig's ancestors exist and return its desired parent name.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">loggerConfig</span>
+         LoggerConfig object
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "loggerconfig.Create"></a>
+    <strong>loggerconfig.Create (name, config, level)</strong>
+    </dt>
+    <dd>
+    Factory method to create a LoggerConfig.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">name</span>
+         The name for the Logger
+        </li>
+        <li><span class="parameter">config</span>
+         The Configuration
+        </li>
+        <li><span class="parameter">level</span>
+         The Logging Level
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+        object loggerconfig
+    </ol>
+
+
+
+
+</dd>
+</dl>
+    <h2 class="section-header "><a name="Methods"></a>Methods</h2>
+
+    <dl class="function">
+    <dt>
+    <a name = "loggerconfig:SetLevel"></a>
+    <strong>loggerconfig:SetLevel (level)</strong>
+    </dt>
+    <dd>
+    Sets the log Level.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">level</span>
+         The Logging Level
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "loggerconfig:SetParent"></a>
+    <strong>loggerconfig:SetParent (T)</strong>
+    </dt>
+    <dd>
+    Sets the parent of this LoggerConfig.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">T</span>
+         LoggerConfig object or LoggerConfig name
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "loggerconfig:GetParent"></a>
+    <strong>loggerconfig:GetParent ()</strong>
+    </dt>
+    <dd>
+    Gets the parent of this LoggerConfig.
+
+
+
+    <h3>Returns:</h3>
+    <ol>
+
+        string lcname
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "loggerconfig:AddAppender"></a>
+    <strong>loggerconfig:AddAppender (appender)</strong>
+    </dt>
+    <dd>
+    Adds an Appender to the LoggerConfig.
+ It adds the Appender name to the LoggerConfig's private <code>apref</code> table field,
+ then adds the Appender object to the Configuration's(the only one which owns this LoggerConfig) private <code>appender</code> table field.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">appender</span>
+         Appender object
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+        bool ifadded
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "loggerconfig:GetAppenders"></a>
+    <strong>loggerconfig:GetAppenders ()</strong>
+    </dt>
+    <dd>
+    Returns all Appenders configured by this LoggerConfig in a form of table (keys are Appenders, values are booleans).
+
+
+
+    <h3>Returns:</h3>
+    <ol>
+
+        table appenders
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "loggerconfig:ClearAppenders"></a>
+    <strong>loggerconfig:ClearAppenders ()</strong>
+    </dt>
+    <dd>
+    Removes all Appenders configured by this LoggerConfig.
+
+
+
+
+
+
+
+</dd>
+</dl>
+
+
+</div> <!-- id="content" -->
+</div> <!-- id="main" -->
+<div id="about">
+<i>generated by <a href="http://github.com/lunarmodules/LDoc">LDoc 1.5.0</a></i>
+<i style="float:right;">Last updated 2023-06-08 01:22:59 </i>
+</div> <!-- id="about" -->
+</div> <!-- id="container" -->
+</body>
+</html>
