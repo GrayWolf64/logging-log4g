@@ -40,8 +40,7 @@ end
 --- Sets the LifeCycle state.
 -- @param state A function in the `State` table which returns a string representing the state
 function LifeCycle:SetState(state)
-    if state ~= 0x0640 and state ~= 0x0C80 and state ~= 0x12C0
-    and state ~= 0x1900 and state ~= 0x1F40 and state ~= 0x2580 then return end
+    if type(state) ~= "number" then return end
     self:SetPrivateField(0x0018, state)
 end
 
