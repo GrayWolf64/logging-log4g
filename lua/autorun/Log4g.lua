@@ -3,49 +3,35 @@
 -- @script Log4g
 -- @license Apache License 2.0
 -- @copyright GrayWolf64
-local fileExists = file.Exists
-local MMC = "log4g/mmc-gui/MMC.lua"
-
-local function checkAndInclude(provider, fileName, addCSLuaFile)
-    if fileExists(fileName, "lsv") then
-        include(fileName)
-        print(provider, "successfully included", fileName)
-        if addCSLuaFile ~= true then return end
-        AddCSLuaFile(fileName)
-        print(provider, "successfully sent", fileName, "to client")
-    else
-        print(provider, "tried to include", fileName, "but failed due to non-existence")
-    end
-end
-
 if not gmod then return end
 
+local MMC = "log4g/mmc-gui/MMC.lua"
+
+local function checkAndInclude(provider, fileName, addCSLuaFile, path)
+    if not file.Exists(fileName, path) then return end
+    include(fileName)
+    print(provider .. ": included " .. fileName)
+    if addCSLuaFile ~= true then return end
+    AddCSLuaFile(fileName)
+    print(provider .. ": sent " .. fileName .. " to cl")
+end
+
 if SERVER then
-    local type = type
     --- The global table for the logging system.
-    -- It provides easy access to some functions for other components of the logging system that require them.
+    -- It provides easy access to some functions for other components of the logging system.
     -- @table Log4g
-    -- @field Core
-    -- @field Level
     Log4g = Log4g or {}
 
-    --- Execute the given function and see how long it takes.
-    -- @param func Function
-    -- @return number Precise time
-    function Log4g.timeit(func)
-        if type(func) ~= "function" then return end
-        local SysTime = SysTime
-        local startTime = SysTime()
-        func()
-        local endTime = SysTime()
-
-        return endTime - startTime
+    function Log4g.includeFromDir(dir)
+        for _, fileName in pairs(file.Find(dir .. "*", "lsv")) do
+            include(dir .. fileName)
+        end
     end
 
-    checkAndInclude("Log4g sv-init", "log4g/core/Core.lua")
-    checkAndInclude("Log4g sv-init", "log4g/api/API.lua")
-    checkAndInclude("Log4g sv-init", MMC, true)
-    checkAndInclude("Log4g sv-init", "log4g/core-test/CoreTest.lua")
+    checkAndInclude("log4g sv-init", "log4g/core/Core.lua", false, "lsv")
+    checkAndInclude("log4g sv-init", "log4g/api/API.lua", false, "lsv")
+    checkAndInclude("log4g sv-init", MMC, true, "lsv")
+    checkAndInclude("log4g sv-init", "log4g/core-test/CoreTest.lua", false, "lsv")
 elseif CLIENT then
-    checkAndInclude("Log4g cl-init", MMC)
+    checkAndInclude("log4g cl-init", MMC, false, "lcl")
 end

@@ -1,6 +1,7 @@
 --- The Appender.
 -- Subclassing `LifeCycle`.
 -- @classmod Appender
+Log4g.Core.Appender = Log4g.Core.Appender or {}
 local LifeCycle = Log4g.Core.LifeCycle.getClass()
 local Appender = LifeCycle:subclass"Appender"
 
@@ -23,10 +24,8 @@ function Appender:Append()
     return true
 end
 
-local function GetClass()
+function Log4g.Core.Appender.getClass()
     return Appender
 end
 
-Log4g.Core.Appender = {
-    getClass = GetClass
-}
+Log4g.includeFromDir("log4g/core/appender/")

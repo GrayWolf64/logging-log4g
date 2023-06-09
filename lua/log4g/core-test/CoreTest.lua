@@ -5,14 +5,12 @@
 
 concommand.Add("log4g_load_coretest", function()
     Log4g.CoreTest = Log4g.CoreTest or {}
-    local stringChar = string.char
-    local mathRandom = math.random
 
     function Log4g.CoreTest.randomString(len)
         local res = ""
 
         for i = 1, len do
-            res = res .. stringChar(mathRandom(97, 122))
+            res = res .. string.char(math.random(97, 122))
         end
 
         return res
