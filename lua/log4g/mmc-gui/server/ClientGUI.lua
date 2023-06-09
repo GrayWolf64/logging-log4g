@@ -16,7 +16,6 @@ local netReceive, netStart = net.Receive, net.Start
 local netSend = net.Send
 local netWriteUInt, netWriteBool = net.WriteUInt, net.WriteBool
 local netWriteDouble, netWriteFloat = net.WriteDouble, net.WriteFloat
-local netWriteString = net.WriteString
 
 AddNetworkStrsViaTbl({
     [1] = "Log4g_CLReq_ChkConnected",
