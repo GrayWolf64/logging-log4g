@@ -1,10 +1,10 @@
-# [Log4g](https://github.com/GrayWolf64/gmod-logging-log4g/wiki)
+# [Log4g](https://github.com/GrayWolf64/logging-log4g/wiki)
 
-[![Repository Size](https://img.shields.io/github/repo-size/GrayWolf64/gmod-logging-log4g?label=Repository%20Size&style=flat-square)](https://github.com/GrayWolf64/gmod-logging-log4g/)
-[![Commit Activity](https://img.shields.io/github/commit-activity/m/GrayWolf64/gmod-logging-log4g?label=Commit%20Activity&style=flat-square)](https://github.com/GrayWolf64/gmod-logging-log4g/graphs/commit-activity)
-[![Issues](https://img.shields.io/github/issues/GrayWolf64/gmod-logging-log4g?style=flat-square)](https://github.com/GrayWolf64/gmod-logging-log4g/issues)
+[![Repository Size](https://img.shields.io/github/repo-size/GrayWolf64/logging-log4g?label=Repository%20Size&style=flat-square)](https://github.com/GrayWolf64/logging-log4g/)
+[![Commit Activity](https://img.shields.io/github/commit-activity/m/GrayWolf64/logging-log4g?label=Commit%20Activity&style=flat-square)](https://github.com/GrayWolf64/logging-log4g/graphs/commit-activity)
+[![Issues](https://img.shields.io/github/issues/GrayWolf64/logging-log4g?style=flat-square)](https://github.com/GrayWolf64/logging-log4g/issues)
 
-[![Last Commit](https://img.shields.io/github/last-commit/GrayWolf64/gmod-logging-log4g)](https://github.com/GrayWolf64/gmod-logging-log4g/)
+[![Last Commit](https://img.shields.io/github/last-commit/GrayWolf64/logging-log4g)](https://github.com/GrayWolf64/logging-log4g/)
 
 Log4g is an advanced logging framework for Garry's Mod.
 
@@ -16,7 +16,7 @@ Log4g is an advanced logging framework for Garry's Mod.
 
 ### Component Src Dir
 
-[lua/log4g](https://github.com/GrayWolf64/gmod-logging-log4g/tree/main/lua/log4g)
+[lua/log4g](https://github.com/GrayWolf64/logging-log4g/tree/main/lua/log4g)
 
 ## How to Add It To Your Project / How to Test?
 
@@ -63,7 +63,7 @@ The Log4g Documentation is available [here](https://github.com/GrayWolf64/Log4g/
 
 ## Compatibility With Non-GMOD Projects
 
-Some functions need to be replaced in order for this to work.
+A lot of functions need to be replaced in order for this to work.
 
 1. `isstring()`
 2. `isbool()`
