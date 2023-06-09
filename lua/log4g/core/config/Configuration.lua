@@ -3,6 +3,7 @@
 -- @classmod Configuration
 -- @license Apache License 2.0
 -- @copyright GrayWolf64
+Log4g.Core.Config.Configuration = Log4g.Core.Config.Configuration or {}
 local LifeCycle = Log4g.Core.LifeCycle.getClass()
 local checkClass = include("log4g/core/util/TypeUtil.lua").checkClass
 local Configuration = LifeCycle:subclass"Configuration"
@@ -23,7 +24,7 @@ end
 
 --- Adds a Appender to the Configuration.
 -- @param appender The Appender to add
--- @bool ifsuccessfullyadded
+-- @return bool ifsuccessful
 function Configuration:AddAppender(ap)
     if not checkClass(ap, "Appender") then return end
     if self:GetPrivateField(0x0015)[ap:GetName()] then return false end
@@ -71,17 +72,12 @@ end
 --- Create a Configuration.
 -- @param name The name of the Configuration
 -- @return object configuration
-local function Create(name)
+function Log4g.Core.Config.Configuration.create(name)
     if type(name) ~= "string" then return end
 
     return Configuration(name)
 end
 
-local function GetClass()
+function Log4g.Core.Config.Configuration.getClass()
     return Configuration
 end
-
-Log4g.Core.Config.Configuration = {
-    getClass = GetClass,
-    create = Create
-}
