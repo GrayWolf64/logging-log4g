@@ -2,8 +2,3 @@
 # https://marketplace.visualstudio.com/items?itemName=uctakeoff.vscode-counter
 # Used for analyse code statics.
 /.VSCodeCounter
-# Ignore the folder of LDoc which is responsible for generating docs.
-# Also ignore the docs output folder.
-# https://github.com/lunarmodules/LDoc
-/ldoc
-/docs
