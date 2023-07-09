@@ -10,10 +10,10 @@ local MMC = "log4g/mmc-gui/MMC.lua"
 local function checkAndInclude(provider, fileName, addCSLuaFile, path)
     if not file.Exists(fileName, path) then return end
     include(fileName)
-    print(provider .. ": included " .. fileName)
+    MsgC(Color(0, 205, 0), "[" .. provider .. "]", Color(156, 241, 255, 200), " included " .. fileName .. "\n")
     if addCSLuaFile ~= true then return end
     AddCSLuaFile(fileName)
-    print(provider .. ": sent " .. fileName .. " to cl")
+    MsgC(Color(0, 205, 0), "[" .. provider .. "]", Color(255, 241, 122, 200), " distributed CL file " .. fileName .. "\n")
 end
 
 if SERVER then
