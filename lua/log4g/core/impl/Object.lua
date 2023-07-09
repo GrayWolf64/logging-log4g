@@ -2,19 +2,18 @@
 -- @classmod Object
 -- @license Apache License 2.0
 -- @copyright GrayWolf64
-local ipairs = ipairs
-local StripDotExtension = include("log4g/core/util/StringUtil.lua").StripDotExtension
-local Object = include("log4g/core/impl/MiddleClass.lua")("Object")
+local StripDotExtension = include"log4g/core/util/StringUtil.lua".StripDotExtension
+local Object = include"log4g/core/impl/MiddleClass.lua""Object"
 
 --- A table for storing private properties of an object.
 -- @local
--- @table Private
-local Private = Private or setmetatable({}, {
+-- @table _pvt
+local _pvt = _pvt or setmetatable({}, {
     __mode = "k"
 })
 
 function Object:Initialize()
-    Private[self] = {}
+    _pvt[self] = {}
 end
 
 function Object:__tostring()
@@ -23,26 +22,26 @@ end
 
 function Object:SetName(name)
     if type(name) ~= "string" then return end
-    Private[self].name = name
+    _pvt[self].name = name
 end
 
 function Object:GetName()
-    return Private[self].name
+    return _pvt[self].name
 end
 
 function Object:SetPrivateField(key, value)
     if not key or not value then return end
-    Private[self][key] = value
+    _pvt[self][key] = value
 end
 
 function Object:GetPrivateField(key)
     if not key then return end
 
-    return Private[self][key]
+    return _pvt[self][key]
 end
 
 function Object:DestroyPrivateTable()
-    Private[self] = nil
+    _pvt[self] = nil
 end
 
 local function GetClass()
