@@ -56,16 +56,12 @@ end
 -- @return table ancestors' names in a list-styled table
 -- @return table parent name but with dots removed in a table
 local function EnumerateAncestors(name)
-    local nodes, ancestors, s = StripDotExtension(name, false), {}, ""
+    local nodes, ancestors, ancestNames = StripDotExtension(name, false), {}, {}
+    local tableInsert, tableConcat = table.insert, table.concat
 
     for k, v in ipairs(nodes) do
-        if k ~= 1 then
-            s = s .. "." .. v
-        else
-            s = s .. v
-        end
-
-        ancestors[s] = true
+        tableInsert(ancestNames, v)
+        ancestors[tableConcat(ancestNames, ".")] = true
     end
 
     return ancestors, nodes
