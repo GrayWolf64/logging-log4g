@@ -1,0 +1,33 @@
+16bit,  name,        int
+
+0x0010, ctx,         16
+0x00A1, source,      161
+0x0011, config,      17
+0x00AB, startTime,   171
+0x0012, parent,      18
+0x0013, lc,          19
+0x0014, logger,      20
+0x00C9, additive,    201
+0x0015, ap,          21
+0x00D3, apref,       211
+0x0016, level,       22
+0x00DD, int,         221
+0x00DE, color,       222
+0x0017, layout,      23
+0x0018, state,       24
+0x001A, ln,          26
+0x001B, lv,          27
+0x001C, timeCreated, 28
+0x001D, msg,         29
+0x001E, logeventSrc, 30
+
+# This is used in objects' private fields
+
+0x0640,   INITIALIZING, 1600
+0x0C80,   INITIALIZED,  3200
+0x12C0,   STARTING,     4800
+0x1900,   STARTED,      6400
+0x1F40,   STOPPING,     8000
+0x2580,   STOPPED,      9600
+
+# This is used in LifeCycle states
