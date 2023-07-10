@@ -4,14 +4,11 @@
 -- @classmod LoggerContext
 -- @license Apache License 2.0
 -- @copyright GrayWolf64
-Log4g.Core.LoggerContext = Log4g.Core.LoggerContext or {}
-local LifeCycle = Log4g.Core.LifeCycle.getClass()
-local checkClass = include("log4g/core/util/TypeUtil.lua").checkClass
-local LoggerContext = LoggerContext or LifeCycle:subclass"LoggerContext"
+local LifeCycle               = Log4g.Core.LifeCycle.getClass()
+local checkClass              = include("log4g/core/util/TypeUtil.lua").checkClass
+local LoggerContext           = LoggerContext or LifeCycle:subclass"LoggerContext"
 local GetDefaultConfiguration = Log4g.Core.Config.GetDefaultConfiguration
-local getLContextRepo = Log4g.Core.Repository.getLContextRepo
-local pairs = pairs
-local type = type
+local getLContextRepo         = Log4g.Core.Repository.getLContextRepo
 
 function LoggerContext:Initialize(name)
     LifeCycle.Initialize(self)
@@ -83,22 +80,11 @@ function LoggerContext:HasLogger(name)
     return false
 end
 
-function Log4g.Core.LoggerContext.getAll()
-    return getLContextRepo():Access()
-end
-
---- Get the LoggerContext with the right name.
--- @param name String name
--- @return object loggercontext
-function Log4g.Core.LoggerContext.get(name)
-    return getLContextRepo():Access()[name]
-end
-
 --- Register a LoggerContext.
 -- @param name The name of the LoggerContext
 -- @param withconfig Whether or not come with a DefaultConfiguration, leaving it nil will make it come with one
 -- @return object loggercontext
-function Log4g.Core.LoggerContext.register(name, withconfig)
+local function registerLContext(name, withconfig)
     if type(name) ~= "string" then return end
     local ctxdict = getLContextRepo():Access()
     local ctx = ctxdict[name]
@@ -116,7 +102,7 @@ end
 
 --- Get the number of Loggers across all the LoggerContexts.
 -- @return number count
-function Log4g.Core.LoggerContext.getLoggerCount()
+local function getLoggerCount()
     local num, tableCount = 0, table.Count
 
     for _, v in pairs(getLContextRepo():Access()) do
@@ -126,6 +112,10 @@ function Log4g.Core.LoggerContext.getLoggerCount()
     return num
 end
 
-function Log4g.Core.LoggerContext.GetClass()
-    return LoggerContext
-end
+Log4g.Core.LoggerContext = {
+    GetClass = function() return LoggerContext end,
+    getAll = function() return getLContextRepo():Access() end,
+    get = function(name) return getLContextRepo():Access()[name] end,
+    getLoggerCount = getLoggerCount,
+    register = registerLContext
+}

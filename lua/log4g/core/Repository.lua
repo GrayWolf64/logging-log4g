@@ -1,3 +1,7 @@
+--- Repositories are used to store and retrieve an object.
+-- @classmod Repository
+-- @license Apache License 2.0
+-- @copyright GrayWolf64
 local Object = Log4g.Core.Object.getClass()
 local Repository = Repository or Object:subclass"Repository"
 

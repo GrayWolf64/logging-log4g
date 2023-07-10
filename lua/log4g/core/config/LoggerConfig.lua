@@ -4,19 +4,15 @@
 -- @classmod LoggerConfig
 -- @license Apache License 2.0
 -- @copyright GrayWolf64
-local LifeCycle = Log4g.Core.LifeCycle.getClass()
-local LoggerContext = Log4g.Core.LoggerContext
-local Object = Log4g.Core.Object
-local GetLevel = Log4g.Core.Level.getLevel
-local checkClass = include("log4g/core/util/TypeUtil.lua").checkClass
-local LoggerConfig = LoggerConfig or LifeCycle:subclass"LoggerConfig"
-local EnumerateAncestors = Object.enumerateAncestors
-LoggerConfig:include(Object.contextualMixins)
-StringUtil = nil
-local tableConcat = table.concat
-local GetCtx, GetAllCtx = LoggerContext.get, LoggerContext.getAll
-local pairs, next = pairs, next
-local type = type
+local LifeCycle          = Log4g.Core.LifeCycle.getClass()
+local GetLevel           = Log4g.Core.Level.getLevel
+local checkClass         = include("log4g/core/util/TypeUtil.lua").checkClass
+local LoggerConfig       = LoggerConfig or LifeCycle:subclass"LoggerConfig"
+local EnumerateAncestors = Log4g.Core.Object.enumerateAncestors
+local tableConcat        = table.concat
+local GetCtx,             GetAllCtx = Log4g.Core.LoggerContext.get, Log4g.Core.LoggerContext.getAll
+local pairs,              next      = pairs,                        next
+LoggerConfig:include(Log4g.Core.Object.contextualMixins)
 
 function LoggerConfig:Initialize(name)
     LifeCycle.Initialize(self)
@@ -141,10 +137,6 @@ function RootLoggerConfig:GetParent()
     return false
 end
 
-local function GetRootLoggerConfigClass()
-    return RootLoggerConfig
-end
-
 --- Check if a LoggerConfig's ancestors exist and return its desired parent name.
 -- @lfunction ValidateAncestors
 -- @param loggerConfig LoggerConfig object
@@ -204,6 +196,6 @@ end
 
 Log4g.Core.Config.LoggerConfig = {
     create = Create,
-    getRootLoggerConfigClass = GetRootLoggerConfigClass,
+    getRootLoggerConfigClass = function() return RootLoggerConfig end,
     hasLoggerConfig = HasLoggerConfig
 }
