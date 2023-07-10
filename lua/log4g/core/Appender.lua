@@ -3,7 +3,7 @@
 -- @classmod Appender
 Log4g.Core.Appender = Log4g.Core.Appender or {}
 local LifeCycle = Log4g.Core.LifeCycle.getClass()
-local Appender = LifeCycle:subclass"Appender"
+local Appender = Appender or LifeCycle:subclass"Appender"
 
 function Appender:Initialize(name, layout)
     LifeCycle.Initialize(self)

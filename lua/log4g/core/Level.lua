@@ -6,7 +6,7 @@
 Log4g.Core.Level = Log4g.Core.Level or {}
 local Object = Log4g.Core.Object.getClass()
 local checkClass = include("log4g/core/util/TypeUtil.lua").checkClass
-local Level = Object:subclass"Level"
+local Level = Level or Object:subclass"Level"
 local type = type
 
 function Level:Initialize(name, int, color)

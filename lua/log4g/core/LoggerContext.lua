@@ -7,10 +7,9 @@
 Log4g.Core.LoggerContext = Log4g.Core.LoggerContext or {}
 local LifeCycle = Log4g.Core.LifeCycle.getClass()
 local checkClass = include("log4g/core/util/TypeUtil.lua").checkClass
-local LoggerContext = LifeCycle:subclass"LoggerContext"
+local LoggerContext = LoggerContext or LifeCycle:subclass"LoggerContext"
 local GetDefaultConfiguration = Log4g.Core.Config.GetDefaultConfiguration
-local getContextDict = Log4g.Core.getContextDict
-local addToContextDict = Log4g.Core.addToContextDict
+local getLContextRepo = Log4g.Core.Repository.getLContextRepo
 local pairs = pairs
 local type = type
 
@@ -72,7 +71,7 @@ function LoggerContext:Terminate()
     self:SetStopped()
     local name = self:GetName()
     self:DestroyPrivateTable()
-    getContextDict()[name] = nil
+    getLContextRepo():Access()[name] = nil
 end
 
 --- Determines if the specified Logger exists.
@@ -85,14 +84,14 @@ function LoggerContext:HasLogger(name)
 end
 
 function Log4g.Core.LoggerContext.getAll()
-    return getContextDict()
+    return getLContextRepo():Access()
 end
 
 --- Get the LoggerContext with the right name.
 -- @param name String name
 -- @return object loggercontext
 function Log4g.Core.LoggerContext.get(name)
-    return getContextDict()[name]
+    return getLContextRepo():Access()[name]
 end
 
 --- Register a LoggerContext.
@@ -101,7 +100,7 @@ end
 -- @return object loggercontext
 function Log4g.Core.LoggerContext.register(name, withconfig)
     if type(name) ~= "string" then return end
-    local ctxdict = getContextDict()
+    local ctxdict = getLContextRepo():Access()
     local ctx = ctxdict[name]
     if checkClass(ctx, "LoggerContext") then return ctx end
     ctx = LoggerContext(name)
@@ -110,7 +109,7 @@ function Log4g.Core.LoggerContext.register(name, withconfig)
         ctx:SetConfiguration(GetDefaultConfiguration())
     end
 
-    addToContextDict(name, ctx)
+    getLContextRepo():InsertKVPair(name, ctx)
 
     return ctx
 end
@@ -120,7 +119,7 @@ end
 function Log4g.Core.LoggerContext.getLoggerCount()
     local num, tableCount = 0, table.Count
 
-    for _, v in pairs(getContextDict()) do
+    for _, v in pairs(getLContextRepo():Access()) do
         num = num + tableCount(v:GetLoggers())
     end
 

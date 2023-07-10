@@ -9,7 +9,7 @@ local LoggerContext = Log4g.Core.LoggerContext
 local Object = Log4g.Core.Object
 local GetLevel = Log4g.Core.Level.getLevel
 local checkClass = include("log4g/core/util/TypeUtil.lua").checkClass
-local LoggerConfig = LifeCycle:subclass"LoggerConfig"
+local LoggerConfig = LoggerConfig or LifeCycle:subclass"LoggerConfig"
 local EnumerateAncestors = Object.enumerateAncestors
 LoggerConfig:include(Object.contextualMixins)
 StringUtil = nil

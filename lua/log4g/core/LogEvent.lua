@@ -3,7 +3,7 @@
 -- @classmod LogEvent
 Log4g.Core.LogEvent = Log4g.Core.LogEvent or {}
 local Object = Log4g.Core.Object.getClass()
-local LogEvent = Object:subclass"LogEvent"
+local LogEvent = LogEvent or Object:subclass"LogEvent"
 local checkClass = include("log4g/core/util/TypeUtil.lua").checkClass
 local SysTime, debugGetInfo = SysTime, debug.getinfo
 

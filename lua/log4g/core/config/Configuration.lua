@@ -6,7 +6,7 @@
 Log4g.Core.Config.Configuration = Log4g.Core.Config.Configuration or {}
 local LifeCycle = Log4g.Core.LifeCycle.getClass()
 local checkClass = include("log4g/core/util/TypeUtil.lua").checkClass
-local Configuration = LifeCycle:subclass"Configuration"
+local Configuration = Configuration or LifeCycle:subclass"Configuration"
 Configuration:include(Log4g.Core.Object.contextualMixins)
 local SysTime = SysTime
 

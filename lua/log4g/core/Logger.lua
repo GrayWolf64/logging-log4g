@@ -4,7 +4,7 @@
 -- @copyright GrayWolf64
 Log4g.Core.Logger = Log4g.Core.Logger or {}
 local Object = Log4g.Core.Object.getClass()
-local Logger = Object:subclass("Logger")
+local Logger = Logger or Object:subclass("Logger")
 local GetCtx = Log4g.Core.LoggerContext.get
 local HasLoggerConfig = Log4g.Core.Config.LoggerConfig.hasLoggerConfig
 local EnumerateAncestors = Log4g.Core.Object.enumerateAncestors

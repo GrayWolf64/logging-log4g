@@ -4,24 +4,11 @@
 -- @copyright GrayWolf64
 Log4g.Core = Log4g.Core or {}
 Log4g.Core.Config = Log4g.Core.Config or {}
---- A dictionary for storing LoggerContext objects.
--- Only one ContextDictionary exists in the logging system.
--- @local
--- @table contextDict
-local contextDict = contextDict or {}
-
-function Log4g.Core.getContextDict()
-    return contextDict
-end
-
-function Log4g.Core.addToContextDict(key, value)
-    if not key or not value then return end
-    contextDict[key] = value
-end
 
 CreateConVar("log4g_rootLoggerName", "root", 4194304)
 
 include"log4g/core/impl/Object.lua"
+include"log4g/core/Repository.lua"
 include"log4g/core/LifeCycle.lua"
 include"log4g/core/Level.lua"
 include"log4g/core/Layout.lua"

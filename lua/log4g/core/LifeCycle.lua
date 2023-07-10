@@ -11,7 +11,7 @@
 -- @copyright GrayWolf64
 Log4g.Core.LifeCycle = Log4g.Core.LifeCycle or {}
 local Object = Log4g.Core.Object.getClass()
-local LifeCycle = Object:subclass"LifeCycle"
+local LifeCycle = LifeCycle or Object:subclass"LifeCycle"
 local type = type
 
 --- LifeCycle states.

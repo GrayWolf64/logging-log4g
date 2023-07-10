@@ -3,7 +3,7 @@
 -- @license Apache License 2.0
 -- @copyright GrayWolf64
 local Layout = Log4g.Core.Layout.getClass()
-local PatternLayout = Layout:subclass"PatternLayout"
+local PatternLayout = PatternLayout or Layout:subclass"PatternLayout"
 local checkClass = include("log4g/core/util/TypeUtil.lua").checkClass
 local charPos = include"log4g/core/util/StringUtil.lua".CharPos
 local pairs, ipairs = pairs, ipairs

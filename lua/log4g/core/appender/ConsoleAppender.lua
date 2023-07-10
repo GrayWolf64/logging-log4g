@@ -2,7 +2,7 @@
 -- Subclassing `Appender`.
 -- @classmod ConsoleAppender
 local Appender = Log4g.Core.Appender.getClass()
-local ConsoleAppender = Appender:subclass("ConsoleAppender")
+local ConsoleAppender = ConsoleAppender or Appender:subclass("ConsoleAppender")
 local checkClass = include("log4g/core/util/TypeUtil.lua").checkClass
 local MsgC = MsgC
 

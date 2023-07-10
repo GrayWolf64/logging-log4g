@@ -19,6 +19,7 @@
 0x001C ,timeCreated  ,  28
 0x001D ,msg          ,  29
 0x001E ,logeventSrc  ,  30
+0x03E8 ,repo         ,1000
 0x0640 ,INITIALIZING ,1600
 0x0C80 ,INITIALIZED  ,3200
 0x12C0 ,STARTING     ,4800
