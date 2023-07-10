@@ -1,13 +1,12 @@
 --- The Level (Log Level).
 -- Levels used for identifying the severity of an event.
--- Every standard Level has a [Color](https://wiki.facepunch.com/gmod/Color).
+-- Every standard Level has a [Color](https://wiki.facepunch.com/gmod/Color) by default.
 -- Subclassing 'Object'.
 -- @classmod Level
-Log4g.Core.Level = Log4g.Core.Level or {}
-local Object = Log4g.Core.Object.getClass()
-local checkClass = include"util/TypeUtil.lua".checkClass
-local Level = Level or Object:subclass"Level"
-local type = type
+local Object        = Log4g.Core.Object.getClass()
+local checkClass    = include"util/TypeUtil.lua".checkClass
+local Level         = Level or Object:subclass"Level"
+local getCLevelRepo = Log4g.Core.Repository.getCLevelRepo
 
 function Level:Initialize(name, int, color)
     Object.Initialize(self)
@@ -32,6 +31,12 @@ function Level:GetColor()
     return self:GetPrivateField(0x00DE)
 end
 
+function Level:SetColor(color)
+    if not IsColor(color) then return end
+
+    self:SetPrivateField(0x00DE, color)
+end
+
 --- Compares the Level against the Levels passed as arguments and returns true if this level is in between the given levels.
 -- @param l1 The Level with a certain intlevel
 -- @param l2 The Level with another intlevel
@@ -43,16 +48,9 @@ function Level:IsInRange(l1, l2)
     return false
 end
 
---- Custom Logging Levels created by users.
--- @local
--- @table customLevel
-local customLevel = customLevel or {}
-
 --- Get the Custom Levels as a table.
 -- @return table customLevel
-function Log4g.Core.Level.getCustomLevel()
-    return customLevel
-end
+local function getCustomLevel() return getCLevelRepo():Access() end
 
 --- Standard Int Levels.
 -- `ALL` has a intlevel of `math.huge`.
@@ -100,41 +98,26 @@ for k, v in pairs(StdIntLevel) do
     StdLevel[k] = Level(k, v, StdLevelColor[k])
 end
 
---- Get the Standard Levels as a table.
--- @return table StdLevel
-function Log4g.Core.Level.getStdLevel()
-    return StdLevel
-end
-
---- Get the Level.
--- Return the Level associated with the name or nil if the Level cannot be found.
--- @param name The Level's name
--- @return object level
-function Log4g.Core.Level.getLevel(name)
-    if StdLevel[name] then
-        return StdLevel[name]
-    elseif customLevel[name] then
-        return customLevel[name]
-    end
-end
-
 --- Retrieves an existing CustomLevel or creates one if it didn't previously exist.
 -- If the CustomLevel matching the provided name already exists, it's intlevel will be overrode.
 -- @param name The Level's name
 -- @param int The Level's intlevel
 -- @return object level
-function Log4g.Core.Level.forName(name, int)
+local function forName(name, int)
     if type(name) ~= "string" or type(int) ~= "number" or StdLevel[name] then return end
     if #name == 0 or int <= 0 then return end
 
-    if not customLevel[name] then
-        local level = Level(name, int)
-        customLevel[name] = level
+    local customLevel = getCustomLevel()
 
-        return level
-    else
-        customLevel[name].int = int
+    if not customLevel[name] then customLevel[name] = Level(name, int)
+    else customLevel[name].int = int end
 
-        return customLevel[name]
-    end
+    return customLevel[name]
 end
+
+Log4g.Core.Level = {
+    getCustomLevel = getCustomLevel,
+    getStdLevel = function() return StdLevel end,
+    getLevel = function(name) return StdLevel[name] or getCLevelRepo():Access()[name] end,
+    forName = forName
+}

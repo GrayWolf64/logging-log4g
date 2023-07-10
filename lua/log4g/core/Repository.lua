@@ -20,8 +20,10 @@ function Repository:InsertKVPair(k, v)
     self:Access()[k] = v
 end
 
-local LContextRepo = LContextRepo or Repository("LContextRepo")
+local LContextRepo = LContextRepo or Repository"LContextRepo"
+local CLevelRepo = CLevelRepo or Repository"CLevelRepo"
 
 Log4g.Core.Repository = {
-    getLContextRepo = function() return LContextRepo end
+    getLContextRepo = function() return LContextRepo end,
+    getCLevelRepo = function() return CLevelRepo end
 }
