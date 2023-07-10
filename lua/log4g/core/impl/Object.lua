@@ -44,10 +44,6 @@ function Object:DestroyPrivateTable()
     _pvt[self] = nil
 end
 
-local function GetClass()
-    return Object
-end
-
 --- Generate all the ancestors' names of a LoggerConfig or something else.
 -- The provided name must follow [Named Hierarchy](https://logging.apache.org/log4j/2.x/manual/architecture.html).
 -- @lfunction EnumerateAncestors
@@ -67,7 +63,7 @@ local function EnumerateAncestors(name)
 end
 
 Log4g.Core.Object = {
-    getClass = GetClass,
+    getClass = function() return Object end,
     enumerateAncestors = EnumerateAncestors,
     contextualMixins = {
         SetContext = function(self, ctx)
