@@ -17,6 +17,6 @@ concommand.Add("log4g_load_coretest", function()
     end
 
     include"log4g/core-test/ExtendedLevels.lua"
-    include"log4g/core-test/TestLoggerContext.lua"
+    include"log4g/core-test/CoreLoggerContexts.lua"
     include"log4g/core-test/TestLogger.lua"
 end)
