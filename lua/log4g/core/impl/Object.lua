@@ -2,8 +2,8 @@
 -- @classmod Object
 -- @license Apache License 2.0
 -- @copyright GrayWolf64
-local StripDotExtension = include"log4g/core/util/StringUtil.lua".StripDotExtension
-local Object = include"log4g/core/impl/MiddleClass.lua""Object"
+local StripDotExtension = include"../util/StringUtil.lua".StripDotExtension
+local Object = include"MiddleClass.lua""Object"
 
 --- A table for storing private properties of an object.
 -- @local

@@ -6,7 +6,7 @@
 -- @copyright GrayWolf64
 local LifeCycle          = Log4g.Core.LifeCycle.getClass()
 local GetLevel           = Log4g.Core.Level.getLevel
-local checkClass         = include("log4g/core/util/TypeUtil.lua").checkClass
+local checkClass         = include"../util/TypeUtil.lua".checkClass
 local LoggerConfig       = LoggerConfig or LifeCycle:subclass"LoggerConfig"
 local EnumerateAncestors = Log4g.Core.Object.enumerateAncestors
 local tableConcat        = table.concat

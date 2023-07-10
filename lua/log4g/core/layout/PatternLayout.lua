@@ -4,8 +4,8 @@
 -- @copyright GrayWolf64
 local Layout = Log4g.Core.Layout.getClass()
 local PatternLayout = PatternLayout or Layout:subclass"PatternLayout"
-local checkClass = include("log4g/core/util/TypeUtil.lua").checkClass
-local charPos = include"log4g/core/util/StringUtil.lua".CharPos
+local checkClass = include"../util/TypeUtil.lua".checkClass
+local charPos = include"../util/StringUtil.lua".CharPos
 local pairs, ipairs = pairs, ipairs
 local unpack = unpack
 local defaultColor = Color(0, 201, 255)
