@@ -74,7 +74,7 @@ end
 -- @param char A Single character to search for
 -- @return table positions or true if not found
 function StringUtil.CharPos(str, char)
-    if type(str) ~= "string" or type(char) ~= "string" or not #char == 1 then return end
+    if type(str) ~= "string" or type(char) ~= "string" or #char ~= 1 then return end
     local pos = {}
     char = char:byte()
 
