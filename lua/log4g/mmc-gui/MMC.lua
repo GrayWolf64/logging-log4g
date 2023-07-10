@@ -4,9 +4,9 @@
 -- @license Apache License 2.0
 -- @copyright GrayWolf64
 if SERVER then
-    include"log4g/mmc-gui/server/ClientGUI.lua"
-    AddCSLuaFile"log4g/mmc-gui/client/MMCDerma.lua"
-    AddCSLuaFile"log4g/mmc-gui/client/ClientGUI.lua"
+    include"server/ClientGUI.lua"
+    AddCSLuaFile"client/MMCDerma.lua"
+    AddCSLuaFile"client/ClientGUI.lua"
 elseif CLIENT then
-    include"log4g/mmc-gui/client/ClientGUI.lua"
+    include"client/ClientGUI.lua"
 end
