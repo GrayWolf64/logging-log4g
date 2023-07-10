@@ -118,7 +118,7 @@ function LoggerConfig:ClearAppenders()
     end
 end
 
-local RootLoggerConfig = LoggerConfig:subclass"LoggerConfig.RootLogger"
+local RootLoggerConfig = RootLoggerConfig or LoggerConfig:subclass"LoggerConfig.RootLogger"
 
 function RootLoggerConfig:Initialize()
     LoggerConfig.Initialize(self, GetConVar("log4g_rootLoggerName"):GetString())
