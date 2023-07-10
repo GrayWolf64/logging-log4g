@@ -113,7 +113,7 @@ local function getLoggerCount()
 end
 
 Log4g.Core.LoggerContext = {
-    GetClass = function() return LoggerContext end,
+    getClass = function() return LoggerContext end,
     getAll = function() return getLContextRepo():Access() end,
     get = function(name) return getLContextRepo():Access()[name] end,
     getLoggerCount = getLoggerCount,
