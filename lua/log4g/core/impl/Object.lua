@@ -7,13 +7,13 @@ local Object = include"MiddleClass.lua""Object"
 
 --- A table for storing private properties of an object.
 -- @local
--- @table _pvt
-local _pvt = _pvt or setmetatable({}, {
+-- @table _tPrivate
+local _tPrivate = _tPrivate or setmetatable({}, {
     __mode = "k"
 })
 
 function Object:Initialize()
-    _pvt[self] = {}
+    _tPrivate[self] = {}
 end
 
 function Object:__tostring()
@@ -22,26 +22,26 @@ end
 
 function Object:SetName(name)
     if type(name) ~= "string" then return end
-    _pvt[self].name = name
+    _tPrivate[self].name = name
 end
 
 function Object:GetName()
-    return _pvt[self].name
+    return _tPrivate[self].name
 end
 
 function Object:SetPrivateField(key, value)
     if not key or not value then return end
-    _pvt[self][key] = value
+    _tPrivate[self][key] = value
 end
 
 function Object:GetPrivateField(key)
     if not key then return end
 
-    return _pvt[self][key]
+    return _tPrivate[self][key]
 end
 
 function Object:DestroyPrivateTable()
-    _pvt[self] = nil
+    _tPrivate[self] = nil
 end
 
 --- Generate all the ancestors' names of a LoggerConfig or something else.
