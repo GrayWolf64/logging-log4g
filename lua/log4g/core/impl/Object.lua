@@ -5,9 +5,6 @@
 local StripDotExtension = include"../util/StringUtil.lua".StripDotExtension
 local Object = include"MiddleClass.lua""Object"
 
---- A table for storing private properties of an object.
--- @local
--- @table _privateContainer
 local _privateContainer = _privateContainer or setmetatable({}, {
     __mode = "k"
 })
