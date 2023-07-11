@@ -105,8 +105,9 @@ end
 -- @param int The Level's intlevel
 -- @return object level
 local function forName(name, int)
-    if type(name) ~= "string" or type(int) ~= "number" or StdLevel[name] then return end
-    if #name == 0 or int <= 0 then return end
+    assert(type(name) == "string" and #name > 0, "name for a Level must be a string with a len > 0")
+    assert(type(int) == "number" and int > 0, "intLevel for a Level must be a number > 0")
+    assert(not StdLevel[name], "a stdLevel with the same name already exists")
 
     if not getCustomLevel()[name] then getCustomLevel()[name] = Level(name, int)
     else getCustomLevel()[name].__int = int end
