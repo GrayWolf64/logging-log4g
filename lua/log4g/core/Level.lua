@@ -10,8 +10,8 @@ local getCLevelRepo = Log4g.Core.Repository.getCLevelRepo
 
 function Level:Initialize(name, int, color)
     Object.Initialize(self)
-    self:SetPrivateField(0x00DD, int)
-    self:SetPrivateField(0x00DE, color)
+    self.int = int
+    self.color = color
     self:SetName(name)
 end
 
@@ -22,19 +22,19 @@ end
 --- Get the Level's intlevel.
 -- @return int intlevel
 function Level:IntLevel()
-    return self:GetPrivateField(0x00DD)
+    return self.int
 end
 
 --- Get the Level's Color.
--- @return object color
+-- @return Color color
 function Level:GetColor()
-    return self:GetPrivateField(0x00DE)
+    return self.color
 end
 
 function Level:SetColor(color)
     if not IsColor(color) then return end
 
-    self:SetPrivateField(0x00DE, color)
+    self.color = color
 end
 
 --- Compares the Level against the Levels passed as arguments and returns true if this level is in between the given levels.
@@ -107,12 +107,10 @@ local function forName(name, int)
     if type(name) ~= "string" or type(int) ~= "number" or StdLevel[name] then return end
     if #name == 0 or int <= 0 then return end
 
-    local customLevel = getCustomLevel()
+    if not getCustomLevel()[name] then getCustomLevel()[name] = Level(name, int)
+    else getCustomLevel()[name].int = int end
 
-    if not customLevel[name] then customLevel[name] = Level(name, int)
-    else customLevel[name].int = int end
-
-    return customLevel[name]
+    return getCustomLevel()[name]
 end
 
 Log4g.Core.Level = {
