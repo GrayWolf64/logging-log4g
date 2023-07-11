@@ -9,7 +9,6 @@
 -- @classmod LifeCycle
 -- @license Apache License 2.0
 -- @copyright GrayWolf64
-Log4g.Core.LifeCycle = Log4g.Core.LifeCycle or {}
 local Object = Log4g.Core.Object.getClass()
 local LifeCycle = LifeCycle or Object:subclass"LifeCycle"
 local type = type
@@ -40,7 +39,7 @@ end
 --- Sets the LifeCycle state.
 -- @param state A function in the `State` table which returns a string representing the state
 function LifeCycle:SetState(state)
-    if type(state) ~= "number" then return end
+    assert(type(state) == "number", "lifeCycle state must be a special number")
     self.__state = state
 end
 
@@ -62,10 +61,7 @@ function LifeCycle:GetState()
     return self.__state
 end
 
-function Log4g.Core.LifeCycle.getAllStates()
-    return State
-end
-
-function Log4g.Core.LifeCycle.getClass()
-    return LifeCycle
-end
+Log4g.Core.LifeCycle = {
+    getClass = function() return LifeCycle end,
+    getAllStates = function() return State end
+}
