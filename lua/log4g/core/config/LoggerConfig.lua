@@ -106,13 +106,11 @@ end
 
 --- Removes all Appenders configured by this LoggerConfig.
 function LoggerConfig:ClearAppenders()
-    local config, apref = GetCtx(self:GetContext()):GetConfiguration(), self:GetAppenderRef()
-    if not next(apref) then return end
+    local config, apRef = GetCtx(self:GetContext()):GetConfiguration(), self:GetAppenderRef()
+    if not next(apRef) then return end
 
-    for k in pairs(apref) do
-        config:RemoveAppender(k)
-        self:GetAppenderRef()[k] = nil
-    end
+    for apName in pairs(apRef) do config:RemoveAppender(apName) end
+    self:SetPrivateField(0x00D3, {})
 end
 
 local RootLoggerConfig = RootLoggerConfig or LoggerConfig:subclass"LoggerConfig.RootLogger"
