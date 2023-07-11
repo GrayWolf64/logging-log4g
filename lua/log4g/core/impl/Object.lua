@@ -14,7 +14,7 @@ function Object:Initialize()
 end
 
 function Object:SetPrivateField(key, value)
-    if not key or not value then return end
+    if not key or value == nil then return end
     _privateContainer[self][key] = value
 end
 
@@ -58,7 +58,7 @@ Log4g.Core.Object = {
     },
     namedMixins = {
         SetName = function(self, name)
-            if type(name) ~= "string" then return end
+            assert(type(name) == "string" and #name > 0, "name for an Object must be a string with a len > 0")
             self.__name = name
         end,
         GetName = function(self)
