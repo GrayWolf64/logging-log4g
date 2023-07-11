@@ -9,36 +9,36 @@ local SysTime, debugGetInfo = SysTime, debug.getinfo
 
 function LogEvent:Initialize(ln, level, time, msg, src)
     Object.Initialize(self)
-    self:SetPrivateField(0x001A, ln)
-    self:SetPrivateField(0x001B, level)
-    self:SetPrivateField(0x001C, time)
-    self:SetPrivateField(0x001D, msg)
-    self:SetPrivateField(0x001E, src)
+    self.__loggerName = ln
+    self.__level = level
+    self.__time = time
+    self.__msg = msg
+    self.__src = src
 end
 
 function LogEvent:GetLoggerName()
-    return self:GetPrivateField(0x001A)
+    return self.__loggerName
 end
 
 function LogEvent:GetLevel()
-    return self:GetPrivateField(0x001B)
+    return self.__level
 end
 
 function LogEvent:GetSource()
-    return self:GetPrivateField(0x001E)
+    return self.__src
 end
 
 function LogEvent:GetMsg()
-    return self:GetPrivateField(0x001D)
+    return self.__msg
 end
 
 function LogEvent:SetMsg(msg)
     if type(msg) ~= "string" then return end
-    self:SetPrivateField(0x001D, msg)
+    self.__msg = msg
 end
 
 function LogEvent:GetTime()
-    return self:GetPrivateField(0x001C)
+    return self.__time
 end
 
 --- Build a LogEvent.
@@ -46,7 +46,9 @@ end
 -- @param level Level object
 -- @param msg String message
 function Log4g.Core.LogEvent.Builder(ln, level, msg)
-    if type(ln) ~= "string" or not checkClass(level, "Level") then return end
+    assert(type(ln) == "string", "loggerName(ln) must be a string")
+    assert(checkClass(level, "Level"), "level must be a Log4g Level object")
+    assert(type(msg) == "string", "message(msg) must be a string")
 
     return LogEvent(ln, level, SysTime(), msg, debugGetInfo(4, "S").source)
 end
