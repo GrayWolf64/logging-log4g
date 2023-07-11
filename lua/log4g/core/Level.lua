@@ -34,7 +34,7 @@ end
 function Level:SetColor(color)
     if not IsColor(color) then return end
 
-    self.color = color
+    self.__color = color
 end
 
 --- Compares the Level against the Levels passed as arguments and returns true if this level is in between the given levels.
