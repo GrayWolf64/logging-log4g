@@ -1,3 +1,3 @@
 local DETAIL = Log4g.API.LoggerContextFactory.GetContext("DETAIL")
-print(DETAIL:GetName())
+print(DETAIL:GetName(), Log4g.Core.LoggerContext.getLoggerCount())
 DETAIL:Terminate()

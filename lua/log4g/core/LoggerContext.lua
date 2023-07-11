@@ -103,10 +103,14 @@ end
 --- Get the number of Loggers across all the LoggerContexts.
 -- @return number count
 local function getLoggerCount()
-    local num, tableCount = 0, table.Count
+    local num = 0
+
+    local function count(tab)
+        local n = 0 for _ in pairs(tab) do n = n + 1 end return n
+    end
 
     for _, v in pairs(getLContextRepo():Access()) do
-        num = num + tableCount(v:GetLoggers())
+        num = num + count(v:GetLoggers())
     end
 
     return num
