@@ -92,6 +92,14 @@ local function DoFormat(event, colored)
         end
     end
 
+    local function insertColor(color, subStrTab, i)
+        if colored then
+            if color then tableInsert(subStrTab, i, color)
+            else tableInsert(subStrTab, i, defaultColor) end
+            tableInsert(subStrTab, i + 2, defaultColor)
+        end
+    end
+
     --- Make a function that can replace a table's matching values with replacement content(string),
     -- and insert a Color before each replaced value. Based on `colored` bool, it will decide if `Color`s will be inserted.
     -- @lfunction mkfunc_precolor
@@ -103,16 +111,7 @@ local function DoFormat(event, colored)
             for index, subString in ipairs(subStringTable) do
                 if subString == tokenName then
                     subStringTable[index] = content
-
-                    if colored then
-                        if color then
-                            tableInsert(subStringTable, index, color)
-                        else
-                            tableInsert(subStringTable, index, defaultColor)
-                        end
-
-                        tableInsert(subStringTable, index + 2, defaultColor)
-                    end
+                    insertColor(color, subStringTable, index)
                 end
             end
         end
