@@ -24,16 +24,16 @@ function LoggerConfig:__tostring()
     return "LoggerConfig: [name:" .. self:GetName() .. "]"
 end
 
+function LoggerConfig:GetLevel()
+    return self:GetPrivateField(0x0016)
+end
+
 --- Sets the log Level.
 -- @param level The Logging Level
 function LoggerConfig:SetLevel(level)
     if not checkClass(level, "Level") then return end
-    if self:GetPrivateField(0x0016) == level then return end
+    if self:GetLevel() == level then return end
     self:SetPrivateField(0x0016, level)
-end
-
-function LoggerConfig:GetLevel()
-    return self:GetPrivateField(0x0016)
 end
 
 local function HasLoggerConfig(name, context)
