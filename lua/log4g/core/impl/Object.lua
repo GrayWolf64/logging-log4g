@@ -51,7 +51,7 @@ Log4g.Core.Object = {
     enumerateAncestors = EnumerateAncestors,
     contextualMixins = {
         SetContext = function(self, ctx)
-            if type(ctx) ~= "string" then return end
+            assert(type(ctx) == "string", "setContext can only accept a string name of a lContext")
             self:SetPrivateField(0x0010, ctx)
         end,
         GetContext = function(self) return self:GetPrivateField(0x0010) end
