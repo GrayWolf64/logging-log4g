@@ -10,8 +10,8 @@ local getCLevelRepo = Log4g.Core.Repository.getCLevelRepo
 
 function Level:Initialize(name, int, color)
     Object.Initialize(self)
-    self.int = int
-    self.color = color
+    self.__int = int
+    self.__color = color
     self:SetName(name)
 end
 
@@ -22,13 +22,13 @@ end
 --- Get the Level's intlevel.
 -- @return int intlevel
 function Level:IntLevel()
-    return self.int
+    return self.__int
 end
 
 --- Get the Level's Color.
 -- @return Color color
 function Level:GetColor()
-    return self.color
+    return self.__color
 end
 
 function Level:SetColor(color)
@@ -108,7 +108,7 @@ local function forName(name, int)
     if #name == 0 or int <= 0 then return end
 
     if not getCustomLevel()[name] then getCustomLevel()[name] = Level(name, int)
-    else getCustomLevel()[name].int = int end
+    else getCustomLevel()[name].__int = int end
 
     return getCustomLevel()[name]
 end

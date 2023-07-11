@@ -41,7 +41,7 @@ end
 -- @param state A function in the `State` table which returns a string representing the state
 function LifeCycle:SetState(state)
     if type(state) ~= "number" then return end
-    self:SetPrivateField(0x0018, state)
+    self.__state = state
 end
 
 function LifeCycle:Start()
@@ -59,7 +59,7 @@ end
 --- Gets the LifeCycle state.
 -- @return function state
 function LifeCycle:GetState()
-    return self:GetPrivateField(0x0018)
+    return self.__state
 end
 
 function Log4g.Core.LifeCycle.getAllStates()
