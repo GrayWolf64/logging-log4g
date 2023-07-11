@@ -26,7 +26,7 @@ end
 -- @return string ctxname
 -- @return object ctx
 function Logger:GetContext(ex)
-    if not ex or ex == false then
+    if not ex then
         return self:GetPrivateField(0x0010)
     else
         return GetCtx(self:GetContext())
