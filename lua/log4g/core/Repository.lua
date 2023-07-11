@@ -4,6 +4,7 @@
 -- @copyright GrayWolf64
 local Object = Log4g.Core.Object.getClass()
 local Repository = Repository or Object:subclass"Repository"
+Repository:include(Log4g.Core.Object.namedMixins)
 
 function Repository:Initialize(name)
     Object.Initialize(self)

@@ -8,16 +8,11 @@ local checkClass = include"../util/TypeUtil.lua".checkClass
 local Configuration = Configuration or LifeCycle:subclass"Configuration"
 Configuration:include(Log4g.Core.Object.contextualMixins)
 
-function Configuration:Initialize(name)
+function Configuration:Initialize()
     LifeCycle.Initialize(self)
     self:SetPrivateField(0x0015, {})
     self:SetPrivateField(0x0013, {})
     self:SetPrivateField(0x00AB, SysTime())
-    self:SetName(name)
-end
-
-function Configuration:__tostring()
-    return "Configuration: [name:" .. self:GetName() .. "]"
 end
 
 --- Gets all the Appenders in the Configuration.

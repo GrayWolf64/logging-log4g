@@ -9,6 +9,7 @@ local checkClass              = include"util/TypeUtil.lua".checkClass
 local LoggerContext           = LoggerContext or LifeCycle:subclass"LoggerContext"
 local GetDefaultConfiguration = Log4g.Core.Config.GetDefaultConfiguration
 local getLContextRepo         = Log4g.Core.Repository.getLContextRepo
+LoggerContext:include(Log4g.Core.Object.namedMixins)
 
 function LoggerContext:Initialize(name)
     LifeCycle.Initialize(self)

@@ -13,19 +13,6 @@ function Object:Initialize()
     _privateContainer[self] = {}
 end
 
-function Object:__tostring()
-    return "Object: [name:" .. self:GetName() .. "]"
-end
-
-function Object:SetName(name)
-    if type(name) ~= "string" then return end
-    _privateContainer[self].name = name
-end
-
-function Object:GetName()
-    return _privateContainer[self].name
-end
-
 function Object:SetPrivateField(key, value)
     if not key or not value then return end
     _privateContainer[self][key] = value
@@ -68,5 +55,14 @@ Log4g.Core.Object = {
             self:SetPrivateField(0x0010, ctx)
         end,
         GetContext = function(self) return self:GetPrivateField(0x0010) end
+    },
+    namedMixins = {
+        SetName = function(self, name)
+            if type(name) ~= "string" then return end
+            self.__name = name
+        end,
+        GetName = function(self)
+            return self.__name
+        end
     }
 }

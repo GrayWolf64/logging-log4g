@@ -19,8 +19,8 @@ CreateConVar(cvarMessageColor, "135 206 250 255")
 CreateConVar(cvarUptimeColor, "135 206 250 255")
 CreateConVar(cvarFileColor, "60 179 113 255")
 
-function PatternLayout:Initialize(name)
-    Layout.Initialize(self, name)
+function PatternLayout:Initialize()
+    Layout.Initialize(self)
 end
 
 --- Format the LogEvent using patterns.
@@ -134,10 +134,6 @@ function PatternLayout:Format(event, colored)
     return DoFormat(event, colored)
 end
 
-local function CreateDefaultLayout(name)
-    return PatternLayout(name)
-end
-
 Log4g.Core.Layout.PatternLayout = {
-    createDefaultLayout = CreateDefaultLayout
+    createDefaultLayout = function() return PatternLayout() end
 }

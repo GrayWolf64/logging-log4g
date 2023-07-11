@@ -13,6 +13,7 @@ local tableConcat        = table.concat
 local GetCtx,             GetAllCtx = Log4g.Core.LoggerContext.get, Log4g.Core.LoggerContext.getAll
 local pairs,              next      = pairs,                        next
 LoggerConfig:include(Log4g.Core.Object.contextualMixins)
+LoggerConfig:include(Log4g.Core.Object.namedMixins)
 
 function LoggerConfig:Initialize(name)
     LifeCycle.Initialize(self)

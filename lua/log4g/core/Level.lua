@@ -7,6 +7,7 @@ local Object        = Log4g.Core.Object.getClass()
 local checkClass    = include"util/TypeUtil.lua".checkClass
 local Level         = Level or Object:subclass"Level"
 local getCLevelRepo = Log4g.Core.Repository.getCLevelRepo
+Level:include(Log4g.Core.Object.namedMixins)
 
 function Level:Initialize(name, int, color)
     Object.Initialize(self)

@@ -3,18 +3,16 @@
 local Configuration = Log4g.Core.Config.Configuration.getClass()
 local DefaultConfiguration = DefaultConfiguration or Configuration:subclass"DefaultConfiguration"
 local CreateConsoleAppender, CreatePatternLayout = Log4g.Core.Appender.ConsoleAppender.createConsoleAppender, Log4g.Core.Layout.PatternLayout.createDefaultLayout
-CreateConVar("log4g_configuration_default_name", "default", FCVAR_NOTIFY):GetString()
 CreateConVar("log4g_configuration_default_level", "DEBUG", FCVAR_NOTIFY):GetString()
 
-function DefaultConfiguration:Initialize(name)
-    Configuration.Initialize(self, name)
+function DefaultConfiguration:Initialize()
+    Configuration.Initialize(self)
     -- self:SetPrivateField("defaultlevel", GetConVar"log4g_configuration_default_level":GetString())
 end
 
 function Log4g.Core.Config.GetDefaultConfiguration()
-    local name = GetConVar"log4g_configuration_default_name":GetString()
-    local configuration = DefaultConfiguration(name)
-    configuration:AddAppender(CreateConsoleAppender(name .. "Appender", CreatePatternLayout(name .. "Layout")))
+    local configuration = DefaultConfiguration()
+    configuration:AddAppender(CreateConsoleAppender("Appender", CreatePatternLayout("Layout")))
 
     return configuration
 end

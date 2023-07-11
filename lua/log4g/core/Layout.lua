@@ -3,13 +3,8 @@
 local Object = Log4g.Core.Object.getClass()
 local Layout = Layout or Object:subclass"Layout"
 
-function Layout:Initialize(name)
+function Layout:Initialize()
     Object.Initialize(self)
-    self:SetName(name)
-end
-
-function Layout:__tostring()
-    return "Layout: [name:" .. self:GetName() .. "]"
 end
 
 Log4g.Core.Layout = {

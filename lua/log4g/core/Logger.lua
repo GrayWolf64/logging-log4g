@@ -13,6 +13,7 @@ local StringUtil         = include"util/StringUtil.lua"
 local checkName,          StripDotExtension = StringUtil.checkName, StringUtil.StripDotExtension
 local next,               pairs             = next,                 pairs
 local LogEventBuilder    = Log4g.Core.LogEvent.Builder
+Logger:include(Log4g.Core.Object.namedMixins)
 
 function Logger:Initialize(name, context)
     Object.Initialize(self)

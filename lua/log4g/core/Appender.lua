@@ -3,6 +3,7 @@
 -- @classmod Appender
 local LifeCycle = Log4g.Core.LifeCycle.getClass()
 local Appender = Appender or LifeCycle:subclass"Appender"
+Appender:include(Log4g.Core.Object.namedMixins)
 
 function Appender:Initialize(name, layout)
     LifeCycle.Initialize(self)
