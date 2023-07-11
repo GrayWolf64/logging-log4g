@@ -51,10 +51,10 @@ local function HasLoggerConfig(name, context)
     return false
 end
 
-local function GetLoggerConfig(name)
+local function GetLoggerConfig(name, context)
     for _, v in pairs(GetAllCtx()) do
-        local loggerConfig = v:GetConfiguration():GetLoggerConfig(name)
-        if loggerConfig then return loggerConfig end
+        local lConfig = v:GetConfiguration():GetLoggerConfig(name)
+        if lConfig and lConfig:GetContext() == context then return lConfig end
     end
 end
 
@@ -183,7 +183,7 @@ local function Create(name, config, level)
     if name:find"%." then
         local valid, parent = ValidateAncestors(loggerConfig)
         if not valid then return end
-        setLevelAndParent(loggerConfig, level, GetLoggerConfig(parent):GetLevel(), parent)
+        setLevelAndParent(loggerConfig, level, GetLoggerConfig(parent, config:GetContext()):GetLevel(), parent)
     else
         setLevelAndParent(loggerConfig, level, config:GetRootLogger():GetLevel(), root)
     end
