@@ -5,7 +5,6 @@ Log4g.Core.LogEvent = Log4g.Core.LogEvent or {}
 local Object = Log4g.Core.Object.getClass()
 local LogEvent = LogEvent or Object:subclass"LogEvent"
 local checkClass = include"util/TypeUtil.lua".checkClass
-local SysTime, debugGetInfo = SysTime, debug.getinfo
 
 function LogEvent:Initialize(ln, level, time, msg, src)
     Object.Initialize(self)
@@ -50,5 +49,5 @@ function Log4g.Core.LogEvent.Builder(ln, level, msg)
     assert(checkClass(level, "Level"), "level must be a Log4g Level object")
     assert(type(msg) == "string", "message(msg) must be a string")
 
-    return LogEvent(ln, level, SysTime(), msg, debugGetInfo(4, "S").source)
+    return LogEvent(ln, level, SysTime(), msg, debug.getinfo(4, "S").source)
 end
