@@ -32,7 +32,7 @@ function LogEvent:GetMsg()
 end
 
 function LogEvent:SetMsg(msg)
-    if type(msg) ~= "string" then return end
+    assert(type(msg) == "string", "message to set must be a string")
     self.__msg = msg
 end
 
