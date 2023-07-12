@@ -4,23 +4,22 @@
 local Appender = Log4g.Core.Appender.getClass()
 local ConsoleAppender = ConsoleAppender or Appender:subclass"ConsoleAppender"
 local checkClass = include"../util/TypeUtil.lua".checkClass
-local MsgC = MsgC
 
 function ConsoleAppender:Initialize(name, layout)
     Appender.Initialize(self, name, layout)
 end
 
 function ConsoleAppender:Append(event)
-    if not checkClass(event, "LogEvent") then return end
-    local layout = self:GetLayout()
-    if not checkClass(layout, "Layout") then return end
-    MsgC(layout:Format(event, true))
-end
+    assert(checkClass(event, "LogEvent"), "only Log4g LogEvent objects are accepted")
 
-local function CreateConsoleAppender(name, layout)
-    return ConsoleAppender(name, layout)
+    MsgC(self:GetLayout():Format(event, true))
 end
 
 Log4g.Core.Appender.ConsoleAppender = {
-    createConsoleAppender = CreateConsoleAppender
+    createConsoleAppender = function(name, layout)
+        assert(type(name) == "string" and #name > 0, "name for ConsoleAppender must be a string with a len > 0")
+        assert(checkClass(layout, "Layout"), "layout must be a Log4g Layout object")
+
+        return ConsoleAppender(name, layout)
+    end
 }
