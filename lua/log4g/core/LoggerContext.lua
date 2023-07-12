@@ -54,7 +54,8 @@ end
 --- Sets the Configuration to be used.
 -- @param config Configuration
 function LoggerContext:SetConfiguration(config)
-    if not checkClass(config, "Configuration") then return end
+    assert(checkClass(config, "Configuration"), "config must be Log4g Configuration object")
+
     if self:GetConfiguration() == config then return end
     config:SetContext(self:GetName())
     self:SetPrivateField(0x0011, config)
@@ -86,7 +87,8 @@ end
 -- @param withconfig Whether or not come with a DefaultConfiguration, leaving it nil will make it come with one
 -- @return object loggercontext
 local function registerLContext(name, withconfig)
-    if type(name) ~= "string" then return end
+    assert(type(name) == "string", "name must be string for a LContext")
+
     local ctxdict = getLContextRepo():Access()
     local ctx = ctxdict[name]
     if checkClass(ctx, "LoggerContext") then return ctx end
