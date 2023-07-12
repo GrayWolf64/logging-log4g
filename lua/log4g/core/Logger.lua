@@ -55,7 +55,7 @@ function Logger:GetLoggerConfig()
 end
 
 function Logger:SetAdditive(bool)
-    if type(bool) ~= "boolean" then return end
+    assert(type(bool) == "boolean", "additive flag must be bool")
     self:SetPrivateField(0x00C9, bool)
 end
 
@@ -64,7 +64,7 @@ function Logger:IsAdditive()
 end
 
 function Logger:SetLevel(level)
-    if not checkClass(level, "Level") then return end
+    assert(checkClass(level, "Level"), "level to be set must be Log4g Level")
     self:GetLoggerConfig():SetLevel(level)
 end
 
@@ -73,7 +73,7 @@ function Logger:GetLevel()
 end
 
 function Logger:CallAppenders(event)
-    if not checkClass(event, "LogEvent") then return end
+    assert(checkClass(event, "LogEvent"), "event must be Log4g LogEvent")
     local aps = self:GetLoggerConfig():GetAppenders()
     if not next(aps) then return end
 
@@ -154,8 +154,10 @@ function Logger:Fatal(msg)
 end
 
 local function createLogger(loggerName, context, loggerconfig)
-    if not checkClass(context, "LoggerContext") then return end
-    if context:HasLogger(loggerName) or not checkName(loggerName) then return end
+    assert(checkClass(context, "LoggerContext"), "context must be Log4g LoggerContext object")
+    assert(not context:HasLogger(loggerName), "given context already has a Logger with the same given name")
+    assert(checkName(loggerName), "given Logger name doesn't meet up with standard")
+
     local logger, root = Logger(loggerName, context), GetConVar("log4g_rootLoggerName"):GetString()
 
     if loggerName:find"%." then
