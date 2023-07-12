@@ -26,9 +26,9 @@ end
 -- @param appender The Appender to add
 -- @return bool ifsuccessful
 function Configuration:AddAppender(ap)
-    if not checkClass(ap, "Appender") then return end
+    assert(checkClass(ap, "Appender"), "appender must be Log4g Appender object")
     local name = ap:GetName()
-    if self:GetAppenders()[name] then return false end
+    assert(not self:GetAppenders()[name], "appender with the same name already added")
     self:GetAppenders()[name] = ap
 
     return true
@@ -66,7 +66,7 @@ end
 Log4g.Core.Config.Configuration = {
     getClass = function() return Configuration end,
     create = function(name)
-        if type(name) ~= "string" then return end
+        assert(type(name) == "string", "configuration name must be string")
         return Configuration(name)
     end
 }
