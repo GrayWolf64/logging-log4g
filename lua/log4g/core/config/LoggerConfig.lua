@@ -166,7 +166,9 @@ end
 -- @return object loggerconfig
 local function Create(name, config, level)
     local root = GetConVar("log4g_rootLoggerName"):GetString()
-    if not checkClass(config, "Configuration") or name == root then return end
+    assert(checkClass(config, "Configuration"), "config must be Log4g Configuration object")
+    assert(name ~= root, "LConfig name can't be root name: " .. root)
+
     local loggerConfig = LoggerConfig(name)
     loggerConfig:SetContext(config:GetContext())
 
