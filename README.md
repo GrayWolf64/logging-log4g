@@ -26,24 +26,18 @@ In addition, the code itself is well documented.
 Then you just have to make sure it loads before your addon, or you can use valid checks:
 
 ```lua
---- Check the 'Log4g' global table.
 if Log4g then
-   local Logger = Log4g.Core.Logger
-   local Appender = Log4g.Core.Appender
-   local LoggerConfig = Log4g.Core.Config.LoggerConfig
-   local PatternLayout = Log4g.Core.Layout.PatternLayout
-
    --- This will locate / create a proper LoggerContext named 'Foo' with DefaultConfiguration.
    local ctx = Log4g.API.LoggerContextFactory.GetContext("Foo", true)
 
    --- This will create a new LoggerConfig named 'Calculator' and it to ctx's Configuration, then set its level to DEBUG.
-   local lc = LoggerConfig.create("Calculator", ctx:GetConfiguration(), Log4g.Core.Level.GetLevel("TRACE"))
+   local lc = Log4g.Core.Config.LoggerConfig.create("Calculator", ctx:GetConfiguration(), Log4g.Core.Level.GetLevel("TRACE"))
 
    --- It will add a ConsoleAppender to lc and set its layout to PatternLayout with default settings.
-   lc:AddAppender(Appender.createConsoleAppender("CalcOutput", PatternLayout.createDefaultLayout("CalcLayout")))
+   lc:AddAppender(Log4g.Core.Appender.createConsoleAppender("CalcOutput", Log4g.Core.Layout.PatternLayout.createDefaultLayout("CalcLayout")))
 
-   --- This will create a Logger named 'Calculate' using lc and add it to ctx.
-   local logger = Logger.create("Calculate", ctx, lc)
+   --- This will create a Logger named 'Calculator' using lc and add it to ctx.
+   local logger = Log4g.Core.Logger.create("Calculator", ctx, lc)
 
    for i = 1, 100 do
       --- Do something with i, and log messages.
