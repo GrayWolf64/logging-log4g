@@ -18,7 +18,7 @@ local _errorTitles = {
 }
 
 --- Uses debug lib to get a function's param names.
--- @param func Lua function
+-- @param func function
 -- @return table params
 local function getFuncParams(func)
     local k, params = 2, {}
@@ -32,7 +32,7 @@ local function getFuncParams(func)
 end
 
 --- Gets the digit count of a number.
--- @param n Lua number
+-- @param n number
 -- @return number digits
 local function getDigit(n)
     local digit = 0
@@ -44,13 +44,13 @@ local function getDigit(n)
 end
 
 --- Prints the values of a table.
--- @param t Lua number
+-- @param t number
 local function printTabContent(t)
     for _, v in ipairs(t) do print(v) end
 end
 
 --- Removes the '\n' at the end of a string.
--- @param str Lua string
+-- @param str string to process
 -- @return string withoutNewLine
 local function removeNewLine(str)
     if str:find("\n", #str - 1) then str = str:sub(1, #str - 1) end
@@ -77,7 +77,8 @@ end
 -- @param exp The expression to assert
 -- @param argIndex If given, the arg of that index of the defined function will be underlined
 -- @param paramWarn If given, the param's underline will be followed with a message
--- @param titleNum A title from here @{\\_errorTitles}
+-- @param titleNum A title index
+-- @see _errorTitles
 -- @param maxSrcLines If given, limits the lines of src output
 -- @param note If given, the note will be put below the src
 -- @param markData If given, add some custom marks under a certain line
