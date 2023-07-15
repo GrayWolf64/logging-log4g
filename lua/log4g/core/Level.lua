@@ -78,7 +78,7 @@ local StdIntLevel = {
 --- Standard Level Colors.
 -- @table StdLevelColor
 -- @field ALL [color_white](https://wiki.facepunch.com/gmod/Global_Variables#constants)
--- @field TRACE 42 69 70
+-- @field TRACE 139 145 233
 -- @field DEBUG 0 255 255
 -- @field INFO 0 255 0
 -- @field WARN 255 255 0
