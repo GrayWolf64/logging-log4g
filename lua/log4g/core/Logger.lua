@@ -14,9 +14,11 @@ local checkName,          StripDotExtension = StringUtil.checkName, StringUtil.S
 local next,               pairs             = next,                 pairs
 local LogEventBuilder    = Log4g.Core.LogEvent.Builder
 Logger:include(Log4g.Core.Object.namedMixins)
+Logger:include(Log4g.Core.Object.privateMixins)
 
 function Logger:Initialize(name, context)
     Object.Initialize(self)
+    self:AllocPvtC()
     self:SetPrivateField(0x0010, context:GetName())
     self:SetName(name)
     self:SetAdditive(true)

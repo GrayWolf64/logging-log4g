@@ -9,16 +9,16 @@ Repository:include(Log4g.Core.Object.namedMixins)
 function Repository:Initialize(name)
     Object.Initialize(self)
     self:SetName(name)
-    self:SetPrivateField(0x03E8, {})
+    self.__repo = {}
 end
 
 function Repository:Access()
-    return self:GetPrivateField(0x03E8)
+    return self.__repo
 end
 
 function Repository:InsertKVPair(k, v)
     if not k or not v then return end
-    self:Access()[k] = v
+    self.__repo[k] = v
 end
 
 local LContextRepo = LContextRepo or Repository"LContextRepo"

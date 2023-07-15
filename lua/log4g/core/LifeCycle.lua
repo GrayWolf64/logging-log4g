@@ -11,7 +11,7 @@
 -- @copyright GrayWolf64
 local Object = Log4g.Core.Object.getClass()
 local LifeCycle = LifeCycle or Object:subclass"LifeCycle"
-local type = type
+LifeCycle:include(Log4g.Core.Object.privateMixins)
 
 --- LifeCycle states.
 -- @table State
@@ -31,8 +31,10 @@ local State = {
     STOPPED = 0x2580
 }
 
+--- LifeCycle has private field already allocated.
 function LifeCycle:Initialize()
     Object.Initialize(self)
+    self:AllocPvtC()
     self:SetState(State.INITIALIZED)
 end
 

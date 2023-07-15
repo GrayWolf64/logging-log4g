@@ -9,23 +9,9 @@ local _privateContainer = _privateContainer or setmetatable({}, {
     __mode = "k"
 })
 
-function Object:Initialize()
+--- Allocate a field in private container indexed by `self`.
+function Object:AllocPvtC()
     _privateContainer[self] = {}
-end
-
-function Object:SetPrivateField(key, value)
-    if not key or value == nil then return end
-    _privateContainer[self][key] = value
-end
-
-function Object:GetPrivateField(key)
-    if not key then return end
-
-    return _privateContainer[self][key]
-end
-
-function Object:DestroyPrivateTable()
-    _privateContainer[self] = nil
 end
 
 --- Generate all the ancestors' names of a LoggerConfig or something else.
@@ -63,6 +49,19 @@ Log4g.Core.Object = {
         end,
         GetName = function(self)
             return self.__name
+        end
+    },
+    privateMixins = {
+        SetPrivateField = function(self, k, v)
+            if not k or v == nil then return end
+            _privateContainer[self][k] = v
+        end,
+        GetPrivateField = function(self, k)
+            if not k then return end
+            return _privateContainer[self][k]
+        end,
+        DestroyPrivateTable = function(self)
+            _privateContainer[self] = nil
         end
     }
 }
