@@ -5,7 +5,6 @@
 local StringUtil = {}
 local tableConcat, tableInsert = table.concat, table.insert
 local pairs, ipairs = pairs, ipairs
-local type = type
 
 --- Optimized version of [string.Explode](https://github.com/Facepunch/garrysmod/blob/master/garrysmod/lua/includes/extensions/string.lua#L87-L104).
 -- @lfunction stringExplode
@@ -86,5 +85,7 @@ function StringUtil.CharPos(str, char)
 
     return not #pos or pos
 end
+
+StringUtil.stringToTable = stringToTable
 
 return StringUtil

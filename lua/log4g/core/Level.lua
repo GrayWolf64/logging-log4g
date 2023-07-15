@@ -7,6 +7,7 @@ local Object        = Log4g.Core.Object.getClass()
 local checkClass    = include"util/TypeUtil.lua".checkClass
 local Level         = Level or Object:subclass"Level"
 local getCLevelRepo = Log4g.Core.Repository.getCLevelRepo
+local ErrorHandler  = include"log4g/core/ErrorHandler.lua"
 Level:include(Log4g.Core.Object.namedMixins)
 
 function Level:Initialize(name, int, color)
@@ -105,9 +106,9 @@ end
 -- @param int The Level's intlevel
 -- @return object level
 local function forName(name, int)
-    assert(type(name) == "string" and #name > 0, "name for a Level must be a string with a len > 0")
-    assert(type(int) == "number" and int > 0, "intLevel for a Level must be a number > 0")
-    assert(not StdLevel[name], "a stdLevel with the same name already exists")
+    ErrorHandler.Assert(type(name) == "string" and #name > 0, 1, "name for a Level must be a string", 1, nil, "name must have a length > 0")
+    ErrorHandler.Assert(type(int) == "number" and int > 0, 2, "intLevel for a Level must be a number", 1, nil, "intlevels must be > 0")
+    ErrorHandler.Assert(not StdLevel[name], nil, nil, 2, nil, "if a custom level with the same name already exists, its intlevel will be updated with the supplied int", {{line = 6, startPos = 5, endPos = 61, sign = "*", msg = "a stdLevel with the same name already exists"}})
 
     if not getCustomLevel()[name] then getCustomLevel()[name] = Level(name, int)
     else getCustomLevel()[name].__int = int end
