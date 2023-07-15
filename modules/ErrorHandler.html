@@ -1,0 +1,350 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<head>
+    <title>Reference</title>
+    <link rel="stylesheet" href="../ldoc.css" type="text/css" />
+</head>
+<body>
+
+<div id="container">
+
+<div id="product">
+	<div id="product_logo"></div>
+	<div id="product_name"><big><b></b></big></div>
+	<div id="product_description"></div>
+</div> <!-- id="product" -->
+
+
+<div id="main">
+
+
+<!-- Menu -->
+
+<div id="navigation">
+<br/>
+<h1>logging-log4g</h1>
+
+
+<ul>
+  <li><a href="../index.html">Index</a></li>
+</ul>
+
+<h2>Contents</h2>
+<ul>
+<li><a href="#Tables">Tables</a></li>
+<li><a href="#Local_Functions">Local Functions</a></li>
+</ul>
+
+
+<h2>Modules</h2>
+<ul class="nowrap">
+  <li><strong>ErrorHandler</strong></li>
+  <li><a href="../modules/MiddleClass.html">MiddleClass</a></li>
+  <li><a href="../modules/NetUtil.html">NetUtil</a></li>
+  <li><a href="../modules/StringUtil.html">StringUtil</a></li>
+  <li><a href="../modules/TypeUtil.html">TypeUtil</a></li>
+</ul>
+<h2>Scripts</h2>
+<ul class="nowrap">
+  <li><a href="../scripts/Log4g.html">Log4g</a></li>
+  <li><a href="../scripts/API.html">API</a></li>
+  <li><a href="../scripts/LogManager.html">LogManager</a></li>
+  <li><a href="../scripts/LoggerContextFactory.html">LoggerContextFactory</a></li>
+  <li><a href="../scripts/CoreTest.html">CoreTest</a></li>
+  <li><a href="../scripts/Core.html">Core</a></li>
+  <li><a href="../scripts/MMC.html">MMC</a></li>
+  <li><a href="../scripts/ClientGUI.html">ClientGUI</a></li>
+  <li><a href="../scripts/ClientGUI.html">ClientGUI</a></li>
+</ul>
+<h2>Classes</h2>
+<ul class="nowrap">
+  <li><a href="../classes/Appender.html">Appender</a></li>
+  <li><a href="../classes/Layout.html">Layout</a></li>
+  <li><a href="../classes/Level.html">Level</a></li>
+  <li><a href="../classes/LifeCycle.html">LifeCycle</a></li>
+  <li><a href="../classes/LogEvent.html">LogEvent</a></li>
+  <li><a href="../classes/Logger.html">Logger</a></li>
+  <li><a href="../classes/LoggerContext.html">LoggerContext</a></li>
+  <li><a href="../classes/Repository.html">Repository</a></li>
+  <li><a href="../classes/ConsoleAppender.html">ConsoleAppender</a></li>
+  <li><a href="../classes/Configuration.html">Configuration</a></li>
+  <li><a href="../classes/DefaultConfiguration.html">DefaultConfiguration</a></li>
+  <li><a href="../classes/LoggerConfig.html">LoggerConfig</a></li>
+  <li><a href="../classes/Object.html">Object</a></li>
+  <li><a href="../classes/PatternLayout.html">PatternLayout</a></li>
+</ul>
+
+</div>
+
+<div id="content">
+
+<h1>Module <code>ErrorHandler</code></h1>
+<p>Our own implementation of ErrorHandler.</p>
+<p>
+
+</p>
+    <h3>Info:</h3>
+    <ul>
+        <li><strong>Copyright</strong>: GrayWolf64</li>
+        <li><strong>License</strong>: Apache License 2.0</li>
+    </ul>
+
+
+<h2><a href="#Tables">Tables</a></h2>
+<table class="function_list">
+	<tr>
+	<td class="name" nowrap><a href="#_errorTitles">_errorTitles</a></td>
+	<td class="summary">List of available error titles to choose from.</td>
+	</tr>
+</table>
+<h2><a href="#Local_Functions">Local Functions</a></h2>
+<table class="function_list">
+	<tr>
+	<td class="name" nowrap><a href="#getFuncParams">getFuncParams (func)</a></td>
+	<td class="summary">Uses debug lib to get a function's param names.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#getDigit">getDigit (n)</a></td>
+	<td class="summary">Gets the digit count of a number.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#printTabContent">printTabContent (t)</a></td>
+	<td class="summary">Prints the values of a table.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#removeNewLine">removeNewLine (str)</a></td>
+	<td class="summary">Removes the '\n' at the end of a string.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#readLines">readLines (fileName, startLine, endLine)</a></td>
+	<td class="summary">Reads the lines of a file.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#Assert">Assert (exp, argIndex, paramWarn, titleNum, maxSrcLines, note, markData)</a></td>
+	<td class="summary">A more friendly but advanced assert function to be used by devs.</td>
+	</tr>
+</table>
+
+<br/>
+<br/>
+
+
+    <h2 class="section-header "><a name="Tables"></a>Tables</h2>
+
+    <dl class="function">
+    <dt>
+    <a name = "_errorTitles"></a>
+    <strong>_errorTitles</strong>
+    </dt>
+    <dd>
+    List of available error titles to choose from.
+
+
+    <h3>Fields:</h3>
+    <ul>
+        <li><span class="parameter">type mismatch</span>
+
+
+
+        </li>
+        <li><span class="parameter">name conflict</span>
+
+
+
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+</dl>
+    <h2 class="section-header "><a name="Local_Functions"></a>Local Functions</h2>
+
+    <dl class="function">
+    <dt>
+    <a name = "getFuncParams"></a>
+    <strong>getFuncParams (func)</strong>
+    </dt>
+    <dd>
+    Uses debug lib to get a function's param names.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">func</span>
+         Lua function
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+        table params
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "getDigit"></a>
+    <strong>getDigit (n)</strong>
+    </dt>
+    <dd>
+    Gets the digit count of a number.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">n</span>
+         Lua number
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+        number digits
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "printTabContent"></a>
+    <strong>printTabContent (t)</strong>
+    </dt>
+    <dd>
+    Prints the values of a table.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">t</span>
+         Lua number
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "removeNewLine"></a>
+    <strong>removeNewLine (str)</strong>
+    </dt>
+    <dd>
+    Removes the '\n' at the end of a string.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">str</span>
+         Lua string
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+        string withoutNewLine
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "readLines"></a>
+    <strong>readLines (fileName, startLine, endLine)</strong>
+    </dt>
+    <dd>
+    Reads the lines of a file.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">fileName</span>
+
+
+
+        </li>
+        <li><span class="parameter">startLine</span>
+
+
+
+        </li>
+        <li><span class="parameter">endLine</span>
+
+
+
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "Assert"></a>
+    <strong>Assert (exp, argIndex, paramWarn, titleNum, maxSrcLines, note, markData)</strong>
+    </dt>
+    <dd>
+    A more friendly but advanced assert function to be used by devs.
+ If an assert fails, it will show users the source code about how things should work.
+ Underlines and emphases are allowed.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">exp</span>
+         The expression to assert
+        </li>
+        <li><span class="parameter">argIndex</span>
+         If given, the arg of that index of the defined function will be underlined
+        </li>
+        <li><span class="parameter">paramWarn</span>
+         If given, the param's underline will be followed with a message
+        </li>
+        <li><span class="parameter">titleNum</span>
+         A title from here @{_errorTitles}
+        </li>
+        <li><span class="parameter">maxSrcLines</span>
+         If given, limits the lines of src output
+        </li>
+        <li><span class="parameter">note</span>
+         If given, the note will be put below the src
+        </li>
+        <li><span class="parameter">markData</span>
+         If given, add some custom marks under a certain line
+        </li>
+    </ul>
+
+
+
+
+    <h3>Usage:</h3>
+    <ul>
+        <pre class="example"><span class="keyword">local</span> markData = {{line = <span class="number">1</span>, startPos = <span class="number">2</span>, endPos = <span class="number">5</span>, sign = <span class="string">"*"</span>, msg = <span class="string">"message following the signs(marks)"</span>}}</pre>
+    </ul>
+
+</dd>
+</dl>
+
+
+</div> <!-- id="content" -->
+</div> <!-- id="main" -->
+<div id="about">
+<i>generated by <a href="http://github.com/lunarmodules/LDoc">LDoc 1.5.0</a></i>
+<i style="float:right;">Last updated 2023-07-15 08:32:24 </i>
+</div> <!-- id="about" -->
+</div> <!-- id="container" -->
+</body>
+</html>
