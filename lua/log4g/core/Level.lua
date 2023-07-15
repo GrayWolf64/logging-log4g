@@ -55,9 +55,15 @@ end
 local function getCustomLevel() return getCLevelRepo():Access() end
 
 --- Standard Int Levels.
--- `ALL` has a intlevel of `math.huge`.
--- @local
 -- @table StdIntLevel
+-- @field ALL math.huge
+-- @field TRACE 600
+-- @field DEBUG 500
+-- @field INFO 400
+-- @field WARN 300
+-- @field ERROR 200
+-- @field FATAL 100
+-- @field OFF 0
 local StdIntLevel = {
     ALL = math.huge,
     TRACE = 600,
@@ -70,11 +76,18 @@ local StdIntLevel = {
 }
 
 --- Standard Level Colors.
--- @local
 -- @table StdLevelColor
+-- @field ALL color_white
+-- @field TRACE Color(42, 69, 70)
+-- @field DEBUG Color(0, 255, 255)
+-- @field INFO Color(0, 255, 0)
+-- @field WARN Color(255, 255, 0)
+-- @field ERROR Color(255, 0, 0)
+-- @field FATAL Color(255, 48, 48)
+-- @field OFF color_white
 local StdLevelColor = {
     ALL = color_white,
-    TRACE = Color(54, 54, 54),
+    TRACE = Color(42, 69, 70),
     DEBUG = Color(0, 255, 255),
     INFO = Color(0, 255, 0),
     WARN = Color(255, 255, 0),
@@ -84,7 +97,6 @@ local StdLevelColor = {
 }
 
 --- Standard Logging Levels as a table.
--- @local
 -- @table StdLevel
 -- @field ALL All events should be logged.
 -- @field TRACE A fine-grained debug message, typically capturing the flow through the game.
