@@ -87,7 +87,7 @@ local StdIntLevel = {
 -- @field OFF [color_black](https://wiki.facepunch.com/gmod/Global_Variables#constants)
 local StdLevelColor = {
     ALL = color_white,
-    TRACE = Color(42, 69, 70),
+    TRACE = Color(139, 145, 233),
     DEBUG = Color(0, 255, 255),
     INFO = Color(0, 255, 0),
     WARN = Color(255, 255, 0),
