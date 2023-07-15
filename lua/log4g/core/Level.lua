@@ -84,7 +84,7 @@ local StdIntLevel = {
 -- @field WARN 255 255 0
 -- @field ERROR 255 0 0
 -- @field FATAL 255 48 48
--- @field OFF `color_white`
+-- @field OFF [color_black](https://wiki.facepunch.com/gmod/Global_Variables#constants)
 local StdLevelColor = {
     ALL = color_white,
     TRACE = Color(42, 69, 70),
@@ -93,7 +93,7 @@ local StdLevelColor = {
     WARN = Color(255, 255, 0),
     ERROR = Color(255, 0, 0),
     FATAL = Color(255, 48, 48),
-    OFF = color_white,
+    OFF = color_black,
 }
 
 --- Standard Logging Levels as a table.
