@@ -56,7 +56,7 @@ local function getCustomLevel() return getCLevelRepo():Access() end
 
 --- Standard Int Levels.
 -- @table StdIntLevel
--- @field ALL math.huge
+-- @field ALL `math.huge`
 -- @field TRACE 600
 -- @field DEBUG 500
 -- @field INFO 400
@@ -77,14 +77,14 @@ local StdIntLevel = {
 
 --- Standard Level Colors.
 -- @table StdLevelColor
--- @field ALL color_white
--- @field TRACE Color(42, 69, 70)
--- @field DEBUG Color(0, 255, 255)
--- @field INFO Color(0, 255, 0)
--- @field WARN Color(255, 255, 0)
--- @field ERROR Color(255, 0, 0)
--- @field FATAL Color(255, 48, 48)
--- @field OFF color_white
+-- @field ALL [color_white](https://wiki.facepunch.com/gmod/Global_Variables#constants)
+-- @field TRACE 42 69 70
+-- @field DEBUG 0 255 255
+-- @field INFO 0 255 0
+-- @field WARN 255 255 0
+-- @field ERROR 255 0 0
+-- @field FATAL 255 48 48
+-- @field OFF `color_white`
 local StdLevelColor = {
     ALL = color_white,
     TRACE = Color(42, 69, 70),
@@ -120,10 +120,13 @@ end
 local function forName(name, int)
     ErrorHandler.Assert(type(name) == "string" and #name > 0, 1, "name for a Level must be a string", 1, nil, "name must have a length > 0")
     ErrorHandler.Assert(type(int) == "number" and int > 0, 2, "intLevel for a Level must be a number", 1, nil, "intlevels must be > 0")
-    ErrorHandler.Assert(not StdLevel[name], nil, nil, 2, nil, "if a custom level with the same name already exists, its intlevel will be updated with the supplied int", {{line = 6, startPos = 5, endPos = 61, sign = "*", msg = "a stdLevel with the same name already exists"}})
+    ErrorHandler.Assert(not StdLevel[name], nil, nil, 2, nil, "if a custom level with the same name already exists, its intlevel will be updated with the supplied int", {{line = 6, startPos = 5, endPos = 38, sign = "*", msg = "a stdLevel with the same name already exists"}})
 
-    if not getCustomLevel()[name] then getCustomLevel()[name] = Level(name, int)
-    else getCustomLevel()[name].__int = int end
+    if not getCustomLevel()[name] then
+        getCustomLevel()[name] = Level(name, int)
+    else
+        getCustomLevel()[name].__int = int
+    end
 
     return getCustomLevel()[name]
 end
