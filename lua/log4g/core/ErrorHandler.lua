@@ -158,7 +158,7 @@ local function Assert(exp, argIndex, paramWarn, titleNum, maxSrcLines, note, mar
 
     printTabContent(snippet)
 
-    Error"log4g ErrorHandler.Assert failure, see Console for details\n"
+    error"log4g ErrorHandler.Assert failure, see Console for details"
 end
 
 return {
