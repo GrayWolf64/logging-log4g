@@ -56,13 +56,13 @@ function Logger:GetLoggerConfig()
     return self:GetContext(true):GetConfiguration():GetLoggerConfig(self:GetLoggerConfigN())
 end
 
-function Logger:SetAdditive(bool)
-    assert(type(bool) == "boolean", "additive flag must be bool")
-    self:SetPrivateField(0x00C9, bool)
+function Logger:SetAdditive(additive)
+    assert(type(additive) == "boolean", "additive flag must be bool")
+    self.__additive = additive
 end
 
 function Logger:IsAdditive()
-    return self:GetPrivateField(0x00C9)
+    return self.__additive
 end
 
 function Logger:SetLevel(level)
