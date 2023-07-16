@@ -31,10 +31,11 @@ local State = {
     STOPPED = 0x2580
 }
 
---- LifeCycle has private field already allocated.
-function LifeCycle:Initialize()
+--- Initialize the LifeCycle.
+-- @param noPvtC If true, a field in PvtC won't be allocated
+function LifeCycle:Initialize(noPvtC)
     Object.Initialize(self)
-    self:AllocPvtC()
+    if not noPvtC then self:AllocPvtC() end
     self:SetState(State.INITIALIZED)
 end
 

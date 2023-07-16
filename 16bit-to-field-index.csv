@@ -9,7 +9,6 @@
 0x0015 ,ap           ,  21
 0x00D3 ,apref        , 211
 0x0016 ,level        ,  22
-0x0017 ,layout       ,  23
 0x0640 ,INITIALIZING ,1600
 0x0C80 ,INITIALIZED  ,3200
 0x12C0 ,STARTING     ,4800

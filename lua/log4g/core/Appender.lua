@@ -6,8 +6,8 @@ local Appender = Appender or LifeCycle:subclass"Appender"
 Appender:include(Log4g.Core.Object.namedMixins)
 
 function Appender:Initialize(name, layout)
-    LifeCycle.Initialize(self)
-    self:SetPrivateField(0x0017, layout)
+    LifeCycle.Initialize(self, true)
+    self.__layout = layout
     self:SetName(name)
 end
 
@@ -17,7 +17,7 @@ end
 
 --- Returns the Layout used by this Appender if applicable.
 function Appender:GetLayout()
-    return self:GetPrivateField(0x0017)
+    return self.__layout
 end
 
 function Appender:Append()
