@@ -5,12 +5,8 @@
 local MMCDerma = include("log4g/mmc-gui/client/MMCDerma.lua")
 local CreateDFrame, CreateDPropertySheet = MMCDerma.CreateDFrame, MMCDerma.CreateDPropertySheet
 local CreateDPropRow, GetRowControl = MMCDerma.CreateDPropRow, MMCDerma.GetRowControl
-local Frame = nil
-local next = next
-local JSONToTable = util.JSONToTable
 local pairs, isstring, tostring = pairs, isstring, tostring
-local netStart, netReceive = net.Start, net.Receive
-local sendToServer = net.SendToServer
+local Frame = nil
 
 concommand.Add("log4g_mmc", function()
     if IsValid(Frame) then
@@ -34,15 +30,15 @@ concommand.Add("log4g_mmc", function()
     Icon:DockMargin(4, 4, 4, 4)
 
     local function SendEmptyMsgToSV(msgn)
-        netStart(msgn)
-        sendToServer()
+        net.Start(msgn)
+        net.SendToServer()
     end
 
     local function UpdateIcon()
         Icon:SetImage("icon16/disconnect.png")
         SendEmptyMsgToSV("Log4g_CLReq_ChkConnected")
 
-        netReceive("Log4g_CLRcv_ChkConnected", function()
+        net.Receive("Log4g_CLRcv_ChkConnected", function()
             if not net.ReadBool() then return end
             Icon:SetImage("icon16/connect.png")
         end)
@@ -81,7 +77,7 @@ concommand.Add("log4g_mmc", function()
     local function UpdateSummary()
         SendEmptyMsgToSV("Log4g_CLReq_SVSummaryData")
 
-        netReceive("Log4g_CLRcv_SVSummaryData", function()
+        net.Receive("Log4g_CLRcv_SVSummaryData", function()
             setValue(RowB, 1 / engine.ServerFrameTime())
             setValue(RowC, net.ReadFloat())
             setValue(RowD, net.ReadUInt(14))
@@ -123,10 +119,10 @@ concommand.Add("log4g_mmc", function()
     local function UpdateConfigurationFilePaths()
         SendEmptyMsgToSV("Log4g_CLReq_SVConfigurationFiles")
 
-        netReceive("Log4g_CLRcv_SVConfigurationFiles", function()
+        net.Receive("Log4g_CLRcv_SVConfigurationFiles", function()
             local files = net.ReadData(net.ReadUInt(32))
             if not isstring(files) or #files == 0 then return end
-            files = JSONToTable(util.Decompress(files))
+            files = util.JSONToTable(util.Decompress(files))
             ConfigFileOption:Clear()
             if not next(files) then return end
 
