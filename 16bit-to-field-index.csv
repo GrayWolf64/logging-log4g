@@ -1,11 +1,8 @@
 16bit  ,name         ,int
 0x0010 ,ctx          ,  16
-0x00A1 ,source       , 161
-0x0011 ,config       ,  17
 0x00AB ,startTime    , 171
 0x0012 ,parent       ,  18
 0x0013 ,lc           ,  19
-0x0014 ,logger       ,  20
 0x0015 ,ap           ,  21
 0x00D3 ,apref        , 211
 0x0016 ,level        ,  22

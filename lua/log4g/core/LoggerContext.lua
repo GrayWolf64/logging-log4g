@@ -12,43 +12,43 @@ local getLContextRepo         = Log4g.Core.Repository.getLContextRepo
 LoggerContext:include(Log4g.Core.Object.namedMixins)
 
 function LoggerContext:Initialize(name)
-    LifeCycle.Initialize(self)
-    self:SetPrivateField(0x0014, {})
+    LifeCycle.Initialize(self, true)
+    self.__loggerRepo = {}
     self:SetName(name)
 end
 
 --- Sets the Configuration source for the LoggerContext.
 -- @param src String source
 function LoggerContext:SetConfigurationSource(src)
-    self:SetPrivateField(0x00A1, src)
+    self.__configSrc = src
 end
 
 --- Gets where this LoggerContext is declared.
 -- @return table source
 function LoggerContext:GetConfigurationSource()
-    return self:GetPrivateField(0x00A1)
+    return self.__configSrc
 end
 
 --- Gets a Logger from the Context.
 -- @param name The name of the Logger
 function LoggerContext:GetLogger(name)
-    return self:GetPrivateField(0x0014)[name]
+    return self.__loggerRepo[name]
 end
 
 --- Gets a table of the current loggers.
 -- @return table loggers
 function LoggerContext:GetLoggers()
-    return self:GetPrivateField(0x0014)
+    return self.__loggerRepo
 end
 
 function LoggerContext:AddLogger(name, logger)
-    self:GetPrivateField(0x0014)[name] = logger
+    self.__loggerRepo[name] = logger
 end
 
 --- Returns the current Configuration of the LoggerContext.
 -- @return object configuration
 function LoggerContext:GetConfiguration()
-    return self:GetPrivateField(0x0011)
+    return self.__config
 end
 
 --- Sets the Configuration to be used.
@@ -58,7 +58,7 @@ function LoggerContext:SetConfiguration(config)
 
     if self:GetConfiguration() == config then return end
     config:SetContext(self:GetName())
-    self:SetPrivateField(0x0011, config)
+    self.__config = config
 end
 
 function LoggerContext:__tostring()
@@ -68,9 +68,7 @@ end
 --- Terminate the LoggerContext.
 function LoggerContext:Terminate()
     self:SetStopped()
-    local name = self:GetName()
-    self:DestroyPrivateTable()
-    getLContextRepo():Access()[name] = nil
+    getLContextRepo():Access()[self:GetName()] = nil
 end
 
 --- Determines if the specified Logger exists.
