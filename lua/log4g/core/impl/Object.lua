@@ -5,15 +5,6 @@
 local StripDotExtension = include"../util/StringUtil.lua".StripDotExtension
 local Object = include"MiddleClass.lua""Object"
 
-local _privateContainer = _privateContainer or setmetatable({}, {
-    __mode = "k"
-})
-
---- Allocate a field in private container indexed by `self`.
-function Object:AllocPvtC()
-    _privateContainer[self] = {}
-end
-
 --- Generate all the ancestors' names of a LoggerConfig or something else.
 -- The provided name must follow [Named Hierarchy](https://logging.apache.org/log4j/2.x/manual/architecture.html).
 -- @lfunction EnumerateAncestors
@@ -38,9 +29,9 @@ Log4g.Core.Object = {
     contextualMixins = {
         SetContext = function(self, ctx)
             assert(type(ctx) == "string", "setContext can only accept a string name of a lContext")
-            self:SetPrivateField(0x0010, ctx)
+            self.__lContextName = ctx
         end,
-        GetContext = function(self) return self:GetPrivateField(0x0010) end
+        GetContext = function(self) return self.__lContextName end
     },
     namedMixins = {
         SetName = function(self, name)
@@ -49,19 +40,6 @@ Log4g.Core.Object = {
         end,
         GetName = function(self)
             return self.__name
-        end
-    },
-    privateMixins = {
-        SetPrivateField = function(self, k, v)
-            if not k or v == nil then return end
-            _privateContainer[self][k] = v
-        end,
-        GetPrivateField = function(self, k)
-            if not k then return end
-            return _privateContainer[self][k]
-        end,
-        DestroyPrivateTable = function(self)
-            _privateContainer[self] = nil
         end
     }
 }

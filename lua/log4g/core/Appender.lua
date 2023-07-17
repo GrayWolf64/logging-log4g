@@ -6,7 +6,7 @@ local Appender = Appender or LifeCycle:subclass"Appender"
 Appender:include(Log4g.Core.Object.namedMixins)
 
 function Appender:Initialize(name, layout)
-    LifeCycle.Initialize(self, true)
+    LifeCycle.Initialize(self)
     self.__layout = layout
     self:SetName(name)
 end

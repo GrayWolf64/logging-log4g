@@ -12,7 +12,7 @@ local getLContextRepo         = Log4g.Core.Repository.getLContextRepo
 LoggerContext:include(Log4g.Core.Object.namedMixins)
 
 function LoggerContext:Initialize(name)
-    LifeCycle.Initialize(self, true)
+    LifeCycle.Initialize(self)
     self.__loggerRepo = {}
     self:SetName(name)
 end

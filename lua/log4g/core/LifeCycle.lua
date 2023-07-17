@@ -11,7 +11,6 @@
 -- @copyright GrayWolf64
 local Object = Log4g.Core.Object.getClass()
 local LifeCycle = LifeCycle or Object:subclass"LifeCycle"
-LifeCycle:include(Log4g.Core.Object.privateMixins)
 
 --- LifeCycle states.
 -- @table State
@@ -31,11 +30,8 @@ local State = {
     STOPPED = 0x2580
 }
 
---- Initialize the LifeCycle.
--- @param noPvtC If true, a field in PvtC won't be allocated
-function LifeCycle:Initialize(noPvtC)
+function LifeCycle:Initialize()
     Object.Initialize(self)
-    if not noPvtC then self:AllocPvtC() end
     self:SetState(State.INITIALIZED)
 end
 

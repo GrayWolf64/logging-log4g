@@ -10,16 +10,16 @@ Configuration:include(Log4g.Core.Object.contextualMixins)
 
 function Configuration:Initialize()
     LifeCycle.Initialize(self)
-    self:SetPrivateField(0x0015, {})
-    self:SetPrivateField(0x0013, {})
-    self:SetPrivateField(0x00AB, SysTime())
+    self.__appenderRepo = {}
+    self.__lConfigRepo = {}
+    self.__startTime = SysTime()
 end
 
 --- Gets all the Appenders in the Configuration.
 -- Keys are the names of Appenders and values are the Appenders themselves.
 -- @return table appenders
 function Configuration:GetAppenders()
-    return self:GetPrivateField(0x0015)
+    return self.__appenderRepo
 end
 
 --- Adds a Appender to the Configuration.
@@ -39,7 +39,7 @@ function Configuration:RemoveAppender(name)
 end
 
 function Configuration:GetLoggerConfigs()
-    return self:GetPrivateField(0x0013)
+    return self.__lConfigRepo
 end
 
 function Configuration:AddLogger(name, lc)
@@ -60,7 +60,7 @@ end
 --- Gets how long since this Configuration initialized.
 -- @return int uptime
 function Configuration:GetUpTime()
-    return SysTime() - self:GetPrivateField(0x00AB)
+    return SysTime() - self.__startTime
 end
 
 Log4g.Core.Config.Configuration = {

@@ -17,7 +17,7 @@ LoggerConfig:include(Log4g.Core.Object.namedMixins)
 
 function LoggerConfig:Initialize(name)
     LifeCycle.Initialize(self)
-    self:SetPrivateField(0x00D3, {})
+    self.__appenderRef = {}
     self:SetName(name)
 end
 
@@ -26,7 +26,7 @@ function LoggerConfig:__tostring()
 end
 
 function LoggerConfig:GetLevel()
-    return self:GetPrivateField(0x0016)
+    return self.__level
 end
 
 --- Sets the log Level.
@@ -34,7 +34,7 @@ end
 function LoggerConfig:SetLevel(level)
     if not checkClass(level, "Level") then return end
     if self:GetLevel() == level then return end
-    self:SetPrivateField(0x0016, level)
+    self.__level = level
 end
 
 local function HasLoggerConfig(name, context)
@@ -63,26 +63,24 @@ end
 function LoggerConfig:SetParent(T)
     if type(T) == "string" then
         if not HasLoggerConfig(T, GetCtx(self:GetContext())) then return end
-        self:SetPrivateField(0x0012, T)
+        self.__parent = T
     elseif checkClass(T, "LoggerConfig") and T:GetContext() == self:GetContext() then
-        self:SetPrivateField(0x0012, T:GetName())
+        self.__parent = T:GetName()
     end
 end
 
 --- Gets the parent of this LoggerConfig.
 -- @return string lcname
 function LoggerConfig:GetParent()
-    return self:GetPrivateField(0x0012)
+    return self.__parent
 end
 
 function LoggerConfig:GetAppenderRef()
-    return self:GetPrivateField(0x00D3)
+    return self.__appenderRef
 end
 
 --- Adds an Appender to the LoggerConfig.
--- It adds the Appender name to the LoggerConfig's private `apref` table field,
--- then adds the Appender object to the Configuration's(the only one which owns this LoggerConfig) private `appender` table field.
--- @param appender Appender object
+-- @param ap Appender object
 -- @return bool ifadded
 function LoggerConfig:AddAppender(ap)
     if not checkClass(ap, "Appender") then return end
@@ -110,7 +108,7 @@ function LoggerConfig:ClearAppenders()
     if not next(apRef) then return end
 
     for apName in pairs(apRef) do config:RemoveAppender(apName) end
-    self:SetPrivateField(0x00D3, {})
+    self.__appenderRef = {}
 end
 
 local RootLoggerConfig = RootLoggerConfig or LoggerConfig:subclass"LoggerConfig.RootLogger"
